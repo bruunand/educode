@@ -252,15 +252,15 @@ public class ASTBuilder extends EduCodeBaseVisitor<NodeBase>
         switch (operator)
         {
             case "+":
-                return ArithmeticOperator.AdditionOperator;
+                return ArithmeticOperator.Addition;
             case "-":
-                return ArithmeticOperator.SubtactionOperator;
+                return ArithmeticOperator.Subtraction;
             case "/":
-                return ArithmeticOperator.DivisonOperator;
+                return ArithmeticOperator.Division;
             case "*":
-                return ArithmeticOperator.MultiplicationOperator;
+                return ArithmeticOperator.Multiplication;
             case "%":
-                return ArithmeticOperator.ModuloOperator;
+                return ArithmeticOperator.Modulo;
             default:
                 return ArithmeticOperator.Error;
         }

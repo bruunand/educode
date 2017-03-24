@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="38b0496e-fb70-4e4f-9cd5-44b36194b80b" name="Default" comment="" />
+    <list default="true" id="38b0496e-fb70-4e4f-9cd5-44b36194b80b" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/types/ArithmeticOperator.java" afterPath="$PROJECT_DIR$/src/com/educode/types/ArithmeticOperator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/visitors/ASTBuilder.java" afterPath="$PROJECT_DIR$/src/com/educode/visitors/ASTBuilder.java" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,21 +26,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LogicalOperator.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="LogicalOperator.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/educode/types/LogicalOperator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="26" column="4" lean-forward="false" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
+            <state relative-caret-position="300">
+              <caret line="23" column="40" lean-forward="false" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ArithmeticOperator.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ArithmeticOperator.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/educode/types/ArithmeticOperator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="21" selection-end-column="5" />
+            <state relative-caret-position="375">
+              <caret line="28" column="4" lean-forward="false" selection-start-line="28" selection-start-column="4" selection-end-line="28" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -83,6 +86,7 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
@@ -93,9 +97,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/com/educode/types/ArithmeticOperator.java" />
         <option value="$PROJECT_DIR$/src/com/educode/types/Type.java" />
         <option value="$PROJECT_DIR$/src/com/educode/types/LogicalOperator.java" />
+        <option value="$PROJECT_DIR$/src/com/educode/types/ArithmeticOperator.java" />
       </list>
     </option>
   </component>
@@ -575,18 +579,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/educode/types/ArithmeticOperator.java">
+    <entry file="file://$PROJECT_DIR$/src/com/educode/types/LogicalOperator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="21" selection-end-column="5" />
+        <state relative-caret-position="300">
+          <caret line="23" column="40" lean-forward="false" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/educode/types/LogicalOperator.java">
+    <entry file="file://$PROJECT_DIR$/src/com/educode/types/ArithmeticOperator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="26" column="4" lean-forward="false" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
+        <state relative-caret-position="375">
+          <caret line="28" column="4" lean-forward="false" selection-start-line="28" selection-start-column="4" selection-end-line="28" selection-end-column="4" />
           <folding />
         </state>
       </provider>

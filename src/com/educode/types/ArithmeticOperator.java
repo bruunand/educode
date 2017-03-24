@@ -21,10 +21,11 @@ public class ArithmeticOperator
         return false;
     }
 
-    public static final ArithmeticOperator AdditionOperator = new ArithmeticOperator(ADDITION);
-    public static final ArithmeticOperator SubtactionOperator = new ArithmeticOperator(SUBTRACTION);
-    public static final ArithmeticOperator MultiplicationOperator = new ArithmeticOperator(MULTIPLICATION);
-    public static final ArithmeticOperator DivisonOperator = new ArithmeticOperator(DIVISION);
-    public static final ArithmeticOperator ModuloOperator = new ArithmeticOperator(MODULO);
+    public static final ArithmeticOperator Addition = new ArithmeticOperator(ADDITION);
+    public static final ArithmeticOperator Subtraction = new ArithmeticOperator(SUBTRACTION);
+    public static final ArithmeticOperator Multiplication = new ArithmeticOperator(MULTIPLICATION);
+    public static final ArithmeticOperator Division = new ArithmeticOperator(DIVISION);
+    public static final ArithmeticOperator Modulo = new ArithmeticOperator(MODULO);
+    
     public static final ArithmeticOperator Error = new ArithmeticOperator(ERROR);
 }
