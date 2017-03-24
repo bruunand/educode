@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="antlr-4.6-complete">
     <CLASSES>
-      <root url="jar://$APPLICATION_HOME_DIR$/plugins/intellij-plugin-v4/lib/antlr-4.6-complete.jar!/" />
+      <root url="jar://$PROJECT_DIR$/antlr-4.6-complete.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
