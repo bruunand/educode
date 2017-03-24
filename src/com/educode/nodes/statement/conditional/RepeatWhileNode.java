@@ -1,6 +1,6 @@
 package com.educode.nodes.statement.conditional;
 
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
 import com.educode.visitors.VisitorBase;
 
@@ -9,7 +9,7 @@ import com.educode.visitors.VisitorBase;
  */
 public class RepeatWhileNode extends UnaryNode
 {
-    public RepeatWhileNode(NodeBase conditionChild)
+    public RepeatWhileNode(Node conditionChild)
     {
         super(conditionChild);
     }

@@ -3,16 +3,16 @@ package com.educode.nodes.base;
 /**
  * Created by zen on 3/9/17.
  */
-public abstract class UnaryNode extends NodeBase
+public abstract class UnaryNode extends Node
 {
-    private NodeBase _child;
+    private Node _child;
 
-    public UnaryNode(NodeBase child)
+    public UnaryNode(Node child)
     {
         this._child = child;
     }
 
-    public NodeBase getChild()
+    public Node getChild()
     {
         return _child;
     }

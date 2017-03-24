@@ -11,10 +11,10 @@ public class CollectionNode extends NaryNode
 {
     public CollectionNode()
     {
-        super(new ArrayList<NodeBase>());
+        super(new ArrayList<Node>());
     }
 
-    public CollectionNode(ArrayList<NodeBase> childNodes)
+    public CollectionNode(ArrayList<Node> childNodes)
     {
         super(childNodes);
     }

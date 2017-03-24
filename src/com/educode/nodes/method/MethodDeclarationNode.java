@@ -2,7 +2,7 @@ package com.educode.nodes.method;
 
 import com.educode.nodes.Identifiable;
 import com.educode.nodes.Typeable;
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
@@ -15,7 +15,7 @@ public class MethodDeclarationNode extends UnaryNode implements Identifiable, Ty
     private String _identifier;
     private Type _returnType;
 
-    public MethodDeclarationNode(NodeBase child, String identifier, Type returnType)
+    public MethodDeclarationNode(Node child, String identifier, Type returnType)
     {
         super(child);
         this._identifier = identifier;

@@ -26,6 +26,6 @@ public class ArithmeticOperator
     public static final ArithmeticOperator Multiplication = new ArithmeticOperator(MULTIPLICATION);
     public static final ArithmeticOperator Division = new ArithmeticOperator(DIVISION);
     public static final ArithmeticOperator Modulo = new ArithmeticOperator(MODULO);
-    
+
     public static final ArithmeticOperator Error = new ArithmeticOperator(ERROR);
 }

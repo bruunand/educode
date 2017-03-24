@@ -2,7 +2,7 @@ package com.educode.nodes.statement;
 
 import com.educode.nodes.Identifiable;
 import com.educode.nodes.Typeable;
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
@@ -15,7 +15,7 @@ public class AssignmentNode extends UnaryNode implements Identifiable, Typeable
     private String _identifier;
     private Type _type;
 
-    public AssignmentNode(String identifier, NodeBase child)
+    public AssignmentNode(String identifier, Node child)
     {
         super(child);
         this._identifier = identifier;

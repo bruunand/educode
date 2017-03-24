@@ -1,7 +1,7 @@
 package com.educode.nodes.statement.conditional;
 
 import com.educode.nodes.base.NaryNode;
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.visitors.VisitorBase;
 
@@ -14,12 +14,12 @@ public class IfNode extends NaryNode
 {
     public IfNode()
     {
-        super(new ArrayList<NodeBase>());
+        super(new ArrayList<Node>());
     }
 
     public BlockNode getElseBlock()
     {
-        for (NodeBase n : getChildren())
+        for (Node n : getChildren())
         {
             if (n instanceof BlockNode)
                 return (BlockNode) n;
@@ -31,7 +31,7 @@ public class IfNode extends NaryNode
     public ArrayList<ConditionNode> getConditionBlocks()
     {
         ArrayList<ConditionNode> conditionBlocks = new ArrayList<ConditionNode>();
-        for (NodeBase child : getChildren())
+        for (Node child : getChildren())
         {
             if (child instanceof ConditionNode)
                 conditionBlocks.add((ConditionNode)child);

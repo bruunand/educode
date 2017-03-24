@@ -55,7 +55,7 @@ public abstract class VisitorBase
     public abstract Object visit(EqualExpressionNode node);
     public abstract Object visit(NegateNode node);
 
-    public Object visit(NodeBase node)
+    public Object visit(Node node)
     {
         // System.out.println(node.getClass().getName());
         return node.accept(this);
@@ -77,7 +77,7 @@ public abstract class VisitorBase
 
     public void visitChildren(NaryNode node)
     {
-        for (NodeBase child : node.getChildren())
+        for (Node child : node.getChildren())
         {
             child.accept(this);
         }

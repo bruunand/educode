@@ -1,7 +1,7 @@
 package com.educode.nodes.statement.conditional;
 
 import com.educode.nodes.base.BinaryNode;
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
 import com.educode.visitors.VisitorBase;
 
 /**
@@ -9,7 +9,7 @@ import com.educode.visitors.VisitorBase;
  */
 public class ConditionNode extends BinaryNode
 {
-    public ConditionNode(NodeBase logic, NodeBase block)
+    public ConditionNode(Node logic, Node block)
     {
         super(logic, block);
     }

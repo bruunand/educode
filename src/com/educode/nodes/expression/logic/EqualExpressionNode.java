@@ -1,6 +1,7 @@
 package com.educode.nodes.expression.logic;
 
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
+import com.educode.types.LogicalOperator;
 import com.educode.visitors.VisitorBase;
 
 /**
@@ -8,9 +9,9 @@ import com.educode.visitors.VisitorBase;
  */
 public class EqualExpressionNode extends LogicExpressionNode
 {
-    public EqualExpressionNode(NodeBase leftExpr, NodeBase rightExpr)
+    public EqualExpressionNode(LogicalOperator operator, Node leftExpr, Node rightExpr)
     {
-        super(leftExpr, rightExpr);
+        super(operator, leftExpr, rightExpr);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.educode.nodes.expression;
 
 import com.educode.nodes.base.BinaryNode;
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
 import com.educode.types.Type;
 
 /**
@@ -11,7 +11,7 @@ public abstract class ExpressionNode extends BinaryNode
 {
     private Type _type;
 
-    public ExpressionNode(NodeBase leftChild, NodeBase rightChild)
+    public ExpressionNode(Node leftChild, Node rightChild)
     {
         super(leftChild, rightChild);
     }

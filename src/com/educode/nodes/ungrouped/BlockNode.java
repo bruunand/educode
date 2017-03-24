@@ -1,7 +1,7 @@
 package com.educode.nodes.ungrouped;
 
 import com.educode.nodes.base.NaryNode;
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
 import com.educode.visitors.VisitorBase;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class BlockNode extends NaryNode
 {
-    public BlockNode(ArrayList<NodeBase> children)
+    public BlockNode(ArrayList<Node> children)
     {
         super(children);
     }

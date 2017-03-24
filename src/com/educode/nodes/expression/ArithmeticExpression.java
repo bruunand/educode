@@ -2,7 +2,7 @@ package com.educode.nodes.expression;
 
 import com.educode.nodes.Typeable;
 import com.educode.nodes.base.BinaryNode;
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.Type;
 
@@ -14,7 +14,7 @@ public abstract class ArithmeticExpression extends BinaryNode implements Typeabl
     private Type _type;
     private ArithmeticOperator _operator;
 
-    public ArithmeticExpression(ArithmeticOperator operator, NodeBase leftChild, NodeBase rightChild)
+    public ArithmeticExpression(ArithmeticOperator operator, Node leftChild, Node rightChild)
     {
         super(leftChild, rightChild);
         this._operator = operator;

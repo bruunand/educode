@@ -1,6 +1,6 @@
 package com.educode.nodes.expression;
 
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
 import com.educode.types.ArithmeticOperator;
 import com.educode.visitors.VisitorBase;
 
@@ -9,7 +9,7 @@ import com.educode.visitors.VisitorBase;
  */
 public class AdditionExpression extends ArithmeticExpression
 {
-    public AdditionExpression(ArithmeticOperator operator, NodeBase leftChild, NodeBase rightChild)
+    public AdditionExpression(ArithmeticOperator operator, Node leftChild, Node rightChild)
     {
         super(operator, leftChild, rightChild);
     }

@@ -1,6 +1,6 @@
 package com.educode.nodes.statement;
 
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
 import com.educode.visitors.VisitorBase;
 
@@ -14,7 +14,7 @@ public class ReturnNode extends UnaryNode
         this(null);
     }
 
-    public ReturnNode(NodeBase child)
+    public ReturnNode(Node child)
     {
         super(child);
     }

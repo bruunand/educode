@@ -1,7 +1,7 @@
 package com.educode.nodes.literal;
 
 import com.educode.nodes.Identifiable;
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
 import com.educode.visitors.VisitorBase;
 
@@ -12,7 +12,7 @@ public class IdentifierLiteralNode extends UnaryNode implements Identifiable
 {
     private String _identifier;
 
-    public IdentifierLiteralNode(NodeBase child, String identifier)
+    public IdentifierLiteralNode(Node child, String identifier)
     {
         super(child);
         this._identifier = identifier;

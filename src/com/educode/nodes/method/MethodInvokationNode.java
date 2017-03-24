@@ -1,7 +1,7 @@
 package com.educode.nodes.method;
 
 import com.educode.nodes.Identifiable;
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
 import com.educode.visitors.VisitorBase;
 
@@ -12,7 +12,7 @@ public class MethodInvokationNode extends UnaryNode implements Identifiable
 {
     private String _calleeMethod;
 
-    public MethodInvokationNode(NodeBase child, String calleeMethod)
+    public MethodInvokationNode(Node child, String calleeMethod)
     {
         super(child);
         this._calleeMethod = calleeMethod;

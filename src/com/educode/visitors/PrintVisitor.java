@@ -13,7 +13,7 @@ import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.base.CollectionNode;
 import com.educode.nodes.base.NaryNode;
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
 import com.educode.nodes.method.MethodDeclarationNode;
@@ -28,11 +28,11 @@ public class PrintVisitor extends VisitorBase
     @Override
     public String visit(ProgramNode node)
     {
-        for (NodeBase child : node.getChildren())
+        for (Node child : node.getChildren())
         {
             if (child instanceof NaryNode)
             {
-                for (NodeBase grandchild : ((NaryNode) child).getChildren())
+                for (Node grandchild : ((NaryNode) child).getChildren())
                     visit(grandchild);
             }
             else
@@ -88,7 +88,7 @@ public class PrintVisitor extends VisitorBase
     public Object visit(BlockNode node)
     {
         System.out.println("Visiting block");
-        for (NodeBase child : node.getChildren())
+        for (Node child : node.getChildren())
             visit(child);
 
         return null;
@@ -97,7 +97,7 @@ public class PrintVisitor extends VisitorBase
     @Override
     public Object visit(CollectionNode node)
     {
-        for (NodeBase child : node.getChildren())
+        for (Node child : node.getChildren())
             visit(child);
 
         return null;
@@ -149,7 +149,7 @@ public class PrintVisitor extends VisitorBase
     @Override
     public Object visit(IfNode node)
     {
-        for (NodeBase child : node.getChildren())
+        for (Node child : node.getChildren())
             visit(child);
 
         return null;

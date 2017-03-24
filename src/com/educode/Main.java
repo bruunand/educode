@@ -2,7 +2,7 @@ package com.educode;
 
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
-import com.educode.nodes.base.NodeBase;
+import com.educode.nodes.base.Node;
 import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.PrintVisitor;
 import org.antlr.v4.runtime.ANTLRFileStream;
@@ -24,7 +24,7 @@ public class Main
         EduCodeParser parser = new EduCodeParser(tokenStream);
 
         ASTBuilder builder = new ASTBuilder();
-        NodeBase root = builder.visit(parser.program());
+        Node root = builder.visit(parser.program());
 
         PrintVisitor exampleVisitor = new PrintVisitor();
         exampleVisitor.visit(root);
