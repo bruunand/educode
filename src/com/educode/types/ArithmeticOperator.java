@@ -6,7 +6,7 @@ package com.educode.types;
 public class ArithmeticOperator
 {
     private byte _kind;
-    public static byte ERROR = 0, ADDITION = 1, SUBTRACTION = 2, MULTIPLICATION = 3, DIVISION = 4, MODULO = 5;
+    private static byte ERROR = 0, ADDITION = 1, SUBTRACTION = 2, MULTIPLICATION = 3, DIVISION = 4, MODULO = 5;
 
     public ArithmeticOperator(byte kind)
     {

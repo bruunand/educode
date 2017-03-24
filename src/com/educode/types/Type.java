@@ -6,7 +6,7 @@ package com.educode.types;
 public class Type
 {
     private byte _kind;
-    public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5;
+    private static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5;
 
     public Type(byte kind)
     {
