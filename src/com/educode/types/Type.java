@@ -5,19 +5,19 @@ package com.educode.types;
  */
 public class Type
 {
-    private byte _kind;
-    private static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5;
+    public final byte Kind;
+    public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5;
 
     public Type(byte kind)
     {
-        this._kind = kind;
+        this.Kind = kind;
     }
 
     @Override
     public boolean equals(Object o)
     {
         if (o instanceof Type)
-            return ((Type)o)._kind == this._kind;
+            return ((Type)o).Kind == this.Kind;
         return false;
     }
 

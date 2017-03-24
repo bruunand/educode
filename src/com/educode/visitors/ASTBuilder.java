@@ -87,6 +87,8 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
                 return Type.BoolType;
             case "COORDINATES":
                 return Type.CoordinatesType;
+            case "NUMBER":
+                return Type.NumberType;
             default:
                 return Type.VoidType;
         }
@@ -262,7 +264,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         for (EduCodeParser.MethodContext m : ctx.method())
             childMethods.add(visit(m));
 
-        return new BlockNode(childMethods);
+        return new CollectionNode(childMethods);
     }
 
     @Override
@@ -272,7 +274,10 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         if (ctx.dataType() != null)
             returnType = getType(ctx.dataType().getText());
 
-        return new MethodDeclarationNode(visit(ctx.stmts()), ctx.ident().getText(), returnType);
+        if (ctx.params() != null)
+            return new MethodDeclarationNode(visit(ctx.stmts()), visit(ctx.params()), ctx.ident().getText(), returnType);
+        else
+            return new MethodDeclarationNode(visit(ctx.stmts()), null, ctx.ident().getText(), returnType);
     }
 
     @Override
@@ -345,9 +350,6 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         CollectionNode node = new CollectionNode();
         for (EduCodeParser.ExprContext e : ctx.expr())
             node.addChild(visit(e));
-
-        for (Node n : node.getChildren())
-            System.out.println(n.getClass().getName());
 
         return node;
     }

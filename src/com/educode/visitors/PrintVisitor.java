@@ -6,6 +6,8 @@ import com.educode.nodes.literal.IdentifierLiteralNode;
 import com.educode.nodes.literal.NumberLiteralNode;
 import com.educode.nodes.literal.StringLiteralNode;
 import com.educode.nodes.method.MethodInvokationNode;
+import com.educode.nodes.method.ParameterNode;
+import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
@@ -47,7 +49,7 @@ public class PrintVisitor extends VisitorBase
     {
         System.out.println("Declare: " + node.getIdentifier());
 
-        visit(node.getChild());
+        visit(node.getLeftChild());
 
         return null;
     }
@@ -115,6 +117,12 @@ public class PrintVisitor extends VisitorBase
     }
 
     @Override
+    public Object visit(ParameterNode node)
+    {
+        return null;
+    }
+
+    @Override
     public Object visit(NumberLiteralNode node)
     {
         System.out.println("NUMBER LIT");
@@ -170,6 +178,12 @@ public class PrintVisitor extends VisitorBase
         System.out.println("Repeat..");
         visit(node.getChild());
 
+        return null;
+    }
+
+    @Override
+    public Object visit(ReturnNode node)
+    {
         return null;
     }
 

@@ -5,19 +5,19 @@ package com.educode.types;
  */
 public class ArithmeticOperator
 {
-    private byte _kind;
-    private static byte ERROR = 0, ADDITION = 1, SUBTRACTION = 2, MULTIPLICATION = 3, DIVISION = 4, MODULO = 5;
+    public final byte Kind;
+    public final static byte ERROR = 0, ADDITION = 1, SUBTRACTION = 2, MULTIPLICATION = 3, DIVISION = 4, MODULO = 5;
 
     public ArithmeticOperator(byte kind)
     {
-        this._kind = kind;
+        this.Kind = kind;
     }
 
     @Override
     public boolean equals(Object o)
     {
         if (o instanceof ArithmeticOperator)
-            return ((ArithmeticOperator)o)._kind == this._kind;
+            return ((ArithmeticOperator)o).Kind == this.Kind;
         return false;
     }
 

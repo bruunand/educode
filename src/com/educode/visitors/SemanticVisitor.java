@@ -10,7 +10,9 @@ import com.educode.nodes.literal.NumberLiteralNode;
 import com.educode.nodes.literal.StringLiteralNode;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvokationNode;
+import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.AssignmentNode;
+import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
@@ -54,6 +56,12 @@ public class SemanticVisitor extends VisitorBase
     }
 
     @Override
+    public Object visit(ParameterNode node)
+    {
+        return null;
+    }
+
+    @Override
     public Object visit(AssignmentNode node)
     {
         return null;
@@ -79,6 +87,12 @@ public class SemanticVisitor extends VisitorBase
 
     @Override
     public Object visit(RepeatWhileNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(ReturnNode node)
     {
         return null;
     }

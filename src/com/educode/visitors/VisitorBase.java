@@ -6,6 +6,8 @@ import com.educode.nodes.literal.IdentifierLiteralNode;
 import com.educode.nodes.literal.NumberLiteralNode;
 import com.educode.nodes.literal.StringLiteralNode;
 import com.educode.nodes.method.MethodInvokationNode;
+import com.educode.nodes.method.ParameterNode;
+import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
@@ -30,6 +32,7 @@ public abstract class VisitorBase
     // Methods
     public abstract Object visit(MethodDeclarationNode node);
     public abstract Object visit(MethodInvokationNode node);
+    public abstract Object visit(ParameterNode node);
 
     // Statements
     public abstract Object visit(AssignmentNode node);
@@ -37,6 +40,7 @@ public abstract class VisitorBase
     public abstract Object visit(IfNode node);
     public abstract Object visit(ConditionNode node);
     public abstract Object visit(RepeatWhileNode node);
+    public abstract Object visit(ReturnNode node);
 
     // Arithmetic
     public abstract Object visit(MultiplicationExpression node);
@@ -57,7 +61,8 @@ public abstract class VisitorBase
 
     public Object visit(Node node)
     {
-        // System.out.println(node.getClass().getName());
+        System.out.println("---> " + node.getClass().getName());
+
         return node.accept(this);
     }
 

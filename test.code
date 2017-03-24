@@ -1,16 +1,36 @@
 PROGRAM Test_Program
     METHOD Hej() RETURNS NUMBER
+        NUMBER anders
         NUMBER theis = 100
 
         REPEAT WHILE theis LESS THAN 100
-            theis = theis + 1
+            theis = (theis + 1 * 2) % 2
 
-            IF theis % 2 EQUALS 0
-                print("Theis is even!") // undefined
+            IF ((SIMON EQUALS THEIS OR SIMON) AND ANDREAS LESS THAN SIMON) OR NOT NOT NOT NOT NOT NOT NOT NOT NOT NOT ANDERS THEN
+                print("hehe")
+            ELSE
+                print("hoho")
             END IF
+
+            IF theis % 2 EQUALS 0 THEN
+                theis = 5.0
+                print("hej")
+                print()
+            ELSE IF theis EQUALS 5 THEN
+                anders = 1
+            ELSE
+                anders = 2
+                RETURN anders
+            END IF
+
+            RETURN
 
         END REPEAT
 
+    END METHOD
+
+    METHOD Andreas()
+        NUMBER andreas = 0
     END METHOD
 
 END PROGRAM
