@@ -1,0 +1,18 @@
+PROGRAM Test_Program
+    METHOD Hej() RETURNS NUMBER
+        REPEAT WHILE THEIS GREATER THAN 5 OR 5 GREATER THAN THEIS
+            IF NOT theis EQUALS 5 THEN
+                test()
+                test()
+            ELSE IF THEIS EQUALS 1 THEN
+                test()
+            ELSE
+                test()
+            END IF
+        END REPEAT
+    END METHOD
+
+    METHOD Test_Method()
+        NUMBER test_variable = 42, hej, d = 1
+    END METHOD
+END PROGRAM
