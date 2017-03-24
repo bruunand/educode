@@ -16,7 +16,7 @@ import com.educode.nodes.literal.IdentifierLiteralNode;
 import com.educode.nodes.literal.NumberLiteralNode;
 import com.educode.nodes.literal.StringLiteralNode;
 import com.educode.nodes.method.MethodDeclarationNode;
-import com.educode.nodes.method.MethodInvokationNode;
+import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.ReturnNode;
@@ -25,6 +25,7 @@ import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
+import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
@@ -311,13 +312,20 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitAssign(EduCodeParser.AssignContext ctx)
     {
-        if (ctx.getChildCount() == 3)
-        {
-            // Assign to arithmetic expression
+        if (ctx.expr() != null) // Assign to expression
             return new AssignmentNode(ctx.ident().getText(), visit(ctx.expr()));
+        else if (ctx.dataType() != null) // Assign to instantiated object
+        {
+            Type classType = getType(ctx.dataType().getText());
+
+            if (ctx.args() != null)
+                return new AssignmentNode(ctx.ident().getText(), new ObjectInstantiationNode(visit(ctx.args()), classType));
+            else
+                return new AssignmentNode(ctx.ident().getText(), new ObjectInstantiationNode(classType));
         }
 
-        System.out.println("Error: " + ctx.getText());
+        System.out.println("Error at line " + ctx.getStart().getLine());
+        System.out.println(ctx.getText());
 
         return null;
     }
@@ -330,7 +338,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         else if (ctx.getChildCount() == 3)
             return new AdditionExpression(getArithmeticOperator(ctx.ADDOP().getText()), visit(ctx.arithExpr()), visit(ctx.term()));
 
-        System.out.println("Error: " + ctx.getText());
+        System.out.println("ArithError at line " + ctx.getStart().getLine());
 
         return null;
     }
@@ -339,9 +347,9 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     public Node visitMethodC(EduCodeParser.MethodCContext ctx)
     {
         if (ctx.args() != null)
-            return new MethodInvokationNode(visit(ctx.args()), ctx.ident().getText());
+            return new MethodInvocationNode(visit(ctx.args()), ctx.ident().getText());
         else
-            return new MethodInvokationNode(null, ctx.ident().getText());
+            return new MethodInvocationNode(null, ctx.ident().getText());
     }
 
     @Override
@@ -362,7 +370,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         else if (ctx.getChildCount() == 3)
             return new MultiplicationExpression(getArithmeticOperator(ctx.MULTOP().getText()), visit(ctx.term()), visit(ctx.factor()));
 
-        System.out.println("Error: " + ctx.getText());
+        System.out.println("TermError at line " + ctx.getStart().getLine());
 
         return null;
     }
@@ -378,8 +386,10 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
             return visit(ctx.methodC());
         else if (ctx.ULOP() != null)
             return new NegateNode(visit(ctx.factor()));
+        else if (ctx.boolLit() != null)
+            return new BoolLiteralNode(Boolean.parseBoolean(ctx.getText()));
 
-        System.out.println("Error: " + ctx.getText());
+        System.out.println("FactError at line " + ctx.getStart().getLine());
 
         return null;
     }
@@ -394,7 +404,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         else if (ctx.STRLIT() != null)
             return new StringLiteralNode(ctx.STRLIT().getText()); // string literal
 
-        System.out.println("Error: " + ctx.getText());
+        System.out.println("LitError at line " + ctx.getStart().getLine());
 
         return null;
     }

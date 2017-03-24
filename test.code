@@ -1,36 +1,46 @@
-PROGRAM Test_Program
-    METHOD Hej() RETURNS NUMBER
-        NUMBER anders
-        NUMBER theis = 100
+PROGRAM HelloWorld //Debug program
+    METHOD Hello()
+        BOOL A = TRUE, B = TRUE
 
-        REPEAT WHILE theis LESS THAN 100
-            theis = (theis + 1 * 2) % 2
+        //Grammar debug for variable types and assignments
+        COLLECTION collection = NEW COLLECTION()
+        COORDINATES coords = NEW COORDINATES(x, z, y)//Minecrafts way of handling coords?
+        BOOL orBoolean = FALSE OR TRUE
+        BOOL andBoolean = TRUE AND FALSE
+        BOOL boolean = TRUE
+        STRING string = "Hello World"
+        NUMBER int = 5
+        NUMBER float = 2.4
+        BLOCK block = NEW BLOCK()
+        ITEM item = NEW ITEM()
+        TEXTURE texture= NEW TEXTURE()
+        ENTITY ent =NEW ENTITY()
 
-            IF ((SIMON EQUALS THEIS OR SIMON) AND ANDREAS LESS THAN SIMON) OR NOT NOT NOT NOT NOT NOT NOT NOT NOT NOT ANDERS THEN
-                print("hehe")
-            ELSE
-                print("hoho")
+        //Debug repeat while and if statements
+        REPEAT WHILE A EQUALS TRUE
+            IF A EQUALS TRUE THEN
+                A = FALSE
             END IF
-
-            IF theis % 2 EQUALS 0 THEN
-                theis = 5.0
-                print("hej")
-                print()
-            ELSE IF theis EQUALS 5 THEN
-                anders = 1
-            ELSE
-                anders = 2
-                RETURN anders
-            END IF
-
-            RETURN
-
         END REPEAT
-
     END METHOD
 
-    METHOD Andreas()
-        NUMBER andreas = 0
+    METHOD TestMethodCallReturn() RETURNS NUMBER
+        NUMBER numa = 3
+        NUMBER numb = 2
+        RETURN Add(numa, numb)
     END METHOD
 
+    METHOD Add(NUMBER numOne, NUMBER numTwo) RETURNS NUMBER
+        RETURN numOne+numTwo
+    END METHOD
+
+    //Debug methods with return and member access
+    METHOD World() RETURNS BOOL
+        ENTITY ent = NEW ENTITY()
+        ent.member()
+        NUMBER numTest = ent.number
+
+        BOOL B = TRUE
+        RETURN B
+    END METHOD
 END PROGRAM

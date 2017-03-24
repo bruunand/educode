@@ -5,13 +5,14 @@ import com.educode.nodes.literal.BoolLiteralNode;
 import com.educode.nodes.literal.IdentifierLiteralNode;
 import com.educode.nodes.literal.NumberLiteralNode;
 import com.educode.nodes.literal.StringLiteralNode;
-import com.educode.nodes.method.MethodInvokationNode;
+import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
+import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.base.CollectionNode;
 import com.educode.nodes.base.NaryNode;
@@ -106,7 +107,13 @@ public class PrintVisitor extends VisitorBase
     }
 
     @Override
-    public Object visit(MethodInvokationNode node)
+    public Object visit(ObjectInstantiationNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(MethodInvocationNode node)
     {
         System.out.println("Invoke method " + node.getIdentifier());
 

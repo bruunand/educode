@@ -8,11 +8,11 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by zen on 3/23/17.
  */
-public class MethodInvokationNode extends UnaryNode implements Identifiable
+public class MethodInvocationNode extends UnaryNode implements Identifiable
 {
     private String _calleeMethod;
 
-    public MethodInvokationNode(Node child, String calleeMethod)
+    public MethodInvocationNode(Node child, String calleeMethod)
     {
         super(child);
         this._calleeMethod = calleeMethod;

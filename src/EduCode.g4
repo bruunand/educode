@@ -45,7 +45,7 @@ varDcl   : dataType (ident | assign) (',' (ident | assign))*
          ;
 
 assign   : ident '=' expr
-         | ident '=' 'new' dataType LPAREN (args)? RPAREN
+         | ident '=' 'NEW' dataType LPAREN (args)? RPAREN
          ;
 
 expr     : assign

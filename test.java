@@ -1,39 +1,74 @@
-public class Test_Program {
-public float Hej()
+public class HelloWorld {
+public void Hello()
 {
-float anders;
-float theis;
-theis = 100.0;
-while (theis < 100.0)
+boolean A;
+A = true;
+boolean B;
+B = true;
+void collection;
+collection = new void();
+Coordinates coords;
+coords = new Coordinates(x,z,y);
+boolean orBoolean;
+orBoolean = (false || true);
+boolean andBoolean;
+andBoolean = (true && false);
+boolean boolean;
+boolean = true;
+String string;
+string = "Hello World";
+float int;
+int = 5.0;
+float float;
+float = 2.4;
+void block;
+block = new void();
+void item;
+item = new void();
+void texture;
+texture = new void();
+void ent;
+ent = new void();
+while (A == true)
 {
-theis = ((theis + (1.0 * 2.0)) % 2.0);
-if ((((SIMON == THEIS || SIMON) && ANDREAS < SIMON) || !(!(!(!(!(!(!(!(!(!(ANDERS))))))))))))
+if (A == true)
 {
-print("hehe");
+A = false;
 }
-else
-{
-print("hoho");
+
 }
-if ((theis % 2.0) == 0.0)
-{
-theis = 5.0;
-print("hej");
-print();
+
 }
-else if (theis == 5.0)
+
+
+public float TestMethodCallReturn()
 {
-anders = 1.0;
+float numa;
+numa = 3.0;
+float numb;
+numb = 2.0;
+Add();
+return null;
 }
-else
+
+
+public float Add(float numOne,float numTwo)
 {
-anders = 2.0;
-return anders;}
-return;}
+return (numOne + numTwo);
 }
-public void Andreas()
+
+
+public boolean World()
 {
-float andreas;
-andreas = 0.0;
+void ent;
+ent = new void();
+ent.member();
+float numTest;
+numTest = ent.number;
+boolean B;
+B = true;
+return B;
 }
+
+
 }

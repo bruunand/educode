@@ -12,7 +12,7 @@ import com.educode.nodes.literal.IdentifierLiteralNode;
 import com.educode.nodes.literal.NumberLiteralNode;
 import com.educode.nodes.literal.StringLiteralNode;
 import com.educode.nodes.method.MethodDeclarationNode;
-import com.educode.nodes.method.MethodInvokationNode;
+import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.ReturnNode;
@@ -21,6 +21,7 @@ import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
+import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 
 import java.io.FileWriter;
@@ -91,7 +92,7 @@ public class CodeGenerationVisitor extends VisitorBase
         for (Node child : node.getChildren())
             visit(child);
 
-        append("}\n");
+        append("}\n\n");
 
         return null;
     }
@@ -103,6 +104,12 @@ public class CodeGenerationVisitor extends VisitorBase
             visit(child);
 
         return null;
+    }
+
+    @Override
+    public Object visit(ObjectInstantiationNode node)
+    {
+        return String.format("new %s(%s)", OperatorTranslator.ToJava(node.getType()), getArguments(node.getChild()));
     }
 
     @Override
@@ -127,25 +134,30 @@ public class CodeGenerationVisitor extends VisitorBase
         // Visit block
         visit(node.getLeftChild());
 
+        append("\n");
+
         return null;
     }
 
-    @Override
-    public Object visit(MethodInvokationNode node)
+    public Object getArguments(Node node)
     {
-        // Concatenate actual arguments
         String arguments = "";
-        if (node.getChild() != null)
-        {
-            for (Node argNode : ((CollectionNode)node.getChild()).getChildren())
-                arguments += visit(argNode) + ",";
+        if (node == null || !(node instanceof CollectionNode))
+            return arguments;
 
-            // Remove last argument separator
-            if (!arguments.isEmpty())
-                arguments = arguments.substring(0, arguments.length() - 1);
-        }
+        for (Node argNode : ((CollectionNode) node).getChildren())
+            arguments += visit(argNode) + ",";
 
-        append("%s(%s);\n", node.getIdentifier(), arguments);
+        // Remove last argument separator
+        if (!arguments.isEmpty())
+            return arguments.substring(0, arguments.length() - 1);
+        return arguments;
+    }
+
+    @Override
+    public Object visit(MethodInvocationNode node)
+    {
+        append("%s(%s);\n", node.getIdentifier(), getArguments(node));
 
         return null;
     }

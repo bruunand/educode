@@ -5,13 +5,14 @@ import com.educode.nodes.literal.BoolLiteralNode;
 import com.educode.nodes.literal.IdentifierLiteralNode;
 import com.educode.nodes.literal.NumberLiteralNode;
 import com.educode.nodes.literal.StringLiteralNode;
-import com.educode.nodes.method.MethodInvokationNode;
+import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
+import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.base.*;
 import com.educode.nodes.expression.AdditionExpression;
@@ -28,10 +29,11 @@ public abstract class VisitorBase
     public abstract Object visit(ProgramNode node);
     public abstract Object visit(BlockNode node);
     public abstract Object visit(CollectionNode node);
+    public abstract Object visit(ObjectInstantiationNode node);
 
     // Methods
     public abstract Object visit(MethodDeclarationNode node);
-    public abstract Object visit(MethodInvokationNode node);
+    public abstract Object visit(MethodInvocationNode node);
     public abstract Object visit(ParameterNode node);
 
     // Statements

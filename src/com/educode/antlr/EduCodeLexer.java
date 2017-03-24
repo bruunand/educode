@@ -1,4 +1,4 @@
-// Generated from /home/zen/Git/EduCode/src/EduCode.g4 by ANTLR 4.6
+// Generated from C:/Users/User/Desktop/EduCode-P4/src\EduCode.g4 by ANTLR 4.6
 package com.educode.antlr;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -41,7 +41,7 @@ public class EduCodeLexer extends Lexer {
 	private static final String[] _LITERAL_NAMES = {
 		null, "'PROGRAM'", "'END PROGRAM'", "'METHOD'", "'RETURNS'", "'END METHOD'", 
 		"','", "'RETURN'", "'REPEAT WHILE'", "'END REPEAT'", "'IF'", "'THEN'", 
-		"'ELSE IF'", "'ELSE'", "'END IF'", "'='", "'new'", "'NUMBER'", "'BOOL'", 
+		"'ELSE IF'", "'ELSE'", "'END IF'", "'='", "'NEW'", "'NUMBER'", "'BOOL'", 
 		"'COORDINATES'", "'NULL'", "'STRING'", "'COLLECTION'", "'BLOCK'", "'ENTITY'", 
 		"'ITEM'", "'TEXTURE'", "'['", "']'", "'.'", "'TRUE'", "'FALSE'", null, 
 		null, "'AND'", "'OR'", "'NOT'", null, null, null, null, null, null, null, 
@@ -192,8 +192,8 @@ public class EduCodeLexer extends Lexer {
 		"\u00ce\7N\2\2\u00ce\u00cf\7U\2\2\u00cf\u00d0\7G\2\2\u00d0\34\3\2\2\2\u00d1"+
 		"\u00d2\7G\2\2\u00d2\u00d3\7P\2\2\u00d3\u00d4\7F\2\2\u00d4\u00d5\7\"\2"+
 		"\2\u00d5\u00d6\7K\2\2\u00d6\u00d7\7H\2\2\u00d7\36\3\2\2\2\u00d8\u00d9"+
-		"\7?\2\2\u00d9 \3\2\2\2\u00da\u00db\7p\2\2\u00db\u00dc\7g\2\2\u00dc\u00dd"+
-		"\7y\2\2\u00dd\"\3\2\2\2\u00de\u00df\7P\2\2\u00df\u00e0\7W\2\2\u00e0\u00e1"+
+		"\7?\2\2\u00d9 \3\2\2\2\u00da\u00db\7P\2\2\u00db\u00dc\7G\2\2\u00dc\u00dd"+
+		"\7Y\2\2\u00dd\"\3\2\2\2\u00de\u00df\7P\2\2\u00df\u00e0\7W\2\2\u00e0\u00e1"+
 		"\7O\2\2\u00e1\u00e2\7D\2\2\u00e2\u00e3\7G\2\2\u00e3\u00e4\7T\2\2\u00e4"+
 		"$\3\2\2\2\u00e5\u00e6\7D\2\2\u00e6\u00e7\7Q\2\2\u00e7\u00e8\7Q\2\2\u00e8"+
 		"\u00e9\7N\2\2\u00e9&\3\2\2\2\u00ea\u00eb\7E\2\2\u00eb\u00ec\7Q\2\2\u00ec"+

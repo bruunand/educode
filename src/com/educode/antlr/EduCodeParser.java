@@ -1,4 +1,4 @@
-// Generated from /home/zen/Git/EduCode/src/EduCode.g4 by ANTLR 4.6
+// Generated from C:/Users/User/Desktop/EduCode-P4/src\EduCode.g4 by ANTLR 4.6
 package com.educode.antlr;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -42,7 +42,7 @@ public class EduCodeParser extends Parser {
 	private static final String[] _LITERAL_NAMES = {
 		null, "'PROGRAM'", "'END PROGRAM'", "'METHOD'", "'RETURNS'", "'END METHOD'", 
 		"','", "'RETURN'", "'REPEAT WHILE'", "'END REPEAT'", "'IF'", "'THEN'", 
-		"'ELSE IF'", "'ELSE'", "'END IF'", "'='", "'new'", "'NUMBER'", "'BOOL'", 
+		"'ELSE IF'", "'ELSE'", "'END IF'", "'='", "'NEW'", "'NUMBER'", "'BOOL'", 
 		"'COORDINATES'", "'NULL'", "'STRING'", "'COLLECTION'", "'BLOCK'", "'ENTITY'", 
 		"'ITEM'", "'TEXTURE'", "'['", "']'", "'.'", "'TRUE'", "'FALSE'", null, 
 		null, "'AND'", "'OR'", "'NOT'", null, null, null, null, null, null, null, 

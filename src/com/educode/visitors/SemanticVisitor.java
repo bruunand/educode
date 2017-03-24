@@ -9,7 +9,7 @@ import com.educode.nodes.literal.IdentifierLiteralNode;
 import com.educode.nodes.literal.NumberLiteralNode;
 import com.educode.nodes.literal.StringLiteralNode;
 import com.educode.nodes.method.MethodDeclarationNode;
-import com.educode.nodes.method.MethodInvokationNode;
+import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.ReturnNode;
@@ -18,6 +18,7 @@ import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
+import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 
 /**
@@ -44,13 +45,19 @@ public class SemanticVisitor extends VisitorBase
     }
 
     @Override
+    public Object visit(ObjectInstantiationNode node)
+    {
+        return null;
+    }
+
+    @Override
     public Object visit(MethodDeclarationNode node)
     {
         return null;
     }
 
     @Override
-    public Object visit(MethodInvokationNode node)
+    public Object visit(MethodInvocationNode node)
     {
         return null;
     }
