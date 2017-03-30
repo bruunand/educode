@@ -1,6 +1,7 @@
 package com.educode.nodes.ungrouped;
 
 import com.educode.nodes.Identifiable;
+import com.educode.nodes.SingleLineStatement;
 import com.educode.nodes.Typeable;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
@@ -10,7 +11,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by User on 24-Mar-17.
  */
-public class ObjectInstantiationNode extends UnaryNode implements Typeable
+public class ObjectInstantiationNode extends UnaryNode implements Typeable, SingleLineStatement
 {
     private Type _type;
 

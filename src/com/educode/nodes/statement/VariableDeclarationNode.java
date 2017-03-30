@@ -1,6 +1,7 @@
 package com.educode.nodes.statement;
 
 import com.educode.nodes.Identifiable;
+import com.educode.nodes.SingleLineStatement;
 import com.educode.nodes.Typeable;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
@@ -10,7 +11,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by zen on 3/10/17.
  */
-public class VariableDeclarationNode extends UnaryNode implements Identifiable, Typeable
+public class VariableDeclarationNode extends UnaryNode implements Identifiable, Typeable, SingleLineStatement
 {
     private String _identifier;
     private Type _type;
