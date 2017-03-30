@@ -1,6 +1,7 @@
 package com.educode.nodes.method;
 
 import com.educode.nodes.Identifiable;
+import com.educode.nodes.SingleLineStatement;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
 import com.educode.visitors.VisitorBase;
@@ -8,7 +9,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by zen on 3/23/17.
  */
-public class MethodInvocationNode extends UnaryNode implements Identifiable
+public class MethodInvocationNode extends UnaryNode implements Identifiable, SingleLineStatement
 {
     private String _calleeMethod;
 

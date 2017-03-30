@@ -51,7 +51,7 @@ public class CodeGenerationVisitor extends VisitorBase
     public Object visit(ProgramNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "public class %s {\n", node.getIdentifier());
+        append(codeBuffer, "public class %s\n{\n", node.getIdentifier());
 
         // Visit method declarations
         for (Node child : node.getChildren())
@@ -92,9 +92,8 @@ public class CodeGenerationVisitor extends VisitorBase
             append(tmp, "%s", visit(child));
 
             if (child instanceof SingleLineStatement)
-                append(tmp, ";");
+                append(tmp, ";\n");
 
-            append(tmp, "\n");
         }
 
         return tmp;
@@ -112,7 +111,7 @@ public class CodeGenerationVisitor extends VisitorBase
         append(tmp, "%s", visitChildStatements(node.getChildren()));
 
         // Block end
-        append(tmp, "}\n\n");
+        append(tmp, "}\n");
 
         return tmp;
     }
@@ -146,7 +145,7 @@ public class CodeGenerationVisitor extends VisitorBase
     @Override
     public Object visit(MethodInvocationNode node)
     {
-        return String.format("%s(%s)", node.getIdentifier(), getArguments(node));
+        return String.format("%s(%s)", node.getIdentifier(), getArguments(node.getChild()));
     }
 
     @Override
@@ -326,7 +325,7 @@ public class CodeGenerationVisitor extends VisitorBase
 
         // Remove last argument separator
         if (!arguments.isEmpty())
-            return arguments.substring(0, arguments.length() - 1);
+            arguments = arguments.substring(0, arguments.length() - 1);
 
         return arguments;
     }

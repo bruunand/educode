@@ -9,7 +9,6 @@ PROGRAM HelloWorld //Debug program
         BOOL andBoolean = TRUE AND FALSE
         BOOL boolean = TRUE
         STRING string = "Hello World"
-        string = "New assignment"
         NUMBER int = 5
         NUMBER float = 2.4
         BLOCK block = NEW BLOCK()
