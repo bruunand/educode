@@ -24,18 +24,12 @@ public class ProgramNode extends NaryNode implements Visitable, Identifiable
 
     public ArrayList<MethodDeclarationNode> getMethodDeclarations()
     {
-        ArrayList<MethodDeclarationNode> nodes = new ArrayList<MethodDeclarationNode>();
+        ArrayList<MethodDeclarationNode> nodes = new ArrayList<>();
 
         for (Node child : getChildren())
         {
-            if (child instanceof NaryNode)
-            {
-                for (Node grandchild : ((NaryNode) child).getChildren())
-                {
-                    if (grandchild instanceof MethodDeclarationNode)
-                        nodes.add((MethodDeclarationNode) grandchild);
-                }
-            }
+            if (child instanceof MethodDeclarationNode)
+                nodes.add((MethodDeclarationNode) child);
         }
 
         return nodes;

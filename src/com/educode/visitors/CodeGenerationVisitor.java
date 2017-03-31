@@ -54,9 +54,7 @@ public class CodeGenerationVisitor extends VisitorBase
 
         // Visit method declarations
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
-        {
             append(codeBuffer, "%s", visit(methodDecl));
-        }
 
         // Append closing curly bracket
         append(codeBuffer,"}");
@@ -127,10 +125,10 @@ public class CodeGenerationVisitor extends VisitorBase
         StringBuffer tmp = new StringBuffer();
 
         // Visit parameters
-        append(tmp, "public %s %s(%s)\n", OperatorTranslator.toJava(node.getType()), node.getIdentifier(), getParameters(node.getRightChild()));
+        append(tmp, "public %s %s(%s)\n", OperatorTranslator.toJava(node.getType()), node.getIdentifier(), getParameters(node.getParameterList()));
 
         // Visit block
-        append(tmp, "%s", visit(node.getLeftChild()));
+        append(tmp, "%s", visit(node.getBlockNode()));
 
         return tmp;
     }

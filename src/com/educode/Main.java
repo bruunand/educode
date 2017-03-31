@@ -33,5 +33,6 @@ public class Main
         PrettyPrintVisitor v = new PrettyPrintVisitor();
         v.visit(root);
         new CodeGenerationVisitor().visit(root);
+        System.out.println(new DrawVisitor().visit(root));
     }
 }

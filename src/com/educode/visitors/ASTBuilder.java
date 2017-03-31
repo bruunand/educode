@@ -4,6 +4,7 @@ import com.educode.antlr.EduCodeBaseVisitor;
 import com.educode.antlr.EduCodeParser;
 import com.educode.nodes.Identifiable;
 import com.educode.nodes.base.ListNode;
+import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
@@ -252,7 +253,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     public Node visitProgram(EduCodeParser.ProgramContext ctx)
     {
         ArrayList<Node> nodes = new ArrayList<>();
-        nodes.add(visit(ctx.methods()));
+        nodes.addAll(((NaryNode)visit(ctx.methods())).getChildren());
 
         return new ProgramNode(nodes, ctx.ident().getText());
     }
@@ -276,17 +277,28 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
             returnType = getType(ctx.dataType().getText());
 
         if (ctx.params() != null)
-            return new MethodDeclarationNode(visit(ctx.stmts()), visit(ctx.params()), ctx.ident().getText(), returnType);
+            return new MethodDeclarationNode(visit(ctx.params()), visit(ctx.stmts()), ctx.ident().getText(), returnType);
         else
-            return new MethodDeclarationNode(visit(ctx.stmts()), null, ctx.ident().getText(), returnType);
+            return new MethodDeclarationNode(null, visit(ctx.stmts()), ctx.ident().getText(), returnType);
     }
 
     @Override
     public Node visitStmts(EduCodeParser.StmtsContext ctx)
     {
         ArrayList<Node> childStatements = new ArrayList<>();
-        for (EduCodeParser.StmtContext s : ctx.stmt())
-            childStatements.add(visit(s));
+
+        for (EduCodeParser.StmtContext statement : ctx.stmt())
+        {
+            Node visitResult = visit(statement);
+
+            // Some nodes (like variable declaration) will return a collection of nodes
+            // Instead of adding the NaryNode, we will add the contained nodes
+            if (visitResult instanceof ListNode)
+                childStatements.addAll(((NaryNode)visitResult).getChildren());
+            else
+                childStatements.add(visitResult);
+        }
+
         return new BlockNode(childStatements);
     }
 

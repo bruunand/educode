@@ -31,7 +31,11 @@ public class DrawVisitor extends VisitorBase
     @Override
     public Object visit(ProgramNode node)
     {
-        return String.format("[%s [%s]]", node.getIdentifier(), visit(node.getChildren().get(0)));
+        String content = "";
+        for (Node child : node.getChildren())
+            content += "[" + visit(child) + "]";
+
+        return String.format("[%s %s]", node.getIdentifier(), content);
     }
 
     @Override
@@ -63,10 +67,10 @@ public class DrawVisitor extends VisitorBase
     @Override
     public Object visit(MethodDeclarationNode node)
     {
-        if (node.hasRightChild())
-            return String.format("%s [%s][%s]", node.getIdentifier(), visit(node.getRightChild()), visit(node.getLeftChild()));
+        if (node.hasParameterList())
+            return String.format("%s [%s][%s]", node.getIdentifier(), visit(node.getBlockNode()), visit(node.getParameterList()));
         else
-            return String.format("%s [%s]", node.getIdentifier(), visit(node.getLeftChild()));
+            return String.format("%s [%s]", node.getIdentifier(), visit(node.getBlockNode()));
     }
 
     @Override
@@ -78,7 +82,7 @@ public class DrawVisitor extends VisitorBase
     @Override
     public Object visit(ParameterNode node)
     {
-        return String.format("Parameter [%s][%s]", OperatorTranslator.toJava(node.getType()), node.getIdentifier());
+        return String.format("Parameter [%s %s]", node.getIdentifier(), OperatorTranslator.toJava(node.getType()));
     }
 
     @Override
