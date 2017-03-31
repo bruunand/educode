@@ -14,7 +14,7 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
-import com.educode.nodes.base.CollectionNode;
+import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
@@ -98,7 +98,7 @@ public class PrintVisitor extends VisitorBase
     }
 
     @Override
-    public Object visit(CollectionNode node)
+    public Object visit(ListNode node)
     {
         for (Node child : node.getChildren())
             visit(child);

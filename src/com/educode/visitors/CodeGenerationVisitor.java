@@ -2,7 +2,7 @@ package com.educode.visitors;
 
 import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.SingleLineStatement;
-import com.educode.nodes.base.CollectionNode;
+import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
@@ -117,7 +117,7 @@ public class CodeGenerationVisitor extends VisitorBase
     }
 
     @Override
-    public Object visit(CollectionNode node)
+    public Object visit(ListNode node)
     {
         return visitChildStatements(node.getChildren());
     }
@@ -259,7 +259,10 @@ public class CodeGenerationVisitor extends VisitorBase
     @Override
     public Object visit(IdentifierLiteralNode node)
     {
-        return node.getIdentifier();
+        if (node.getChild() == null)
+            return node.getIdentifier();
+        else
+            return String.format("%s[%s]", node.getIdentifier(), visit(node.getChild())); // does not work
     }
 
     @Override
@@ -305,7 +308,7 @@ public class CodeGenerationVisitor extends VisitorBase
         if (node == null)
             return parameters;
 
-        for (Node child : ((CollectionNode)node).getChildren())
+        for (Node child : ((ListNode)node).getChildren())
             parameters += visit(child) + ",";
 
         if (!parameters.isEmpty())
@@ -317,10 +320,10 @@ public class CodeGenerationVisitor extends VisitorBase
     public String getArguments(Node node)
     {
         String arguments = "";
-        if (node == null || !(node instanceof CollectionNode))
+        if (node == null || !(node instanceof ListNode))
             return arguments;
 
-        for (Node argNode : ((CollectionNode) node).getChildren())
+        for (Node argNode : ((ListNode) node).getChildren())
             arguments += visit(argNode) + ",";
 
         // Remove last argument separator

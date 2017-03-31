@@ -3,7 +3,7 @@ package com.educode.visitors;
 import com.educode.antlr.EduCodeBaseVisitor;
 import com.educode.antlr.EduCodeParser;
 import com.educode.nodes.Identifiable;
-import com.educode.nodes.base.CollectionNode;
+import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
@@ -98,7 +98,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitParams(EduCodeParser.ParamsContext ctx)
     {
-        CollectionNode parameterCollection = new CollectionNode();
+        ListNode parameterCollection = new ListNode();
 
         for (EduCodeParser.ParamContext p : ctx.param())
             parameterCollection.addChild(visit(p));
@@ -265,7 +265,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         for (EduCodeParser.MethodContext m : ctx.method())
             childMethods.add(visit(m));
 
-        return new CollectionNode(childMethods);
+        return new ListNode(childMethods);
     }
 
     @Override
@@ -306,7 +306,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
             nodes.add(new VariableDeclarationNode(((Identifiable) assignmentNode).getIdentifier(), getType(ctx.dataType().getText()), assignmentNode));
         }
 
-        return new CollectionNode(nodes);
+        return new ListNode(nodes);
     }
 
     @Override
@@ -355,7 +355,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitArgs(EduCodeParser.ArgsContext ctx)
     {
-        CollectionNode node = new CollectionNode();
+        ListNode node = new ListNode();
         for (EduCodeParser.ExprContext e : ctx.expr())
             node.addChild(visit(e));
 

@@ -11,7 +11,7 @@ import com.educode.types.Type;
  */
 public abstract class ArithmeticExpression extends BinaryNode implements Typeable
 {
-    private Type _type;
+    private Type _type = Type.Error;
     private ArithmeticOperator _operator;
 
     public ArithmeticExpression(ArithmeticOperator operator, Node leftChild, Node rightChild)

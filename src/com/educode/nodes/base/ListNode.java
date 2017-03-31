@@ -7,14 +7,14 @@ import java.util.ArrayList;
 /**
  * Created by zen on 3/23/17.
  */
-public class CollectionNode extends NaryNode
+public class ListNode extends NaryNode
 {
-    public CollectionNode()
+    public ListNode()
     {
         super(new ArrayList<Node>());
     }
 
-    public CollectionNode(ArrayList<Node> childNodes)
+    public ListNode(ArrayList<Node> childNodes)
     {
         super(childNodes);
     }

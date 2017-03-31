@@ -16,6 +16,8 @@ PROGRAM HelloWorld //Debug program
         TEXTURE texture= NEW TEXTURE()
         ENTITY ent =NEW ENTITY()
 
+        print (int[1])
+
         //Debug repeat while and if statements
         REPEAT WHILE A EQUALS TRUE
             IF A EQUALS TRUE THEN

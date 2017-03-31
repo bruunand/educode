@@ -28,7 +28,7 @@ public abstract class VisitorBase
 {
     public abstract Object visit(ProgramNode node);
     public abstract Object visit(BlockNode node);
-    public abstract Object visit(CollectionNode node);
+    public abstract Object visit(ListNode node);
     public abstract Object visit(ObjectInstantiationNode node);
 
     // Methods

@@ -16,6 +16,7 @@ float float = 2.4;
         void item = new void();
         void texture = new void();
         void ent = new void();
+        print(int[1][1.0]);
         while (A == true)
         {
             if (A == true)
