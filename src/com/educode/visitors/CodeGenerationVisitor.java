@@ -3,7 +3,6 @@ package com.educode.visitors;
 import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.SingleLineStatement;
 import com.educode.nodes.base.ListNode;
-import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
@@ -54,15 +53,9 @@ public class CodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "public class %s\n{\n", node.getIdentifier());
 
         // Visit method declarations
-        for (Node child : node.getChildren())
+        for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
         {
-            if (child instanceof NaryNode)
-            {
-                for (Node grandchild : ((NaryNode) child).getChildren())
-                    append(codeBuffer, "%s", visit(grandchild));
-            }
-            else
-                append(codeBuffer, "%s", visit(child));
+            append(codeBuffer, "%s", visit(methodDecl));
         }
 
         // Append closing curly bracket

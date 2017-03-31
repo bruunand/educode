@@ -237,9 +237,9 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     public Node visitIdent(EduCodeParser.IdentContext ctx)
     {
         if (ctx.arithExpr() != null)
-            return new IdentifierLiteralNode(visit(ctx.arithExpr()), ctx.getText());
+            return new IdentifierLiteralNode(visit(ctx.arithExpr()), ctx.identName().getText());
         else
-            return new IdentifierLiteralNode(null, ctx.getText());
+            return new IdentifierLiteralNode(null, ctx.identName().getText());
     }
 
     @Override

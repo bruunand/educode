@@ -12,6 +12,11 @@ public abstract class UnaryNode extends Node
         this._child = child;
     }
 
+    public boolean hasChild()
+    {
+        return _child != null;
+    }
+    
     public Node getChild()
     {
         return _child;

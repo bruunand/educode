@@ -5,6 +5,7 @@ import com.educode.antlr.EduCodeParser;
 import com.educode.nodes.base.Node;
 import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.CodeGenerationVisitor;
+import com.educode.visitors.DrawVisitor;
 import com.educode.visitors.PrettyPrintVisitor;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -31,5 +32,6 @@ public class Main
         //exampleVisitor.visit(root);
         PrettyPrintVisitor v = new PrettyPrintVisitor();
         v.visit(root);
+        new CodeGenerationVisitor().visit(root);
     }
 }

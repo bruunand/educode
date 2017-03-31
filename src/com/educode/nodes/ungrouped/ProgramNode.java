@@ -4,6 +4,7 @@ import com.educode.nodes.Identifiable;
 import com.educode.nodes.Visitable;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
+import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.visitors.VisitorBase;
 
 import java.util.ArrayList;
@@ -21,15 +22,33 @@ public class ProgramNode extends NaryNode implements Visitable, Identifiable
         this._identifier = identifier;
     }
 
+    public ArrayList<MethodDeclarationNode> getMethodDeclarations()
+    {
+        ArrayList<MethodDeclarationNode> nodes = new ArrayList<MethodDeclarationNode>();
+
+        for (Node child : getChildren())
+        {
+            if (child instanceof NaryNode)
+            {
+                for (Node grandchild : ((NaryNode) child).getChildren())
+                {
+                    if (grandchild instanceof MethodDeclarationNode)
+                        nodes.add((MethodDeclarationNode) grandchild);
+                }
+            }
+        }
+
+        return nodes;
+    }
+
+    public String getIdentifier()
+    {
+        return _identifier;
+    }
+
     @Override
     public Object accept(VisitorBase visitor)
     {
         return visitor.visit(this);
-    }
-
-    @Override
-    public String getIdentifier()
-    {
-        return _identifier;
     }
 }
