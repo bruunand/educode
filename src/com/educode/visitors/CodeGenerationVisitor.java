@@ -125,7 +125,7 @@ public class CodeGenerationVisitor extends VisitorBase
     @Override
     public Object visit(ObjectInstantiationNode node)
     {
-        return String.format("new %s(%s)", OperatorTranslator.ToJava(node.getType()), getArguments(node.getChild()));
+        return String.format("new %s(%s)", OperatorTranslator.toJava(node.getType()), getArguments(node.getChild()));
     }
 
     @Override
@@ -134,7 +134,7 @@ public class CodeGenerationVisitor extends VisitorBase
         StringBuffer tmp = new StringBuffer();
 
         // Visit parameters
-        append(tmp, "public %s %s(%s)\n", OperatorTranslator.ToJava(node.getType()), node.getIdentifier(), getParameters(node.getRightChild()));
+        append(tmp, "public %s %s(%s)\n", OperatorTranslator.toJava(node.getType()), node.getIdentifier(), getParameters(node.getRightChild()));
 
         // Visit block
         append(tmp, "%s", visit(node.getLeftChild()));
@@ -151,7 +151,7 @@ public class CodeGenerationVisitor extends VisitorBase
     @Override
     public Object visit(ParameterNode node)
     {
-        return String.format("%s %s", OperatorTranslator.ToJava(node.getType()), node.getIdentifier());
+        return String.format("%s %s", OperatorTranslator.toJava(node.getType()), node.getIdentifier());
     }
 
     @Override
@@ -165,7 +165,7 @@ public class CodeGenerationVisitor extends VisitorBase
     {
         StringBuffer tmp = new StringBuffer();
 
-        append(tmp, "%s %s", OperatorTranslator.ToJava(node.getType()), node.getIdentifier());
+        append(tmp, "%s %s", OperatorTranslator.toJava(node.getType()), node.getIdentifier());
         if (node.getChild() != null)
         {
             AssignmentNode assignment = (AssignmentNode) node.getChild();
@@ -235,13 +235,13 @@ public class CodeGenerationVisitor extends VisitorBase
     @Override
     public Object visit(MultiplicationExpression node)
     {
-        return String.format("(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.ToJava(node.getOperator()), visit(node.getRightChild()));
+        return String.format("(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
     }
 
     @Override
     public Object visit(AdditionExpression node)
     {
-        return String.format("(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.ToJava(node.getOperator()), visit(node.getRightChild()));
+        return String.format("(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
     }
 
     @Override
@@ -286,13 +286,13 @@ public class CodeGenerationVisitor extends VisitorBase
     @Override
     public Object visit(RelativeExpressionNode node)
     {
-        return String.format("%s %s %s", visit(node.getLeftChild()), OperatorTranslator.ToJava(node.getOperator()), visit(node.getRightChild()));
+        return String.format("%s %s %s", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
     }
 
     @Override
     public Object visit(EqualExpressionNode node)
     {
-        return String.format("%s %s %s", visit(node.getLeftChild()), OperatorTranslator.ToJava(node.getOperator()), visit(node.getRightChild()));
+        return String.format("%s %s %s", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
     }
 
     @Override

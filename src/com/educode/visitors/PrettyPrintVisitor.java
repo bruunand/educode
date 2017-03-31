@@ -2,7 +2,6 @@ package com.educode.visitors;
 
 import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.base.ListNode;
-import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
@@ -86,7 +85,7 @@ public class PrettyPrintVisitor extends VisitorBase
     {
         depth++;
 
-        print("New instance of %s", OperatorTranslator.ToJava(node.getType()));
+        print("New instance of %s", OperatorTranslator.toJava(node.getType()));
 
         depth--;
 
@@ -98,8 +97,7 @@ public class PrettyPrintVisitor extends VisitorBase
     {
         depth++;
 
-        System.out.println();
-        print("Method '%s' returns %s", node.getIdentifier(), OperatorTranslator.ToJava(node.getType()));
+        print("Method '%s' returns %s", node.getIdentifier(), OperatorTranslator.toJava(node.getType()));
         visitChildren(node);
 
         depth--;
@@ -125,7 +123,7 @@ public class PrettyPrintVisitor extends VisitorBase
     {
         depth++;
 
-        print("Parameter '%s' of type %s", node.getIdentifier(), OperatorTranslator.ToJava(node.getType()));
+        print("Parameter '%s' of type %s", node.getIdentifier(), OperatorTranslator.toJava(node.getType()));
 
         depth--;
 
@@ -150,7 +148,7 @@ public class PrettyPrintVisitor extends VisitorBase
     {
         depth++;
 
-        print("Declare '%s' of type %s", node.getIdentifier(), OperatorTranslator.ToJava(node.getType()));
+        print("Declare '%s' of type %s", node.getIdentifier(), OperatorTranslator.toJava(node.getType()));
         visit(node.getChild());
 
         depth--;

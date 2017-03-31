@@ -12,7 +12,7 @@ import static com.educode.types.LogicalOperator.OR;
  */
 public class OperatorTranslator
 {
-    public static String ToJava(Type type)
+    public static String toJava(Type type)
     {
         switch (type.Kind)
         {
@@ -33,7 +33,7 @@ public class OperatorTranslator
         return null;
     }
 
-    public static String ToJava(LogicalOperator operator)
+    public static String toJava(LogicalOperator operator)
     {
         switch (operator.Kind)
         {
@@ -60,7 +60,7 @@ public class OperatorTranslator
         return null;
     }
 
-    public static String ToJava(ArithmeticOperator operator)
+    public static String toJava(ArithmeticOperator operator)
     {
         switch (operator.Kind)
         {
