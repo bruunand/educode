@@ -3,7 +3,6 @@ package com.educode.visitors;
 import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.SingleLineStatement;
 import com.educode.nodes.base.ListNode;
-import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
@@ -54,16 +53,8 @@ public class CodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "public class %s\n{\n", node.getIdentifier());
 
         // Visit method declarations
-        for (Node child : node.getChildren())
-        {
-            if (child instanceof NaryNode)
-            {
-                for (Node grandchild : ((NaryNode) child).getChildren())
-                    append(codeBuffer, "%s", visit(grandchild));
-            }
-            else
-                append(codeBuffer, "%s", visit(child));
-        }
+        for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
+            append(codeBuffer, "%s", visit(methodDecl));
 
         // Append closing curly bracket
         append(codeBuffer,"}");
@@ -134,10 +125,10 @@ public class CodeGenerationVisitor extends VisitorBase
         StringBuffer tmp = new StringBuffer();
 
         // Visit parameters
-        append(tmp, "public %s %s(%s)\n", OperatorTranslator.toJava(node.getType()), node.getIdentifier(), getParameters(node.getRightChild()));
+        append(tmp, "public %s %s(%s)\n", OperatorTranslator.toJava(node.getType()), node.getIdentifier(), getParameters(node.getParameterList()));
 
         // Visit block
-        append(tmp, "%s", visit(node.getLeftChild()));
+        append(tmp, "%s", visit(node.getBlockNode()));
 
         return tmp;
     }

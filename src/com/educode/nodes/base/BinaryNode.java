@@ -13,6 +13,16 @@ public abstract class BinaryNode extends Node
         this._rightChild = rightChild;
     }
 
+    public boolean hasLeftChild()
+    {
+        return _leftChild != null;
+    }
+
+    public boolean hasRightChild()
+    {
+        return _rightChild != null;
+    }
+
     public Node getLeftChild()
     {
         return _leftChild;
