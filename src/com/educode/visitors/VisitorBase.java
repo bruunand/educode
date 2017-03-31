@@ -63,7 +63,7 @@ public abstract class VisitorBase
 
     public Object visit(Node node)
     {
-        System.out.println("---> " + node.getClass().getName());
+        // System.out.println("---> " + node.getClass().getName());
 
         return node.accept(this);
     }

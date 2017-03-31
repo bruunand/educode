@@ -5,7 +5,7 @@ import com.educode.antlr.EduCodeParser;
 import com.educode.nodes.base.Node;
 import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.CodeGenerationVisitor;
-import com.educode.visitors.PrintVisitor;
+import com.educode.visitors.PrettyPrintVisitor;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -27,7 +27,9 @@ public class Main
         ASTBuilder builder = new ASTBuilder();
         Node root = builder.visit(parser.program());
 
-        CodeGenerationVisitor exampleVisitor = new CodeGenerationVisitor();
-        exampleVisitor.visit(root);
+        //CodeGenerationVisitor exampleVisitor = new CodeGenerationVisitor();
+        //exampleVisitor.visit(root);
+        PrettyPrintVisitor v = new PrettyPrintVisitor();
+        v.visit(root);
     }
 }
