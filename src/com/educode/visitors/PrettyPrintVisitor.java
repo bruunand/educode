@@ -111,7 +111,7 @@ public class PrettyPrintVisitor extends VisitorBase
         depth++;
 
         print("Invoke method '%s'", node.getIdentifier());
-        visitChild(node);
+        visitChildren(node);
         
         depth--;
 
@@ -188,7 +188,7 @@ public class PrettyPrintVisitor extends VisitorBase
         depth++;
 
         print("Repeat-While");
-        visitChild(node);
+        visitChildren(node);
 
         depth--;
 
@@ -201,7 +201,7 @@ public class PrettyPrintVisitor extends VisitorBase
         depth++;
 
         print("Return");
-        visitChild(node);
+        visitChildren(node);
 
         depth--;
 

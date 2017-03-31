@@ -68,7 +68,7 @@ public abstract class VisitorBase
         return node.accept(this);
     }
 
-    public void visitChild(UnaryNode node)
+    public void visitChildren(UnaryNode node)
     {
         if (node.getChild() != null)
             node.getChild().accept(this);
@@ -85,8 +85,6 @@ public abstract class VisitorBase
     public void visitChildren(NaryNode node)
     {
         for (Node child : node.getChildren())
-        {
             child.accept(this);
-        }
     }
 }
