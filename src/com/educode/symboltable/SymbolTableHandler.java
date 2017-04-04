@@ -1,10 +1,13 @@
 package com.educode.symboltable;
 
+import java.util.ArrayList;
+
 /**
  * Created by Thomas Buhl on 31/03/2017.
  */
 public class SymbolTableHandler {
     public SymbolTable current = new SymbolTable();
+    public ArrayList<ErrorSymbol> ErrorList = new ArrayList<ErrorSymbol>();
 
     public void openScope(){
         current = new SymbolTable(current);
@@ -15,23 +18,22 @@ public class SymbolTableHandler {
             current = current.outer;
         else
             error();
-
     }
 
-    // cant handle overloading yet
     public void enterSymbol(Symbol symbol){
-        Symbol t = retreiveSymbol(symbol.name);
-        
-        if (t == null)
+        boolean symbolExists = current.contains(symbol);
+
+        if (!symbolExists)
             current.symbolList.add(symbol);
         else
-            error();
+            ErrorList.add(new ErrorSymbol(symbol));
     }
 
     public Symbol retreiveSymbol(String name){
         return current.getSymbol(name);
     }
 
+    //needs modification
     public boolean declaredLocally(String name){
         for (Symbol s : current.symbolList) {
             if (s.name.equals(name))
@@ -40,5 +42,6 @@ public class SymbolTableHandler {
         return false;
     }
 
+    // not yet implemented
     public void error(){}
 }

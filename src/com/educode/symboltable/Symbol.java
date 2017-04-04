@@ -5,9 +5,14 @@ import com.sun.org.apache.xpath.internal.operations.Equals;
 /**
  * Created by Thomas Buhl on 31/03/2017.
  */
-public class Symbol {
+public abstract class Symbol {
     String name;
-    Symbol(String _name){
+    String type;
+
+    Symbol(String _name, String _type){
         name = _name;
+        type = _type;
     }
+
+    public boolean Equals(Symbol other){return this.equals((Object)other);}
 }

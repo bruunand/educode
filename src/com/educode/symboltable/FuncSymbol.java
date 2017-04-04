@@ -7,10 +7,15 @@ public class FuncSymbol extends Symbol{
     String type;
     String parameters;
 
-    FuncSymbol(String name, String _type, String Parameters){
-        super(name);
-        type = _type;
-        parameters = Parameters;
+    FuncSymbol(String _name, String _type, String _parameters){
+        super(_name, _type);
+        parameters = _parameters;
     }
 
+    public boolean Equals(Symbol other){
+        if (other instanceof FuncSymbol)
+            return name.equals(other.name) && parameters.equals(((FuncSymbol) other).parameters);
+        else
+            return false;
+    }
 }

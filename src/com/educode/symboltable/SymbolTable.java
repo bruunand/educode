@@ -28,4 +28,16 @@ public class SymbolTable {
         return null;
     }
 
+    boolean contains(Symbol test){
+        for (Symbol s:symbolList) {
+            if(s.Equals(test))
+                return true;
+        }
+        if(outer != null)
+            return outer.contains(test);
+
+        return false;
+    }
+
+
 }
