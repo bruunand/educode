@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="38b0496e-fb70-4e4f-9cd5-44b36194b80b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/Main.java" afterPath="$PROJECT_DIR$/src/com/educode/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/nodes/method/MethodDeclarationNode.java" afterPath="$PROJECT_DIR$/src/com/educode/nodes/method/MethodDeclarationNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/nodes/ungrouped/ProgramNode.java" afterPath="$PROJECT_DIR$/src/com/educode/nodes/ungrouped/ProgramNode.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/visitors/ASTBuilder.java" afterPath="$PROJECT_DIR$/src/com/educode/visitors/ASTBuilder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/visitors/CodeGenerationVisitor.java" afterPath="$PROJECT_DIR$/src/com/educode/visitors/CodeGenerationVisitor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/visitors/DrawVisitor.java" afterPath="$PROJECT_DIR$/src/com/educode/visitors/DrawVisitor.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,8 +21,8 @@
       <file leaf-file-name="VisitorBase.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/educode/visitors/VisitorBase.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="291" column="48" lean-forward="true" selection-start-line="291" selection-start-column="48" selection-end-line="291" selection-end-column="48" />
+            <state relative-caret-position="145">
+              <caret line="295" column="91" lean-forward="false" selection-start-line="295" selection-start-column="91" selection-end-line="295" selection-end-column="91" />
               <folding />
             </state>
           </provider>
@@ -104,44 +98,12 @@
       <file leaf-file-name="OperatorTranslator.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/educode/helper/OperatorTranslator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="675">
-              <caret line="45" column="1" lean-forward="false" selection-start-line="45" selection-start-column="1" selection-end-line="45" selection-end-column="1" />
+            <state relative-caret-position="165">
+              <caret line="11" column="37" lean-forward="true" selection-start-line="11" selection-start-column="37" selection-end-line="11" selection-end-column="37" />
               <folding>
                 <element signature="e#866#867#0" expanded="true" />
                 <element signature="e#906#907#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/educode/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="35" column="58" lean-forward="false" selection-start-line="35" selection-start-column="58" selection-end-line="35" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PrettyPrintVisitor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/educode/visitors/PrettyPrintVisitor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-435">
-              <caret line="52" column="5" lean-forward="true" selection-start-line="52" selection-start-column="5" selection-end-line="52" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.code" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test.code">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="33" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="47" selection-end-column="11" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -233,9 +195,9 @@
         <option value="$PROJECT_DIR$/src/com/educode/visitors/DrawVisitor.java" />
         <option value="$PROJECT_DIR$/src/com/educode/nodes/method/MethodDeclarationNode.java" />
         <option value="$PROJECT_DIR$/src/com/educode/visitors/CodeGenerationVisitor.java" />
-        <option value="$PROJECT_DIR$/src/com/educode/visitors/ASTBuilder.java" />
         <option value="$PROJECT_DIR$/test.code" />
         <option value="$PROJECT_DIR$/test.java" />
+        <option value="$PROJECT_DIR$/src/com/educode/visitors/ASTBuilder.java" />
       </list>
     </option>
   </component>
@@ -1216,14 +1178,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/educode/visitors/ASTBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="291" column="48" lean-forward="true" selection-start-line="291" selection-start-column="48" selection-end-line="291" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/educode/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
@@ -1250,12 +1204,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="45" column="1" lean-forward="false" selection-start-line="45" selection-start-column="1" selection-end-line="45" selection-end-column="1" />
+        <state relative-caret-position="165">
+          <caret line="11" column="37" lean-forward="true" selection-start-line="11" selection-start-column="37" selection-end-line="11" selection-end-column="37" />
           <folding>
             <element signature="e#866#867#0" expanded="true" />
             <element signature="e#906#907#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/educode/visitors/ASTBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="295" column="91" lean-forward="false" selection-start-line="295" selection-start-column="91" selection-end-line="295" selection-end-column="91" />
+          <folding />
         </state>
       </provider>
     </entry>

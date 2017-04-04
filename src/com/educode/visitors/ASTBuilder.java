@@ -292,7 +292,8 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
             Node visitResult = visit(statement);
 
             // Some nodes (like variable declaration) will return a collection of nodes
-            // Instead of adding the NaryNode, we will add the contained nodes
+            // Instead of adding the ListNode, we will add the contained nodes
+            // We don't do this for NaryNode because some nodes (If-Node) can't be split up
             if (visitResult instanceof ListNode)
                 childStatements.addAll(((NaryNode)visitResult).getChildren());
             else
