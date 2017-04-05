@@ -25,7 +25,7 @@ public class SymbolTable
 
     public Symbol getSymbol(Node node)
     {
-        for (Symbol s:symbolList)
+        for (Symbol s : symbolList)
         {
             if (s.corresponds(node))
                 return s;

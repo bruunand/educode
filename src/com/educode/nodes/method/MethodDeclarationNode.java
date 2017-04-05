@@ -27,6 +27,9 @@ public class MethodDeclarationNode extends BinaryNode implements Identifiable, T
         super(leftChild, rightChild);
         this._identifier = identifier;
         this._returnType = returnType;
+
+        if (!this.equals(this))
+            System.out.println("wrong");
     }
 
     public ArrayList<ParameterNode> getParameters()
@@ -141,7 +144,7 @@ public class MethodDeclarationNode extends BinaryNode implements Identifiable, T
             // Amount of parameters match, now check if each parameter matches in same order
             for (int i = 0; i < ownParameters.size(); i++)
             {
-                if (ownParameters.get(i).equals(otherParameters.get(i)))
+                if (!ownParameters.get(i).equals(otherParameters.get(i)))
                     return false;
             }
 
