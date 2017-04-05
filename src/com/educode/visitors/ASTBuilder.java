@@ -140,6 +140,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         IfNode ifNode = new IfNode();
 
         // If there is an else block, skip the last block
+        // There is an else block if there are fewer logical expressions than statements
         boolean hasElseBlock = ctx.logicExpr().size() < ctx.stmts().size();
         for (int i = 0; i < (hasElseBlock ? ctx.stmts().size() - 1 : ctx.stmts().size()); i++)
             ifNode.addChild(new ConditionNode(visit(ctx.logicExpr(i)), visit(ctx.stmts(i))));
