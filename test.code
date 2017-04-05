@@ -44,5 +44,6 @@ PROGRAM HelloWorld //Debug program
 
         BOOL B = TRUE
         RETURN B
+        Add(5, 5)
     END METHOD
 END PROGRAM

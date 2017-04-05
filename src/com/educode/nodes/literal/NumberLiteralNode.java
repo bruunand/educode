@@ -1,12 +1,14 @@
 package com.educode.nodes.literal;
 
+import com.educode.nodes.Typeable;
 import com.educode.nodes.base.LeafNode;
+import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
 /**
  * Created by zen on 3/23/17.
  */
-public class NumberLiteralNode extends LeafNode
+public class NumberLiteralNode extends LeafNode implements Typeable
 {
     private float _value;
 
@@ -24,5 +26,16 @@ public class NumberLiteralNode extends LeafNode
     public Object accept(VisitorBase visitor)
     {
         return visitor.visit(this);
+    }
+
+    @Override
+    public Type getType()
+    {
+        return Type.NumberType;
+    }
+
+    @Override
+    public void setType(Type type)
+    {
     }
 }

@@ -45,4 +45,18 @@ public class ParameterNode extends LeafNode implements Identifiable, Typeable
     {
         return this._identifier;
     }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if (!(other instanceof ParameterNode))
+            return false;
+        else
+        {
+            ParameterNode otherNode = (ParameterNode) other;
+
+            // todo: Should we really check if types are equal?
+            return otherNode.getIdentifier().equals(this.getIdentifier()) && otherNode.getType().equals(this.getType());
+        }
+    }
 }

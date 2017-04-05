@@ -21,7 +21,7 @@ public abstract class ExpressionNode extends BinaryNode
         this._type = type;
     }
 
-    public Type getType(Type type)
+    public Type getType()
     {
         return _type;
     }

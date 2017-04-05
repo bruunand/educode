@@ -23,6 +23,8 @@ import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 
+import java.util.List;
+
 /**
  * Created by zen on 3/31/17.
  */
@@ -37,12 +39,16 @@ public class PrettyPrintVisitor extends VisitorBase
         System.out.println(String.format("-> " + format, args));
     }
 
+    private List<MethodDeclarationNode> methods;
+
     @Override
     public Object visit(ProgramNode node)
     {
         depth++;
 
         print("Program '%s'", node.getIdentifier());
+
+        methods = node.getMethodDeclarations();
 
         for (MethodDeclarationNode child : node.getMethodDeclarations())
             visit(child);
@@ -111,6 +117,15 @@ public class PrettyPrintVisitor extends VisitorBase
         depth++;
 
         print("Invoke method '%s'", node.getIdentifier());
+
+        for (MethodDeclarationNode decl : methods)
+        {
+            if (decl.corresponds(node))
+                System.out.println("Corresponds to " + decl.getIdentifier());
+            else
+                System.out.println("Not Corresponds to " + decl.getIdentifier());
+        }
+
         visitChildren(node);
         
         depth--;
