@@ -1,28 +1,47 @@
 package com.educode.symboltable;
 
+import com.educode.nodes.Identifiable;
+import com.educode.nodes.base.Node;
+import com.educode.types.Type;
 import com.sun.org.apache.xpath.internal.operations.Equals;
 
 /**
  * Created by Thomas Buhl on 31/03/2017.
  */
-public abstract class Symbol
+public class Symbol
 {
-    private String name;
-    private String type;
+    public Identifiable node;
+    public boolean IsValid;
 
-    public Symbol(String name, String type)
+    public Symbol(Identifiable _node, Boolean _isValid)
     {
-        this.name = name;
-        this.type = type;
+        node = _node;
+        IsValid = _isValid;
+    }
+    public Symbol(Identifiable _node)
+    {
+        this(_node, true);
     }
 
     public String getName()
     {
-        return this.name;
+        return node.getIdentifier();
     }
 
-    public boolean Equals(Symbol other)
+    @Override
+    public boolean equals(Object other)
     {
-        return this.equals(other);
+        if (this.IsValid && (other instanceof Identifiable))
+            return node.equals(other);
+
+        return false;
     }
+
+    public boolean corresponds(Node other){
+        if (this.IsValid)
+            return node.corresponds(other);
+        return false;
+    }
+
+
 }

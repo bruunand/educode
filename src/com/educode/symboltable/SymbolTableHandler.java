@@ -1,5 +1,8 @@
 package com.educode.symboltable;
 
+import com.educode.nodes.Identifiable;
+import com.educode.nodes.base.Node;
+
 import java.util.ArrayList;
 
 /**
@@ -8,7 +11,6 @@ import java.util.ArrayList;
 public class SymbolTableHandler
 {
     public SymbolTable current = new SymbolTable();
-    public ArrayList<ErrorSymbol> ErrorList = new ArrayList<ErrorSymbol>();
 
     public void openScope()
     {
@@ -23,26 +25,25 @@ public class SymbolTableHandler
             error();
     }
 
-    public void enterSymbol(Symbol symbol)
+    public void enterSymbol(Identifiable node)
     {
-        boolean symbolExists = current.contains(symbol);
+        boolean isNew = !current.contains(node);
 
-        if (!symbolExists)
-            current.symbolList.add(symbol);
-        else
-            ErrorList.add(new ErrorSymbol(symbol));
+        current.symbolList.add(new Symbol(node, isNew));
     }
 
-    public Symbol retreiveSymbol(String name)
+
+    public Symbol retreiveSymbol(Node node)
     {
-        return current.getSymbol(name);
+        return current.getSymbol(node);
     }
+
 
     //needs modification
-    public boolean declaredLocally(String name)
+    public boolean declaredLocally(Node node)
     {
         for (Symbol s : current.symbolList) {
-            if (s.getName().equals(name))
+            if (s.equals(node))
                 return true;
         }
         return false;
