@@ -4,8 +4,7 @@
     <list default="true" id="38b0496e-fb70-4e4f-9cd5-44b36194b80b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/nodes/method/MethodDeclarationNode.java" afterPath="$PROJECT_DIR$/src/com/educode/nodes/method/MethodDeclarationNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/nodes/method/ParameterNode.java" afterPath="$PROJECT_DIR$/src/com/educode/nodes/method/ParameterNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/symboltable/SymbolTable.java" afterPath="$PROJECT_DIR$/src/com/educode/symboltable/SymbolTable.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/visitors/SemanticVisitor.java" afterPath="$PROJECT_DIR$/src/com/educode/visitors/SemanticVisitor.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,8 +23,21 @@
       <file leaf-file-name="SemanticVisitor.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/educode/visitors/SemanticVisitor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="50" column="9" lean-forward="false" selection-start-line="50" selection-start-column="9" selection-end-line="50" selection-end-column="9" />
+            <state relative-caret-position="308">
+              <caret line="47" column="25" lean-forward="true" selection-start-line="47" selection-start-column="25" selection-end-line="47" selection-end-column="25" />
+              <folding>
+                <element signature="e#2165#2166#0" expanded="true" />
+                <element signature="e#2192#2193#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="VisitorBase.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/educode/visitors/VisitorBase.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="440">
+              <caret line="86" column="0" lean-forward="false" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -44,7 +56,7 @@
       <file leaf-file-name="SymbolTable.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/educode/symboltable/SymbolTable.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="291">
+            <state relative-caret-position="240">
               <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
               <folding />
             </state>
@@ -54,8 +66,8 @@
       <file leaf-file-name="MethodDeclarationNode.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/educode/nodes/method/MethodDeclarationNode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="614">
-              <caret line="146" column="21" lean-forward="false" selection-start-line="146" selection-start-column="21" selection-end-line="146" selection-end-column="21" />
+            <state relative-caret-position="257">
+              <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -111,16 +123,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
               <caret line="9" column="62" lean-forward="false" selection-start-line="9" selection-start-column="62" selection-end-line="9" selection-end-column="62" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Symbol.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/educode/symboltable/Symbol.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="18" column="30" lean-forward="false" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -219,12 +221,12 @@
         <option value="$PROJECT_DIR$/src/com/educode/symboltable/Symbol.java" />
         <option value="$PROJECT_DIR$/src/com/educode/symboltable/SymbolTableHandler.java" />
         <option value="$PROJECT_DIR$/src/com/educode/Main.java" />
-        <option value="$PROJECT_DIR$/src/com/educode/visitors/SemanticVisitor.java" />
         <option value="$PROJECT_DIR$/test.code" />
         <option value="$PROJECT_DIR$/src/com/educode/symboltable/SymbolTable.java" />
         <option value="$PROJECT_DIR$/src/com/educode/nodes/method/ParameterNode.java" />
         <option value="$PROJECT_DIR$/src/com/educode/types/Type.java" />
         <option value="$PROJECT_DIR$/src/com/educode/nodes/method/MethodDeclarationNode.java" />
+        <option value="$PROJECT_DIR$/src/com/educode/visitors/SemanticVisitor.java" />
       </list>
     </option>
   </component>
@@ -870,7 +872,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1198,14 +1200,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/educode/visitors/VisitorBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="73" column="41" lean-forward="false" selection-start-line="73" selection-start-column="41" selection-end-line="73" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/educode/nodes/base/BinaryNode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -1304,19 +1298,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/educode/visitors/SemanticVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="50" column="9" lean-forward="false" selection-start-line="50" selection-start-column="9" selection-end-line="50" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/educode/nodes/method/ParameterNode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="331">
           <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/educode/visitors/SemanticVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="47" column="25" lean-forward="true" selection-start-line="47" selection-start-column="25" selection-end-line="47" selection-end-column="25" />
+          <folding>
+            <element signature="e#2165#2166#0" expanded="true" />
+            <element signature="e#2192#2193#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1328,9 +1325,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/educode/visitors/VisitorBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="86" column="0" lean-forward="false" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/educode/symboltable/SymbolTable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
+        <state relative-caret-position="240">
           <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
           <folding />
         </state>
@@ -1338,8 +1343,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/educode/nodes/method/MethodDeclarationNode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="614">
-          <caret line="146" column="21" lean-forward="false" selection-start-line="146" selection-start-column="21" selection-end-line="146" selection-end-column="21" />
+        <state relative-caret-position="257">
+          <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

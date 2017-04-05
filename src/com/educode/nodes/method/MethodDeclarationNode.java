@@ -27,9 +27,6 @@ public class MethodDeclarationNode extends BinaryNode implements Identifiable, T
         super(leftChild, rightChild);
         this._identifier = identifier;
         this._returnType = returnType;
-
-        if (!this.equals(this))
-            System.out.println("wrong");
     }
 
     public ArrayList<ParameterNode> getParameters()

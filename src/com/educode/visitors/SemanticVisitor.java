@@ -82,7 +82,12 @@ public class SemanticVisitor extends VisitorBase
     {
         _symbolTableHandler.openScope();
 
-        System.out.println("visited method decl");
+        // Visit parameters
+        if (node.getParameterList() != null)
+            visitChildren(node.getParameterList());
+
+        // Visit block
+        visit(node.getBlockNode());
 
         _symbolTableHandler.closeScope();
 
@@ -98,6 +103,8 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(ParameterNode node)
     {
+        _symbolTableHandler.enterSymbol(node);
+
         return null;
     }
 
