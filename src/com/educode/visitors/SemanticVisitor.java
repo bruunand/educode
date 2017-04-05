@@ -1,8 +1,188 @@
 package com.educode.visitors;
 
+import com.educode.nodes.base.ListNode;
+import com.educode.nodes.expression.AdditionExpression;
+import com.educode.nodes.expression.MultiplicationExpression;
+import com.educode.nodes.expression.logic.*;
+import com.educode.nodes.literal.BoolLiteralNode;
+import com.educode.nodes.literal.IdentifierLiteralNode;
+import com.educode.nodes.literal.NumberLiteralNode;
+import com.educode.nodes.literal.StringLiteralNode;
+import com.educode.nodes.method.MethodDeclarationNode;
+import com.educode.nodes.method.MethodInvocationNode;
+import com.educode.nodes.method.ParameterNode;
+import com.educode.nodes.statement.AssignmentNode;
+import com.educode.nodes.statement.ReturnNode;
+import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.statement.conditional.ConditionNode;
+import com.educode.nodes.statement.conditional.IfNode;
+import com.educode.nodes.statement.conditional.RepeatWhileNode;
+import com.educode.nodes.ungrouped.BlockNode;
+import com.educode.nodes.ungrouped.ObjectInstantiationNode;
+import com.educode.nodes.ungrouped.ProgramNode;
+import com.educode.symboltable.FuncSymbol;
+import com.educode.symboltable.SymbolTableHandler;
+
+import java.util.ArrayList;
+
 /**
  * Created by zen on 4/5/17.
  */
-public class SemanticVisitor
+public class SemanticVisitor extends VisitorBase
 {
+    private SymbolTableHandler symbolTableHandler = new SymbolTableHandler();
+
+    @Override
+    public Object visit(ProgramNode node)
+    {
+        symbolTableHandler.openScope();
+
+        // Add method declarations to symbol table
+        for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
+        {
+            //FuncSymbol funcSymbol = new FuncSymbol(methodDecl.getIdentifier(), methodDecl.getType(), methodDecl.get);
+        }
+
+        symbolTableHandler.closeScope();
+
+        return null;
+    }
+
+    @Override
+    public Object visit(BlockNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(ListNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(ObjectInstantiationNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(MethodDeclarationNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(MethodInvocationNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(ParameterNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(AssignmentNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(VariableDeclarationNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(IfNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(ConditionNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(RepeatWhileNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(ReturnNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(MultiplicationExpression node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(AdditionExpression node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(NumberLiteralNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(StringLiteralNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(IdentifierLiteralNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(BoolLiteralNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(OrExpressionNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(AndExpressionNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(RelativeExpressionNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(EqualExpressionNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(NegateNode node)
+    {
+        return null;
+    }
 }
