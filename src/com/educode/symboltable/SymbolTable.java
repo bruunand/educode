@@ -1,5 +1,8 @@
 package com.educode.symboltable;
 
+import com.educode.nodes.Identifiable;
+import com.educode.nodes.base.Node;
+
 import java.util.ArrayList;
 
 /**
@@ -20,30 +23,29 @@ public class SymbolTable
         this(null);
     }
 
-    public Symbol getSymbol(String name)
-    {
+    public Symbol getSymbol(Node node){
         for (Symbol s:symbolList)
         {
-            if(s.getName().equals(name))
+            if(s.corresponds(node))
                 return s;
-        }
 
-        if(outer != null)
-            return outer.getSymbol(name);
+        if (outer != null)
+            return outer.getSymbol(node);
 
         return null;
     }
 
-    public boolean contains(Symbol test)
+
+    public boolean contains(Identifiable node)
     {
         for (Symbol s:symbolList)
         {
-            if(s.Equals(test))
+            if(s.equals(node))
                 return true;
         }
 
         if(outer != null)
-            return outer.contains(test);
+            return outer.contains(node);
 
         return false;
     }
