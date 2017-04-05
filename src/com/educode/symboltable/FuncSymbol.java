@@ -17,7 +17,7 @@ public class FuncSymbol extends Symbol
     public boolean Equals(Symbol other)
     {
         if (other instanceof FuncSymbol)
-            return name.equals(other.name) && parameters.equals(((FuncSymbol) other).parameters);
+            return getName().equals(other.getName()) && parameters.equals(((FuncSymbol) other).parameters);
         else
             return false;
     }
