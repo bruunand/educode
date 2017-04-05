@@ -2,6 +2,10 @@ package com.educode.symboltable;
 
 import com.educode.nodes.Identifiable;
 import com.educode.nodes.base.Node;
+import com.educode.nodes.literal.IdentifierLiteralNode;
+import com.educode.nodes.method.MethodDeclarationNode;
+import com.educode.nodes.method.MethodInvocationNode;
+import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.types.Type;
 
 /**
@@ -37,10 +41,16 @@ public class Symbol
     }
 
     public boolean corresponds(Node other){
-        if (this.IsValid)
-            return node.corresponds(other);
+        if (this.IsValid){
+            if (other instanceof MethodInvocationNode && node instanceof MethodDeclarationNode)
+                return ((MethodDeclarationNode) node).corresponds((MethodInvocationNode)other);
+            else if (other instanceof IdentifierLiteralNode && node instanceof VariableDeclarationNode)
+                return node.getIdentifier().equals(((IdentifierLiteralNode) other).getIdentifier());
+        }
+
         return false;
     }
+
 
 
 }

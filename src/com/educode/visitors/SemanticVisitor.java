@@ -1,5 +1,6 @@
 package com.educode.visitors;
 
+import com.educode.nodes.Typeable;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
@@ -21,6 +22,7 @@ import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.symboltable.SymbolTableHandler;
+import com.educode.types.Type;
 
 import java.util.ArrayList;
 
@@ -182,6 +184,11 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(NegateNode node)
     {
+        visitChildren(node);
+        if (node.getChild() instanceof Typeable)
+            if(((Typeable)node.getChild()).getType().Kind == Type.BOOL)
+                error();
+
         return null;
     }
 }
