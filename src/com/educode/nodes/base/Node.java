@@ -7,5 +7,10 @@ import com.educode.nodes.Visitable;
  */
 public abstract class Node implements Visitable
 {
-    // Nothing to see here
+    private int _lineNumber;
+
+    public int getLineNumber()
+    {
+        return this._lineNumber;
+    }
 }

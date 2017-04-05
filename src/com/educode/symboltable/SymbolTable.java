@@ -37,10 +37,9 @@ public class SymbolTable
         return null;
     }
 
-
     public boolean contains(Identifiable node)
     {
-        for (Symbol s:symbolList)
+        for (Symbol s : symbolList)
         {
             if(s.equals(node))
                 return true;

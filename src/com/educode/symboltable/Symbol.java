@@ -13,44 +13,44 @@ import com.educode.types.Type;
  */
 public class Symbol
 {
-    public Identifiable node;
-    public boolean IsValid;
+    private Identifiable _node;
+    private boolean _isValid;
 
-    public Symbol(Identifiable _node, Boolean _isValid)
+    public Symbol(Identifiable node, Boolean isValid)
     {
-        node = _node;
-        IsValid = _isValid;
+        this._node = node;
+        this._isValid = isValid;
     }
-    public Symbol(Identifiable _node)
+
+    public Symbol(Identifiable node)
     {
-        this(_node, true);
+        this(node, true);
     }
 
     public String getName()
     {
-        return node.getIdentifier();
+        return _node.getIdentifier();
     }
 
     @Override
     public boolean equals(Object other)
     {
-        if (this.IsValid && (other instanceof Identifiable))
-            return node.equals(other);
+        if (this._isValid && (other instanceof Identifiable))
+            return _node.equals(other);
 
         return false;
     }
 
-    public boolean corresponds(Node other){
-        if (this.IsValid){
-            if (other instanceof MethodInvocationNode && node instanceof MethodDeclarationNode)
-                return ((MethodDeclarationNode) node).corresponds((MethodInvocationNode)other);
-            else if (other instanceof IdentifierLiteralNode && node instanceof VariableDeclarationNode)
-                return node.getIdentifier().equals(((IdentifierLiteralNode) other).getIdentifier());
+    public boolean corresponds(Node other)
+    {
+        if (this._isValid)
+        {
+            if (other instanceof MethodInvocationNode && _node instanceof MethodDeclarationNode)
+                return ((MethodDeclarationNode) _node).corresponds((MethodInvocationNode)other);
+            else if (other instanceof IdentifierLiteralNode && _node instanceof VariableDeclarationNode)
+                return _node.getIdentifier().equals(((IdentifierLiteralNode) other).getIdentifier());
         }
 
         return false;
     }
-
-
-
 }

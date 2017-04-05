@@ -3,10 +3,7 @@ package com.educode;
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
 import com.educode.nodes.base.Node;
-import com.educode.visitors.ASTBuilder;
-import com.educode.visitors.CodeGenerationVisitor;
-import com.educode.visitors.DrawVisitor;
-import com.educode.visitors.PrettyPrintVisitor;
+import com.educode.visitors.*;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -32,7 +29,10 @@ public class Main
         //exampleVisitor.visit(root);
         PrettyPrintVisitor v = new PrettyPrintVisitor();
         v.visit(root);
-        new CodeGenerationVisitor().visit(root);
-        System.out.println(new DrawVisitor().visit(root));
+        /*new CodeGenerationVisitor().visit(root);
+        System.out.println(new DrawVisitor().visit(root));*/
+        SemanticVisitor sem = new SemanticVisitor();
+        sem.visit(root);
+        sem.getSymbolTableHandler().printErrors();
     }
 }

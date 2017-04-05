@@ -21,30 +21,36 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
+import com.educode.symboltable.Symbol;
 import com.educode.symboltable.SymbolTableHandler;
 import com.educode.types.Type;
-
-import java.util.ArrayList;
 
 /**
  * Created by zen on 4/5/17.
  */
 public class SemanticVisitor extends VisitorBase
 {
-    private SymbolTableHandler symbolTableHandler = new SymbolTableHandler();
+    private SymbolTableHandler _symbolTableHandler = new SymbolTableHandler();
+
+    public SymbolTableHandler getSymbolTableHandler()
+    {
+        return _symbolTableHandler;
+    }
 
     @Override
     public Object visit(ProgramNode node)
     {
-        symbolTableHandler.openScope();
+        _symbolTableHandler.openScope();
 
         // Add method declarations to symbol table
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
         {
-            //FuncSymbol funcSymbol = new FuncSymbol(methodDecl.getIdentifier(), methodDecl.getType(), methodDecl.get);
+            _symbolTableHandler.enterSymbol(methodDecl);
+
+            visit(methodDecl);
         }
 
-        symbolTableHandler.closeScope();
+        _symbolTableHandler.closeScope();
 
         return null;
     }
@@ -52,6 +58,10 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(BlockNode node)
     {
+        _symbolTableHandler.openScope();
+
+        _symbolTableHandler.closeScope();
+
         return null;
     }
 
@@ -70,6 +80,12 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(MethodDeclarationNode node)
     {
+        _symbolTableHandler.openScope();
+
+        System.out.println("visited method decl");
+
+        _symbolTableHandler.closeScope();
+
         return null;
     }
 
@@ -185,9 +201,14 @@ public class SemanticVisitor extends VisitorBase
     public Object visit(NegateNode node)
     {
         visitChildren(node);
+
         if (node.getChild() instanceof Typeable)
+        {
             if(((Typeable)node.getChild()).getType().Kind == Type.BOOL)
-                error();
+                _symbolTableHandler.error(node, "Child of node was not of boolean type.");
+        }
+        else
+            _symbolTableHandler.error(node, "Child of node did not have a type."); // should not happen..
 
         return null;
     }

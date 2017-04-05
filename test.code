@@ -36,6 +36,10 @@ PROGRAM HelloWorld //Debug program
         RETURN numOne+numTwo
     END METHOD
 
+    METHOD Add(NUMBER numOne, NUMBER numTwo) RETURNS NUMBER
+        RETURN numOne+numTwo
+    END METHOD
+
     //Debug methods with return and member access
     METHOD World() RETURNS BOOL
         ENTITY ent = NEW ENTITY()
