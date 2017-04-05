@@ -23,11 +23,13 @@ public class SymbolTable
         this(null);
     }
 
-    public Symbol getSymbol(Node node){
+    public Symbol getSymbol(Node node)
+    {
         for (Symbol s:symbolList)
         {
-            if(s.corresponds(node))
+            if (s.corresponds(node))
                 return s;
+        }
 
         if (outer != null)
             return outer.getSymbol(node);

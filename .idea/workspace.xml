@@ -3,18 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="38b0496e-fb70-4e4f-9cd5-44b36194b80b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/nodes/expression/ExpressionNode.java" afterPath="$PROJECT_DIR$/src/com/educode/nodes/expression/ExpressionNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/nodes/literal/BoolLiteralNode.java" afterPath="$PROJECT_DIR$/src/com/educode/nodes/literal/BoolLiteralNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/nodes/literal/IdentifierLiteralNode.java" afterPath="$PROJECT_DIR$/src/com/educode/nodes/literal/IdentifierLiteralNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/nodes/literal/NumberLiteralNode.java" afterPath="$PROJECT_DIR$/src/com/educode/nodes/literal/NumberLiteralNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/nodes/literal/StringLiteralNode.java" afterPath="$PROJECT_DIR$/src/com/educode/nodes/literal/StringLiteralNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/nodes/method/MethodDeclarationNode.java" afterPath="$PROJECT_DIR$/src/com/educode/nodes/method/MethodDeclarationNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/nodes/method/MethodInvocationNode.java" afterPath="$PROJECT_DIR$/src/com/educode/nodes/method/MethodInvocationNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/nodes/method/ParameterNode.java" afterPath="$PROJECT_DIR$/src/com/educode/nodes/method/ParameterNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/symboltable/Symbol.java" afterPath="$PROJECT_DIR$/src/com/educode/symboltable/Symbol.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/visitors/PrettyPrintVisitor.java" afterPath="$PROJECT_DIR$/src/com/educode/visitors/PrettyPrintVisitor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.code" afterPath="$PROJECT_DIR$/test.code" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.java" afterPath="$PROJECT_DIR$/test.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/EduCode-P4.iml" afterPath="$PROJECT_DIR$/EduCode-P4.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/symboltable/SymbolTable.java" afterPath="$PROJECT_DIR$/src/com/educode/symboltable/SymbolTable.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/educode/visitors/SemanticVisitor.java" afterPath="$PROJECT_DIR$/src/com/educode/visitors/SemanticVisitor.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,26 +21,6 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="VisitorBase.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/educode/visitors/VisitorBase.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="799">
-              <caret line="89" column="1" lean-forward="false" selection-start-line="89" selection-start-column="1" selection-end-line="89" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BlockNode.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/educode/nodes/ungrouped/BlockNode.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="MethodDeclarationNode.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/educode/nodes/method/MethodDeclarationNode.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -123,11 +94,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StringLiteralNode.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="StringLiteralNode.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/educode/nodes/literal/StringLiteralNode.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="375">
-              <caret line="37" column="9" lean-forward="true" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
+              <caret line="37" column="9" lean-forward="false" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
               <folding>
                 <element signature="e#628#629#0" expanded="true" />
                 <element signature="e#666#667#0" expanded="true" />
@@ -136,11 +107,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Symbol.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SymbolTable.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/educode/symboltable/SymbolTable.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="181">
+              <caret line="31" column="9" lean-forward="false" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SemanticVisitor.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/educode/visitors/SemanticVisitor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="175">
+              <caret line="22" column="30" lean-forward="false" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Symbol.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/educode/symboltable/Symbol.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+            <state relative-caret-position="346">
+              <caret line="40" column="23" lean-forward="false" selection-start-line="40" selection-start-column="23" selection-end-line="40" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -217,7 +208,6 @@
         <option value="$PROJECT_DIR$/src/com/educode/types/ArithmeticOperator.java" />
         <option value="$PROJECT_DIR$/src/com/educode/nodes/ungrouped/ObjectInstantiationNode.java" />
         <option value="$PROJECT_DIR$/src/com/educode/visitors/PrintVisitor.java" />
-        <option value="$PROJECT_DIR$/src/com/educode/visitors/SemanticVisitor.java" />
         <option value="$PROJECT_DIR$/src/com/educode/visitors/ASTBuilder.java" />
         <option value="$PROJECT_DIR$/src/com/educode/nodes/statement/VariableDeclarationNode.java" />
         <option value="$PROJECT_DIR$/src/com/educode/nodes/expression/ArithmeticExpression.java" />
@@ -241,6 +231,8 @@
         <option value="$PROJECT_DIR$/src/com/educode/nodes/literal/IdentifierLiteralNode.java" />
         <option value="$PROJECT_DIR$/src/com/educode/nodes/literal/NumberLiteralNode.java" />
         <option value="$PROJECT_DIR$/src/com/educode/nodes/literal/StringLiteralNode.java" />
+        <option value="$PROJECT_DIR$/src/com/educode/symboltable/SymbolTable.java" />
+        <option value="$PROJECT_DIR$/src/com/educode/visitors/SemanticVisitor.java" />
       </list>
     </option>
   </component>
@@ -528,7 +520,7 @@
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="editor.preferences.appearance" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="$PROJECT_DIR$/src/EduCode.g4::/auto-gen" value="false" />
@@ -809,13 +801,13 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Tool Output" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32794458" sideWeight="0.49791667" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32794458" sideWeight="0.49166667" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32794458" sideWeight="0.5083333" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32794458" sideWeight="0.49166667" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32794458" sideWeight="0.49166667" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
@@ -874,14 +866,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test.code">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="20" lean-forward="true" selection-start-line="0" selection-start-column="20" selection-end-line="0" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Coding Style.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -992,11 +976,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/educode/visitors/SemanticVisitor.java" />
     <entry file="file://$PROJECT_DIR$/src/EduCode.g4">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2220">
           <caret line="148" column="18" lean-forward="false" selection-start-line="148" selection-start-column="18" selection-end-line="148" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1087,6 +1071,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1365">
           <caret line="118" column="10" lean-forward="true" selection-start-line="118" selection-start-column="10" selection-end-line="118" selection-end-column="10" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1164,14 +1149,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1695">
           <caret line="30" column="13" lean-forward="false" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/educode/symboltable/Symbol.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1256,11 +1233,35 @@
     <entry file="file://$PROJECT_DIR$/src/com/educode/nodes/literal/StringLiteralNode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
-          <caret line="37" column="9" lean-forward="true" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
+          <caret line="37" column="9" lean-forward="false" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
           <folding>
             <element signature="e#628#629#0" expanded="true" />
             <element signature="e#666#667#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/educode/symboltable/SymbolTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="31" column="9" lean-forward="false" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/educode/visitors/SemanticVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="22" column="30" lean-forward="false" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/educode/symboltable/Symbol.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="40" column="23" lean-forward="false" selection-start-line="40" selection-start-column="23" selection-end-line="40" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1304,7 +1305,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.8</last-edited>
+          <last-edited>9-internal</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

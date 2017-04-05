@@ -20,7 +20,6 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
-import com.educode.symboltable.FuncSymbol;
 import com.educode.symboltable.SymbolTableHandler;
 
 import java.util.ArrayList;
