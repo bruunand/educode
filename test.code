@@ -36,12 +36,12 @@ PROGRAM HelloWorld //Debug program
         RETURN numOne+numTwo
     END METHOD
 
-    METHOD Add(NUMBER numOne, NUMBER numTwo) RETURNS NUMBER
+    METHOD Adsd(NUMBER numOne, NUMBER numTwo) RETURNS NUMBER
         RETURN numOne+numTwo
     END METHOD
 
     //Debug methods with return and member access
-    METHOD World() RETURNS BOOL
+    METHOD World(STRING s, STRING x) RETURNS BOOL
         ENTITY ent = NEW ENTITY()
         ent.member()
         NUMBER numTest = ent.number

@@ -212,10 +212,10 @@ public class SemanticVisitor extends VisitorBase
         if (node.getChild() instanceof Typeable)
         {
             if(((Typeable)node.getChild()).getType().Kind == Type.BOOL)
-                _symbolTableHandler.error(node, "Child of node was not of boolean type.");
+                _symbolTableHandler.error(node, "Negated expression was not of boolean type.");
         }
         else
-            _symbolTableHandler.error(node, "Child of node did not have a type."); // should not happen..
+            _symbolTableHandler.error(node, "Negated expression did not have a type."); // should not happen..
 
         return null;
     }
