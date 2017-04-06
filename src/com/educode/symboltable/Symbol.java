@@ -32,6 +32,8 @@ public class Symbol
         return _node.getIdentifier();
     }
 
+    public Identifiable getNode() {return _node; }
+
     @Override
     public boolean equals(Object other)
     {

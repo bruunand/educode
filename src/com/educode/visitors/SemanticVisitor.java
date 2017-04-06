@@ -147,6 +147,14 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(MultiplicationExpression node)
     {
+        Type leftType = ((Typeable)node.getLeftChild()).getType();
+        Type rightType = ((Typeable)node.getLeftChild()).getType();
+
+        if ((leftType.Kind == Type.NUMBER) ){
+
+        }
+
+
         return null;
     }
 
@@ -171,6 +179,15 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(IdentifierLiteralNode node)
     {
+        Symbol s = _symbolTableHandler.retreiveSymbol(node);
+        if (s != null)
+            if (s.getNode() instanceof Typeable)
+                node.setType(((Typeable)s.getNode()).getType());
+            else
+                _symbolTableHandler.error(node, "Invalid variable type."); //Should not happen.
+        else
+            _symbolTableHandler.error(node, "Variable has not been declared.");
+
         return null;
     }
 
@@ -201,6 +218,8 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(EqualExpressionNode node)
     {
+
+
         return null;
     }
 
