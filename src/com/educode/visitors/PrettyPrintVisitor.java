@@ -164,7 +164,7 @@ public class PrettyPrintVisitor extends VisitorBase
         depth++;
 
         print("Declare '%s' of type %s", node.getIdentifier(), OperatorTranslator.toJava(node.getType()));
-        visit(node.getChild());
+        visitChildren(node);
 
         depth--;
 
