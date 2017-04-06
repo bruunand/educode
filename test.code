@@ -2,7 +2,18 @@ PROGRAM HelloWorld //Debug program
     METHOD TestMethodCallReturn() RETURNS NUMBER
         NUMBER numa = 3
         NUMBER numb = 2
-        RETURN Add(numa + (numa - numb) * numc, numb)
+        BOOL B = FALSE
+
+        talk("Hej med dig")
+
+        IF numa GREATER THAN 5 THEN
+            Add(numa, numb)
+        END IF
+
+        REPEAT WHILE numa LESS THAN numb
+        END REPEAT
+
+        RETURN Add(numa + (numa - numb) * numa, numb)
     END METHOD
 
     METHOD Add(NUMBER numOne, NUMBER numTwo) RETURNS NUMBER

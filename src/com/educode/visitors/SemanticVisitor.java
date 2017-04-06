@@ -1,10 +1,8 @@
 package com.educode.visitors;
 
-import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.Typeable;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.expression.AdditionExpression;
-import com.educode.nodes.expression.ExpressionNode;
 import com.educode.nodes.expression.MultiplicationExpression;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.BoolLiteralNode;
@@ -25,6 +23,7 @@ import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.symboltable.Symbol;
 import com.educode.symboltable.SymbolTableHandler;
+import com.educode.types.ArithmeticOperator;
 import com.educode.types.Type;
 
 /**
@@ -39,10 +38,22 @@ public class SemanticVisitor extends VisitorBase
         return _symbolTableHandler;
     }
 
+    private void addDefaultMethod(String name, Type returnType, Type ... types)
+    {
+        ListNode parameterNodes = new ListNode();
+        for (Type type : types)
+            parameterNodes.addChild(new ParameterNode(null, type));
+
+        _symbolTableHandler.enterSymbol(new MethodDeclarationNode(parameterNodes, null, name, returnType));
+    }
+
     @Override
     public Object visit(ProgramNode node)
     {
         _symbolTableHandler.openScope();
+
+        // Add Minecraft related methods
+        addDefaultMethod("talk", Type.VoidType, Type.StringType);
 
         // Add method declarations to symbol table
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
@@ -237,8 +248,17 @@ public class SemanticVisitor extends VisitorBase
         Type leftType = ((Typeable)node.getLeftChild()).getType();
         Type rightType = ((Typeable)node.getRightChild()).getType();
 
-        if ((leftType.Kind == Type.NUMBER) && (rightType.Kind == Type.NUMBER) )
+        if (leftType.equals(Type.NumberType) && rightType.equals(Type.NumberType))
+        {
             node.setType(Type.NumberType);
+
+            // Check for divison by zero
+            if (node.getOperator().equals(ArithmeticOperator.Division) && node.getRightChild() instanceof NumberLiteralNode)
+            {
+                if (((NumberLiteralNode) node.getRightChild()).getValue() == 0)
+                    _symbolTableHandler.error(node, "Divison by 0 is not allowed.");
+            }
+        }
         else
             _symbolTableHandler.error(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), leftType, rightType));
 
@@ -253,11 +273,11 @@ public class SemanticVisitor extends VisitorBase
         Type leftType = ((Typeable)node.getLeftChild()).getType();
         Type rightType = ((Typeable)node.getRightChild()).getType();
 
-        if ((leftType.Kind == Type.NUMBER) && (rightType.Kind == Type.NUMBER))
+        if (leftType.equals(Type.NumberType) && rightType.equals(Type.NumberType))
             node.setType(Type.NumberType);
-        else if ((leftType.Kind == Type.STRING))
+        else if (leftType.equals(Type.StringType))
             node.setType(Type.StringType);
-        else if ((leftType.Kind == Type.COORDINATES) && (rightType.Kind == Type.COORDINATES))
+        else if (leftType.equals(Type.CoordinatesType) && rightType.equals(Type.CoordinatesType))
             node.setType(Type.CoordinatesType);
         else
             _symbolTableHandler.error(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), leftType, rightType));
@@ -302,13 +322,28 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(OrExpressionNode node)
     {
+        visitLogicExpression(node);
+
         return null;
     }
 
     @Override
     public Object visit(AndExpressionNode node)
     {
+        visitLogicExpression(node);
+
         return null;
+    }
+
+    private void visitLogicExpression(LogicExpressionNode node)
+    {
+        visitChildren(node);
+
+        Type leftType = ((Typeable)node.getLeftChild()).getType();
+        Type rightType = ((Typeable)node.getRightChild()).getType();
+
+        if (!leftType.equals(Type.BoolType) || rightType.equals(Type.BoolType))
+            _symbolTableHandler.error(node, String.format("Both sides of the %s expression must be of type %s, but are of type %s and %s.", node.getOperator(), Type.BoolType, leftType, rightType));
     }
 
     @Override
@@ -319,8 +354,8 @@ public class SemanticVisitor extends VisitorBase
         Type leftType = ((Typeable)node.getLeftChild()).getType();
         Type rightType = ((Typeable)node.getRightChild()).getType();
 
-        boolean isNumberComparison = leftType.equals(Type.NUMBER) && rightType.equals(Type.NUMBER);
-        boolean isStringComparison = leftType.equals(Type.STRING) && rightType.equals(Type.STRING);
+        boolean isNumberComparison = leftType.equals(Type.NumberType) && rightType.equals(Type.NumberType);
+        boolean isStringComparison = leftType.equals(Type.StringType) && rightType.equals(Type.StringType);
 
         // Only number and string comparisons are allowed
         if (!isNumberComparison && !isStringComparison)
@@ -333,7 +368,6 @@ public class SemanticVisitor extends VisitorBase
     public Object visit(EqualExpressionNode node)
     {
 
-
         return null;
     }
 
@@ -344,7 +378,7 @@ public class SemanticVisitor extends VisitorBase
 
         if (node.getChild() instanceof Typeable)
         {
-            if(((Typeable)node.getChild()).getType().Kind == Type.BOOL)
+            if(((Typeable)node.getChild()).getType().equals(Type.BoolType))
                 _symbolTableHandler.error(node, "Negated expression was not of boolean type.");
         }
         else
