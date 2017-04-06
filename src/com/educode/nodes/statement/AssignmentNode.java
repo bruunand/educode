@@ -5,6 +5,7 @@ import com.educode.nodes.SingleLineStatement;
 import com.educode.nodes.Typeable;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
+import com.educode.nodes.literal.IdentifierLiteralNode;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
@@ -13,19 +14,24 @@ import com.educode.visitors.VisitorBase;
  */
 public class AssignmentNode extends UnaryNode implements Identifiable, Typeable, SingleLineStatement
 {
-    private String _identifier;
+    private IdentifierLiteralNode _identifierNode;
     private Type _type;
 
-    public AssignmentNode(String identifier, Node child)
+    public AssignmentNode(IdentifierLiteralNode identifierNode, Node child)
     {
         super(child);
-        this._identifier = identifier;
+        this._identifierNode = identifierNode;
+    }
+
+    public IdentifierLiteralNode getIdentifierNode()
+    {
+        return this._identifierNode;
     }
 
     @Override
     public String getIdentifier()
     {
-        return _identifier;
+        return _identifierNode.getIdentifier();
     }
 
     @Override

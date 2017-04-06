@@ -60,6 +60,8 @@ public class SemanticVisitor extends VisitorBase
     {
         _symbolTableHandler.openScope();
 
+        visitChildren(node);
+
         _symbolTableHandler.closeScope();
 
         return null;
@@ -111,12 +113,27 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(AssignmentNode node)
     {
+        visitChildren(node);
+
+        // Get the symbol that corresponds to the left side
+        Symbol leftSide = _symbolTableHandler.retreiveSymbol(node.getIdentifierNode());
+        if (leftSide == null)
+            _symbolTableHandler.error(node, String.format("Identifier %s is not declared.", node.getIdentifier()));
+        else
+        {
+            // Check if type of right side matches left side
+        }
+
         return null;
     }
 
     @Override
     public Object visit(VariableDeclarationNode node)
     {
+        _symbolTableHandler.enterSymbol(node);
+
+        visitChildren(node);
+
         return null;
     }
 

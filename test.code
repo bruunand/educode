@@ -45,7 +45,8 @@ PROGRAM HelloWorld //Debug program
         ENTITY ent = NEW ENTITY()
         ent.member()
         NUMBER numTest = ent.number
-
+        q = 5
+        ENTITY ent = x
         BOOL B = TRUE
         RETURN B
         Add(5, 5)
