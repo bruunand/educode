@@ -35,7 +35,7 @@ public class SymbolTableHandler
 
         // Add an error for multiple declaration
         if (!isNew)
-            error(String.format("Identifier %s already declared.", node.getIdentifier()));
+            error((Node) node, String.format("Identifier %s already declared.", node.getIdentifier()));
         // todo: Should not be identifiable in parameter, we need to know line number which is contained in node
     }
 

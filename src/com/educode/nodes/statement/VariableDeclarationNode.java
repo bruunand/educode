@@ -31,6 +31,15 @@ public class VariableDeclarationNode extends UnaryNode implements Identifiable, 
         this._type = type;
     }
 
+    @Override
+    public boolean equals(Object other)
+    {
+        if (other instanceof Identifiable)
+            return ((Identifiable)other).getIdentifier().equals(this.getIdentifier());
+        else
+            return false;
+    }
+
     public IdentifierLiteralNode getIdentifierNode()
     {
         return this._identifierNode;
