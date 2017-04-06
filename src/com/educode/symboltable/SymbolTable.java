@@ -45,7 +45,7 @@ public class SymbolTable
                 return true;
         }
 
-        if (outer != null)
+        if(outer != null)
             return outer.contains(node);
 
         return false;

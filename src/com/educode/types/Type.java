@@ -21,6 +21,28 @@ public class Type
         return false;
     }
 
+    @Override
+    public String toString()
+    {
+        switch (Kind)
+        {
+            case Type.NUMBER:
+                return "NUMBER";
+            case Type.STRING:
+                return "STRING";
+            case Type.BOOL:
+                return "BOOLEAN";
+            case Type.COORDINATES:
+                return "COORDINATES";
+            case Type.VOID:
+                return "UNKNOWN";
+            case Type.ERROR:
+                return "ERROR";
+            default:
+                return "UNDEFINED"; // Should not happen
+        }
+    }
+
     public static final Type VoidType = new Type(VOID);
     public static final Type BoolType = new Type(BOOL);
     public static final Type NumberType = new Type(NUMBER);

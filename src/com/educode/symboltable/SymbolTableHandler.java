@@ -2,6 +2,7 @@ package com.educode.symboltable;
 
 import com.educode.nodes.Identifiable;
 import com.educode.nodes.base.Node;
+import com.educode.nodes.method.MethodDeclarationNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +12,9 @@ import java.util.List;
  */
 public class SymbolTableHandler
 {
-    public SymbolTable current = new SymbolTable();
+    public SymbolTable current = new SymbolTable(); // todo make getter/setter
     private List<Error> _errorList = new ArrayList<>();
+    private MethodDeclarationNode _currentParent;
 
     public void openScope()
     {
@@ -70,5 +72,15 @@ public class SymbolTableHandler
     public void error(Node relatedNode, String description)
     {
         this._errorList.add(new Error(relatedNode, description));
+    }
+
+    public void setCurrentParent(MethodDeclarationNode currentParent)
+    {
+        this._currentParent = currentParent;
+    }
+
+    public MethodDeclarationNode getCurrentParent()
+    {
+        return this._currentParent;
     }
 }

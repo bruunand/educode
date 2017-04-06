@@ -20,7 +20,7 @@ public class Error
     public String toString()
     {
         if (this._relatedNode != null)
-            return String.format("Error at line %d, position %d: %s", this._relatedNode.getLineNumber(), this._relatedNode.getCharPosition(), this._errorDescription);
+            return String.format("Error at line %d, %d: %s", this._relatedNode.getLineNumber(), this._relatedNode.getCharPosition(), this._errorDescription);
         else
             return String.format("Error: %s", this._errorDescription);
     }

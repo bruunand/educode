@@ -1,60 +1,11 @@
 PROGRAM HelloWorld //Debug program
-    METHOD Hello()
-        BOOL A = TRUE, B = TRUE
-
-        //Grammar debug for variable types and assignments
-        COLLECTION collection = NEW COLLECTION()
-        COORDINATES coords = NEW COORDINATES(x, z, y)//Minecrafts way of handling coords?
-        BOOL orBoolean = FALSE OR TRUE
-        BOOL andBoolean = TRUE AND FALSE
-        BOOL boolean = TRUE
-        STRING string = "Hello World"
-        NUMBER int = 5
-        NUMBER float = 2.4
-        BLOCK block = NEW BLOCK()
-        ITEM item = NEW ITEM()
-        TEXTURE texture= NEW TEXTURE()
-        ENTITY ent =NEW ENTITY()
-
-        print (int[1])
-
-        //Debug repeat while and if statements
-        REPEAT WHILE A EQUALS TRUE
-            IF A EQUALS TRUE THEN
-                A = FALSE
-            END IF
-        END REPEAT
-    END METHOD
-
     METHOD TestMethodCallReturn() RETURNS NUMBER
         NUMBER numa = 3
         NUMBER numb = 2
-        RETURN Add(numa, numb)
+        RETURN Add(numa + (numa - numb) * numc, numb)
     END METHOD
 
     METHOD Add(NUMBER numOne, NUMBER numTwo) RETURNS NUMBER
         RETURN numOne+numTwo
-    END METHOD
-
-    METHOD Adsd(NUMBER numOne, NUMBER numTwo) RETURNS NUMBER
-        RETURN numOne+numTwo
-    END METHOD
-
-    //Debug methods with return and member access
-    METHOD World(STRING s, STRING x) RETURNS BOOL
-        ENTITY ent = NEW ENTITY()
-        ent.member()
-        NUMBER numTest = ent.number
-        x = 5
-        ENTITY ent
-        BOOL B = TRUE
-
-        BOOL B
-
-        BOOL B = FALSE
-        B = FALSE
-        BOOL x
-        RETURN B
-        Add(5, 5)
     END METHOD
 END PROGRAM

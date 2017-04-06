@@ -16,9 +16,11 @@ import java.util.List;
 /**
  * Created by zen on 3/23/17.
  */
-public class MethodInvocationNode extends UnaryNode implements Identifiable, SingleLineStatement
+public class MethodInvocationNode extends UnaryNode implements Identifiable, SingleLineStatement, Typeable
 {
     private String _calleeMethod;
+
+    private Type _type;
 
     public MethodInvocationNode(Node child, String calleeMethod)
     {
@@ -54,5 +56,17 @@ public class MethodInvocationNode extends UnaryNode implements Identifiable, Sin
     public String getIdentifier()
     {
         return this._calleeMethod;
+    }
+
+    @Override
+    public Type getType()
+    {
+        return this._type;
+    }
+
+    @Override
+    public void setType(Type type)
+    {
+        this._type = type;
     }
 }

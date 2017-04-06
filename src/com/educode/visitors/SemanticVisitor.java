@@ -4,6 +4,7 @@ import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.Typeable;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.expression.AdditionExpression;
+import com.educode.nodes.expression.ExpressionNode;
 import com.educode.nodes.expression.MultiplicationExpression;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.BoolLiteralNode;
@@ -45,11 +46,11 @@ public class SemanticVisitor extends VisitorBase
 
         // Add method declarations to symbol table
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
-        {
             _symbolTableHandler.enterSymbol(methodDecl);
 
+        // Visit methods
+        for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
             visit(methodDecl);
-        }
 
         _symbolTableHandler.closeScope();
 
@@ -87,6 +88,9 @@ public class SemanticVisitor extends VisitorBase
     {
         _symbolTableHandler.openScope();
 
+        // Set current method parent of symbol table handler
+        _symbolTableHandler.setCurrentParent(node);
+
         // Visit parameters
         if (node.getParameterList() != null)
             visitChildren(node.getParameterList());
@@ -102,6 +106,23 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(MethodInvocationNode node)
     {
+        // Visits parameters to get correct type of actual arguments
+        visitChildren(node);
+
+        Symbol methodSymbol = _symbolTableHandler.retreiveSymbol(node);
+
+        if (methodSymbol == null)
+        {
+            String formalParameters = "";
+            for (Typeable type : node.getActualArguments())
+                formalParameters += type.getType() + " ";
+
+            _symbolTableHandler.error(node, String.format("No method '%s' exists with the formal parameters %s.", node.getIdentifier(), formalParameters.trim().replace(" ", ", ")));
+            node.setType(Type.Error);
+        }
+        else
+            node.setType(((Typeable)methodSymbol.getNode()).getType());
+
         return null;
     }
 
@@ -133,9 +154,9 @@ public class SemanticVisitor extends VisitorBase
                 // If type is void, it can not be assigned to anything
                 // Otherwise check if type of sides are equal - they must be
                 if (leftSideType.equals(Type.VoidType))
-                    _symbolTableHandler.error(node, String.format("%s is of type %s, it can not be assigned.", node.getIdentifier(), OperatorTranslator.toString(leftSideType)));
+                    _symbolTableHandler.error(node, String.format("%s is of type %s, it can not be assigned.", node.getIdentifier(), leftSideType));
                 else if (!leftSideType.equals(rightSideType))
-                    _symbolTableHandler.error(node, String.format("%s is of type %s, can not be assigned to %s.", node.getIdentifier(), OperatorTranslator.toString(leftSideType), OperatorTranslator.toString(rightSideType)));
+                    _symbolTableHandler.error(node, String.format("%s is of type %s, can not be assigned to %s.", node.getIdentifier(), leftSideType, rightSideType));
 
             }
             else
@@ -176,6 +197,17 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(ReturnNode node)
     {
+        visitChildren(node);
+
+        Type parentType = _symbolTableHandler.getCurrentParent().getType();
+        Type childType = Type.VoidType;
+        if (node.hasChild() && node.getChild() instanceof Typeable)
+            childType = ((Typeable) node.getChild()).getType();
+
+        // Return type and parent method type should be equal
+        if (!parentType.equals(childType))
+            _symbolTableHandler.error(node, String.format("Can not return an expression of type %s when parent method returns %s.", childType, parentType));
+
         return null;
     }
 
@@ -187,11 +219,10 @@ public class SemanticVisitor extends VisitorBase
         Type leftType = ((Typeable)node.getLeftChild()).getType();
         Type rightType = ((Typeable)node.getRightChild()).getType();
 
-        if ((leftType.Kind == Type.NUMBER) && (rightType.Kind == Type.NUMBER) ){
+        if ((leftType.Kind == Type.NUMBER) && (rightType.Kind == Type.NUMBER) )
             node.setType(Type.NumberType);
-        } else {
-            _symbolTableHandler.error(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), rightType));
-        }
+        else
+            _symbolTableHandler.error(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), leftType, rightType));
 
         return null;
     }
@@ -204,15 +235,14 @@ public class SemanticVisitor extends VisitorBase
         Type leftType = ((Typeable)node.getLeftChild()).getType();
         Type rightType = ((Typeable)node.getRightChild()).getType();
 
-        if ((leftType.Kind == Type.NUMBER) && (rightType.Kind == Type.NUMBER)){
+        if ((leftType.Kind == Type.NUMBER) && (rightType.Kind == Type.NUMBER))
             node.setType(Type.NumberType);
-        } else if ((leftType.Kind == Type.STRING)){
+        else if ((leftType.Kind == Type.STRING))
             node.setType(Type.StringType);
-        } else if ((leftType.Kind == Type.COORDINATES) && (rightType.Kind == Type.COORDINATES)) {
+        else if ((leftType.Kind == Type.COORDINATES) && (rightType.Kind == Type.COORDINATES))
             node.setType(Type.CoordinatesType);
-        } else {
-                _symbolTableHandler.error(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), rightType));
-        }
+        else
+            _symbolTableHandler.error(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), leftType, rightType));
 
         return null;
     }
@@ -233,6 +263,7 @@ public class SemanticVisitor extends VisitorBase
     public Object visit(IdentifierLiteralNode node)
     {
         Symbol s = _symbolTableHandler.retreiveSymbol(node);
+
         if (s != null)
             if (s.getNode() instanceof Typeable)
                 node.setType(((Typeable)s.getNode()).getType());

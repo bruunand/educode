@@ -21,6 +21,26 @@ public class ArithmeticOperator
         return false;
     }
 
+    @Override
+    public String toString()
+    {
+        switch (Kind)
+        {
+            case ArithmeticOperator.ADDITION:
+                return "+";
+            case ArithmeticOperator.SUBTRACTION:
+                return "-";
+            case ArithmeticOperator.DIVISION:
+                return "/";
+            case ArithmeticOperator.MODULO:
+                return "MODULO";
+            case ArithmeticOperator.MULTIPLICATION:
+                return "*";
+            default:
+                return "UNDEFINED"; // Should not happen
+        }
+    }
+
     public static final ArithmeticOperator Addition = new ArithmeticOperator(ADDITION);
     public static final ArithmeticOperator Subtraction = new ArithmeticOperator(SUBTRACTION);
     public static final ArithmeticOperator Multiplication = new ArithmeticOperator(MULTIPLICATION);

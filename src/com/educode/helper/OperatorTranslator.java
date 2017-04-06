@@ -12,27 +12,6 @@ import static com.educode.types.LogicalOperator.OR;
  */
 public class OperatorTranslator
 {
-    public static String toString(Type type)
-    {
-        switch (type.Kind)
-        {
-            case Type.NUMBER:
-                return "NUMBER";
-            case Type.STRING:
-                return "STRING";
-            case Type.BOOL:
-                return "BOOLEAN";
-            case Type.COORDINATES:
-                return "COORDINATES";
-            case Type.VOID:
-                return "UNKNOWN";
-        }
-
-        // Todo: Add other types
-
-        return null;
-    }
-
     public static String toJava(Type type)
     {
         switch (type.Kind)

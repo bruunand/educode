@@ -53,6 +53,8 @@ public class Symbol
             else if (other instanceof IdentifierLiteralNode)
                 if (_node instanceof VariableDeclarationNode || _node instanceof ParameterNode)
                     return _node.getIdentifier().equals(((IdentifierLiteralNode) other).getIdentifier());
+            else
+                System.out.println("No correspondance between " + other.getClass().getName() + " and " + _node.getClass().getName());
         }
 
         return false;

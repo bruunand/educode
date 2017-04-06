@@ -50,21 +50,17 @@ public class ParameterNode extends LeafNode implements Identifiable, Typeable
     @Override
     public boolean equals(Object other)
     {
-        if (!(other instanceof ParameterNode)){
+        if (!(other instanceof ParameterNode))
+        {
             if (other instanceof VariableDeclarationNode)
-            {
                 return ((VariableDeclarationNode) other).getIdentifier().equals(this.getIdentifier());
-            }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
         else
         {
             ParameterNode otherNode = (ParameterNode) other;
 
-            // todo: Should we really check if types are equal? No.
             return otherNode.getIdentifier().equals(this.getIdentifier());
         }
     }
