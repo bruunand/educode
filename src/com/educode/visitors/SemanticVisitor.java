@@ -164,13 +164,16 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(MultiplicationExpression node)
     {
+        visitChildren(node);
+
         Type leftType = ((Typeable)node.getLeftChild()).getType();
-        Type rightType = ((Typeable)node.getLeftChild()).getType();
+        Type rightType = ((Typeable)node.getRightChild()).getType();
 
-        if ((leftType.Kind == Type.NUMBER) ){
-
+        if ((leftType.Kind == Type.NUMBER) && (rightType.Kind == Type.NUMBER) ){
+            node.setType(Type.NumberType);
+        } else {
+            _symbolTableHandler.error(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), rightType));
         }
-
 
         return null;
     }
@@ -178,6 +181,21 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(AdditionExpression node)
     {
+        visitChildren(node);
+
+        Type leftType = ((Typeable)node.getLeftChild()).getType();
+        Type rightType = ((Typeable)node.getRightChild()).getType();
+
+        if ((leftType.Kind == Type.NUMBER) && (rightType.Kind == Type.NUMBER)){
+            node.setType(Type.NumberType);
+        } else if ((leftType.Kind == Type.STRING)){
+            node.setType(Type.StringType);
+        } else if ((leftType.Kind == Type.COORDINATES) && (rightType.Kind == Type.COORDINATES)) {
+            node.setType(Type.CoordinatesType);
+        } else {
+                _symbolTableHandler.error(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), rightType));
+        }
+
         return null;
     }
 
