@@ -179,18 +179,36 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(IfNode node)
     {
+        visitChildren(node);
+
         return null;
     }
 
     @Override
     public Object visit(ConditionNode node)
     {
+        // Visit condition
+        visit(node.getLeftChild());
+
+        Type conditionType = Type.Error;
+        if (node.getLeftChild() instanceof Typeable)
+            conditionType = ((Typeable) node.getLeftChild()).getType();
+
+        // Check if condition type is boolean
+        if (!conditionType.equals(Type.BoolType))
+            _symbolTableHandler.error(node, String.format("Condition must be of type %s, but is of type %s.", Type.BoolType, conditionType));
+
+        // Visit block
+        visit(node.getRightChild());
+
         return null;
     }
 
     @Override
     public Object visit(RepeatWhileNode node)
     {
+        visitChildren(node);
+
         return null;
     }
 
@@ -296,6 +314,18 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(RelativeExpressionNode node)
     {
+        visitChildren(node);
+
+        Type leftType = ((Typeable)node.getLeftChild()).getType();
+        Type rightType = ((Typeable)node.getRightChild()).getType();
+
+        boolean isNumberComparison = leftType.equals(Type.NUMBER) && rightType.equals(Type.NUMBER);
+        boolean isStringComparison = leftType.equals(Type.STRING) && rightType.equals(Type.STRING);
+
+        // Only number and string comparisons are allowed
+        if (!isNumberComparison && !isStringComparison)
+            _symbolTableHandler.error(node, String.format("Logical operator %s can not be used for types %s and %s.", node.getOperator(), leftType, rightType));
+
         return null;
     }
 

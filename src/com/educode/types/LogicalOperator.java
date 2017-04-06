@@ -21,6 +21,34 @@ public class LogicalOperator
         return false;
     }
 
+    @Override
+    public String toString()
+    {
+        switch (Kind)
+        {
+            case EQUALS:
+                return "EQUALS";
+            case NOT_EQUALS:
+                return "NOT_EQUALS";
+            case LESS_THAN:
+                return "LESS THAN";
+            case LESS_THAN_OR_EQUALS:
+                return "LESS THAN OR EQUALS:";
+            case GREATER_THAN:
+                return "GREATER THAN";
+            case GREATER_THAN_OR_EQUALS:
+                return "GREATER THAN OR EQUALS";
+            case OR:
+                return "OR";
+            case AND:
+                return "AND";
+            case ERROR:
+                return "ERROR";
+            default:
+                return "UNDEFINED"; // Should not happen
+        }
+    }
+
     public static LogicalOperator Equals = new LogicalOperator(EQUALS);
     public static LogicalOperator NotEquals = new LogicalOperator(NOT_EQUALS);
 

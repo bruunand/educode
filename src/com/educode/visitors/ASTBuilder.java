@@ -8,10 +8,7 @@ import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
-import com.educode.nodes.expression.logic.AndExpressionNode;
-import com.educode.nodes.expression.logic.EqualExpressionNode;
-import com.educode.nodes.expression.logic.NegateNode;
-import com.educode.nodes.expression.logic.OrExpressionNode;
+import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.BoolLiteralNode;
 import com.educode.nodes.literal.IdentifierLiteralNode;
 import com.educode.nodes.literal.NumberLiteralNode;
@@ -252,7 +249,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         if (ctx.getChildCount() == 1)
             return visit(ctx.getChild(0));
         else if (ctx.getChildCount() == 3)
-            return new EqualExpressionNode(getLogicalOperator(ctx.RELOP().getText()), visit(ctx.getChild(0)), visit(ctx.getChild(2)));
+            return new RelativeExpressionNode(getLogicalOperator(ctx.RELOP().getText()), visit(ctx.getChild(0)), visit(ctx.getChild(2)));
 
         System.out.println("Unexpected child count in relative-expression");
 
