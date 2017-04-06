@@ -1,5 +1,6 @@
 package com.educode.visitors;
 
+import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.Typeable;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.expression.AdditionExpression;
@@ -70,6 +71,8 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(ListNode node)
     {
+        visitChildren(node);
+
         return null;
     }
 
@@ -121,7 +124,22 @@ public class SemanticVisitor extends VisitorBase
             _symbolTableHandler.error(node, String.format("Identifier %s is not declared.", node.getIdentifier()));
         else
         {
-            // Check if type of right side matches left side
+            // Check if right side has a type
+            if (node.hasChild() && node.getChild() instanceof Typeable)
+            {
+                Type leftSideType = ((Typeable) leftSide.getNode()).getType(); // todo: Not a good way of doing this..
+                Type rightSideType = ((Typeable) node.getChild()).getType();
+
+                // If type is void, it can not be assigned to anything
+                // Otherwise check if type of sides are equal - they must be
+                if (leftSideType.equals(Type.VoidType))
+                    _symbolTableHandler.error(node, String.format("%s is of type %s, it can not be assigned.", node.getIdentifier(), OperatorTranslator.toString(leftSideType)));
+                else if (!leftSideType.equals(rightSideType))
+                    _symbolTableHandler.error(node, String.format("%s is of type %s, can not be assigned to %s.", node.getIdentifier(), OperatorTranslator.toString(leftSideType), OperatorTranslator.toString(rightSideType)));
+
+            }
+            else
+                _symbolTableHandler.error(node, "Right side of the assignment does not have a type.");
         }
 
         return null;
@@ -203,7 +221,7 @@ public class SemanticVisitor extends VisitorBase
             else
                 _symbolTableHandler.error(node, "Invalid variable type."); //Should not happen.
         else
-            _symbolTableHandler.error(node, "Variable has not been declared.");
+            _symbolTableHandler.error(node, String.format("Variable %s has not been declared.", node.getIdentifier()));
 
         return null;
     }
