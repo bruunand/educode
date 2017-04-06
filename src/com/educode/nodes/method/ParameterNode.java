@@ -3,6 +3,7 @@ package com.educode.nodes.method;
 import com.educode.nodes.Identifiable;
 import com.educode.nodes.Typeable;
 import com.educode.nodes.base.LeafNode;
+import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
@@ -49,8 +50,16 @@ public class ParameterNode extends LeafNode implements Identifiable, Typeable
     @Override
     public boolean equals(Object other)
     {
-        if (!(other instanceof ParameterNode))
-            return false;
+        if (!(other instanceof ParameterNode)){
+            if (other instanceof VariableDeclarationNode)
+            {
+                return ((VariableDeclarationNode) other).getIdentifier().equals(this.getIdentifier());
+            }
+            else
+            {
+                return false;
+            }
+        }
         else
         {
             ParameterNode otherNode = (ParameterNode) other;
