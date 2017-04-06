@@ -60,6 +60,8 @@ public class SemanticVisitor extends VisitorBase
     {
         _symbolTableHandler.openScope();
 
+        visitChildren(node);
+
         _symbolTableHandler.closeScope();
 
         return null;
@@ -111,12 +113,27 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(AssignmentNode node)
     {
+        visitChildren(node);
+
+        // Get the symbol that corresponds to the left side
+        Symbol leftSide = _symbolTableHandler.retreiveSymbol(node.getIdentifierNode());
+        if (leftSide == null)
+            _symbolTableHandler.error(node, String.format("Identifier %s is not declared.", node.getIdentifier()));
+        else
+        {
+            // Check if type of right side matches left side
+        }
+
         return null;
     }
 
     @Override
     public Object visit(VariableDeclarationNode node)
     {
+        _symbolTableHandler.enterSymbol(node);
+
+        visitChildren(node);
+
         return null;
     }
 
@@ -231,10 +248,10 @@ public class SemanticVisitor extends VisitorBase
         if (node.getChild() instanceof Typeable)
         {
             if(((Typeable)node.getChild()).getType().Kind == Type.BOOL)
-                _symbolTableHandler.error(node, "Child of node was not of boolean type.");
+                _symbolTableHandler.error(node, "Negated expression was not of boolean type.");
         }
         else
-            _symbolTableHandler.error(node, "Child of node did not have a type."); // should not happen..
+            _symbolTableHandler.error(node, "Negated expression did not have a type."); // should not happen..
 
         return null;
     }

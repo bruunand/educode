@@ -311,14 +311,11 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
 
         // Add nodes without assignments.
         for (EduCodeParser.IdentContext i : ctx.ident())
-            nodes.add(new VariableDeclarationNode(i.getText(), getType(ctx.dataType().getText()), null));
+            nodes.add(new VariableDeclarationNode((IdentifierLiteralNode) visit(i), getType(ctx.dataType().getText())));
 
         // Add nodes with assignments
         for (EduCodeParser.AssignContext a : ctx.assign())
-        {
-            Node assignmentNode = visit(a);
-            nodes.add(new VariableDeclarationNode(((Identifiable) assignmentNode).getIdentifier(), getType(ctx.dataType().getText()), assignmentNode));
-        }
+            nodes.add(new VariableDeclarationNode(getType(ctx.dataType().getText()), (AssignmentNode) visit(a)));
 
         return new ListNode(nodes);
     }
@@ -327,15 +324,15 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     public Node visitAssign(EduCodeParser.AssignContext ctx)
     {
         if (ctx.expr() != null) // Assign to expression
-            return new AssignmentNode(ctx.ident().getText(), visit(ctx.expr()));
+            return new AssignmentNode((IdentifierLiteralNode) visit(ctx.ident()), visit(ctx.expr()));
         else if (ctx.dataType() != null) // Assign to instantiated object
         {
             Type classType = getType(ctx.dataType().getText());
 
             if (ctx.args() != null)
-                return new AssignmentNode(ctx.ident().getText(), new ObjectInstantiationNode(visit(ctx.args()), classType));
+                return new AssignmentNode((IdentifierLiteralNode) visit(ctx.ident()), new ObjectInstantiationNode(visit(ctx.args()), classType));
             else
-                return new AssignmentNode(ctx.ident().getText(), new ObjectInstantiationNode(classType));
+                return new AssignmentNode((IdentifierLiteralNode) visit(ctx.ident()), new ObjectInstantiationNode(classType));
         }
 
         System.out.println("Error at line " + ctx.getStart().getLine());

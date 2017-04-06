@@ -5,6 +5,7 @@ import com.educode.nodes.SingleLineStatement;
 import com.educode.nodes.Typeable;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
+import com.educode.nodes.literal.IdentifierLiteralNode;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
@@ -13,14 +14,26 @@ import com.educode.visitors.VisitorBase;
  */
 public class VariableDeclarationNode extends UnaryNode implements Identifiable, Typeable, SingleLineStatement
 {
-    private String _identifier;
     private Type _type;
+    private IdentifierLiteralNode _identifierNode;
 
-    public VariableDeclarationNode(String identifier, Type type, Node assignmentChild)
+    public VariableDeclarationNode(Type type, AssignmentNode assignmentChild)
     {
         super(assignmentChild);
-        this._identifier = identifier;
+        this._identifierNode = assignmentChild.getIdentifierNode();
         this._type = type;
+    }
+
+    public VariableDeclarationNode(IdentifierLiteralNode identifierNode, Type type)
+    {
+        super(null);
+        this._identifierNode = identifierNode;
+        this._type = type;
+    }
+
+    public IdentifierLiteralNode getIdentifierNode()
+    {
+        return this._identifierNode;
     }
 
     @Override
@@ -32,7 +45,7 @@ public class VariableDeclarationNode extends UnaryNode implements Identifiable, 
     @Override
     public String getIdentifier()
     {
-        return this._identifier;
+        return this._identifierNode.getIdentifier();
     }
 
     @Override
