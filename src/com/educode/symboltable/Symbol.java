@@ -5,6 +5,7 @@ import com.educode.nodes.base.Node;
 import com.educode.nodes.literal.IdentifierLiteralNode;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
+import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.types.Type;
 
@@ -49,8 +50,9 @@ public class Symbol
         {
             if (other instanceof MethodInvocationNode && _node instanceof MethodDeclarationNode)
                 return ((MethodDeclarationNode) _node).corresponds((MethodInvocationNode)other);
-            else if (other instanceof IdentifierLiteralNode && _node instanceof VariableDeclarationNode)
-                return _node.getIdentifier().equals(((IdentifierLiteralNode) other).getIdentifier());
+            else if (other instanceof IdentifierLiteralNode)
+                if (_node instanceof VariableDeclarationNode || _node instanceof ParameterNode)
+                    return _node.getIdentifier().equals(((IdentifierLiteralNode) other).getIdentifier());
         }
 
         return false;
