@@ -55,8 +55,8 @@ public class ParameterNode extends LeafNode implements Identifiable, Typeable
         {
             ParameterNode otherNode = (ParameterNode) other;
 
-            // todo: Should we really check if types are equal?
-            return otherNode.getType().equals(this.getType());
+            // todo: Should we really check if types are equal? No.
+            return otherNode.getIdentifier().equals(this.getIdentifier());
         }
     }
 }
