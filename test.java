@@ -1,47 +1,33 @@
 public class HelloWorld
 {
-public void Hello()
+public float TestMethodCallReturn({
+float numa = 3.0
+float numb = 2.0
+float PIK;
+boolean B = false
+talk("Hej med dig",6.0,numa)
+if (numa > 5.0)
 {
-boolean A = true;
-boolean B = true;
-void collection = new void();
-Coordinates coords = new Coordinates(x,z,y);
-boolean orBoolean = (false || true);
-boolean andBoolean = (true && false);
-boolean boolean = true;
-String string = "Hello World";
-float int = 5.0;
-float float = 2.4;
-void block = new void();
-void item = new void();
-void texture = new void();
-void ent = new void();
-print(int[1.0]);
-while (A == true)
-{
-if (A == true)
-{
-A = false;
+Add(numa,numb)
 }
-}
-}
-public float TestMethodCallReturn()
+else if (numa != 8.0)
 {
-float numa = 3.0;
-float numb = 2.0;
-return Add(numa,numb);
+lol(fuck)
 }
-public float Add(float numOne,float numTwo)
+else if (numb == numa)
 {
-return (numOne + numTwo);
+a = 7.0
+B = 
 }
-public boolean World()
+else
 {
-void ent = new void();
-ent.member();
-float numTest = ent.number;
-boolean B = true;
-return B;
-Add(5.0,5.0);
+simon(22.0)
+}
+
+ikke implementeret RepeatWhileNode
+ikke implementeret ReturnNode
+}
+public float Add(ikke implementeret ParameterNodeikke implementeret ParameterNode{
+ikke implementeret ReturnNode
 }
 }

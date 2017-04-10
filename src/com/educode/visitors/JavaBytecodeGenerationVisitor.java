@@ -100,7 +100,8 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         append(codeBuffer, "  new %s\n  dup\n", node.getType());
 
-
+        for (Node child:node.getExpressions())
+            append(codeBuffer, "%s", visit(child));
 
         return null;
     }
@@ -127,11 +128,11 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     @Override
     public Object visit(MethodInvocationNode node)
     {
-        StringBuffer codebuffer = new StringBuffer();
+        StringBuffer codeBuffer = new StringBuffer();
 
 
 
-        return null;
+        return codeBuffer;
     }
 
     @Override
