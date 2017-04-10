@@ -286,9 +286,9 @@ public class JavaCodeGenerationVisitor extends VisitorBase{
     @Override
     public Object visit(NegateNode node) {
 
-        StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "%s%s", OperatorTranslator.toJava(node.get) node.getChild());
+        /*StringBuffer codeBuffer = new StringBuffer();
+        append(codeBuffer, "%s%s", OperatorTranslator.toJava(node.get) node.getChild());*/
 
-        return codeBuffer;
+        return "lolfreak<3";
     }
 }
