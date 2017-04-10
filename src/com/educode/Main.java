@@ -25,12 +25,10 @@ public class Main
         ASTBuilder builder = new ASTBuilder();
         Node root = builder.visit(parser.program());
 
-        //CodeGenerationVisitor exampleVisitor = new CodeGenerationVisitor();
-        //exampleVisitor.visit(root);
+        JavaCodeGenerationVisitor exampleVisitor = new JavaCodeGenerationVisitor();
+        exampleVisitor.visit(root);
         PrettyPrintVisitor v = new PrettyPrintVisitor();
         v.visit(root);
-        /*new CodeGenerationVisitor().visit(root);
-        System.out.println(new DrawVisitor().visit(root));*/
         SemanticVisitor sem = new SemanticVisitor();
         sem.visit(root);
         sem.getSymbolTableHandler().printErrors();

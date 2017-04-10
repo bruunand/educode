@@ -1,5 +1,6 @@
 package com.educode.nodes.method;
 
+import com.educode.helper.NodeHelper;
 import com.educode.nodes.Identifiable;
 import com.educode.nodes.SingleLineStatement;
 import com.educode.nodes.Typeable;
@@ -30,20 +31,7 @@ public class MethodInvocationNode extends UnaryNode implements Identifiable, Sin
 
     public List<Node> getActualArguments()
     {
-        ArrayList<Node> nodes = new ArrayList<>();
-
-        // If child is null, return empty list
-        if (getChild() == null || !(getChild() instanceof NaryNode))
-            return nodes;
-
-        // Add expressions
-        for (Node grandchild : ((NaryNode) getChild()).getChildren())
-        {
-            if (grandchild instanceof Typeable)
-                nodes.add(grandchild);
-        }
-
-        return nodes;
+        return NodeHelper.getGrandchildren(this);
     }
 
     @Override
