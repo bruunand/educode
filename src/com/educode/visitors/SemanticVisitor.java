@@ -2,6 +2,7 @@ package com.educode.visitors;
 
 import com.educode.nodes.Typeable;
 import com.educode.nodes.base.ListNode;
+import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
 import com.educode.nodes.expression.logic.*;
@@ -131,8 +132,8 @@ public class SemanticVisitor extends VisitorBase
         if (methodSymbol == null)
         {
             String formalParameters = "";
-            for (Typeable type : node.getActualArguments())
-                formalParameters += type.getType() + " ";
+            for (Node type : node.getActualArguments())
+                formalParameters += ((Typeable)type).getType() + " ";
 
             _symbolTableHandler.error(node, String.format("No method '%s' exists with the formal parameters %s.", node.getIdentifier(), formalParameters.trim().replace(" ", ", ")));
             node.setType(Type.Error);

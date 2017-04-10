@@ -28,9 +28,9 @@ public class MethodInvocationNode extends UnaryNode implements Identifiable, Sin
         this._calleeMethod = calleeMethod;
     }
 
-    public List<Typeable> getActualArguments()
+    public List<Node> getActualArguments()
     {
-        ArrayList<Typeable> nodes = new ArrayList<>();
+        ArrayList<Node> nodes = new ArrayList<>();
 
         // If child is null, return empty list
         if (getChild() == null || !(getChild() instanceof NaryNode))
@@ -40,7 +40,7 @@ public class MethodInvocationNode extends UnaryNode implements Identifiable, Sin
         for (Node grandchild : ((NaryNode) getChild()).getChildren())
         {
             if (grandchild instanceof Typeable)
-                nodes.add((Typeable) grandchild);
+                nodes.add(grandchild);
         }
 
         return nodes;

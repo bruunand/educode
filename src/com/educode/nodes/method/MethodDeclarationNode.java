@@ -96,7 +96,7 @@ public class MethodDeclarationNode extends BinaryNode implements Identifiable, T
 
         // Get formal and actual arguments
         List<ParameterNode> formalParameters = this.getParameters();
-        List<Typeable> actualArguments = invocationNode.getActualArguments();
+        List<Node> actualArguments = invocationNode.getActualArguments();
 
         // Check if amount matches
         if (formalParameters.size() != actualArguments.size())
@@ -106,7 +106,7 @@ public class MethodDeclarationNode extends BinaryNode implements Identifiable, T
         for (int i = 0; i < formalParameters.size(); i++)
         {
             Type formalType = formalParameters.get(0).getType();
-            Type actualType = actualArguments.get(0).getType();
+            Type actualType = ((Typeable)actualArguments.get(0)).getType();
 
             if (!formalType.equals(actualType))
             {
