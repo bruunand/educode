@@ -106,6 +106,12 @@ public class SemanticVisitor extends VisitorBase
         if (node.getParameterList() != null)
             visitChildren(node.getParameterList());
 
+        // If method declaration has a non-void return type, check if it returns something on all paths
+        if (!node.getType().equals(Type.VoidType))
+        {
+            // TODO
+        }
+
         // Visit block
         visit(node.getBlockNode());
 
