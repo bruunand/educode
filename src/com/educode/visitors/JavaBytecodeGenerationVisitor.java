@@ -100,8 +100,10 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         append(codeBuffer, "  new %s\n  dup\n", node.getType());
 
-        for (Node child:node.getExpressions())
+        for (Node child:node.getActualArguments())
             append(codeBuffer, "%s", visit(child));
+
+        append(codeBuffer, "  invokespecial %s\n", node.getType());
 
         return null;
     }
