@@ -6,7 +6,7 @@ package com.educode.types;
 public class Type
 {
     public final byte Kind;
-    public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5;
+    public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5, REFERENCE = 6;
 
     public Type(byte kind)
     {
@@ -38,6 +38,8 @@ public class Type
                 return "UNKNOWN";
             case Type.ERROR:
                 return "ERROR";
+            case Type.REFERENCE:
+                return "REFERENCE";
             default:
                 return "UNDEFINED"; // Should not happen
         }
@@ -49,4 +51,5 @@ public class Type
     public static final Type CoordinatesType = new Type(COORDINATES);
     public static final Type StringType = new Type(STRING);
     public static final Type Error = new Type(ERROR);
+    public static final Type Reference = new Type(REFERENCE);
 }

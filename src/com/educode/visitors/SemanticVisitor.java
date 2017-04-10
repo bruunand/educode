@@ -106,6 +106,12 @@ public class SemanticVisitor extends VisitorBase
         if (node.getParameterList() != null)
             visitChildren(node.getParameterList());
 
+        // If method declaration has a non-void return type, check if it returns something on all paths
+        if (!node.getType().equals(Type.VoidType))
+        {
+            // TODO
+        }
+
         // Visit block
         visit(node.getBlockNode());
 
@@ -367,6 +373,14 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(EqualExpressionNode node)
     {
+        visitChildren(node);
+
+        Type leftType = ((Typeable)node.getLeftChild()).getType();
+        Type rightType = ((Typeable)node.getRightChild()).getType();
+
+        // Only same type comparisons allowed
+        if (leftType != rightType)
+            _symbolTableHandler.error(node, String.format("Logical operator %s can not be used for types %s and %s.", node.getOperator(), leftType, rightType));
 
         return null;
     }
