@@ -7,10 +7,7 @@ import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
 import com.educode.nodes.expression.logic.*;
-import com.educode.nodes.literal.BoolLiteralNode;
-import com.educode.nodes.literal.IdentifierLiteralNode;
-import com.educode.nodes.literal.NumberLiteralNode;
-import com.educode.nodes.literal.StringLiteralNode;
+import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
@@ -23,6 +20,7 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
+import com.educode.nodes.ungrouped.TypeCastNode;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -263,6 +261,12 @@ public class CodeGenerationVisitor extends VisitorBase
     }
 
     @Override
+    public Object visit(CoordinatesLiteralNode node)
+    {
+        return null;
+    }
+
+    @Override
     public Object visit(OrExpressionNode node)
     {
         return String.format("(%s || %s)", visit(node.getLeftChild()), visit(node.getRightChild()));
@@ -290,6 +294,12 @@ public class CodeGenerationVisitor extends VisitorBase
     public Object visit(NegateNode node)
     {
         return String.format("!(%s)", visit(node.getChild()));
+    }
+
+    @Override
+    public Object visit(TypeCastNode node)
+    {
+        return null;
     }
 
     public String getParameters(Node node)

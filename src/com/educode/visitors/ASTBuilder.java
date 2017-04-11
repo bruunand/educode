@@ -9,10 +9,7 @@ import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
 import com.educode.nodes.expression.logic.*;
-import com.educode.nodes.literal.BoolLiteralNode;
-import com.educode.nodes.literal.IdentifierLiteralNode;
-import com.educode.nodes.literal.NumberLiteralNode;
-import com.educode.nodes.literal.StringLiteralNode;
+import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
@@ -25,6 +22,7 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
+import com.educode.nodes.ungrouped.TypeCastNode;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
@@ -61,17 +59,17 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         switch (operator)
         {
-            case "EQUALS":
+            case "equals":
                 return LogicalOperator.Equals;
-            case "NOT EQUALS":
+            case "not equals":
                 return LogicalOperator.NotEquals;
-            case "LESS THAN":
+            case "less than":
                 return LogicalOperator.LessThan;
-            case "LESS THAN OR EQUALS":
+            case "less than or equals":
                 return LogicalOperator.LessThanOrEquals;
-            case "GREATER THAN":
+            case "greater than":
                 return LogicalOperator.GreaterThan;
-            case "GREATER THAN OR EQUALS":
+            case "greater than or equals":
                 return LogicalOperator.GreaterThanOrEquals;
             default:
                 return LogicalOperator.Error;
@@ -90,7 +88,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
                 return ArithmeticOperator.Division;
             case "*":
                 return ArithmeticOperator.Multiplication;
-            case "%":
+            case "modulo":
                 return ArithmeticOperator.Modulo;
             default:
                 return ArithmeticOperator.Error;
@@ -101,13 +99,13 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         switch (type)
         {
-            case "STRING":
+            case "string":
                 return Type.StringType;
-            case "BOOL":
+            case "bool":
                 return Type.BoolType;
-            case "COORDINATES":
+            case "Coordinates":
                 return Type.CoordinatesType;
-            case "NUMBER":
+            case "number":
                 return Type.NumberType;
             default:
                 return Type.VoidType;
@@ -293,6 +291,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitIdentName(EduCodeParser.IdentNameContext ctx)
     {
+
         return null;
     }
 
@@ -467,6 +466,8 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
             return new NegateNode(visit(ctx.factor()));
         else if (ctx.boolLit() != null)
             return new BoolLiteralNode(Boolean.parseBoolean(ctx.getText()));
+        else if (ctx.dataType() != null)
+            return new TypeCastNode(getType(ctx.dataType().getText()), visit(ctx.factor()));
 
         System.out.println("FactError at line " + ctx.getStart().getLine());
 
@@ -474,19 +475,28 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     }
 
     @Override
+    public Node visitCoordLit(EduCodeParser.CoordLitContext ctx)
+    {
+        return new CoordinatesLiteralNode(visit(ctx.numberLit(0)), visit(ctx.numberLit(1)), visit(ctx.numberLit(2)));
+    }
+
+    @Override
+    public Node visitStringLit(EduCodeParser.StringLitContext ctx)
+    {
+        return new StringLiteralNode(ctx.STRLIT().getText());
+    }
+
+    @Override
+    public Node visitNumberLit(EduCodeParser.NumberLitContext ctx)
+    {
+        return new NumberLiteralNode(Float.parseFloat(ctx.getText()));
+    }
+
+    @Override
     public Node visitLiteral(EduCodeParser.LiteralContext ctx)
     {
         updatePosition(ctx);
 
-        if (ctx.NUMLIT() != null)
-            return new NumberLiteralNode(Float.parseFloat(ctx.NUMLIT().getText())); // num literal
-        else if (ctx.ident() != null)
-            return visit(ctx.ident());
-        else if (ctx.STRLIT() != null)
-            return new StringLiteralNode(ctx.STRLIT().getText()); // string literal
-
-        System.out.println("LitError at line " + ctx.getStart().getLine());
-
-        return null;
+        return visit(ctx.getChild(0));
     }
 }

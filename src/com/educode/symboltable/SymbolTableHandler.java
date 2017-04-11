@@ -13,7 +13,7 @@ import java.util.List;
 public class SymbolTableHandler
 {
     public SymbolTable current = new SymbolTable(); // todo make getter/setter
-    private List<Error> _errorList = new ArrayList<>();
+    private List<SymbolTableMessage> _messageList = new ArrayList<>();
     private MethodDeclarationNode _currentParent;
 
     public void openScope()
@@ -58,10 +58,10 @@ public class SymbolTableHandler
         return false;
     }
 
-    public void printErrors()
+    public void printMessages()
     {
-        for (Error error : _errorList)
-            System.out.println(error);
+        for (SymbolTableMessage message : _messageList)
+            System.out.println(message);
     }
 
     private void error(String description)
@@ -71,7 +71,12 @@ public class SymbolTableHandler
 
     public void error(Node relatedNode, String description)
     {
-        this._errorList.add(new Error(relatedNode, description));
+        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.ERROR, relatedNode, description));
+    }
+
+    public void warning(Node relatedNode, String description)
+    {
+        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.WARNING, relatedNode, description));
     }
 
     public void setCurrentParent(MethodDeclarationNode currentParent)

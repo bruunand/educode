@@ -48,3 +48,7 @@ fabric.properties
 .idea/workspace.xml
 
 \.idea/misc\.xml
+
+test\.java
+
+HelloWorld\.j

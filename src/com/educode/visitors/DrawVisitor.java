@@ -6,10 +6,7 @@ import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
 import com.educode.nodes.expression.logic.*;
-import com.educode.nodes.literal.BoolLiteralNode;
-import com.educode.nodes.literal.IdentifierLiteralNode;
-import com.educode.nodes.literal.NumberLiteralNode;
-import com.educode.nodes.literal.StringLiteralNode;
+import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
@@ -22,6 +19,7 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
+import com.educode.nodes.ungrouped.TypeCastNode;
 
 /**
  * Created by zen on 3/31/17.
@@ -161,6 +159,12 @@ public class DrawVisitor extends VisitorBase
     }
 
     @Override
+    public Object visit(CoordinatesLiteralNode node)
+    {
+        return null;
+    }
+
+    @Override
     public Object visit(OrExpressionNode node)
     {
         return null;
@@ -186,6 +190,12 @@ public class DrawVisitor extends VisitorBase
 
     @Override
     public Object visit(NegateNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(TypeCastNode node)
     {
         return null;
     }

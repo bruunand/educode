@@ -1,10 +1,7 @@
 package com.educode.visitors;
 
 import com.educode.nodes.expression.logic.*;
-import com.educode.nodes.literal.BoolLiteralNode;
-import com.educode.nodes.literal.IdentifierLiteralNode;
-import com.educode.nodes.literal.NumberLiteralNode;
-import com.educode.nodes.literal.StringLiteralNode;
+import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.ReturnNode;
@@ -20,6 +17,7 @@ import com.educode.nodes.expression.MultiplicationExpression;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.ungrouped.TypeCastNode;
 
 /**
  * Created by zen on 3/23/17.
@@ -53,6 +51,7 @@ public abstract class VisitorBase
     public abstract Object visit(StringLiteralNode node);
     public abstract Object visit(IdentifierLiteralNode node);
     public abstract Object visit(BoolLiteralNode node);
+    public abstract Object visit(CoordinatesLiteralNode node);
 
     // Logical
     public abstract Object visit(OrExpressionNode node);
@@ -60,6 +59,9 @@ public abstract class VisitorBase
     public abstract Object visit(RelativeExpressionNode node);
     public abstract Object visit(EqualExpressionNode node);
     public abstract Object visit(NegateNode node);
+
+    // Ungrouped
+    public abstract Object visit(TypeCastNode node);
 
     public Object visit(Node node)
     {

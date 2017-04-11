@@ -1,5 +1,6 @@
 public class HelloWorld
 {
+<<<<<<< HEAD
 public float TestMethodCallReturn(){
 float numA = 3.0
 float numB = (2.0 * 2.0)
@@ -12,6 +13,18 @@ boolean boolC = true
 exampleMethod("test string",6.0,numA)
 if (numA > numB){
 Add(numA,numB)
+=======
+public float TestMethodCallReturn({
+float numa = 3.0
+float numb = 2.0
+float PIK;
+boolean B = false
+Coordinates coords = null
+talk("Hej med dig",6.0,numa)
+if (numa > 5.0)
+{
+Add(numa,numb)
+>>>>>>> master
 }
 
 else if (numC != numD){
@@ -24,11 +37,16 @@ Add(boolA,boolB)
 
 else
 {
+<<<<<<< HEAD
 Add(boolB,boolC)
 }
 
 while (numA < numB){
 burdeIkkeVirke = false
+=======
+numba = 7.0
+B = lolfreak<3
+>>>>>>> master
 }
 
 return Add((numa + ((numa - numb) * numa)),numb)
@@ -68,8 +86,14 @@ i = 2.0
 fed = "anderledes streng"
 }
 
+<<<<<<< HEAD
 while (j < k){
 j = (j + 1.0)
+=======
+ikke implementeret RepeatWhileNode
+numa = ikke implementeret MultiplicationExpression
+ikke implementeret ReturnNode
+>>>>>>> master
 }
 
 return j

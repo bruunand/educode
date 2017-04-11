@@ -15,6 +15,7 @@ public class BlockNode extends NaryNode
     {
         super(children);
     }
+    public boolean Returns = false;
 
     @Override
     public Object accept(VisitorBase visitor)
