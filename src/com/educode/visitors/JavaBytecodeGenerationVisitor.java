@@ -1,6 +1,7 @@
 package com.educode.visitors;
 
 import com.educode.helper.OperatorTranslator;
+import com.educode.helper.Tuple;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
@@ -22,8 +23,9 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
-
+import com.educode.types.Type;
 import java.io.FileWriter;
+import java.util.ArrayList;
 
 /**
  * Created by theis on 4/10/17.
@@ -31,6 +33,11 @@ import java.io.FileWriter;
 public class JavaBytecodeGenerationVisitor extends VisitorBase
 {
     private FileWriter fw;
+    private int OffSet;
+    private int LabelCounter;
+    private ArrayList<Tuple<Node, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<Node, Integer>>();
+
+
 
     public void append(StringBuffer buffer, String format, Object ... args)
     {
@@ -48,14 +55,14 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     public Object visit(ProgramNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
+
         append(codeBuffer, ".class public %s\n", node.getIdentifier());
         append(codeBuffer, ".super java/lang/Object\n\n");
-        append(codeBuffer,
-                ".method public <init>()V\n" +
-                "  aload_0\n"+
-                "  invokespecial java/lang/Object/<init>()V\n" +
-                "  return\n" +
-                ".end method\n\n");
+        append(codeBuffer, ".method public <init>()V\n" );
+        append(codeBuffer, "  aload_0\n");
+        append(codeBuffer, "  invokespecial java/lang/Object/<init>()V\n");
+        append(codeBuffer, "  return\n");
+        append(codeBuffer, ".end method\n\n");
 
         // Visit method declarations
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
@@ -80,10 +87,15 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     public Object visit(BlockNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
+        int StartOffset = OffSet;
 
         for (Node child : node.getChildren())
             append(codeBuffer, "%s",visit(child));
 
+        for (int i = 0; i < OffSet - StartOffset; i++)
+            DeclaratoinOffsetTable.remove(--OffSet);
+
+        OffSet = StartOffset;
         return codeBuffer;
     }
 
@@ -113,6 +125,9 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     {
         StringBuffer codeBuffer = new StringBuffer();
 
+        OffSet = 0;
+        LabelCounter = 0;
+
         // Visit parameters
         append(codeBuffer, ".method public %s(%s)%s\n", node.getIdentifier(), getParameters(node.getParameterList()),OperatorTranslator.toBytecode(node.getType()));
 
@@ -132,7 +147,8 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     {
         StringBuffer codeBuffer = new StringBuffer();
 
-
+        append(codeBuffer, "  aload_0\n");
+        append(codeBuffer, "  invokevirtual Namespace\n"); //TODO: Get namespace
 
         return codeBuffer;
     }
@@ -152,25 +168,104 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     @Override
     public Object visit(VariableDeclarationNode node)
     {
-        return null;
+        StringBuffer codeBuffer = new StringBuffer();
+
+        if (!node.hasChild())
+            return "";
+
+        append(codeBuffer, "%s", visit(node.getChild()));
+        DeclaratoinOffsetTable.add(new Tuple<Node, Integer>(node.getChild(), ++OffSet));
+
+        switch (node.getType().Kind)
+        {
+            case Type.NUMBER:
+                append(codeBuffer, "  dstore %s\n", OffSet);
+                break;
+            case Type.REFERENCE:
+                append(codeBuffer, "  astore %s\n", OffSet);
+            default:
+                //TODO: Some error
+                break;
+        }
+
+        return codeBuffer;
     }
 
     @Override
     public Object visit(IfNode node)
     {
-        return null;
+        StringBuffer codeBuffer = new StringBuffer();
+        int EndIfLabel = LabelCounter++;
+        boolean First = true;
+        ArrayList<ConditionNode> ConditionNodeList = node.getConditionBlocks();
+        if (ConditionNodeList.size() == 1)
+        {
+            append(codeBuffer, "%s", visit(ConditionNodeList.get(0).getLeftChild()));
+            append(codeBuffer, "  ifeq L%s\n", EndIfLabel);
+            append(codeBuffer, "%s", ConditionNodeList.get(0).getRightChild());
+        }
+        else
+        {
+            for (int i = 0; i < ConditionNodeList.size(); i++)
+            {
+                if (i != 0)
+                {
+                    append(codeBuffer, "L%s:\n", LabelCounter++);
+                }
+
+                if (i + 1 == ConditionNodeList.size())
+                {
+                    if (ConditionNodeList.get(i).hasLeftChild())
+                    {
+                        append(codeBuffer, "%s", visit(ConditionNodeList.get(i).getLeftChild()));
+                        append(codeBuffer, "  ifeq L%s\n", EndIfLabel);
+                    }
+
+                    append(codeBuffer, "%s", ConditionNodeList.get(i).getRightChild());
+                }
+                else
+                {
+                    append(codeBuffer, "%s", visit(ConditionNodeList.get(i)));
+                    append(codeBuffer, "  goto L%s\n", EndIfLabel);
+                }
+
+
+
+            }
+        }
+
+        append(codeBuffer, "L%s:\n", EndIfLabel);
+        append(codeBuffer, "  nop\n");
+
+        return codeBuffer;
     }
 
     @Override
     public Object visit(ConditionNode node)
     {
-        return null;
+        StringBuffer codeBuffer = new StringBuffer();
+
+        append(codeBuffer, "%s", visit(node.getLeftChild()));
+        append(codeBuffer, "  ifeq L%s\n", LabelCounter);
+        append(codeBuffer, "%s", node.getRightChild());
+
+        return codeBuffer;
     }
 
     @Override
     public Object visit(RepeatWhileNode node)
     {
-        return null;
+        StringBuffer codeBuffer = new StringBuffer();
+        int  conditionLabel = LabelCounter++;
+
+        append(codeBuffer, "  goto L%s\n", conditionLabel);
+        append(codeBuffer, "L%s:\n", LabelCounter);
+        append(codeBuffer, "%s", visit(((ConditionNode) node.getChild()).getRightChild()));
+        append(codeBuffer, "L%s:\n", conditionLabel);
+        append(codeBuffer, "%s", visit(((ConditionNode) node.getChild()).getLeftChild()));
+        append(codeBuffer, "  ifne L%s\n", LabelCounter++);
+
+        return codeBuffer;
     }
 
     @Override

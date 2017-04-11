@@ -2,6 +2,7 @@ package com.educode.nodes.ungrouped;
 
 import com.educode.helper.NodeHelper;
 import com.educode.nodes.Identifiable;
+import com.educode.nodes.Namespace;
 import com.educode.nodes.SingleLineStatement;
 import com.educode.nodes.Typeable;
 import com.educode.nodes.base.Node;
