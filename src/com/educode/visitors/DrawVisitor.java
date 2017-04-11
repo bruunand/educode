@@ -43,7 +43,7 @@ public class DrawVisitor extends VisitorBase
         for (Node child : node.getChildren())
             blockContent += "[" + visit(child) + "]";
 
-        return String.format("BlockNode %s", blockContent.trim());
+        return String.format("BlockNode %s", blockContent);
     }
 
     @Override
@@ -53,13 +53,13 @@ public class DrawVisitor extends VisitorBase
         for (Node child : node.getChildren())
             listContent += "[" + visit(child) + "]";
 
-        return String.format("ListNode %s", listContent.trim());
+        return String.format("ListNode %s", listContent);
     }
 
     @Override
     public Object visit(ObjectInstantiationNode node)
     {
-        return null;
+        return String.format("ObjectInstantiation [%s][%s]", node.getType(), visit(node.getChild()));
     }
 
     @Override
@@ -74,7 +74,7 @@ public class DrawVisitor extends VisitorBase
     @Override
     public Object visit(MethodInvocationNode node)
     {
-        return null;
+        return String.format("MethodInv [%s][%s]", node.getIdentifier(), visit(node.getChild()));
     }
 
     @Override
@@ -86,64 +86,72 @@ public class DrawVisitor extends VisitorBase
     @Override
     public Object visit(AssignmentNode node)
     {
-        return null;
+        return visit(node.getChild());
     }
 
     @Override
     public Object visit(VariableDeclarationNode node)
     {
-        return null;
+        if (!node.hasChild())
+            return String.format("Declare %s", node.getIdentifier());
+        else
+            return String.format("Decl/Assign [%s][%s]", node.getIdentifier(), visit(node.getChild()));
     }
 
     @Override
     public Object visit(IfNode node)
     {
-        return null;
+        String print = "If";
+        for (Node child : node.getChildren())
+            print += String.format("[%s]", visit(child));
+
+        return print;
     }
 
     @Override
     public Object visit(ConditionNode node)
     {
-        return null;
+        return String.format("Condition [%s][%s]", visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
     @Override
     public Object visit(RepeatWhileNode node)
     {
-        return null;
+
+        return String.format("RepeatWhile [%s]", visit(node.getChild()));
     }
 
     @Override
     public Object visit(ReturnNode node)
     {
         if (node.getChild() != null)
-            return String.format("ReturnNode " + visit(node.getChild()));
+            return String.format("Return [%s]", visit(node.getChild()));
 
-        return null;
+        return "Return";
     }
 
     @Override
     public Object visit(MultiplicationExpression node)
     {
-        return null;
+        return String.format("Mulitiplication [%s][Operator %s][%s]", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
     }
 
     @Override
     public Object visit(AdditionExpression node)
     {
-        return String.format("[Addition [%s][Operator %s][%s]]", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
+        return String.format("Addition [%s][Operator %s][%s]", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
     }
 
     @Override
     public Object visit(NumberLiteralNode node)
     {
-        return null;
+        return String.format("NumLit [%s]", node.getValue());
     }
 
     @Override
     public Object visit(StringLiteralNode node)
     {
-        return null;
+        return "StringLit";
     }
 
     @Override
@@ -155,48 +163,48 @@ public class DrawVisitor extends VisitorBase
     @Override
     public Object visit(BoolLiteralNode node)
     {
-        return null;
+        return String.format("BoolLit [%s]", node.getValue());
     }
 
     @Override
     public Object visit(CoordinatesLiteralNode node)
     {
-        return null;
+        return String.format("Coordinates [%s][%s][%s]", visit(node.getX()), visit(node.getY()), visit(node.getZ()));
     }
 
     @Override
     public Object visit(OrExpressionNode node)
     {
-        return null;
+        return String.format("%s [%s][%s]", node.getOperator(), visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
     @Override
     public Object visit(AndExpressionNode node)
     {
-        return null;
+        return String.format("%s [%s][%s]", node.getOperator(), visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
     @Override
     public Object visit(RelativeExpressionNode node)
     {
-        return null;
+        return String.format("%s [%s][%s]", node.getOperator(), visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
     @Override
     public Object visit(EqualExpressionNode node)
     {
-        return null;
+        return String.format("%s [%s][%s]", node.getOperator(), visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
     @Override
     public Object visit(NegateNode node)
     {
-        return null;
+        return String.format("not [%s]",  visit(node.getChild()));
     }
 
     @Override
     public Object visit(TypeCastNode node)
     {
-        return null;
+        return String.format("TypeCast [%s][%s]", node.getType(), visit(node.getChild()));
     }
 }

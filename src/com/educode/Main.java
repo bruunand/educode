@@ -35,5 +35,8 @@ public class Main
 
         JavaBytecodeGenerationVisitor g = new JavaBytecodeGenerationVisitor();
         g.visit(root);
+
+        DrawVisitor d = new DrawVisitor();
+        System.out.println(d.visit(root));
     }
 }
