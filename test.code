@@ -1,34 +1,71 @@
-program HelloWorld //Debug program
-    method TestMethodCallReturn() returns number
-        number numa = 3
-        number numb = 2
-        number PIK
-        bool B = false
-        Coordinates coords = (5, 4, 100)
+PROGRAM HelloWorld //Debug program
+    METHOD TestMethodCallReturn() RETURNS NUMBER
+        NUMBER numA = 3
+        NUMBER numB = 2 * 2
+        NUMBER numC = 3 / 9 + (7 * (9 *7))
+        NUMBER numD = 2 + (2 / 3) + (3 * 9)
 
-        talk("Hej med dig", 6, numa)
+        NUMBER burdeIkkeVirke = "Lol"
 
-        if numa greater than 5 then
-            Add(numa, numb)
-        else if numa not equals 8 then
-            lol(fuck)
-        else if numb equals numa then
-            numba = 7
-            B = not B
-        else
-            simon(22)
-        end if
+        BOOL boolA = NOT FALSE
+        BOOL boolB = NOT TRUE
+        BOOL boolC = TRUE
 
-        repeat while numa less than numb
-            talk((string)"hehe")
-        end repeat
+        exampleMethod("test string", 6, numA)
 
-        numa = 5 modulo 2
+        IF numA GREATER THAN numB THEN
+            Add(numA, numB)
+        ELSE IF numC NOT EQUALS numD THEN
+            Add(numC, numD)
+        ELSE IF boolC THEN
+            //Burde ikke virke
+            Add(boolA, boolB)
+        ELSE
+            //Burde ikke virke
+            Add(boolB, boolC)
+        END IF
 
-        return Add(numa + (numa - numb) * numa, numb)
-    end method
+        REPEAT WHILE numA LESS THAN numB
+            burdeIkkeVirke = FALSE
+        END REPEAT
 
-    method Add(number numOne, number numTwo) returns number
-        return numOne+numTwo
-    end method
-end program
+        RETURN Add(numa + (numa - numb) * numa, numb)
+
+    END METHOD
+
+    METHOD Add(NUMBER numOne, NUMBER numTwo) RETURNS NUMBER
+        RETURN numOne+numTwo
+    END METHOD
+
+    METHOD niceMain()
+        //i need all the shit
+        NUMBER a, b, c, d
+        NUMBER e = f = 5
+        NUMBER g = 6, h = 7
+        BOOL T, F
+        BOOL TF = TRUE
+        STRING fed = "FED STRENG MAND"
+        STRING tomstreng
+        STRING halvtom = ikketom = "Federe streng mand"
+
+       c = viskalbrugeenmetode(a, e, h, T, TF, fed, halvtom)
+    END METHOD
+
+    METHOD viskalbrugeenmetode(NUMBER i, NUMBER j, NUMBER k, BOOL B1, BOOL B2, STRING S1, STRING S2) RETURNS NUMBER
+        B1 = TRUE
+
+               IF B2 THEN
+                    B1 = FALSE
+                ELSE IF NOT B1 OR j LESS THAN k THEN
+                    i = 900
+                ELSE
+                    i = 2
+                    fed = "anderledes streng"
+                END IF
+                REPEAT WHILE j LESS THAN k
+                    j = j+1
+                END REPEAT
+
+               RETURN j
+        END METHOD
+END PROGRAM

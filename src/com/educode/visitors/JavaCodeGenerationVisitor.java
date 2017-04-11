@@ -89,7 +89,11 @@ public class JavaCodeGenerationVisitor extends VisitorBase{
 
     @Override
     public Object visit(ListNode node) {
-        return "ikke implementeret ListNode";
+        StringBuffer codeBuffer = new StringBuffer();
+        for (Node lol : node.getChildren())
+            append(codeBuffer, "TEST(%s)", visit(lol));
+
+        return codeBuffer;
     }
 
     @Override
@@ -109,7 +113,13 @@ public class JavaCodeGenerationVisitor extends VisitorBase{
 
         //visit parameters
         for (ParameterNode parameterNodeDecl : node.getParameters())
-            append(codeBuffer, "%s", visit(parameterNodeDecl));
+            append(codeBuffer, "%s,", visit(parameterNodeDecl));
+
+        if (codeBuffer.charAt(codeBuffer.length() - 1) == ','){
+            codeBuffer.deleteCharAt(codeBuffer.length() - 1);
+        }
+
+        append(codeBuffer, ")");
 
         //visit block
         append(codeBuffer,"%s", visit(node.getBlockNode()));
@@ -123,7 +133,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase{
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "%s(", node.getIdentifier());
 
-        /*HVAD?!?!*/
         for (Node parameterNodeDecl : ((ListNode) node.getChild()).getChildren())
             append(codeBuffer, "%s,", visit(parameterNodeDecl));
 
@@ -138,7 +147,12 @@ public class JavaCodeGenerationVisitor extends VisitorBase{
 
     @Override
     public Object visit(ParameterNode node) {
-        return "ikke implementeret ParameterNode";
+
+        //formal parameter node
+        StringBuffer codeBuffer = new StringBuffer();
+        append(codeBuffer, "%s %s", node.getType(), node.getIdentifier());
+
+        return codeBuffer;
     }
 
     @Override
@@ -180,12 +194,10 @@ public class JavaCodeGenerationVisitor extends VisitorBase{
         {
             //visit if
             if (i++ == 0)
-                append(codeBuffer, "if (%s)\n", visit(condition.getLeftChild()));
+                append(codeBuffer, "if %s\n", visit(condition));
             //visit else if
             else
-                append(codeBuffer, "else if (%s)\n", visit(condition.getLeftChild()));
-
-            append(codeBuffer, "%s", visit(condition.getRightChild()));
+                append(codeBuffer, "else if %s\n", visit(condition));
         }
 
         // Visit else block (if any)
@@ -203,28 +215,45 @@ public class JavaCodeGenerationVisitor extends VisitorBase{
 
     @Override
     public Object visit(ConditionNode node) {
-        return "ikke implementeret ConditionNode";
+
+        StringBuffer codeBuffer = new StringBuffer();
+        append(codeBuffer, "(%s)%s", visit(node.getLeftChild()), visit(node.getRightChild()));
+        return codeBuffer;
     }
 
     @Override
     public Object visit(RepeatWhileNode node) {
 
-        return "ikke implementeret RepeatWhileNode";
+        StringBuffer codeBuffer = new StringBuffer();
+        append(codeBuffer, "while %s",visit(node.getChild()));
+
+
+        return codeBuffer;
     }
 
     @Override
     public Object visit(ReturnNode node) {
-        return "ikke implementeret ReturnNode";
+
+        StringBuffer codeBuffer = new StringBuffer();
+        append(codeBuffer, "return %s", visit(node.getChild()));
+        return codeBuffer;
     }
 
     @Override
     public Object visit(MultiplicationExpression node) {
-        return "ikke implementeret MultiplicationExpression";
+
+        StringBuffer codeBuffer = new StringBuffer();
+        append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
+
+        return codeBuffer;
     }
 
     @Override
     public Object visit(AdditionExpression node) {
-        return "ikke implementeret AdditionExpression";
+        StringBuffer codeBuffer = new StringBuffer();
+        append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
+
+        return codeBuffer;
     }
 
     @Override
@@ -290,10 +319,10 @@ public class JavaCodeGenerationVisitor extends VisitorBase{
     @Override
     public Object visit(NegateNode node) {
 
-        /*StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "%s%s", OperatorTranslator.toJava(node.get) node.getChild());*/
+        StringBuffer codeBuffer = new StringBuffer();
+        append(codeBuffer, "!(%s)", visit(node.getChild()));
 
-        return "lolfreak<3";
+        return codeBuffer;
     }
 
     @Override
