@@ -32,6 +32,9 @@ public class Main
         SemanticVisitor sem = new SemanticVisitor();
         sem.visit(root);
         sem.getSymbolTableHandler().printMessages();
+
+        ReturnVisitor ret = new ReturnVisitor();
+        ret.visit(root);
         JavaBytecodeGenerationVisitor g = new JavaBytecodeGenerationVisitor();
         g.visit(root);
     }
