@@ -94,7 +94,7 @@ factor   : literal
 
 dataType : 'number'//Contains both ints and floats
          | 'bool'
-         | 'coordinates'//Position data, (x, z, y)?
+         | 'Coordinates'//Position data, (x, z, y)?
          | 'string'
          | 'Collection'//A collection of a type (Like a list in C#)
          | 'Block'//Data for blocks placed in the world
@@ -104,8 +104,18 @@ dataType : 'number'//Contains both ints and floats
          ;
 
 literal  : ident
-         | NUMLIT
-         | STRLIT
+         | stringLit
+         | numberLit
+         | coordLit
+         ;
+
+stringLit: STRLIT
+         ;
+
+coordLit : LPAREN numberLit ',' numberLit ',' numberLit RPAREN
+         ;
+
+numberLit: NUMLIT
          ;
 
 eol      : NEWLINE
@@ -174,9 +184,6 @@ fragment USym     : '_'
 
 /* Literals */
 NUMLIT   : Digit+('.' Digit*)?
-         ;
-
-COORDLIT : LPAREN Digit+ ',' Digit+',' Digit+ RPAREN
          ;
 
 STRLIT   : USTRLIT '"'

@@ -10,7 +10,7 @@
 .method public TestMethodCallReturn()D
   .limit stack 100
   .limit locals 100
-nullnullnullnullnullnullnullnull.end method
+nullnullnullnullnullnullnullnullnull.end method
 
 .method public Add(null,null)D
   .limit stack 100

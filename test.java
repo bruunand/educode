@@ -5,6 +5,7 @@ float numa = 3.0
 float numb = 2.0
 float PIK;
 boolean B = false
+Coordinates coords = null
 talk("Hej med dig",6.0,numa)
 if (numa > 5.0)
 {
@@ -25,7 +26,7 @@ simon(22.0)
 }
 
 ikke implementeret RepeatWhileNode
-numa = null
+numa = ikke implementeret MultiplicationExpression
 ikke implementeret ReturnNode
 }
 public float Add(ikke implementeret ParameterNodeikke implementeret ParameterNode{

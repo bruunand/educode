@@ -7,10 +7,7 @@ import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
 import com.educode.nodes.expression.logic.*;
-import com.educode.nodes.literal.BoolLiteralNode;
-import com.educode.nodes.literal.IdentifierLiteralNode;
-import com.educode.nodes.literal.NumberLiteralNode;
-import com.educode.nodes.literal.StringLiteralNode;
+import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
@@ -261,6 +258,12 @@ public class CodeGenerationVisitor extends VisitorBase
     public Object visit(BoolLiteralNode node)
     {
         return node.getValue();
+    }
+
+    @Override
+    public Object visit(CoordinatesLiteralNode node)
+    {
+        return null;
     }
 
     @Override

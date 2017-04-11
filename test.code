@@ -4,6 +4,7 @@ program HelloWorld //Debug program
         number numb = 2
         number PIK
         bool B = false
+        Coordinates coords = (5, 4, 100)
 
         talk("Hej med dig", 6, numa)
 
@@ -22,7 +23,7 @@ program HelloWorld //Debug program
             talk((string)"hehe")
         end repeat
 
-        numa = (string) 5
+        numa = 5 modulo 2
 
         return Add(numa + (numa - numb) * numa, numb)
     end method
