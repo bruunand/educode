@@ -160,7 +160,27 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     @Override
     public Object visit(AssignmentNode node)
     {
-        return null;
+        StringBuffer codeBuffer = new StringBuffer();
+
+        append(codeBuffer, "%s", visit(node.getChild()));
+        append(codeBuffer, "  dup\n");
+
+        switch (node.getIdentifierNode().getType().Kind)
+        {
+            case Type.NUMBER:
+                append(codeBuffer, "  dstore %s\n", getOffSetByNode(node.getIdentifierNode()));
+                break;
+            case Type.BOOL:
+                append(codeBuffer, "  istore %s\n", getOffSetByNode(node.getIdentifierNode()));
+                break;
+            case Type.REFERENCE:
+                append(codeBuffer, "  astore %s\n", getOffSetByNode(node.getIdentifierNode()));
+            default:
+                append(codeBuffer, "ASDASD%s\n", node.getIdentifierNode().getType().Kind);
+                break;
+        }
+
+        return codeBuffer;
     }
 
     @Override
@@ -179,6 +199,9 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
             case Type.NUMBER:
                 append(codeBuffer, "  dstore %s\n", OffSet);
                 break;
+            case Type.BOOL:
+                append(codeBuffer, "  istore %s\n", OffSet);
+                break;
             case Type.REFERENCE:
                 append(codeBuffer, "  astore %s\n", OffSet);
             default:
@@ -190,7 +213,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     }
 
     @Override
-    public Object visit(IfNode node)
+    public Object visit(IfNode node) //TODO: MIGHT NOT BE CORRECT
     {
         StringBuffer codeBuffer = new StringBuffer();
         int EndIfLabel = LabelCounter++;
@@ -365,4 +388,16 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         return parameters;
     }
+
+    public int getOffSetByNode(Node node)
+    {
+        for (Tuple<Node, Integer> tuple:DeclaratoinOffsetTable)
+        {
+            if (tuple.x.equals(node))
+                return tuple.y;
+        }
+
+        return -1;
+    }
 }
+
