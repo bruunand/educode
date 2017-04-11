@@ -69,7 +69,7 @@ public class ReturnVisitor extends VisitorBase
         for (Node n: node.getChildren())
         {
             if(blockReturns)
-                _symbolTableHandler.error(n, String.format("Line %i is unreacheable due to prior return.", n.getLineNumber()));
+                _symbolTableHandler.error(n, String.format("Line %d is unreacheable due to prior return.", n.getLineNumber()));
 
             if (n instanceof ReturnNode)
                 blockReturns = true;
