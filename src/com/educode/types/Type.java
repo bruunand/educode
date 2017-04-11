@@ -35,7 +35,7 @@ public class Type
             case Type.COORDINATES:
                 return "COORDINATES";
             case Type.VOID:
-                return "UNKNOWN";
+                return "VOID";
             case Type.ERROR:
                 return "ERROR";
             case Type.REFERENCE:

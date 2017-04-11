@@ -1,31 +1,71 @@
 PROGRAM HelloWorld //Debug program
     METHOD TestMethodCallReturn() RETURNS NUMBER
-        NUMBER numa = 3
-        NUMBER numb = 2
-        NUMBER PIK
-        BOOL B = FALSE
+        NUMBER numA = 3
+        NUMBER numB = 2 * 2
+        NUMBER numC = 3 / 9 + (7 * (9 *7))
+        NUMBER numD = 2 + (2 / 3) + (3 * 9)
 
-        talk("Hej med dig", 6, numa)
+        NUMBER burdeIkkeVirke = "Lol"
 
-        IF numa GREATER THAN 5 THEN
-            Add(numa, numb)
+        BOOL boolA = NOT FALSE
+        BOOL boolB = NOT TRUE
+        BOOL boolC = TRUE
 
-        ELSE IF numa NOT EQUALS 8 THEN
-            lol(fuck)
-        ELSE IF numb EQUALS numa THEN
-            a = 7
-            B = NOT B
+        exampleMethod("test string", 6, numA)
+
+        IF numA GREATER THAN numB THEN
+            Add(numA, numB)
+        ELSE IF numC NOT EQUALS numD THEN
+            Add(numC, numD)
+        ELSE IF boolC THEN
+            //Burde ikke virke
+            Add(boolA, boolB)
         ELSE
-            simon(22)
+            //Burde ikke virke
+            Add(boolB, boolC)
         END IF
 
-        REPEAT WHILE numa LESS THAN numb
+        REPEAT WHILE numA LESS THAN numB
+            burdeIkkeVirke = FALSE
         END REPEAT
 
         RETURN Add(numa + (numa - numb) * numa, numb)
+
     END METHOD
 
     METHOD Add(NUMBER numOne, NUMBER numTwo) RETURNS NUMBER
         RETURN numOne+numTwo
     END METHOD
+
+    METHOD niceMain()
+        //i need all the shit
+        NUMBER a, b, c, d
+        NUMBER e = f = 5
+        NUMBER g = 6, h = 7
+        BOOL T, F
+        BOOL TF = TRUE
+        STRING fed = "FED STRENG MAND"
+        STRING tomstreng
+        STRING halvtom = ikketom = "Federe streng mand"
+
+       c = viskalbrugeenmetode(a, e, h, T, TF, fed, halvtom)
+    END METHOD
+
+    METHOD viskalbrugeenmetode(NUMBER i, NUMBER j, NUMBER k, BOOL B1, BOOL B2, STRING S1, STRING S2) RETURNS NUMBER
+        B1 = TRUE
+
+               IF B2 THEN
+                    B1 = FALSE
+                ELSE IF NOT B1 OR j LESS THAN k THEN
+                    i = 900
+                ELSE
+                    i = 2
+                    fed = "anderledes streng"
+                END IF
+                REPEAT WHILE j LESS THAN k
+                    j = j+1
+                END REPEAT
+
+               RETURN j
+        END METHOD
 END PROGRAM

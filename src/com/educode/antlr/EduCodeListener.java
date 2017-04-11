@@ -268,6 +268,36 @@ public interface EduCodeListener extends ParseTreeListener {
 	 */
 	void exitLiteral(EduCodeParser.LiteralContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link EduCodeParser#stringLit}.
+	 * @param ctx the parse tree
+	 */
+	void enterStringLit(EduCodeParser.StringLitContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EduCodeParser#stringLit}.
+	 * @param ctx the parse tree
+	 */
+	void exitStringLit(EduCodeParser.StringLitContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EduCodeParser#coordLit}.
+	 * @param ctx the parse tree
+	 */
+	void enterCoordLit(EduCodeParser.CoordLitContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EduCodeParser#coordLit}.
+	 * @param ctx the parse tree
+	 */
+	void exitCoordLit(EduCodeParser.CoordLitContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EduCodeParser#numberLit}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumberLit(EduCodeParser.NumberLitContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EduCodeParser#numberLit}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumberLit(EduCodeParser.NumberLitContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link EduCodeParser#eol}.
 	 * @param ctx the parse tree
 	 */
