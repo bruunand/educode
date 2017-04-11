@@ -35,6 +35,8 @@ public class Main
 
         ReturnVisitor ret = new ReturnVisitor();
         ret.visit(root);
+        ret.getSymbolTableHandler().printMessages();
+
         JavaBytecodeGenerationVisitor g = new JavaBytecodeGenerationVisitor();
         g.visit(root);
     }
