@@ -22,6 +22,7 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
+import com.educode.nodes.ungrouped.TypeCastNode;
 
 /**
  * Created by zen on 3/31/17.
@@ -186,6 +187,12 @@ public class DrawVisitor extends VisitorBase
 
     @Override
     public Object visit(NegateNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(TypeCastNode node)
     {
         return null;
     }

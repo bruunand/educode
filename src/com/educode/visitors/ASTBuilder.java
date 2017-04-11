@@ -62,17 +62,17 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         switch (operator)
         {
-            case "EQUALS":
+            case "equals":
                 return LogicalOperator.Equals;
-            case "NOT EQUALS":
+            case "not equals":
                 return LogicalOperator.NotEquals;
-            case "LESS THAN":
+            case "less than":
                 return LogicalOperator.LessThan;
-            case "LESS THAN OR EQUALS":
+            case "less than or equals":
                 return LogicalOperator.LessThanOrEquals;
-            case "GREATER THAN":
+            case "greater than":
                 return LogicalOperator.GreaterThan;
-            case "GREATER THAN OR EQUALS":
+            case "greater than or equals":
                 return LogicalOperator.GreaterThanOrEquals;
             default:
                 return LogicalOperator.Error;
@@ -91,7 +91,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
                 return ArithmeticOperator.Division;
             case "*":
                 return ArithmeticOperator.Multiplication;
-            case "%":
+            case "modulo":
                 return ArithmeticOperator.Modulo;
             default:
                 return ArithmeticOperator.Error;
@@ -102,13 +102,13 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         switch (type)
         {
-            case "STRING":
+            case "string":
                 return Type.StringType;
-            case "BOOL":
+            case "bool":
                 return Type.BoolType;
-            case "COORDINATES":
+            case "Coordinates":
                 return Type.CoordinatesType;
-            case "NUMBER":
+            case "number":
                 return Type.NumberType;
             default:
                 return Type.VoidType;

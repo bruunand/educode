@@ -16,8 +16,8 @@ lol(fuck)
 }
 else if (numb == numa)
 {
-a = 7.0
-B = 
+numba = 7.0
+B = lolfreak<3
 }
 else
 {
@@ -25,6 +25,7 @@ simon(22.0)
 }
 
 ikke implementeret RepeatWhileNode
+numa = null
 ikke implementeret ReturnNode
 }
 public float Add(ikke implementeret ParameterNodeikke implementeret ParameterNode{

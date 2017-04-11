@@ -22,6 +22,7 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
+import com.educode.nodes.ungrouped.TypeCastNode;
 import com.educode.symboltable.Symbol;
 import com.educode.symboltable.SymbolTableHandler;
 import com.educode.types.ArithmeticOperator;
@@ -48,13 +49,16 @@ public class SemanticVisitor extends VisitorBase
         _symbolTableHandler.enterSymbol(new MethodDeclarationNode(parameterNodes, null, name, returnType));
     }
 
+    public SemanticVisitor()
+    {
+        // Add Minecraft related methods
+        addDefaultMethod("talk", Type.VoidType, Type.StringType);
+    }
+
     @Override
     public Object visit(ProgramNode node)
     {
         _symbolTableHandler.openScope();
-
-        // Add Minecraft related methods
-        addDefaultMethod("talk", Type.VoidType, Type.StringType);
 
         // Add method declarations to symbol table
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
@@ -400,5 +404,34 @@ public class SemanticVisitor extends VisitorBase
             _symbolTableHandler.error(node, "Negated expression did not have a type."); // should not happen..
 
         return null;
+    }
+
+    @Override
+    public Object visit(TypeCastNode node)
+    {
+        visitChildren(node);
+
+        if (node.getChild() instanceof Typeable)
+        {
+            Type fromType = ((Typeable)node.getChild()).getType();
+            Type toType   = node.getType();
+
+            if (fromType.equals(toType))
+                _symbolTableHandler.warning(node, String.format("Redundant cast from %s to %s", fromType, toType));
+            else if (!isExplicitCastAllowed(fromType, toType))
+                _symbolTableHandler.error(node, String.format("Type %s cannot be cast to type %s.", fromType, toType));
+        }
+        else
+            _symbolTableHandler.error(node, "Child of type cast did not have a type."); // should not happen
+
+        return null;
+    }
+
+    private boolean isExplicitCastAllowed(Type fromType, Type toType)
+    {
+        if (toType.equals(Type.StringType))
+            return true;
+
+        return false;
     }
 }

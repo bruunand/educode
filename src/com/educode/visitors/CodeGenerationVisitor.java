@@ -23,6 +23,7 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
+import com.educode.nodes.ungrouped.TypeCastNode;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -290,6 +291,12 @@ public class CodeGenerationVisitor extends VisitorBase
     public Object visit(NegateNode node)
     {
         return String.format("!(%s)", visit(node.getChild()));
+    }
+
+    @Override
+    public Object visit(TypeCastNode node)
+    {
+        return null;
     }
 
     public String getParameters(Node node)

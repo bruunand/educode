@@ -22,6 +22,7 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
+import com.educode.nodes.ungrouped.TypeCastNode;
 
 import java.util.List;
 
@@ -359,6 +360,12 @@ public class PrettyPrintVisitor extends VisitorBase
 
         depth--;
 
+        return null;
+    }
+
+    @Override
+    public Object visit(TypeCastNode node)
+    {
         return null;
     }
 }

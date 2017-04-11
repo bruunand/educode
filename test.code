@@ -12,15 +12,17 @@ program HelloWorld //Debug program
         else if numa not equals 8 then
             lol(fuck)
         else if numb equals numa then
-            a = 7
-            B = NOT B
+            numba = 7
+            B = not B
         else
             simon(22)
         end if
 
         repeat while numa less than numb
-            talk("hehe")
+            talk((string)"hehe")
         end repeat
+
+        numa = (string) 5
 
         return Add(numa + (numa - numb) * numa, numb)
     end method
