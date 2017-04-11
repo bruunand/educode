@@ -24,37 +24,55 @@ import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.TypeCastNode;
 
-import java.util.List;
+import java.io.FileWriter;
 
 /**
- * Created by zen on 3/31/17.
+ * Created by theis on 4/10/17.
  */
-public class PrettyPrintVisitor extends VisitorBase
+public class JavaBytecodeGenerationVisitor extends VisitorBase
 {
-    private int depth = -1;
+    private FileWriter fw;
 
-    private void print(String format, Object ... args)
+    public void append(StringBuffer buffer, String format, Object ... args)
     {
-        for (int i = 0; i < depth; i++)
-            System.out.print("  ");
-        System.out.println(String.format("-> " + format, args));
+        try
+        {
+            buffer.append(String.format(format, args));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
-
-    private List<MethodDeclarationNode> methods;
 
     @Override
     public Object visit(ProgramNode node)
     {
-        depth++;
+        StringBuffer codeBuffer = new StringBuffer();
+        append(codeBuffer, ".class public %s\n", node.getIdentifier());
+        append(codeBuffer, ".super java/lang/Object\n\n");
+        append(codeBuffer,
+                ".method public <init>()V\n" +
+                "  aload_0\n"+
+                "  invokespecial java/lang/Object/<init>()V\n" +
+                "  return\n" +
+                ".end method\n\n");
 
-        print("Program '%s'", node.getIdentifier());
+        // Visit method declarations
+        for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
+            append(codeBuffer, "%s", visit(methodDecl));
 
-        methods = node.getMethodDeclarations();
-
-        for (MethodDeclarationNode child : node.getMethodDeclarations())
-            visit(child);
-
-        depth--;
+        // Write codeBuffer to file
+        try
+        {
+            fw = new FileWriter(node.getIdentifier() + ".j");
+            fw.append(codeBuffer);
+            fw.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         return null;
     }
@@ -62,39 +80,31 @@ public class PrettyPrintVisitor extends VisitorBase
     @Override
     public Object visit(BlockNode node)
     {
-        depth++;
+        StringBuffer codeBuffer = new StringBuffer();
 
-        print("Block");
-        visitChildren(node);
+        for (Node child : node.getChildren())
+            append(codeBuffer, "%s",visit(child));
 
-        depth--;
-
-        return null;
+        return codeBuffer;
     }
 
     @Override
     public Object visit(ListNode node)
     {
-        depth++;
-
-        print("List");
-
-        for (Node child : node.getChildren())
-            visit(child);
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(ObjectInstantiationNode node)
     {
-        depth++;
+        StringBuffer codeBuffer = new StringBuffer();
 
-        print("New instance of %s", OperatorTranslator.toJava(node.getType()));
+        append(codeBuffer, "  new %s\n  dup\n", node.getType());
 
-        depth--;
+        for (Node child:node.getActualArguments())
+            append(codeBuffer, "%s", visit(child));
+
+        append(codeBuffer, "  invokespecial %s\n", node.getType());
 
         return null;
     }
@@ -102,264 +112,137 @@ public class PrettyPrintVisitor extends VisitorBase
     @Override
     public Object visit(MethodDeclarationNode node)
     {
-        depth++;
+        StringBuffer codeBuffer = new StringBuffer();
 
-        print("Method '%s' returns %s", node.getIdentifier(), OperatorTranslator.toJava(node.getType()));
-        visitChildren(node);
+        // Visit parameters
+        append(codeBuffer, ".method public %s(%s)%s\n", node.getIdentifier(), getParameters(node.getParameterList()),OperatorTranslator.toBytecode(node.getType()));
 
-        depth--;
+        append(codeBuffer, "  .limit stack 100\n");     //TODO: calc
+        append(codeBuffer, "  .limit locals 100\n");    //TODO: calc
 
-        return null;
+        // Visit block
+        append(codeBuffer, "%s", visit(node.getBlockNode()));
+
+        append(codeBuffer, ".end method\n\n");
+
+        return codeBuffer;
     }
 
     @Override
     public Object visit(MethodInvocationNode node)
     {
-        depth++;
+        StringBuffer codeBuffer = new StringBuffer();
 
-        print("Invoke method '%s'", node.getIdentifier());
 
-        for (MethodDeclarationNode decl : methods)
-        {
-            if (decl.corresponds(node))
-                System.out.println("Corresponds to " + decl.getIdentifier());
-            else
-                System.out.println("Not Corresponds to " + decl.getIdentifier());
-        }
 
-        visitChildren(node);
-        
-        depth--;
-
-        return null;
+        return codeBuffer;
     }
 
     @Override
     public Object visit(ParameterNode node)
     {
-        depth++;
-
-        print("Parameter '%s' of type %s", node.getIdentifier(), OperatorTranslator.toJava(node.getType()));
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(AssignmentNode node)
     {
-        depth++;
-
-        print("Assign '%s' to:", node.getIdentifier());
-        visit(node.getChild());
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(VariableDeclarationNode node)
     {
-        depth++;
-
-        print("Declare '%s' of type %s", node.getIdentifier(), OperatorTranslator.toJava(node.getType()));
-        visitChildren(node);
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(IfNode node)
     {
-        depth++;
-
-        print("If-Statement");
-        visitChildren(node);
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(ConditionNode node)
     {
-        depth++;
-
-        print("Condition");
-        visitChildren(node);
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(RepeatWhileNode node)
     {
-        depth++;
-
-        print("Repeat-While");
-        visitChildren(node);
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(ReturnNode node)
     {
-        depth++;
-
-        print("Return");
-        visitChildren(node);
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(MultiplicationExpression node)
     {
-        depth++;
-
-        print("Multiplication expression");
-        visitChildren(node);
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(AdditionExpression node)
     {
-        depth++;
-
-        print("Addition expression");
-        visitChildren(node);
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(NumberLiteralNode node)
     {
-        depth++;
-
-        print("Number literal: %s", node.getValue());
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(StringLiteralNode node)
     {
-        depth++;
-
-        print("String literal: %s", node.getValue());
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(IdentifierLiteralNode node)
     {
-        depth++;
-
-        print("Identifier literal: %s", node.getIdentifier());
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(BoolLiteralNode node)
     {
-        depth++;
-
-        print("Boolean literal: %s", node.getValue());
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(OrExpressionNode node)
     {
-        depth++;
-
-        print("Or expression");
-        visitChildren(node);
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(AndExpressionNode node)
     {
-        depth++;
-
-        print("And expression");
-        visitChildren(node);
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(RelativeExpressionNode node)
     {
-        depth++;
-
-        print("Relative expression");
-        visitChildren(node);
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(EqualExpressionNode node)
     {
-        depth++;
-
-        print("Equality expression");
-        visitChildren(node);
-
-        depth--;
-
         return null;
     }
 
     @Override
     public Object visit(NegateNode node)
     {
-        depth++;
-
-        print("Negation of:");
-        visit(node.getChild());
-
-        depth--;
-
         return null;
     }
 
@@ -367,5 +250,21 @@ public class PrettyPrintVisitor extends VisitorBase
     public Object visit(TypeCastNode node)
     {
         return null;
+    }
+
+    public String getParameters(Node node)
+    {
+        String parameters = "";
+
+        if (node == null)
+            return parameters;
+
+        for (Node child : ((ListNode) node).getChildren())
+            parameters += visit(child) + ",";
+
+        if (!parameters.isEmpty())
+            parameters = parameters.substring(0, parameters.length() - 1);
+
+        return parameters;
     }
 }

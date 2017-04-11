@@ -1,12 +1,12 @@
 grammar EduCode;
 
-program  : 'PROGRAM' ident eol+ methods 'END PROGRAM'
+program  : 'program' ident eol+ methods 'end program'
          ;
 
 methods  : (method eol+)*
          ;
 
-method   : 'METHOD' ident LPAREN (params)? RPAREN ('RETURNS' dataType)? eol+ stmts 'END METHOD'
+method   : 'method' ident LPAREN (params)? RPAREN ('returns' dataType)? eol+ stmts 'end method'
          ;
 
 methodC  : ident LPAREN (args)? RPAREN
@@ -32,20 +32,20 @@ stmt     : methodC
          | ret
          ;
 
-ret      : 'RETURN' (expr)?
+ret      : 'return' (expr)?
          ;
 
-loopStmt : 'REPEAT WHILE' logicExpr eol+ stmts 'END REPEAT'
+loopStmt : 'repeat while' logicExpr eol+ stmts 'end repeat'
          ;
 
-ifStmt   : 'IF' logicExpr 'THEN' eol+ stmts ('ELSE IF' logicExpr 'THEN' eol+ stmts)* ('ELSE' eol+ stmts)? 'END IF'
+ifStmt   : 'if' logicExpr 'then' eol+ stmts ('else if' logicExpr 'then' eol+ stmts)* ('else' eol+ stmts)? 'end if'
          ;
 
 varDcl   : dataType (ident | assign) (',' (ident | assign))*
          ;
 
 assign   : ident '=' expr
-         | ident '=' 'NEW' dataType LPAREN (args)? RPAREN
+         | ident '=' 'new' dataType LPAREN (args)? RPAREN
          ;
 
 expr     : assign
@@ -89,18 +89,18 @@ factor   : literal
          | methodC // must return numliteral
          | LPAREN logicExpr RPAREN
          | ULOP factor
+         | LPAREN dataType RPAREN factor
          ;
 
-dataType : 'NUMBER'//Contains both ints and floats
-         | 'BOOL'
-         | 'COORDINATES'//Position data, (x, z, y)?
-         | 'NULL'
-         | 'STRING'
-         | 'COLLECTION'//A collection of a type (Like a list in C#)
-         | 'BLOCK'//Data for blocks placed in the world
-         | 'ENTITY'//Data for an entity like animals and monsters
-         | 'ITEM'//Data for an item while in inventory for example
-         | 'TEXTURE'//The look of a block/entity??
+dataType : 'number'//Contains both ints and floats
+         | 'bool'
+         | 'coordinates'//Position data, (x, z, y)?
+         | 'string'
+         | 'Collection'//A collection of a type (Like a list in C#)
+         | 'Block'//Data for blocks placed in the world
+         | 'Entity'//Data for an entity like animals and monsters
+         | 'Item'//Data for an item while in inventory for example
+         | 'Texture'//The look of a block/entity??
          ;
 
 literal  : ident
@@ -112,10 +112,10 @@ eol      : NEWLINE
          ;
 
 /* TEMP */
-TRUE     : 'TRUE'
+TRUE     : 'true'
          ;
 
-FALSE    : 'FALSE'
+FALSE    : 'false'
          ;
 
 ADDOP    : '+'
@@ -124,26 +124,26 @@ ADDOP    : '+'
 
 MULTOP   : '/'
          | '*'
-         | '%'
+         | 'modulo'
          ;
 
-ANDOP    : 'AND'
+ANDOP    : 'and'
          ;
 
-OROP     : 'OR'
+OROP     : 'or'
          ;
 
-ULOP     : 'NOT'
+ULOP     : 'not'
          ;
 
-RELOP    : 'GREATER THAN'
-         | 'LESS THAN'
-         | 'GREATER THAN OR EQUALS'
-         | 'LESS THAN OR EQUALS'
+RELOP    : 'greater than'
+         | 'less than'
+         | 'greater than or equals'
+         | 'less than or equals'
          ;
 
-EQUALOP  : 'EQUALS'
-         | 'NOT EQUALS'
+EQUALOP  : 'equals'
+         | 'not equals'
          ;
 
 NEWLINE  : NewLine

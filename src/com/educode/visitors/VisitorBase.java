@@ -20,6 +20,7 @@ import com.educode.nodes.expression.MultiplicationExpression;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.ungrouped.TypeCastNode;
 
 /**
  * Created by zen on 3/23/17.
@@ -60,6 +61,9 @@ public abstract class VisitorBase
     public abstract Object visit(RelativeExpressionNode node);
     public abstract Object visit(EqualExpressionNode node);
     public abstract Object visit(NegateNode node);
+
+    // Ungrouped
+    public abstract Object visit(TypeCastNode node);
 
     public Object visit(Node node)
     {

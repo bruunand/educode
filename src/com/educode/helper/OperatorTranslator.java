@@ -81,4 +81,23 @@ public class OperatorTranslator
         return null;
     }
 
+    public static String toBytecode(Type type)
+    {
+        switch (type.Kind)
+        {
+            case Type.NUMBER:
+                return "D";
+            case Type.STRING:
+                return "Ljava.lang.String;";
+            case Type.BOOL:
+                return "Z";
+            case Type.COORDINATES:
+                return "L<NotImplemented>;";
+            case Type.VOID:
+                return "V";
+            case Type.REFERENCE:
+                return String.format("L%s;", type.toString());
+        }
+        return null;
+    }
 }

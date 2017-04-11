@@ -25,6 +25,7 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
+import com.educode.nodes.ungrouped.TypeCastNode;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
@@ -61,17 +62,17 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         switch (operator)
         {
-            case "EQUALS":
+            case "equals":
                 return LogicalOperator.Equals;
-            case "NOT EQUALS":
+            case "not equals":
                 return LogicalOperator.NotEquals;
-            case "LESS THAN":
+            case "less than":
                 return LogicalOperator.LessThan;
-            case "LESS THAN OR EQUALS":
+            case "less than or equals":
                 return LogicalOperator.LessThanOrEquals;
-            case "GREATER THAN":
+            case "greater than":
                 return LogicalOperator.GreaterThan;
-            case "GREATER THAN OR EQUALS":
+            case "greater than or equals":
                 return LogicalOperator.GreaterThanOrEquals;
             default:
                 return LogicalOperator.Error;
@@ -90,7 +91,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
                 return ArithmeticOperator.Division;
             case "*":
                 return ArithmeticOperator.Multiplication;
-            case "%":
+            case "modulo":
                 return ArithmeticOperator.Modulo;
             default:
                 return ArithmeticOperator.Error;
@@ -101,13 +102,13 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         switch (type)
         {
-            case "STRING":
+            case "string":
                 return Type.StringType;
-            case "BOOL":
+            case "bool":
                 return Type.BoolType;
-            case "COORDINATES":
+            case "Coordinates":
                 return Type.CoordinatesType;
-            case "NUMBER":
+            case "number":
                 return Type.NumberType;
             default:
                 return Type.VoidType;
@@ -293,6 +294,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitIdentName(EduCodeParser.IdentNameContext ctx)
     {
+
         return null;
     }
 
@@ -467,6 +469,8 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
             return new NegateNode(visit(ctx.factor()));
         else if (ctx.boolLit() != null)
             return new BoolLiteralNode(Boolean.parseBoolean(ctx.getText()));
+        else if (ctx.dataType() != null)
+            return new TypeCastNode(getType(ctx.dataType().getText()), visit(ctx.factor()));
 
         System.out.println("FactError at line " + ctx.getStart().getLine());
 
