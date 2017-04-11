@@ -1,0 +1,34 @@
+program Test
+    method main()
+        // Test addition
+        number result = add(10, 10)
+
+        if result equals 20 then
+            talk("Math checks out")
+        else
+            talk("Math does not check out")
+        end if
+
+        // Test logic
+        bool foo = true
+        bool bar = false
+        bool andRes = foo and bar
+
+        if andRes equals false then
+            talk("And seems to work")
+        else
+            talk("And not working as intended, " + andRes + " should be false..")
+        end if
+
+        // Test repeat
+        number increment = 0
+        repeat while increment less than 100
+            talk("Repeating..")
+            increment = increment + 1
+        end repeat
+    end method
+
+    method add(number a, number b) returns number
+        return a + b
+    end method
+end program

@@ -57,6 +57,10 @@ public class SemanticVisitor extends VisitorBase
     {
         _symbolTableHandler.openScope();
 
+        // Call ReturnvVisitor using same symbol table
+        ReturnVisitor retVisitor = new ReturnVisitor(_symbolTableHandler);
+        retVisitor.visit(node);
+
         // Add method declarations to symbol table
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
             _symbolTableHandler.enterSymbol(methodDecl);
@@ -356,7 +360,7 @@ public class SemanticVisitor extends VisitorBase
         Type leftType = ((Typeable)node.getLeftChild()).getType();
         Type rightType = ((Typeable)node.getRightChild()).getType();
 
-        if (!leftType.equals(Type.BoolType) || rightType.equals(Type.BoolType))
+        if (!leftType.equals(Type.BoolType) || !rightType.equals(Type.BoolType))
             _symbolTableHandler.error(node, String.format("Both sides of the %s expression must be of type %s, but are of type %s and %s.", node.getOperator(), Type.BoolType, leftType, rightType));
     }
 

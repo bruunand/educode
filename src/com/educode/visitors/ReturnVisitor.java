@@ -36,9 +36,9 @@ public class ReturnVisitor extends VisitorBase
 {
     private SymbolTableHandler _symbolTableHandler = new SymbolTableHandler();
 
-    public SymbolTableHandler getSymbolTableHandler()
+    public ReturnVisitor(SymbolTableHandler symbolTableHandler)
     {
-        return _symbolTableHandler;
+        this._symbolTableHandler = symbolTableHandler;
     }
 
     @Override
@@ -74,15 +74,12 @@ public class ReturnVisitor extends VisitorBase
             if (n instanceof ReturnNode)
                 blockReturns = true;
 
-            else if(n instanceof IfNode)
+            else if (n instanceof IfNode)
             {
                 boolean allPathsReturn = true;
 
-                for (ConditionNode m: ((IfNode) n).getConditionBlocks()
-                     )
-                {
+                for (ConditionNode m: ((IfNode) n).getConditionBlocks())
                     allPathsReturn = allPathsReturn && ((BlockNode)m.getRightChild()).Returns;
-                }
 
                 if (allPathsReturn)
                 {

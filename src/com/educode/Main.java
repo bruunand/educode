@@ -17,7 +17,7 @@ public class Main
 {
     public static void main(String[] args) throws IOException
     {
-        ANTLRInputStream stream = new ANTLRFileStream("test.code");
+        ANTLRInputStream stream = new ANTLRFileStream("test.educ");
         EduCodeLexer lexer = new EduCodeLexer(stream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         EduCodeParser parser = new EduCodeParser(tokenStream);
@@ -32,10 +32,6 @@ public class Main
         SemanticVisitor sem = new SemanticVisitor();
         sem.visit(root);
         sem.getSymbolTableHandler().printMessages();
-
-        ReturnVisitor ret = new ReturnVisitor();
-        ret.visit(root);
-        ret.getSymbolTableHandler().printMessages();
 
         JavaBytecodeGenerationVisitor g = new JavaBytecodeGenerationVisitor();
         g.visit(root);

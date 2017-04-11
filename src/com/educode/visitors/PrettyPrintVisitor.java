@@ -115,15 +115,6 @@ public class PrettyPrintVisitor extends VisitorBase
         depth++;
 
         print("Invoke method '%s'", node.getIdentifier());
-
-        for (MethodDeclarationNode decl : methods)
-        {
-            if (decl.corresponds(node))
-                System.out.println("Corresponds to " + decl.getIdentifier());
-            else
-                System.out.println("Not Corresponds to " + decl.getIdentifier());
-        }
-
         visitChildren(node);
         
         depth--;
