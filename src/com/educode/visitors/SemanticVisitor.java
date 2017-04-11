@@ -168,6 +168,11 @@ public class SemanticVisitor extends VisitorBase
             _symbolTableHandler.error(node, String.format("Identifier %s is not declared.", node.getIdentifier()));
         else
         {
+            // Set type of identifier node
+            // Todo: Check if this makes sense :)
+            if (leftSide.getNode() instanceof Typeable)
+                node.getIdentifierNode().setType(((Typeable)leftSide.getNode()).getType());
+
             // Check if right side has a type
             if (node.hasChild() && node.getChild() instanceof Typeable)
             {
