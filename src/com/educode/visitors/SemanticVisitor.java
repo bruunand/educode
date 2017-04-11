@@ -6,10 +6,7 @@ import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
 import com.educode.nodes.expression.logic.*;
-import com.educode.nodes.literal.BoolLiteralNode;
-import com.educode.nodes.literal.IdentifierLiteralNode;
-import com.educode.nodes.literal.NumberLiteralNode;
-import com.educode.nodes.literal.StringLiteralNode;
+import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
@@ -331,6 +328,12 @@ public class SemanticVisitor extends VisitorBase
     }
 
     @Override
+    public Object visit(CoordinatesLiteralNode node)
+    {
+        return null;
+    }
+
+    @Override
     public Object visit(OrExpressionNode node)
     {
         visitLogicExpression(node);
@@ -397,7 +400,7 @@ public class SemanticVisitor extends VisitorBase
 
         if (node.getChild() instanceof Typeable)
         {
-            if(((Typeable)node.getChild()).getType().equals(Type.BoolType))
+            if(!((Typeable)node.getChild()).getType().equals(Type.BoolType))
                 _symbolTableHandler.error(node, "Negated expression was not of boolean type.");
         }
         else

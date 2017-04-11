@@ -167,6 +167,24 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLiteral(EduCodeParser.LiteralContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#stringLit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringLit(EduCodeParser.StringLitContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#coordLit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCoordLit(EduCodeParser.CoordLitContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#numberLit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumberLit(EduCodeParser.NumberLitContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#eol}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

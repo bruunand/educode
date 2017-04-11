@@ -9,10 +9,7 @@ import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
 import com.educode.nodes.expression.logic.*;
-import com.educode.nodes.literal.BoolLiteralNode;
-import com.educode.nodes.literal.IdentifierLiteralNode;
-import com.educode.nodes.literal.NumberLiteralNode;
-import com.educode.nodes.literal.StringLiteralNode;
+import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
@@ -478,19 +475,28 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     }
 
     @Override
+    public Node visitCoordLit(EduCodeParser.CoordLitContext ctx)
+    {
+        return new CoordinatesLiteralNode(visit(ctx.numberLit(0)), visit(ctx.numberLit(1)), visit(ctx.numberLit(2)));
+    }
+
+    @Override
+    public Node visitStringLit(EduCodeParser.StringLitContext ctx)
+    {
+        return new StringLiteralNode(ctx.STRLIT().getText());
+    }
+
+    @Override
+    public Node visitNumberLit(EduCodeParser.NumberLitContext ctx)
+    {
+        return new NumberLiteralNode(Float.parseFloat(ctx.getText()));
+    }
+
+    @Override
     public Node visitLiteral(EduCodeParser.LiteralContext ctx)
     {
         updatePosition(ctx);
 
-        if (ctx.NUMLIT() != null)
-            return new NumberLiteralNode(Float.parseFloat(ctx.NUMLIT().getText())); // num literal
-        else if (ctx.ident() != null)
-            return visit(ctx.ident());
-        else if (ctx.STRLIT() != null)
-            return new StringLiteralNode(ctx.STRLIT().getText()); // string literal
-
-        System.out.println("LitError at line " + ctx.getStart().getLine());
-
-        return null;
+        return visit(ctx.getChild(0));
     }
 }

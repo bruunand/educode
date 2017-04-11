@@ -1,10 +1,7 @@
 package com.educode.visitors;
 
 import com.educode.nodes.expression.logic.*;
-import com.educode.nodes.literal.BoolLiteralNode;
-import com.educode.nodes.literal.IdentifierLiteralNode;
-import com.educode.nodes.literal.NumberLiteralNode;
-import com.educode.nodes.literal.StringLiteralNode;
+import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.ReturnNode;
@@ -54,6 +51,7 @@ public abstract class VisitorBase
     public abstract Object visit(StringLiteralNode node);
     public abstract Object visit(IdentifierLiteralNode node);
     public abstract Object visit(BoolLiteralNode node);
+    public abstract Object visit(CoordinatesLiteralNode node);
 
     // Logical
     public abstract Object visit(OrExpressionNode node);
