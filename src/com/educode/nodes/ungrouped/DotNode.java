@@ -3,6 +3,7 @@ package com.educode.nodes.ungrouped;
 import com.educode.nodes.Identifiable;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
+import com.educode.nodes.literal.IdentifierLiteralNode;
 import com.educode.visitors.VisitorBase;
 
 /**
@@ -10,10 +11,12 @@ import com.educode.visitors.VisitorBase;
  */
 public class DotNode extends UnaryNode implements Identifiable
 {
-    
-    public DotNode(Node child)
+    private IdentifierLiteralNode _identifierNode;
+
+    public DotNode(IdentifierLiteralNode identifier, Node child)
     {
         super(child);
+        this._identifierNode = identifier;
     }
 
     @Override
@@ -25,6 +28,6 @@ public class DotNode extends UnaryNode implements Identifiable
     @Override
     public String getIdentifier()
     {
-        return null;
+        return this._identifierNode.getIdentifier();
     }
 }

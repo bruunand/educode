@@ -1,31 +1,31 @@
-PROGRAM HelloWorld //Debug program
-    METHOD TestMethodCallReturn() RETURNS NUMBER
-        NUMBER numa = 3
-        NUMBER numb = 2
-        NUMBER PIK
-        BOOL B = FALSE
+program HelloWorld //Debug program
+    method TestMethodCallReturn() returns number
+        number numa = 3
+        number numb = 2
+        number PIK
+        bool B = false
 
         talk("Hej med dig", 6, numa)
 
-        IF numa GREATER THAN 5 THEN
+        if numa greater than 5 then
             Add(numa, numb)
-
-        ELSE IF numa NOT EQUALS 8 THEN
+        else if numa not equals 8 then
             lol(fuck)
-        ELSE IF numb EQUALS numa THEN
+        else if numb equals numa then
             a = 7
             B = NOT B
-        ELSE
+        else
             simon(22)
-        END IF
+        end if
 
-        REPEAT WHILE numa LESS THAN numb
-        END REPEAT
+        repeat while numa less than numb
+            talk("hehe")
+        end repeat
 
-        RETURN Add(numa + (numa - numb) * numa, numb)
-    END METHOD
+        return Add(numa + (numa - numb) * numa, numb)
+    end method
 
-    METHOD Add(NUMBER numOne, NUMBER numTwo) RETURNS NUMBER
-        RETURN numOne+numTwo
-    END METHOD
-END PROGRAM
+    method Add(number numOne, number numTwo) returns number
+        return numOne+numTwo
+    end method
+end program

@@ -25,6 +25,7 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
+import com.educode.nodes.ungrouped.TypeCastNode;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
@@ -293,6 +294,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitIdentName(EduCodeParser.IdentNameContext ctx)
     {
+
         return null;
     }
 
@@ -467,6 +469,8 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
             return new NegateNode(visit(ctx.factor()));
         else if (ctx.boolLit() != null)
             return new BoolLiteralNode(Boolean.parseBoolean(ctx.getText()));
+        else if (ctx.dataType() != null)
+            return new TypeCastNode(getType(ctx.dataType().getText()), visit(ctx.factor()));
 
         System.out.println("FactError at line " + ctx.getStart().getLine());
 
