@@ -1,5 +1,6 @@
 package com.educode.visitors;
 import com.educode.helper.OperatorTranslator;
+import com.educode.nodes.SingleLineStatement;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
@@ -80,7 +81,12 @@ public class JavaCodeGenerationVisitor extends VisitorBase{
 
         // Visit statements in body/block declarations
         for (Node childNode : node.getChildren())
-            append(codeBuffer, "%s\n", visit(childNode));
+
+            //this if statement is here in order to ensure that if statements does not have semicolon
+            if(childNode instanceof SingleLineStatement)
+                append(codeBuffer, "%s;\n", visit(childNode));
+            else
+                append(codeBuffer, "%s\n", visit(childNode));
 
         append(codeBuffer, "}\n");
 
@@ -150,7 +156,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase{
 
         //formal parameter node
         StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "%s %s", node.getType(), node.getIdentifier());
+        append(codeBuffer, "%s %s", OperatorTranslator.toJava(node.getType()), node.getIdentifier());
 
         return codeBuffer;
     }
