@@ -1,4 +1,4 @@
-package com.educode.visitors;
+package com.educode.visitors.semantic;
 
 import com.educode.nodes.Typeable;
 import com.educode.nodes.base.ListNode;
@@ -24,6 +24,7 @@ import com.educode.symboltable.Symbol;
 import com.educode.symboltable.SymbolTableHandler;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.Type;
+import com.educode.visitors.VisitorBase;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

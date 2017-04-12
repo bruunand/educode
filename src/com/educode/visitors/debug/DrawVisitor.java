@@ -1,4 +1,4 @@
-package com.educode.visitors;
+package com.educode.visitors.debug;
 
 import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.base.ListNode;
@@ -20,6 +20,7 @@ import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.TypeCastNode;
+import com.educode.visitors.VisitorBase;
 
 /**
  * Created by zen on 3/31/17.
