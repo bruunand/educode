@@ -28,7 +28,7 @@ public class SymbolTableMessage
     public String toString()
     {
         if (this._relatedNode != null)
-            return String.format("%s at line %d, %d: %s", this.getTypeString(), this._relatedNode.getLineNumber(), this._relatedNode.getCharPosition(), this._errorDescription);
+            return String.format("%s at line %d: %s", this.getTypeString(), this._relatedNode.getLineNumber(), this._errorDescription);
         else
             return String.format("%s: %s", this.getTypeString(), this._errorDescription);
     }

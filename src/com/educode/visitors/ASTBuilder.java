@@ -2,7 +2,6 @@ package com.educode.visitors;
 
 import com.educode.antlr.EduCodeBaseVisitor;
 import com.educode.antlr.EduCodeParser;
-import com.educode.nodes.Identifiable;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
@@ -27,7 +26,6 @@ import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
 
@@ -37,22 +35,16 @@ import java.util.ArrayList;
 public class ASTBuilder extends EduCodeBaseVisitor<Node>
 {
     private static int _currentLineNumber = 0;
-    private static int _currentCharPosition = 0;
 
-    private static void updatePosition(ParserRuleContext fromCtx)
+    private static void updateLineNumber(ParserRuleContext fromCtx)
     {
         ASTBuilder._currentLineNumber = fromCtx.getStart().getLine();
-        ASTBuilder._currentCharPosition = fromCtx.getStart().getCharPositionInLine();
+        // ASTBuilder._currentCharPosition = fromCtx.getStart().getCharPositionInLine();
     }
 
     public static int getLineNumber()
     {
         return ASTBuilder._currentLineNumber;
-    }
-
-    public static int getCharPosition()
-    {
-        return ASTBuilder._currentCharPosition;
     }
 
     private LogicalOperator getLogicalOperator(String operator)
@@ -95,27 +87,30 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         }
     }
 
-    private Type getType(String type)
+
+    private Type getType(EduCodeParser.DataTypeContext ctx)
     {
-        switch (type)
-        {
-            case "string":
-                return Type.StringType;
-            case "bool":
-                return Type.BoolType;
-            case "Coordinates":
-                return Type.CoordinatesType;
-            case "number":
-                return Type.NumberType;
-            default:
-                return Type.VoidType;
-        }
+        if (ctx.dataType() != null)
+            return new Type(getType(ctx.dataType()));
+        else
+            switch (ctx.getText())
+            {
+                case "string":
+                    return Type.StringType;
+                case "bool":
+                    return Type.BoolType;
+                case "Coordinates":
+                    return Type.CoordinatesType;
+                case "number":
+                    return Type.NumberType;
+            }
+        return Type.VoidType;
     }
 
     @Override
     public Node visitParams(EduCodeParser.ParamsContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         ListNode parameterCollection = new ListNode();
 
@@ -128,15 +123,15 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitParam(EduCodeParser.ParamContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
-        return new ParameterNode(ctx.IDENT().getText(), getType(ctx.dataType().getText()));
+        return new ParameterNode(ctx.IDENT().getText(), getType(ctx.dataType()));
     }
 
     @Override
     public Node visitStmt(EduCodeParser.StmtContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         return super.visitStmt(ctx); // Will pass to an appropriate statement.
     }
@@ -144,7 +139,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitRet(EduCodeParser.RetContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         if (ctx.expr() != null)
             return new ReturnNode(visit(ctx.expr()));
@@ -155,7 +150,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitLoopStmt(EduCodeParser.LoopStmtContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         return new RepeatWhileNode(new ConditionNode(visit(ctx.logicExpr()), visit(ctx.stmts())));
     }
@@ -163,7 +158,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitIfStmt(EduCodeParser.IfStmtContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         IfNode ifNode = new IfNode();
 
@@ -183,7 +178,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitExpr(EduCodeParser.ExprContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         return super.visitExpr(ctx);//visit(ctx.getChild(0));
     }
@@ -191,7 +186,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitLogicExpr(EduCodeParser.LogicExprContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         return visit(ctx.orExpr());
     }
@@ -199,7 +194,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitOrExpr(EduCodeParser.OrExprContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         if (ctx.getChildCount() == 1)
             return visit(ctx.getChild(0));
@@ -214,7 +209,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitAndExpr(EduCodeParser.AndExprContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         if (ctx.getChildCount() == 1)
             return visit(ctx.getChild(0));
@@ -242,7 +237,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitRelExpr(EduCodeParser.RelExprContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         if (ctx.getChildCount() == 1)
             return visit(ctx.getChild(0));
@@ -257,7 +252,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitBoolLit(EduCodeParser.BoolLitContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         return new BoolLiteralNode(ctx.TRUE() != null);
     }
@@ -265,7 +260,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitDataType(EduCodeParser.DataTypeContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         System.out.println("datatype");
         return null;
@@ -280,7 +275,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitIdent(EduCodeParser.IdentContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         if (ctx.arithExpr() != null)
             return new IdentifierLiteralNode(visit(ctx.arithExpr()), ctx.identName().getText());
@@ -298,7 +293,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitProgram(EduCodeParser.ProgramContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         ArrayList<Node> nodes = new ArrayList<>();
         nodes.addAll(((NaryNode)visit(ctx.methods())).getChildren());
@@ -309,7 +304,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitMethods(EduCodeParser.MethodsContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         ArrayList<Node> childMethods = new ArrayList<>();
 
@@ -322,11 +317,11 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitMethod(EduCodeParser.MethodContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         Type returnType = Type.VoidType;
         if (ctx.dataType() != null)
-            returnType = getType(ctx.dataType().getText());
+            returnType = getType(ctx.dataType());
 
         if (ctx.params() != null)
             return new MethodDeclarationNode(visit(ctx.params()), visit(ctx.stmts()), ctx.ident().getText(), returnType);
@@ -337,7 +332,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitStmts(EduCodeParser.StmtsContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         ArrayList<Node> childStatements = new ArrayList<>();
 
@@ -360,17 +355,17 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitVarDcl(EduCodeParser.VarDclContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         ArrayList nodes = new ArrayList<>();
 
         // Add nodes without assignments.
         for (EduCodeParser.IdentContext i : ctx.ident())
-            nodes.add(new VariableDeclarationNode((IdentifierLiteralNode) visit(i), getType(ctx.dataType().getText())));
+            nodes.add(new VariableDeclarationNode((IdentifierLiteralNode) visit(i), getType(ctx.dataType())));
 
         // Add nodes with assignments
         for (EduCodeParser.AssignContext a : ctx.assign())
-            nodes.add(new VariableDeclarationNode(getType(ctx.dataType().getText()), (AssignmentNode) visit(a)));
+            nodes.add(new VariableDeclarationNode(getType(ctx.dataType()), (AssignmentNode) visit(a)));
 
         return new ListNode(nodes);
     }
@@ -378,13 +373,13 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitAssign(EduCodeParser.AssignContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         if (ctx.expr() != null) // Assign to expression
             return new AssignmentNode((IdentifierLiteralNode) visit(ctx.ident()), visit(ctx.expr()));
         else if (ctx.dataType() != null) // Assign to instantiated object
         {
-            Type classType = getType(ctx.dataType().getText());
+            Type classType = getType(ctx.dataType());
 
             if (ctx.args() != null)
                 return new AssignmentNode((IdentifierLiteralNode) visit(ctx.ident()), new ObjectInstantiationNode(visit(ctx.args()), classType));
@@ -401,7 +396,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitArithExpr(EduCodeParser.ArithExprContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         if (ctx.getChildCount() == 1)
             return visit(ctx.term());
@@ -416,7 +411,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitMethodC(EduCodeParser.MethodCContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         if (ctx.args() != null)
             return new MethodInvocationNode(visit(ctx.args()), ctx.ident().getText());
@@ -427,7 +422,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitArgs(EduCodeParser.ArgsContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         ListNode node = new ListNode();
         for (EduCodeParser.ExprContext e : ctx.expr())
@@ -439,7 +434,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitTerm(EduCodeParser.TermContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         if (ctx.getChildCount() == 1)
             return visit(ctx.factor());
@@ -454,7 +449,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitFactor(EduCodeParser.FactorContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         if (ctx.logicExpr() != null)
             return visit(ctx.logicExpr());
@@ -467,7 +462,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         else if (ctx.boolLit() != null)
             return new BoolLiteralNode(Boolean.parseBoolean(ctx.getText()));
         else if (ctx.dataType() != null)
-            return new TypeCastNode(getType(ctx.dataType().getText()), visit(ctx.factor()));
+            return new TypeCastNode(getType(ctx.dataType()), visit(ctx.factor()));
 
         System.out.println("FactError at line " + ctx.getStart().getLine());
 
@@ -495,7 +490,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitLiteral(EduCodeParser.LiteralContext ctx)
     {
-        updatePosition(ctx);
+        updateLineNumber(ctx);
 
         return visit(ctx.getChild(0));
     }

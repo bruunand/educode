@@ -96,7 +96,7 @@ dataType : 'number'//Contains both ints and floats
          | 'bool'
          | 'Coordinates'//Position data, (x, z, y)?
          | 'string'
-         | 'Collection'//A collection of a type (Like a list in C#)
+         | 'Collection' '<' dataType '>'//A collection of a type (Like a list in C#)
          | 'Block'//Data for blocks placed in the world
          | 'Entity'//Data for an entity like animals and monsters
          | 'Item'//Data for an item while in inventory for example

@@ -1,5 +1,19 @@
 program Test
     method main()
+        // Collection test
+        number a = 1
+        number b = 2
+        Collection<number> numberCollection = new Collection<number>(a, b)
+
+        // Collection of collection of numbers
+        Collection<Collection<number>> colleception = new Collection<Collection<number>>(numberCollection)
+
+        // Collection of collection of collection of numbers
+        Collection<Collection<Collection<number>>> deep = new Collection<Collection<Collection<number>>>(colleception)
+
+        // Should give an error
+        Collection<bool> errorCollection = new Collection<bool>(deep)
+
         // Test addition
         number result = add(10, 10)
 

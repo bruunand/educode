@@ -5,20 +5,49 @@ package com.educode.types;
  */
 public class Type
 {
+    private Type _childType = null;
+
     public final byte Kind;
-    public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5, REFERENCE = 6;
+    public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5, REFERENCE = 6, COLLECTION = 7;
 
     public Type(byte kind)
     {
         this.Kind = kind;
     }
 
+    public Type(Type child)
+    {
+        this._childType = child;
+        this.Kind = COLLECTION;
+    }
+
     @Override
     public boolean equals(Object o)
     {
         if (o instanceof Type)
-            return ((Type)o).Kind == this.Kind;
+        {
+            Type otherType = (Type) o;
+
+            if (otherType.Kind == this.Kind)
+            {
+                if (this.getChildType() != null && otherType.getChildType() != null)
+                    return this.getChildType().equals(otherType.getChildType());
+                else
+                    return true;
+            }
+        }
+
         return false;
+    }
+
+    public Type getChildType()
+    {
+        return this._childType;
+    }
+
+    public boolean isCollection()
+    {
+        return this.Kind == COLLECTION;
     }
 
     @Override
@@ -40,6 +69,8 @@ public class Type
                 return "ERROR";
             case Type.REFERENCE:
                 return "REFERENCE";
+            case Type.COLLECTION:
+                return "COLLECTION<" + this.getChildType() + ">";
             default:
                 return "UNDEFINED"; // Should not happen
         }

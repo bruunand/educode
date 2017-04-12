@@ -1,71 +1,33 @@
-PROGRAM HelloWorld //Debug program
-    METHOD TestMethodCallReturn() RETURNS NUMBER
-        NUMBER numA = 3
-        NUMBER numB = 2 * 2
-        NUMBER numC = 3 / 9 + (7 * (9 *7))
-        NUMBER numD = 2 + (2 / 3) + (3 * 9)
-
-        NUMBER burdeIkkeVirke = "Lol"
-
-        BOOL boolA = NOT FALSE
-        BOOL boolB = NOT TRUE
-        BOOL boolC = TRUE
-
-        exampleMethod("test string", 6, numA)
-
-        IF numA GREATER THAN numB THEN
-            Add(numA, numB)
-        ELSE IF numC NOT EQUALS numD THEN
-            Add(numC, numD)
-        ELSE IF boolC THEN
-            //Burde ikke virke
-            Add(boolA, boolB)
-        ELSE
-            //Burde ikke virke
-            Add(boolB, boolC)
-        END IF
-
-        REPEAT WHILE numA LESS THAN numB
-            burdeIkkeVirke = FALSE
-        END REPEAT
-
-        RETURN Add(numa + (numa - numb) * numa, numb)
-
-    END METHOD
-
-    METHOD Add(NUMBER numOne, NUMBER numTwo) RETURNS NUMBER
-        RETURN numOne+numTwo
-    END METHOD
-
-    METHOD niceMain()
-        //i need all the shit
-        NUMBER a, b, c, d
-        NUMBER e = f = 5
-        NUMBER g = 6, h = 7
-        BOOL T, F
-        BOOL TF = TRUE
-        STRING fed = "FED STRENG MAND"
-        STRING tomstreng
-        STRING halvtom = ikketom = "Federe streng mand"
+program niceprogram
+    method niceMain()
+       //i need all the shit
+       number a, b, c, d
+       number e = f = 5
+       number g = 6, h = 7
+       bool T, F
+       bool TF = true
+       string fed = "FED STRENG MAND!1234!"#¤%&()"
+       string tomstreng
+       string halvtom = ikketom = "Federe streng mand"
 
        c = viskalbrugeenmetode(a, e, h, T, TF, fed, halvtom)
-    END METHOD
+    end method
 
-    METHOD viskalbrugeenmetode(NUMBER i, NUMBER j, NUMBER k, BOOL B1, BOOL B2, STRING S1, STRING S2) RETURNS NUMBER
-        B1 = TRUE
+    method viskalbrugeenmetode(number i, number j, number k, bool B1, bool B2, string S1, string S2) returns number
+       B1 = true
 
-               IF B2 THEN
-                    B1 = FALSE
-                ELSE IF NOT B1 OR j LESS THAN k THEN
-                    i = 900
-                ELSE
-                    i = 2
-                    fed = "anderledes streng"
-                END IF
-                REPEAT WHILE j LESS THAN k
-                    j = j+1
-                END REPEAT
+       if B2 then
+           B1 = false
+       else if not B1 or j less than k
+           i = 900
+       else
+           i = 2
+           fed = "anderledes streng"
+       end if
+       repeat while j less than k
+           j++
+       end true
 
-               RETURN j
-        END METHOD
-END PROGRAM
+       return j
+    end method
+end program

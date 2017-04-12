@@ -1,4 +1,4 @@
-package com.educode.visitors;
+package com.educode.visitors.codegeneration;
 
 import com.educode.helper.OperatorTranslator;
 import com.educode.helper.Tuple;
@@ -22,6 +22,8 @@ import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.TypeCastNode;
 import com.educode.types.Type;
+import com.educode.visitors.VisitorBase;
+
 import java.io.FileWriter;
 import java.util.ArrayList;
 

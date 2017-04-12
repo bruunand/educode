@@ -1,4 +1,4 @@
-package com.educode.visitors;
+package com.educode.visitors.debug;
 
 import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.base.ListNode;
@@ -20,6 +20,7 @@ import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.TypeCastNode;
+import com.educode.visitors.VisitorBase;
 
 /**
  * Created by zen on 3/31/17.
@@ -59,7 +60,7 @@ public class DrawVisitor extends VisitorBase
     @Override
     public Object visit(ObjectInstantiationNode node)
     {
-        return String.format("ObjectInstantiation [%s][%s]", node.getType(), visit(node.getChild()));
+        return String.format("ObjectInstantiation [%s][%s]", node.getType(), node.hasChild() ? visit(node.getChild()) : "null");
     }
 
     @Override
@@ -93,9 +94,9 @@ public class DrawVisitor extends VisitorBase
     public Object visit(VariableDeclarationNode node)
     {
         if (!node.hasChild())
-            return String.format("Declare %s", node.getIdentifier());
+            return String.format("Declare %s %s", node.getIdentifier(), node.getType());
         else
-            return String.format("Decl/Assign [%s][%s]", node.getIdentifier(), visit(node.getChild()));
+            return String.format("Decl/Assign [%s %s][%s]", node.getIdentifier(), node.getType(), visit(node.getChild()));
     }
 
     @Override
