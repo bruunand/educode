@@ -27,6 +27,10 @@
 
 ## Plugin-specific files:
 
+#Minecraft
+/run/
+/build/
+
 # IntelliJ
 /out/
 
@@ -49,8 +53,8 @@ fabric.properties
 
 \.idea/misc\.xml
 
-HelloWorld\.j
+HelloWorld.j
 
-test\.java
+test.java
 
-Test\.j
+test.j

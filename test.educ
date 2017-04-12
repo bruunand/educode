@@ -1,45 +1,41 @@
-import java.util.*;
-import com.educode.runtime.*;
+program Test
+    method main()
+        // Collection test
+        number a = 1
+        number b = 2
+        Collection<number> numberCollection = new Collection<number>(a, b)
+        Coordinates coords = (8,8,7)
 
-public class Test extends ScriptBase
-{
-public void main()
-{
-Float a = 1.000000F;
-Float b = 2.000000F;
-List<Float> numberCollection = Arrays.asList(a, b);
-Coordinates coords = new Coordinates(8.000000F, 8.000000F, 7.000000F);
-Float result = add(10.000000F, 10.000000F);
-if(result == 20.000000F)
-{
-System.out.println("Math checks out");
-}
-else
-{
-System.out.println("Math does not check out");
-}
 
-boolean foo = true;
-boolean bar = false;
-boolean andRes = foo && bar || true;
-if(andRes == true)
-{
-System.out.println("And seems to work");
-}
-else
-{
-System.out.println((("And not working as intended, " + andRes) + " should be false.."));
-}
+        // Test addition
+        number result = add(10, 10)
 
-Float increment = 0.000000F;
-while (increment < 100.000000F)
-{
-increment = (increment + 1.000000F);
-}
+        if result equals 20 then
+            debug("Math checks out")
+        else
+            debug("Math does not check out")
+        end if
 
-}
-public Float add(Float a,Float b)
-{
-return (a + b);
-}
-}
+        // Test logic
+        bool foo = true
+        bool bar = false
+        bool andRes = foo and bar
+
+        if andRes equals false then
+            debug("And seems to work")
+        else
+            debug("And not working as intended, " + andRes + " should be false..")
+        end if
+
+        // Test repeat
+        number increment = 0
+        repeat while increment less than 100
+            debug("Repeating..")
+            increment = increment + 1
+        end repeat
+    end method
+
+    method add(number a, number b) returns number
+        return a + b
+    end method
+end program
