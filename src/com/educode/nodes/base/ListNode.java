@@ -25,3 +25,4 @@ public class ListNode extends NaryNode
         return visitor.visit(this);
     }
 }
+
