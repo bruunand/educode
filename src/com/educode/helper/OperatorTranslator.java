@@ -17,7 +17,7 @@ public class OperatorTranslator
         switch (type.Kind)
         {
             case Type.NUMBER:
-                return "float";
+                return "Float";
             case Type.STRING:
                 return "String";
             case Type.BOOL:
@@ -27,7 +27,7 @@ public class OperatorTranslator
             case Type.VOID:
                 return "void";
             case Type.COLLECTION:
-                return String.format("ArrayList<%s>", toJava(type.getChildType()));
+                return String.format("List<%s>", toJava(type.getChildType()));
         }
 
         System.out.println(String.format("Could not determine Java translation for type %s, exiting..", type));

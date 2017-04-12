@@ -1,10 +1,10 @@
 package com.educode.visitors.codegeneration;
+
 import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.SingleLineStatement;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.base.UnaryNode;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
 import com.educode.nodes.expression.logic.*;
@@ -26,16 +26,17 @@ import com.educode.visitors.VisitorBase;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringJoiner;
 
 /**
  * Created by Andreas on 10-04-2017.
  */
 public class JavaCodeGenerationVisitor extends VisitorBase
 {
-
     private FileWriter fw;
 
-    public void append(StringBuffer buffer, String format, Object ... args)
+    public void append(StringBuffer buffer, String format, Object... args)
     {
         try
         {
@@ -51,16 +52,16 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     {
         StringBuffer codeBuffer = new StringBuffer();
 
-        append(codeBuffer, "import com.educode.runtime*;\n\n");
+        append(codeBuffer, "import java.util.*;\nimport com.educode.runtime.*;\n\n");
 
-        append(codeBuffer, "public class %s\n{\n", node.getIdentifier());
+        append(codeBuffer, "public class %s extends ScriptBase\n{\n", node.getIdentifier());
 
         // Visit method declarations
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
             append(codeBuffer, "%s", visit(methodDecl));
 
         // Append closing curly bracket
-        append(codeBuffer,"}");
+        append(codeBuffer, "}");
 
         // Write codeBuffer to file
         try
@@ -78,20 +79,21 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     }
 
     @Override
-    public Object visit(BlockNode node) {
-
+    public Object visit(BlockNode node)
+    {
         StringBuffer codeBuffer = new StringBuffer();
 
         append(codeBuffer, "{\n");
 
         // Visit statements in body/block declarations
         for (Node childNode : node.getChildren())
-
+        {
             //this if statement is here in order to ensure that if statements does not have semicolon
-            if(childNode instanceof SingleLineStatement)
+            if (childNode instanceof SingleLineStatement)
                 append(codeBuffer, "%s;\n", visit(childNode));
             else
                 append(codeBuffer, "%s\n", visit(childNode));
+        }
 
         append(codeBuffer, "}\n");
 
@@ -99,66 +101,80 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     }
 
     @Override
-    public Object visit(ListNode node) {
+    public Object visit(ListNode node)
+    {
+        //
         StringBuffer codeBuffer = new StringBuffer();
         for (Node lol : node.getChildren())
+        {
             append(codeBuffer, "TEST(%s)", visit(lol));
+        }
 
         return codeBuffer;
     }
 
     @Override
-    public Object visit(ObjectInstantiationNode node) {
+    public Object visit(ObjectInstantiationNode node)
+    {
+        // Join actual arguments
+        StringJoiner argumentJoiner = new StringJoiner(", ");
+        if (node.hasChild())
+        {
+            for (Node grandchild : ((NaryNode)node.getChild()).getChildren())
+                argumentJoiner.add(visit(grandchild).toString());
+        }
 
-        StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "new %s(%s); ", OperatorTranslator.toJava(node.getType()), node.getChild());
-
-        return codeBuffer;
+        // Object instantiation is handled differently for different types
+        // This case is only used if collection is initialized with values
+        if (node.getType().isCollection())
+        {
+            if (node.hasChild())
+                return String.format("Arrays.asList(%s)", argumentJoiner);
+            else
+                return String.format("new ArrayList<%s>()", OperatorTranslator.toJava(node.getType().getChildType()));
+        }
+        else
+            return String.format("new %s(%s)", OperatorTranslator.toJava(node.getType()), argumentJoiner);
     }
 
     @Override
-    public Object visit(MethodDeclarationNode node) {
-
+    public Object visit(MethodDeclarationNode node)
+    {
         StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "public %s %s(", OperatorTranslator.toJava(node.getType()), node.getIdentifier());
 
-        //visit parameters
+        // Visit parameters, join using string joiner
+        StringJoiner parameterJoiner = new StringJoiner(",");
         for (ParameterNode parameterNodeDecl : node.getParameters())
-            append(codeBuffer, "%s,", visit(parameterNodeDecl));
+            parameterJoiner.add(visit(parameterNodeDecl).toString());
 
-        if (codeBuffer.charAt(codeBuffer.length() - 1) == ','){
-            codeBuffer.deleteCharAt(codeBuffer.length() - 1);
-        }
+        // Add declaration with joined parameters
+        append(codeBuffer, String.format("public %s %s(%s)\n", OperatorTranslator.toJava(node.getType()), node.getIdentifier(), parameterJoiner));
 
-        append(codeBuffer, ")");
-
-        //visit block
-        append(codeBuffer,"%s", visit(node.getBlockNode()));
+        // Append block
+        append(codeBuffer, "%s", visit(node.getBlockNode()));
 
         return codeBuffer;
     }
 
     @Override
-    public Object visit(MethodInvocationNode node) {
-
-        StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "%s(", node.getIdentifier());
-
+    public Object visit(MethodInvocationNode node)
+    {
+        StringJoiner actualArgumentsJoiner = new StringJoiner(", ");
         for (Node parameterNodeDecl : ((ListNode) node.getChild()).getChildren())
-            append(codeBuffer, "%s,", visit(parameterNodeDecl));
+            actualArgumentsJoiner.add(visit(parameterNodeDecl).toString());
 
-        if (codeBuffer.charAt(codeBuffer.length() - 1) == ','){
-            codeBuffer.deleteCharAt(codeBuffer.length() - 1);
-        }
+        // Replace identifier if applicable
+        // TODO: Use a dictionary or a better structure for this
+        String methodIdentifier = node.getIdentifier();
+        if (methodIdentifier.equals("debug"))
+            methodIdentifier = "System.out.println";
 
-        append(codeBuffer, ")");
-
-        return codeBuffer;
+        return String.format("%s(%s)", methodIdentifier, actualArgumentsJoiner);
     }
 
     @Override
-    public Object visit(ParameterNode node) {
-
+    public Object visit(ParameterNode node)
+    {
         //formal parameter node
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "%s %s", OperatorTranslator.toJava(node.getType()), node.getIdentifier());
@@ -167,35 +183,28 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     }
 
     @Override
-    public Object visit(AssignmentNode node) {
-
-        StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "%s = ", node.getIdentifier());
-
-        append(codeBuffer, "%s", visit(node.getChild()));
-
-        return codeBuffer;
+    public Object visit(AssignmentNode node)
+    {
+        return String.format("%s = %s", node.getIdentifier(), visit(node.getChild()));
     }
 
     @Override
-    public Object visit(VariableDeclarationNode node) {
-
+    public Object visit(VariableDeclarationNode node)
+    {
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "%s ", OperatorTranslator.toJava(node.getType()));
 
-        if (node.getChild() != null){
+        if (node.getChild() != null)
             append(codeBuffer, "%s", visit(node.getChild()));
-        }
-        else{
+        else
             append(codeBuffer, "%s;", node.getIdentifier());
-        }
 
         return codeBuffer;
     }
 
     @Override
-    public Object visit(IfNode node) {
-
+    public Object visit(IfNode node)
+    {
         StringBuffer codeBuffer = new StringBuffer();
         ArrayList<ConditionNode> conditions = node.getConditionBlocks();
 
@@ -203,47 +212,43 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         int i = 0;
         for (ConditionNode condition : conditions)
         {
-            //visit if
-            if (i++ == 0)
-                append(codeBuffer, "if %s\n", visit(condition));
-            //visit else if
-            else
-                append(codeBuffer, "else if %s\n", visit(condition));
+            if (i++ == 0) //visit if
+                append(codeBuffer, "if%s", visit(condition));
+            else //visit else if
+                append(codeBuffer, "else if%s", visit(condition));
         }
 
         // Visit else block (if any)
         BlockNode elseBlock = node.getElseBlock();
         if (elseBlock != null)
-        {
-            append(codeBuffer, "else\n");
-
-            append(codeBuffer, "%s", visit(elseBlock));
-        }
+            append(codeBuffer, "else\n%s", visit(elseBlock));
 
         return codeBuffer;
 
     }
 
     @Override
-    public Object visit(ConditionNode node) {
+    public Object visit(ConditionNode node)
+    {
+        StringBuffer codeBuffer = new StringBuffer();
+        append(codeBuffer, "(%s)\n%s", visit(node.getLeftChild()), visit(node.getRightChild()));
+        return codeBuffer;
+    }
+
+    @Override
+    public Object visit(RepeatWhileNode node)
+    {
 
         StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "(%s)%s", visit(node.getLeftChild()), visit(node.getRightChild()));
-        return codeBuffer;
-    }
-
-    @Override
-    public Object visit(RepeatWhileNode node) {
-
-        StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "while %s",visit(node.getChild()));
+        append(codeBuffer, "while %s", visit(node.getChild()));
 
 
         return codeBuffer;
     }
 
     @Override
-    public Object visit(ReturnNode node) {
+    public Object visit(ReturnNode node)
+    {
 
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "return %s", visit(node.getChild()));
@@ -251,7 +256,8 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     }
 
     @Override
-    public Object visit(MultiplicationExpression node) {
+    public Object visit(MultiplicationExpression node)
+    {
 
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
@@ -260,7 +266,8 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     }
 
     @Override
-    public Object visit(AdditionExpression node) {
+    public Object visit(AdditionExpression node)
+    {
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
 
@@ -268,29 +275,34 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     }
 
     @Override
-    public Object visit(NumberLiteralNode node) {
+    public Object visit(NumberLiteralNode node)
+    {
+        return String.format("%fF", node.getValue());
+    }
+
+    @Override
+    public Object visit(StringLiteralNode node)
+    {
         return node.getValue();
     }
 
     @Override
-    public Object visit(StringLiteralNode node) {
-        return node.getValue();
-    }
-
-    @Override
-    public Object visit(IdentifierLiteralNode node) {
+    public Object visit(IdentifierLiteralNode node)
+    {
         return node.getIdentifier();
     }
 
     @Override
-    public Object visit(BoolLiteralNode node) {
+    public Object visit(BoolLiteralNode node)
+    {
         return node.getValue();
     }
 
     @Override
     public Object visit(CoordinatesLiteralNode node)
     {
-        return null;
+        // Uses the Coordinates runtime type
+        return String.format("new Coordinates(%s, %s, %s)", visit(node.getX()), visit(node.getY()), visit(node.getZ()));
     }
 
     @Override
@@ -303,7 +315,8 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     }
 
     @Override
-    public Object visit(AndExpressionNode node) {
+    public Object visit(AndExpressionNode node)
+    {
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "%s %s %s", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
 
@@ -311,8 +324,8 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     }
 
     @Override
-    public Object visit(RelativeExpressionNode node) {
-
+    public Object visit(RelativeExpressionNode node)
+    {
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "%s %s %s", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
 
@@ -320,7 +333,8 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     }
 
     @Override
-    public Object visit(EqualExpressionNode node) {
+    public Object visit(EqualExpressionNode node)
+    {
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "%s %s %s", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
 
@@ -328,7 +342,8 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     }
 
     @Override
-    public Object visit(NegateNode node) {
+    public Object visit(NegateNode node)
+    {
 
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "!(%s)", visit(node.getChild()));
@@ -339,9 +354,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     @Override
     public Object visit(TypeCastNode node)
     {
-        StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "(%s)", visit(node.getChild()));
-
-        return null;
+        return String.format("(%s)(%s)", OperatorTranslator.toJava(node.getType()), visit(node.getChild()));
     }
 }

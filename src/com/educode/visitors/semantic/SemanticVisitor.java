@@ -50,7 +50,7 @@ public class SemanticVisitor extends VisitorBase
     public SemanticVisitor()
     {
         // Add Minecraft related methods
-        addDefaultMethod("talk", Type.VoidType, Type.StringType);
+        addDefaultMethod("debug", Type.VoidType, Type.StringType);
     }
 
     @Override
