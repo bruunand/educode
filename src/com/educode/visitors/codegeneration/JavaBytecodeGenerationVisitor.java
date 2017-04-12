@@ -35,7 +35,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     private FileWriter fw;
     private int OffSet;
     private int LabelCounter;
-    private ArrayList<Tuple<Node, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<Node, Integer>>();
+    private ArrayList<Tuple<IdentifierLiteralNode, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<IdentifierLiteralNode, Integer>>();
 
 
 
@@ -148,7 +148,11 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         StringBuffer codeBuffer = new StringBuffer();
 
         append(codeBuffer, "  aload_0\n");
-        append(codeBuffer, "  invokevirtual Namespace\n"); //TODO: Get namespace
+
+        for (Node child:node.getActualArguments())
+            append(codeBuffer, "%s", visit(child));
+
+        append(codeBuffer, "  invokespecial Namespace\n"); //TODO: Get namespace
 
         return codeBuffer;
     }
@@ -178,8 +182,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
             case Type.REFERENCE:
                 append(codeBuffer, "  astore %s\n", getOffSetByNode(node.getIdentifierNode()));
             default:
-                append(codeBuffer, "ASDASD%s\n", node.getIdentifierNode().getType().Kind);
-                break;
+                //TODO:ERROR
         }
 
         return codeBuffer;
@@ -189,12 +192,12 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     public Object visit(VariableDeclarationNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
+        DeclaratoinOffsetTable.add(new Tuple<IdentifierLiteralNode, Integer>(node.getIdentifierNode(), ++OffSet));
 
         if (!node.hasChild())
             return "";
 
-        append(codeBuffer, "%s", visit(node.getChild()));
-        DeclaratoinOffsetTable.add(new Tuple<Node, Integer>(node.getChild(), ++OffSet));
+        append(codeBuffer, "%s", visit(((AssignmentNode) node.getChild()).getChild()));
 
         switch (node.getType().Kind)
         {
@@ -391,11 +394,11 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return parameters;
     }
 
-    public int getOffSetByNode(Node node)
+    public int getOffSetByNode(IdentifierLiteralNode node)
     {
-        for (Tuple<Node, Integer> tuple:DeclaratoinOffsetTable)
+        for (Tuple<IdentifierLiteralNode, Integer> tuple:DeclaratoinOffsetTable)
         {
-            if (tuple.x.equals(node))
+            if (tuple.x.getIdentifier().equals(node.getIdentifier()))
                 return tuple.y;
         }
 
