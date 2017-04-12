@@ -11,30 +11,45 @@
   .limit stack 100
   .limit locals 100
 null  dup
+  dstore -1
+  dstore 1
+null  dup
+  dstore -1
+  dstore 2
+null  dup
+ASDASD7
+null  dup
+  dstore -1
+  dstore 4
+null  dup
+ASDASD7
+null  dup
+ASDASD7
+null  dup
 ASDASD7
   aload_0
   invokevirtual Namespace
   dup
   dstore -1
-  dstore 2
+  dstore 8
 null  ifeq L0
-com.educode.nodes.ungrouped.BlockNode@282ba1eL0:
+com.educode.nodes.ungrouped.BlockNode@3ab39c39L0:
   nop
 null  dup
   istore -1
-  istore 3
+  istore 9
 null  dup
   istore -1
-  istore 4
+  istore 10
 null  dup
   istore -1
-  istore 5
+  istore 11
 null  ifeq L1
-com.educode.nodes.ungrouped.BlockNode@13b6d03L1:
+com.educode.nodes.ungrouped.BlockNode@2eee9593L1:
   nop
 null  dup
   dstore -1
-  dstore 6
+  dstore 12
   goto L2
 L3:
   aload_0

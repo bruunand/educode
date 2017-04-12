@@ -45,6 +45,11 @@ public class Type
         return this._childType;
     }
 
+    public boolean isCollection()
+    {
+        return this.Kind == COLLECTION;
+    }
+
     @Override
     public String toString()
     {

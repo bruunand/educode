@@ -98,6 +98,25 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object visit(ObjectInstantiationNode node)
     {
+        // We need to visit children to ensure that actual parameters contain known variables
+        visitChildren(node);
+
+        // Only allow instantation of reference types
+        if (!node.getType().isCollection())
+            _symbolTableHandler.error(node, String.format("Cannot instantiate object of type %s.", node.getType()));
+        else if (node.getType().isCollection())
+        {
+            Type collectionChildType = node.getType().getChildType();
+
+            // Check if actual arguments are of the collection's child type
+            for (Node actual : node.getActualArguments())
+            {
+                Type actualType = ((Typeable)actual).getType();
+                if (!actualType.equals(collectionChildType))
+                    _symbolTableHandler.error(node, String.format("Arguments in the instantiation of %s must be of type %s, but the argument was of type %s.", node.getType(), collectionChildType, actualType));
+            }
+        }
+
         return null;
     }
 
