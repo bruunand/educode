@@ -10,19 +10,38 @@
 .method public main()V
   .limit stack 100
   .limit locals 100
-null  dstore 1
+null  dup
+ASDASD7
+  aload_0
+  invokevirtual Namespace
+  dup
+  dstore -1
+  dstore 2
 null  ifeq L0
-com.educode.nodes.ungrouped.BlockNode@5f150435L0:
+com.educode.nodes.ungrouped.BlockNode@282ba1eL0:
   nop
-nullnullnullnull  ifeq L1
-com.educode.nodes.ungrouped.BlockNode@1c53fd30L1:
+null  dup
+  istore -1
+  istore 3
+null  dup
+  istore -1
+  istore 4
+null  dup
+  istore -1
+  istore 5
+null  ifeq L1
+com.educode.nodes.ungrouped.BlockNode@13b6d03L1:
   nop
-null  dstore 5
+null  dup
+  dstore -1
+  dstore 6
   goto L2
 L3:
   aload_0
   invokevirtual Namespace
-nullL2:
+null  dup
+  dstore -1
+L2:
 null  ifne L3
 .end method
 

@@ -1,5 +1,8 @@
 program Test
     method main()
+        // Collection test
+        Collection<Collection<number>> numberCollection = new Collection<Collection<number>>()
+
         // Test addition
         number result = add(10, 10)
 

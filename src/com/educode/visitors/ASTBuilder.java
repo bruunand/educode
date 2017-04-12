@@ -2,7 +2,6 @@ package com.educode.visitors;
 
 import com.educode.antlr.EduCodeBaseVisitor;
 import com.educode.antlr.EduCodeParser;
-import com.educode.nodes.Identifiable;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
@@ -27,7 +26,6 @@ import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
 
@@ -95,21 +93,24 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         }
     }
 
-    private Type getType(String type)
+
+    private Type getType(EduCodeParser.DataTypeContext ctx)
     {
-        switch (type)
-        {
-            case "string":
-                return Type.StringType;
-            case "bool":
-                return Type.BoolType;
-            case "Coordinates":
-                return Type.CoordinatesType;
-            case "number":
-                return Type.NumberType;
-            default:
-                return Type.VoidType;
-        }
+        if (ctx.dataType() != null)
+            return new Type(getType(ctx.dataType()));
+        else
+            switch (ctx.getText())
+            {
+                case "string":
+                    return Type.StringType;
+                case "bool":
+                    return Type.BoolType;
+                case "Coordinates":
+                    return Type.CoordinatesType;
+                case "number":
+                    return Type.NumberType;
+            }
+        return Type.VoidType;
     }
 
     @Override
@@ -130,7 +131,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         updatePosition(ctx);
 
-        return new ParameterNode(ctx.IDENT().getText(), getType(ctx.dataType().getText()));
+        return new ParameterNode(ctx.IDENT().getText(), getType(ctx.dataType()));
     }
 
     @Override
@@ -326,7 +327,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
 
         Type returnType = Type.VoidType;
         if (ctx.dataType() != null)
-            returnType = getType(ctx.dataType().getText());
+            returnType = getType(ctx.dataType());
 
         if (ctx.params() != null)
             return new MethodDeclarationNode(visit(ctx.params()), visit(ctx.stmts()), ctx.ident().getText(), returnType);
@@ -366,11 +367,11 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
 
         // Add nodes without assignments.
         for (EduCodeParser.IdentContext i : ctx.ident())
-            nodes.add(new VariableDeclarationNode((IdentifierLiteralNode) visit(i), getType(ctx.dataType().getText())));
+            nodes.add(new VariableDeclarationNode((IdentifierLiteralNode) visit(i), getType(ctx.dataType())));
 
         // Add nodes with assignments
         for (EduCodeParser.AssignContext a : ctx.assign())
-            nodes.add(new VariableDeclarationNode(getType(ctx.dataType().getText()), (AssignmentNode) visit(a)));
+            nodes.add(new VariableDeclarationNode(getType(ctx.dataType()), (AssignmentNode) visit(a)));
 
         return new ListNode(nodes);
     }
@@ -384,7 +385,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
             return new AssignmentNode((IdentifierLiteralNode) visit(ctx.ident()), visit(ctx.expr()));
         else if (ctx.dataType() != null) // Assign to instantiated object
         {
-            Type classType = getType(ctx.dataType().getText());
+            Type classType = getType(ctx.dataType());
 
             if (ctx.args() != null)
                 return new AssignmentNode((IdentifierLiteralNode) visit(ctx.ident()), new ObjectInstantiationNode(visit(ctx.args()), classType));
@@ -467,7 +468,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         else if (ctx.boolLit() != null)
             return new BoolLiteralNode(Boolean.parseBoolean(ctx.getText()));
         else if (ctx.dataType() != null)
-            return new TypeCastNode(getType(ctx.dataType().getText()), visit(ctx.factor()));
+            return new TypeCastNode(getType(ctx.dataType()), visit(ctx.factor()));
 
         System.out.println("FactError at line " + ctx.getStart().getLine());
 

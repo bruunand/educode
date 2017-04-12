@@ -26,9 +26,12 @@ public class OperatorTranslator
                 return "Coordinates";
             case Type.VOID:
                 return "void";
+            case Type.COLLECTION:
+                return String.format("ArrayList<%s>", toJava(type.getChildType()));
         }
 
-        // Todo: Add other types
+        System.out.println(String.format("Could not determine Java translation for type %s, exiting..", type));
+        System.exit(-1);
 
         return null;
     }
@@ -55,7 +58,8 @@ public class OperatorTranslator
                 return ">=";
         }
 
-        // Todo: Error handling
+        System.out.println(String.format("Could not determine Java translation for logical operator %s, exiting..", operator));
+        System.exit(-1);
 
         return null;
     }
@@ -76,7 +80,8 @@ public class OperatorTranslator
                 return "*";
         }
 
-        // Todo: Error handling
+        System.out.println(String.format("Could not determine Java translation for arithmetic operator %s, exiting..", operator));
+        System.exit(-1);
 
         return null;
     }
@@ -98,6 +103,10 @@ public class OperatorTranslator
             case Type.REFERENCE:
                 return String.format("L%s;", type.toString());
         }
+
+        System.out.println(String.format("Could not determine bytecode translation for type %s, exiting..", type));
+        System.exit(-1);
+
         return null;
     }
 }
