@@ -50,6 +50,9 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     public Object visit(ProgramNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
+
+        append(codeBuffer, "import com.educode.runtime*;\n\n");
+
         append(codeBuffer, "public class %s\n{\n", node.getIdentifier());
 
         // Visit method declarations
@@ -336,6 +339,9 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     @Override
     public Object visit(TypeCastNode node)
     {
+        StringBuffer codeBuffer = new StringBuffer();
+        append(codeBuffer, "(%s)", visit(node.getChild()));
+
         return null;
     }
 }
