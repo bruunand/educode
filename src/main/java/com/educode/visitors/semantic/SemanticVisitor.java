@@ -292,6 +292,14 @@ public class SemanticVisitor extends VisitorBase
 
         visitChildren(node);
 
+        // Get type of left child (expression)
+        Type expressionType = ((Typeable) node.getLeftChild()).getType();
+
+        if (!expressionType.isCollection())
+            _symbolTableHandler.error(node, String.format("Expression of type %s is not applicable in a for-each statement.", expressionType));
+        else if (!node.getType().equals(expressionType.getChildType()))
+            _symbolTableHandler.error(node, String.format("Expression to iterate in for-each statement must be a collection of %s.", node.getType()));
+
         _symbolTableHandler.closeScope();
 
         return null;
