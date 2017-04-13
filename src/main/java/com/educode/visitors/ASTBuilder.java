@@ -13,6 +13,7 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.AssignmentNode;
+import com.educode.nodes.statement.ForEachNode;
 import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
@@ -173,6 +174,12 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
             ifNode.addChild(visit(ctx.stmts(ctx.stmts().size() - 1)));
 
         return ifNode;
+    }
+
+    @Override
+    public Node visitIterStmt(EduCodeParser.IterStmtContext ctx)
+    {
+        return new ForEachNode(ctx.ident().getText(), getType(ctx.dataType()), visit(ctx.expr()), visit(ctx.stmts()));
     }
 
     @Override

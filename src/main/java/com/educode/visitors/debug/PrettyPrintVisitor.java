@@ -11,6 +11,7 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.AssignmentNode;
+import com.educode.nodes.statement.ForEachNode;
 import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
@@ -193,6 +194,19 @@ public class PrettyPrintVisitor extends VisitorBase
         depth++;
 
         print("Repeat-While");
+        visitChildren(node);
+
+        depth--;
+
+        return null;
+    }
+
+    @Override
+    public Object visit(ForEachNode node)
+    {
+        depth++;
+
+        print("For-Each %s, %s", node.getIdentifier(), node.getType());
         visitChildren(node);
 
         depth--;

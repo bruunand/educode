@@ -4,6 +4,7 @@ import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
+import com.educode.nodes.statement.ForEachNode;
 import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
@@ -40,6 +41,7 @@ public abstract class VisitorBase
     public abstract Object visit(IfNode node);
     public abstract Object visit(ConditionNode node);
     public abstract Object visit(RepeatWhileNode node);
+    public abstract Object visit(ForEachNode node);
     public abstract Object visit(ReturnNode node);
 
     // Arithmetic

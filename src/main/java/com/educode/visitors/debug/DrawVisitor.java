@@ -11,6 +11,7 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.AssignmentNode;
+import com.educode.nodes.statement.ForEachNode;
 import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
@@ -120,6 +121,12 @@ public class DrawVisitor extends VisitorBase
     {
 
         return String.format("RepeatWhile [%s]", visit(node.getChild()));
+    }
+
+    @Override
+    public Object visit(ForEachNode node)
+    {
+        return String.format("ForEach [%s][%s][%s][%s]", node.getIdentifier(), node.getType(), visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
     @Override

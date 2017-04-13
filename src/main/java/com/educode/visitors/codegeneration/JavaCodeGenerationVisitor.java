@@ -13,6 +13,7 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.AssignmentNode;
+import com.educode.nodes.statement.ForEachNode;
 import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
@@ -257,6 +258,12 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
 
         return codeBuffer;
+    }
+
+    @Override
+    public Object visit(ForEachNode node)
+    {
+        return String.format("for (%s %s : %s)\n%s", OperatorTranslator.toJava(node.getType()), node.getIdentifier(), visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
     @Override

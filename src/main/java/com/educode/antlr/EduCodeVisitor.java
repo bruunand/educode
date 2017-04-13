@@ -83,6 +83,12 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIfStmt(EduCodeParser.IfStmtContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#iterStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIterStmt(EduCodeParser.IterStmtContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#varDcl}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

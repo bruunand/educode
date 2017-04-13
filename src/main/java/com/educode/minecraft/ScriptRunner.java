@@ -17,7 +17,7 @@ public class ScriptRunner extends Thread
 		try
 		{
 			_script.notify("Starting script...");
-			_script.run();
+			_script.main();
 		}
 		catch (Exception e)
 		{

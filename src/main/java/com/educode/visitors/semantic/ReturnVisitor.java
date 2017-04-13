@@ -11,6 +11,7 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.AssignmentNode;
+import com.educode.nodes.statement.ForEachNode;
 import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
@@ -144,7 +145,6 @@ public class ReturnVisitor extends VisitorBase
     @Override
     public Object visit(ConditionNode node)
     {
-        // Visit block
         visit(node.getRightChild());
 
         return null;
@@ -153,6 +153,13 @@ public class ReturnVisitor extends VisitorBase
     // Could maybe check if unconditional (always true) and then count inner returns?
     @Override
     public Object visit(RepeatWhileNode node) { return null; }
+
+    @Override
+    public Object visit(ForEachNode node)
+    {
+        // TODO: Do we need to check this?
+        return null;
+    }
 
     @Override
     public Object visit(ReturnNode node) { return null; }

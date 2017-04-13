@@ -128,6 +128,16 @@ public interface EduCodeListener extends ParseTreeListener {
 	 */
 	void exitIfStmt(EduCodeParser.IfStmtContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link EduCodeParser#iterStmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterIterStmt(EduCodeParser.IterStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EduCodeParser#iterStmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitIterStmt(EduCodeParser.IterStmtContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link EduCodeParser#varDcl}.
 	 * @param ctx the parse tree
 	 */

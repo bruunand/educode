@@ -160,6 +160,18 @@ public class EduCodeBaseListener implements EduCodeListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterIterStmt(EduCodeParser.IterStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIterStmt(EduCodeParser.IterStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterVarDcl(EduCodeParser.VarDclContext ctx) { }
 	/**
 	 * {@inheritDoc}

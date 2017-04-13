@@ -20,7 +20,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class CommandEdit implements ICommand
 {
-	private final static String scriptTemplate = "program %s\n  method run()\n  end method\nend program";
+	private final static String scriptTemplate = "program %s\n  method main()\n  end method\nend program";
 
     private final List<String> _aliases;
     

@@ -11,6 +11,7 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.AssignmentNode;
+import com.educode.nodes.statement.ForEachNode;
 import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
@@ -74,18 +75,19 @@ public class SemanticVisitor extends VisitorBase
         retVisitor.visit(node);
 
         // Add method declarations to symbol table
-        // Also looks for the default run method
         boolean hasRunMethod = false;
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
         {
             _symbolTableHandler.enterSymbol(methodDecl);
-            if (methodDecl.getIdentifier().equals("run") && methodDecl.getType().equals(Type.VoidType) && !methodDecl.hasParameterList())
+
+            // Check if signature of method matches main method
+            if (methodDecl.getIdentifier().equals("main") && methodDecl.getType().equals(Type.VoidType) && !methodDecl.hasParameterList())
                 hasRunMethod = true;
         }
 
-        // If no run method, log error
+        // If no main method, log error
         if (!hasRunMethod)
-            _symbolTableHandler.error(node, "Program has no run method with no return type and parameters.");
+            _symbolTableHandler.error(node, "Program has no method called 'main' with no return type and parameters.");
 
         // Visit methods
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
@@ -277,6 +279,20 @@ public class SemanticVisitor extends VisitorBase
     public Object visit(RepeatWhileNode node)
     {
         visitChildren(node);
+
+        return null;
+    }
+
+    @Override
+    public Object visit(ForEachNode node)
+    {
+        _symbolTableHandler.openScope();
+
+        _symbolTableHandler.enterSymbol(node);
+
+        visitChildren(node);
+
+        _symbolTableHandler.closeScope();
 
         return null;
     }

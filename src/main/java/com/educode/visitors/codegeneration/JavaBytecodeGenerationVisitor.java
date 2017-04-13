@@ -12,6 +12,7 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.statement.AssignmentNode;
+import com.educode.nodes.statement.ForEachNode;
 import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
@@ -289,6 +290,13 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "  ifne L%s\n", LabelCounter++);
 
         return codeBuffer;
+    }
+
+    @Override
+    public Object visit(ForEachNode node)
+    {
+        // TODO
+        return null;
     }
 
     @Override

@@ -249,5 +249,5 @@ public abstract class ScriptBase
         }
     }
     
-    public abstract void run();
+    public abstract void main();
 }

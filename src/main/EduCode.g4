@@ -29,6 +29,7 @@ stmt     : methodC
          | varDcl
          | ifStmt
          | loopStmt
+         | iterStmt
          | ret
          ;
 
@@ -39,6 +40,9 @@ loopStmt : 'repeat while' logicExpr eol+ stmts 'end repeat'
          ;
 
 ifStmt   : 'if' logicExpr 'then' eol+ stmts ('else if' logicExpr 'then' eol+ stmts)* ('else' eol+ stmts)? 'end if'
+         ;
+
+iterStmt : 'foreach' dataType ident 'in' expr eol+ stmts 'end foreach'
          ;
 
 varDcl   : dataType (ident | assign) (',' (ident | assign))*

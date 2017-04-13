@@ -32,7 +32,7 @@ public class CommandRun implements ICommand
     public CommandRun()
     {
         Aliases = new ArrayList<String>();
-        Aliases.add("run");
+        Aliases.add("main");
         Aliases.add("runscript");
     }
     
@@ -46,13 +46,13 @@ public class CommandRun implements ICommand
     @Override
     public String getName()
     {
-        return "run";
+        return "main";
     }
 
     @Override
     public String getUsage(ICommandSender sender)
     {
-        return "/run <name> [count]";
+        return "/main <name> [count]";
     }
 
     @Override
@@ -94,7 +94,7 @@ public class CommandRun implements ICommand
             JavaCodeGenerationVisitor javaVisitor = new JavaCodeGenerationVisitor(CompilerMod.SCRIPTS_LOCATION + scriptName + ".java");
             javaVisitor.visit(astRoot);
 
-            // Compile and run Java
+            // Compile and main Java
             Class<?> compiledClass = new CustomJavaCompiler().compile(CompilerMod.SCRIPTS_LOCATION, scriptName);
             ScriptBase script = (ScriptBase) compiledClass.newInstance();
             script.init(server.getEntityWorld(), (EntityPlayer) sender);

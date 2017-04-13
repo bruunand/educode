@@ -32,7 +32,7 @@ public class CustomJavaCompiler
     {
     	JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
     	if (javaCompiler == null)
-    		throw new Exception("A Java compiler was not found. Please run this modification with JDK."); // TODO custom exception
+    		throw new Exception("A Java compiler was not found. Please main this modification with JDK."); // TODO custom exception
     	
         StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null, null);
 
