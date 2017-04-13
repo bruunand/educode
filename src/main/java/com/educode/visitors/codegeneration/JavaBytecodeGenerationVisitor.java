@@ -177,9 +177,10 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
             case Type.BOOL:
                 append(codeBuffer, "  istore %s\n", getOffSetByNode(node.getIdentifierNode()));
                 break;
-            case Type.REFERENCE:
-                append(codeBuffer, "  astore %s\n", getOffSetByNode(node.getIdentifierNode()));
             default:
+                if (node.getIdentifierNode().getType().isReferenceType())
+                    append(codeBuffer, "  astore %s\n", getOffSetByNode(node.getIdentifierNode()));
+                break;
                 //TODO:ERROR
         }
 
@@ -205,10 +206,11 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
             case Type.BOOL:
                 append(codeBuffer, "  istore %s\n", OffSet);
                 break;
-            case Type.REFERENCE:
-                append(codeBuffer, "  astore %s\n", OffSet);
             default:
-                //TODO: Some error
+                if (node.getType().isReferenceType())
+                    append(codeBuffer, "  astore %s\n", OffSet);
+
+                //TODO: Some error if not reference
                 break;
         }
 

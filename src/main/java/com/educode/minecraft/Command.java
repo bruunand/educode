@@ -5,13 +5,13 @@ public class Command
     private boolean _canExecute = false;
     private boolean _hasBeenExecuted = false;
     
-    public synchronized void set_hasBeenExecuted(boolean state)
+    public synchronized void setHasBeenExecuted(boolean state)
     {
         this._hasBeenExecuted = state;
         this.notify();
     }
     
-    public synchronized void set_canExecute(boolean state)
+    public synchronized void setCanExecute(boolean state)
     {
         this._canExecute = state;
         this.notify();

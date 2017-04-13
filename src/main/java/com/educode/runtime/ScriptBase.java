@@ -3,11 +3,17 @@ package com.educode.runtime;
 import com.educode.minecraft.Command;
 import com.educode.minecraft.entity.EntityRobot;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import scala.collection.parallel.ParIterableLike;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class ScriptBase
 {
@@ -79,7 +85,7 @@ public abstract class ScriptBase
 
         _world.setWorldTime((long) time % 24000);
 
-        command.set_hasBeenExecuted(true);
+        command.setHasBeenExecuted(true);
     }
 
     public void notify(String notifyString)
@@ -88,7 +94,12 @@ public abstract class ScriptBase
 
         _player.sendMessage(new TextComponentString(_scriptedEntity.getFormatting() + "[" + _scriptedEntity.getName() + "]" + " " + TextFormatting.RESET + " " + notifyString));
 
-        command.set_hasBeenExecuted(true);
+        command.setHasBeenExecuted(true);
+    }
+
+    public String toString(MinecraftEntity entity)
+    {
+        return entity.toString();
     }
 
     public void selfDestruct()
@@ -103,7 +114,7 @@ public abstract class ScriptBase
 
         _world.createExplosion(this._scriptedEntity, getX(), getY(), getZ(), strength, this._world.getGameRules().getBoolean("mobGriefing"));
 
-        command.set_hasBeenExecuted(true);
+        command.setHasBeenExecuted(true);
     }
 
     public void removeEntity()
@@ -112,7 +123,7 @@ public abstract class ScriptBase
 
         _world.removeEntity(_scriptedEntity);
 
-        command.set_hasBeenExecuted(true);
+        command.setHasBeenExecuted(true);
     }
 
     public float getX()
@@ -135,14 +146,14 @@ public abstract class ScriptBase
         return new Coordinates(_player.getPosition());
     }
 
-    public float getDistanceToOwner()
+    public float getDistanceToEntity(MinecraftEntity entity)
     {
-    	return _scriptedEntity.getDistanceToEntity(_player);
+    	return _scriptedEntity.getDistanceToEntity(entity.getWrappedEntity());
     }
     
-    public synchronized void walkToOwner()
+    public synchronized void walkToEntity(MinecraftEntity entity)
     {
-        navigateToBlock(_player.getPosition());
+        navigateToBlock(entity.getWrappedEntity().getPosition());
     }
     
     private synchronized void navigateToBlock(BlockPos pos)
@@ -150,9 +161,34 @@ public abstract class ScriptBase
         Command command = queueAndWait();
         _scriptedEntity.getNavigator().clearPathEntity();
         _scriptedEntity.getNavigator().setPath(_scriptedEntity.getNavigator().getPathToPos(pos), 0.5D);
-        command.set_hasBeenExecuted(true);
+        command.setHasBeenExecuted(true);
+
+        wait(250F);
     }
-    
+
+    public synchronized List<MinecraftEntity> getNearbyEntities()
+    {
+        Command command = queueAndWait();
+
+        List<MinecraftEntity> returnList = new ArrayList<>();
+        for (Entity entity : this._world.getEntitiesWithinAABB(EntityLiving.class, this._scriptedEntity.getEntityBoundingBox().expand(30, 5, 30)))
+        {
+            if (entity.equals(this._scriptedEntity) || entity.equals(this._player))
+                continue;
+
+            returnList.add(new MinecraftEntity(entity));
+        }
+
+        command.setHasBeenExecuted(true);
+
+        return returnList;
+    }
+
+    public MinecraftEntity getOwnerEntity()
+    {
+        return new MinecraftEntity(this._player);
+    }
+
     public void move(String direction)
     {
         BlockPos targetPosition = _scriptedEntity.getPosition();
@@ -237,7 +273,7 @@ public abstract class ScriptBase
         if (_world.destroyBlock(position, true))
             waitingTime = 500;
         
-        command.set_hasBeenExecuted(true);
+        command.setHasBeenExecuted(true);
         
         try
         {

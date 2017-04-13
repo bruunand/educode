@@ -18,6 +18,7 @@ public class LogicalOperator
     {
         if (o instanceof LogicalOperator)
             return ((LogicalOperator)o).Kind == this.Kind;
+
         return false;
     }
 

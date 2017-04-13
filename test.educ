@@ -62,6 +62,12 @@ program Test
 
         debug("Done repeating, increment = " + increment)
 
+        // Equals test
+        number hundred = 100
+        string hundredStr = "100"
+        if hundred equals hundredStr then
+            debug("hi")
+        end if
     end method
 
     method sum(Collection<number> collection) returns number

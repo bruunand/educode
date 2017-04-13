@@ -28,6 +28,8 @@ public class OperatorTranslator
                 return "void";
             case Type.COLLECTION:
                 return String.format("List<%s>", toJava(type.getChildType()));
+            case Type.ENTITY:
+                return "MinecraftEntity";
         }
 
         System.out.println(String.format("Warning: Could not determine Java translation for type %s.", type));
@@ -57,7 +59,7 @@ public class OperatorTranslator
                 return ">=";
         }
 
-        System.out.println(String.format("Warning: Could not determine Java translation for logical operator %s, exiting..", operator));
+        System.out.println(String.format("Warning: Could not determine Java translation for logical operator %s.", operator));
 
         return null;
     }
@@ -78,7 +80,7 @@ public class OperatorTranslator
                 return "*";
         }
 
-        System.out.println(String.format("Warning: Could not determine Java translation for arithmetic operator %s, exiting..", operator));
+        System.out.println(String.format("Warning: Could not determine Java translation for arithmetic operator %s.", operator));
 
         return null;
     }
@@ -97,11 +99,12 @@ public class OperatorTranslator
                 return "L<NotImplemented>;";
             case Type.VOID:
                 return "V";
-            case Type.REFERENCE:
-                return String.format("L%s;", type.toString());
+            default:
+                if (type.isReferenceType())
+                    return String.format("L%s;", type.toString());
         }
 
-        System.out.println(String.format("Warning: Could not determine bytecode translation for type %s, exiting..", type));
+        System.out.println(String.format("Warning: Could not determine bytecode translation for type %s.", type));
 
         return null;
     }

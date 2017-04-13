@@ -16,7 +16,6 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
@@ -68,7 +67,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         Command nextCommand = CommandQueue.poll();
         if (nextCommand != null)
         {
-            nextCommand.set_canExecute(true);
+            nextCommand.setCanExecute(true);
             
             try
             {

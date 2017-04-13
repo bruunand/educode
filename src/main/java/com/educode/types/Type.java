@@ -8,7 +8,7 @@ public class Type
     private Type _childType = null;
 
     public final byte Kind;
-    public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5, REFERENCE = 6, COLLECTION = 7;
+    public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5, ENTITY = 6, COLLECTION = 7;
 
     public Type(byte kind)
     {
@@ -45,6 +45,11 @@ public class Type
         return this._childType;
     }
 
+    public boolean isReferenceType()
+    {
+        return this.Kind == COLLECTION || this.Kind == ENTITY;
+    }
+
     public boolean isCollection()
     {
         return this.Kind == COLLECTION;
@@ -67,8 +72,8 @@ public class Type
                 return "VOID";
             case Type.ERROR:
                 return "ERROR";
-            case Type.REFERENCE:
-                return "REFERENCE";
+            case Type.ENTITY:
+                return "ENTITY";
             case Type.COLLECTION:
                 return "COLLECTION<" + this.getChildType() + ">";
             default:
@@ -81,6 +86,6 @@ public class Type
     public static final Type NumberType = new Type(NUMBER);
     public static final Type CoordinatesType = new Type(COORDINATES);
     public static final Type StringType = new Type(STRING);
+    public static final Type EntityType = new Type(ENTITY);
     public static final Type Error = new Type(ERROR);
-    public static final Type Reference = new Type(REFERENCE);
 }

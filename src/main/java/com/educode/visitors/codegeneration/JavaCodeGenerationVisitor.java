@@ -2,6 +2,7 @@ package com.educode.visitors.codegeneration;
 
 import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.SingleLineStatement;
+import com.educode.nodes.Typeable;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
@@ -23,7 +24,10 @@ import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.TypeCastNode;
+import com.educode.types.LogicalOperator;
+import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
+import sun.rmi.runtime.Log;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -269,7 +273,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     @Override
     public Object visit(ReturnNode node)
     {
-
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "return %s", visit(node.getChild()));
         return codeBuffer;
@@ -278,7 +281,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     @Override
     public Object visit(MultiplicationExpression node)
     {
-
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
 
@@ -355,16 +357,30 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     @Override
     public Object visit(EqualExpressionNode node)
     {
-        StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "%s %s %s", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
+        Type leftType  = ((Typeable)node.getLeftChild()).getType();
+        Type rightType = ((Typeable)node.getRightChild()).getType();
 
-        return codeBuffer;
+        // In case of a string comparison, we need to use equals()
+        boolean stringComparison = leftType.equals(Type.StringType) || rightType.equals(Type.StringType);
+
+        // In any other case just translate the equal operator directly
+        if (!stringComparison)
+            return String.format("%s %s %s", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
+        else
+        {
+            String returnString = String.format("%s.equals(%s)", visit(node.getLeftChild()), visit(node.getRightChild()));
+
+            // Return code, negate if operator is NOT EQUALS
+            if (node.getOperator().equals(LogicalOperator.NotEquals))
+                return String.format("!(%s)", returnString);
+            else
+                return returnString;
+        }
     }
 
     @Override
     public Object visit(NegateNode node)
     {
-
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "!(%s)", visit(node.getChild()));
 

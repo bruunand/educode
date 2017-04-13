@@ -76,7 +76,10 @@ public class DrawVisitor extends VisitorBase
     @Override
     public Object visit(MethodInvocationNode node)
     {
-        return String.format("MethodInv [%s][%s]", node.getIdentifier(), visit(node.getChild()));
+        if (node.hasChild())
+            return String.format("MethodInv [%s][%s]", node.getIdentifier(), visit(node.getChild()));
+        else
+            return String.format("MethodInv [%s]", node.getIdentifier());
     }
 
     @Override

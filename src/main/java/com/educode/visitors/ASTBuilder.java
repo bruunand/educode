@@ -100,10 +100,12 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
                     return Type.StringType;
                 case "bool":
                     return Type.BoolType;
-                case "Coordinates":
-                    return Type.CoordinatesType;
                 case "number":
                     return Type.NumberType;
+                case "Entity":
+                    return Type.EntityType;
+                case "Coordinates":
+                    return Type.CoordinatesType;
             }
         return Type.VoidType;
     }

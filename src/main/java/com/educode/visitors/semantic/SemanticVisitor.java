@@ -52,6 +52,7 @@ public class SemanticVisitor extends VisitorBase
     {
         addDefaultMethod("debug", Type.VoidType, Type.StringType);
         addDefaultMethod("wait", Type.VoidType, Type.NumberType);
+        addDefaultMethod("toString", Type.StringType, Type.EntityType);
 
         // Add Minecraft related methods
         addDefaultMethod("say", Type.VoidType, Type.StringType);
@@ -59,10 +60,13 @@ public class SemanticVisitor extends VisitorBase
         addDefaultMethod("getY", Type.NumberType);
         addDefaultMethod("getZ", Type.NumberType);
         addDefaultMethod("setTime", Type.VoidType, Type.NumberType);
-        addDefaultMethod("getDistanceToOwner", Type.NumberType);
-        addDefaultMethod("walkToOwner", Type.VoidType);
+        addDefaultMethod("getDistanceToEntity", Type.NumberType, Type.EntityType);
+        addDefaultMethod("walkToEntity", Type.VoidType, Type.EntityType);
         addDefaultMethod("move", Type.VoidType, Type.StringType);
         addDefaultMethod("mine", Type.VoidType, Type.StringType);
+        addDefaultMethod("getNearbyEntities", new Type(Type.EntityType));
+        addDefaultMethod("getOwnerEntity", Type.EntityType);
+        addDefaultMethod("explode", Type.VoidType, Type.NumberType);
     }
 
     @Override
@@ -338,7 +342,7 @@ public class SemanticVisitor extends VisitorBase
             if (node.getOperator().equals(ArithmeticOperator.Division) && node.getRightChild() instanceof NumberLiteralNode)
             {
                 if (((NumberLiteralNode) node.getRightChild()).getValue() == 0)
-                    _symbolTableHandler.error(node, "Divison by 0 is not allowed.");
+                    _symbolTableHandler.error(node, "Division by 0 is not allowed.");
             }
         }
         else
@@ -461,6 +465,7 @@ public class SemanticVisitor extends VisitorBase
         Type rightType = ((Typeable)node.getRightChild()).getType();
 
         // Only same type comparisons allowed
+        // Unless either side is string, in which case any non-string will be cast to string
         if (leftType != rightType)
             _symbolTableHandler.error(node, String.format("Logical operator %s can not be used for types %s and %s.", node.getOperator(), leftType, rightType));
 

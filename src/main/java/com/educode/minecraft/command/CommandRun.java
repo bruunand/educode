@@ -1,6 +1,5 @@
 package com.educode.minecraft.command;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.educode.antlr.EduCodeLexer;
@@ -24,16 +23,15 @@ import net.minecraft.util.text.TextFormatting;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import scala.actors.threadpool.Arrays;
 
 public class CommandRun implements ICommand
 {
-    private final List<String> Aliases;
+    private final List<String> _aliases;
     
     public CommandRun()
     {
-        Aliases = new ArrayList<String>();
-        Aliases.add("main");
-        Aliases.add("runscript");
+        _aliases = java.util.Arrays.asList("run", "runscript");;
     }
     
     @Override
@@ -46,28 +44,26 @@ public class CommandRun implements ICommand
     @Override
     public String getName()
     {
-        return "main";
+        return "run";
     }
 
     @Override
     public String getUsage(ICommandSender sender)
     {
-        return "/main <name> [count]";
+        return "/run <name> [count]";
     }
 
     @Override
     public List<String> getAliases()
     {
-        return Aliases;
+        return _aliases;
     }
-    
-    
+
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         if (args.length < 1) return;
         final String scriptName = args[0];
-        // Translate to Java first
 
         try
         {
