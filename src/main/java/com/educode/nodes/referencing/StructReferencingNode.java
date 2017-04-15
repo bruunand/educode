@@ -7,7 +7,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by User on 14-Apr-17.
  */
-public class StructReferencingNode extends BinaryNode
+public class StructReferencingNode extends BinaryNode implements Reference
 {
     public StructReferencingNode(Node objectName, Node fieldName)
     {

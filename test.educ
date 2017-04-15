@@ -1,91 +1,12 @@
 program Test
-    method main()
-        // Collection test
-        number a = 1
-        number b = 2
-        Collection<number> numberCollection = new Collection<number>(a, b)
-        Coordinates coords = (8,8,7)
-
-        // Test foreach
-        debug("Testing foreach...")
-        foreach number c in numberCollection
-            debug("ForEachIteration:" + c)
-        end foreach
-
-        // Test sum function
-        debug("Sum returned " + sum(numberCollection))
-
-        // Test foreach in nested collection
-        debug("Testing nested foreach...")
-        Collection<Collection<number>> nestedCollection = new Collection<Collection<number>>(numberCollection, numberCollection)
-        foreach Collection<number> child in nestedCollection
-            foreach number nestedNumber in child
-                debug("ForEachNested:" + nestedNumber)
-            end foreach
-        end foreach
-
-        // Test recursion
-        debug("Testing recursion...")
-        number recursionResult = recursion(5000)
-        if recursionResult equals 20 then
-            debug("Recursion OK")
-        else
-            debug("Recursion returned " + recursionResult)
-        end if
-
-        // Test addition
-        debug("Testing addition...")
-        number result = add(10, 10)
-
-        if result equals 20 then
-            debug("Math checks out")
-        else
-            debug("Math does not check out")
-        end if
-
-        // Test logic
-        bool foo = true
-        bool bar = false
-        bool andRes = foo and bar
-
-        if andRes equals false then
-            debug("And seems to work")
-        else
-            debug("And not working as intended, " + andRes + " should be false..")
-        end if
-
-        // Test repeat
-        number increment = 0
-        repeat while increment less than 100
-            increment = increment + 1
-        end repeat
-
-        debug("Done repeating, increment = " + increment)
-
-        // Equals test
-        number hundred = 100
-        string hundredStr = "100"
-        if hundred equals hundredStr then
-            debug("hi")
-        end if
-    end method
-
-    method sum(Collection<number> collection) returns number
-        number sum = 0
-        foreach number child in collection
-            sum = sum + child
-        end foreach
-        return sum
-    end method
-
-    method recursion(number start) returns number
-        if start greater than 20 then
-            return recursion(start - 1)
-        end if
-        return start
-    end method
-
-    method add(number a, number b) returns number
-        return a + b
+    method Test()
+        number a = 5
+        a = true
+        Collection<number> col = new Collection<number>()
+        col = 1
+        col[0] = 1
+        a[1] = 2
+        a.a = 10
+        c.test[5 + 5].q = 10
     end method
 end program

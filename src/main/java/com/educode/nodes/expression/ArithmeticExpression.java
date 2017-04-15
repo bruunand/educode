@@ -1,6 +1,5 @@
 package com.educode.nodes.expression;
 
-import com.educode.nodes.Typeable;
 import com.educode.nodes.base.BinaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.types.ArithmeticOperator;
@@ -9,7 +8,7 @@ import com.educode.types.Type;
 /**
  * Created by zen on 3/10/17.
  */
-public abstract class ArithmeticExpression extends BinaryNode implements Typeable
+public abstract class ArithmeticExpression extends BinaryNode
 {
     private Type _type = Type.Error;
     private ArithmeticOperator _operator;

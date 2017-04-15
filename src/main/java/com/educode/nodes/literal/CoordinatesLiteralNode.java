@@ -1,6 +1,5 @@
 package com.educode.nodes.literal;
 
-import com.educode.nodes.Typeable;
 import com.educode.nodes.base.LeafNode;
 import com.educode.nodes.base.Node;
 import com.educode.types.Type;
@@ -9,7 +8,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by zen on 4/11/17.
  */
-public class CoordinatesLiteralNode extends LeafNode implements Typeable
+public class CoordinatesLiteralNode extends LeafNode
 {
     private NumberLiteralNode _x, _y, _z;
 
@@ -18,6 +17,7 @@ public class CoordinatesLiteralNode extends LeafNode implements Typeable
         this._x = (NumberLiteralNode) x;
         this._y = (NumberLiteralNode) y;
         this._z = (NumberLiteralNode) z;
+        setType(Type.CoordinatesType);
     }
 
     public NumberLiteralNode getX()
@@ -33,18 +33,6 @@ public class CoordinatesLiteralNode extends LeafNode implements Typeable
     public NumberLiteralNode getZ()
     {
         return this._z;
-    }
-    
-    @Override
-    public Type getType()
-    {
-        return Type.CoordinatesType;
-    }
-
-    @Override
-    public void setType(Type type)
-    {
-        // Cannot set type of literal.
     }
 
     @Override

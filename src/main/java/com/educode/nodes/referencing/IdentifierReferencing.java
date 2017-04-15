@@ -7,7 +7,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by User on 14-Apr-17.
  */
-public class IdentNode extends LeafNode implements Identifiable
+public class IdentNode extends LeafNode implements Identifiable, Reference
 {
     private String _identifier;
 

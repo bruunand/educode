@@ -1,21 +1,13 @@
 package com.educode.minecraft.command;
 
-import java.util.List;
-
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
 import com.educode.minecraft.CompilerMod;
-import com.educode.runtime.ScriptBase;
-import com.educode.minecraft.ScriptRunner;
-import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
 import com.educode.visitors.ASTBuilder;
-import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
-import com.educode.visitors.semantic.SemanticVisitor;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -23,7 +15,8 @@ import net.minecraft.util.text.TextFormatting;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import scala.actors.threadpool.Arrays;
+
+import java.util.List;
 
 public class CommandRun implements ICommand
 {
@@ -78,7 +71,7 @@ public class CommandRun implements ICommand
             Node astRoot = builder.visit(parser.program());
 
             // Perform semantic checks
-            SemanticVisitor semanticVisitor = new SemanticVisitor();
+/*            SemanticVisitor semanticVisitor = new SemanticVisitor();
             semanticVisitor.visit(astRoot);
             if (semanticVisitor.getSymbolTableHandler().hasErrors())
             {
@@ -94,7 +87,7 @@ public class CommandRun implements ICommand
             Class<?> compiledClass = new CustomJavaCompiler().compile(CompilerMod.SCRIPTS_LOCATION, scriptName);
             ScriptBase script = (ScriptBase) compiledClass.newInstance();
             script.init(server.getEntityWorld(), (EntityPlayer) sender);
-            new ScriptRunner(script).start();
+            new ScriptRunner(script).start();*/
         }
         catch (Exception e)
         {

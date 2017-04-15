@@ -8,7 +8,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by User on 14-Apr-17.
  */
-public class ArrayReferencingNode extends BinaryNode
+public class ArrayReferencingNode extends BinaryNode implements Reference
 {
     public ArrayReferencingNode(Node arrayName, Node arithmeticExpression)
     {

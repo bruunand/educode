@@ -370,8 +370,8 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class MethodCContext extends ParserRuleContext {
-		public IdentContext ident() {
-			return getRuleContext(IdentContext.class,0);
+		public ReferenceContext reference() {
+			return getRuleContext(ReferenceContext.class,0);
 		}
 		public TerminalNode LPAREN() { return getToken(EduCodeParser.LPAREN, 0); }
 		public TerminalNode RPAREN() { return getToken(EduCodeParser.RPAREN, 0); }
@@ -405,7 +405,7 @@ public class EduCodeParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(106);
-			ident();
+			reference(0);
 			setState(107);
 			match(LPAREN);
 			setState(109);
@@ -565,7 +565,9 @@ public class EduCodeParser extends Parser {
 		public DataTypeContext dataType() {
 			return getRuleContext(DataTypeContext.class,0);
 		}
-		public TerminalNode IDENT() { return getToken(EduCodeParser.IDENT, 0); }
+		public IdentContext ident() {
+			return getRuleContext(IdentContext.class,0);
+		}
 		public ParamContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -594,7 +596,7 @@ public class EduCodeParser extends Parser {
 			setState(129);
 			dataType();
 			setState(130);
-			match(IDENT);
+			ident();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1259,8 +1261,8 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class AssignContext extends ParserRuleContext {
-		public IdentContext ident() {
-			return getRuleContext(IdentContext.class,0);
+		public ReferenceContext reference() {
+			return getRuleContext(ReferenceContext.class,0);
 		}
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
@@ -1304,7 +1306,7 @@ public class EduCodeParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(230);
-				ident();
+				reference(0);
 				setState(231);
 				match(T__17);
 				setState(232);
@@ -1315,7 +1317,7 @@ public class EduCodeParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(234);
-				ident();
+				reference(0);
 				setState(235);
 				match(T__17);
 				setState(236);
@@ -2203,8 +2205,8 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class LiteralContext extends ParserRuleContext {
-		public IdentContext ident() {
-			return getRuleContext(IdentContext.class,0);
+		public ReferenceContext reference() {
+			return getRuleContext(ReferenceContext.class,0);
 		}
 		public StringLitContext stringLit() {
 			return getRuleContext(StringLitContext.class,0);
@@ -2245,7 +2247,7 @@ public class EduCodeParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(343);
-				ident();
+				reference(0);
 				}
 				break;
 			case STRLIT:
@@ -2720,12 +2722,12 @@ public class EduCodeParser extends Parser {
 		"\2\2\2W\5\3\2\2\2XV\3\2\2\2YZ\7\5\2\2Z[\5B\"\2[]\7\62\2\2\\^\5\f\7\2]"+
 		"\\\3\2\2\2]^\3\2\2\2^_\3\2\2\2_b\7\63\2\2`a\7\6\2\2ac\5\64\33\2b`\3\2"+
 		"\2\2bc\3\2\2\2ce\3\2\2\2df\5> \2ed\3\2\2\2fg\3\2\2\2ge\3\2\2\2gh\3\2\2"+
-		"\2hi\3\2\2\2ij\5\20\t\2jk\7\7\2\2k\7\3\2\2\2lm\5B\"\2mo\7\62\2\2np\5\n"+
+		"\2hi\3\2\2\2ij\5\20\t\2jk\7\7\2\2k\7\3\2\2\2lm\5@!\2mo\7\62\2\2np\5\n"+
 		"\6\2on\3\2\2\2op\3\2\2\2pq\3\2\2\2qr\7\63\2\2r\t\3\2\2\2sx\5 \21\2tu\7"+
 		"\b\2\2uw\5 \21\2vt\3\2\2\2wz\3\2\2\2xv\3\2\2\2xy\3\2\2\2y\13\3\2\2\2z"+
 		"x\3\2\2\2{\u0080\5\16\b\2|}\7\b\2\2}\177\5\16\b\2~|\3\2\2\2\177\u0082"+
 		"\3\2\2\2\u0080~\3\2\2\2\u0080\u0081\3\2\2\2\u0081\r\3\2\2\2\u0082\u0080"+
-		"\3\2\2\2\u0083\u0084\5\64\33\2\u0084\u0085\7\61\2\2\u0085\17\3\2\2\2\u0086"+
+		"\3\2\2\2\u0083\u0084\5\64\33\2\u0084\u0085\5B\"\2\u0085\17\3\2\2\2\u0086"+
 		"\u0088\5\22\n\2\u0087\u0089\5> \2\u0088\u0087\3\2\2\2\u0089\u008a\3\2"+
 		"\2\2\u008a\u0088\3\2\2\2\u008a\u008b\3\2\2\2\u008b\u008d\3\2\2\2\u008c"+
 		"\u0086\3\2\2\2\u008d\u0090\3\2\2\2\u008e\u008c\3\2\2\2\u008e\u008f\3\2"+
@@ -2759,14 +2761,14 @@ public class EduCodeParser extends Parser {
 		"\u00e2\5B\"\2\u00e0\u00e2\5\36\20\2\u00e1\u00df\3\2\2\2\u00e1\u00e0\3"+
 		"\2\2\2\u00e2\u00e4\3\2\2\2\u00e3\u00de\3\2\2\2\u00e4\u00e7\3\2\2\2\u00e5"+
 		"\u00e3\3\2\2\2\u00e5\u00e6\3\2\2\2\u00e6\35\3\2\2\2\u00e7\u00e5\3\2\2"+
-		"\2\u00e8\u00e9\5B\"\2\u00e9\u00ea\7\24\2\2\u00ea\u00eb\5 \21\2\u00eb\u00f7"+
-		"\3\2\2\2\u00ec\u00ed\5B\"\2\u00ed\u00ee\7\24\2\2\u00ee\u00ef\7\25\2\2"+
-		"\u00ef\u00f0\5\64\33\2\u00f0\u00f2\7\62\2\2\u00f1\u00f3\5\n\6\2\u00f2"+
-		"\u00f1\3\2\2\2\u00f2\u00f3\3\2\2\2\u00f3\u00f4\3\2\2\2\u00f4\u00f5\7\63"+
-		"\2\2\u00f5\u00f7\3\2\2\2\u00f6\u00e8\3\2\2\2\u00f6\u00ec\3\2\2\2\u00f7"+
-		"\37\3\2\2\2\u00f8\u00fb\5\36\20\2\u00f9\u00fb\5\"\22\2\u00fa\u00f8\3\2"+
-		"\2\2\u00fa\u00f9\3\2\2\2\u00fb!\3\2\2\2\u00fc\u00fd\5$\23\2\u00fd#\3\2"+
-		"\2\2\u00fe\u00ff\b\23\1\2\u00ff\u0100\5&\24\2\u0100\u0106\3\2\2\2\u0101"+
+		"\2\u00e8\u00e9\5@!\2\u00e9\u00ea\7\24\2\2\u00ea\u00eb\5 \21\2\u00eb\u00f7"+
+		"\3\2\2\2\u00ec\u00ed\5@!\2\u00ed\u00ee\7\24\2\2\u00ee\u00ef\7\25\2\2\u00ef"+
+		"\u00f0\5\64\33\2\u00f0\u00f2\7\62\2\2\u00f1\u00f3\5\n\6\2\u00f2\u00f1"+
+		"\3\2\2\2\u00f2\u00f3\3\2\2\2\u00f3\u00f4\3\2\2\2\u00f4\u00f5\7\63\2\2"+
+		"\u00f5\u00f7\3\2\2\2\u00f6\u00e8\3\2\2\2\u00f6\u00ec\3\2\2\2\u00f7\37"+
+		"\3\2\2\2\u00f8\u00fb\5\36\20\2\u00f9\u00fb\5\"\22\2\u00fa\u00f8\3\2\2"+
+		"\2\u00fa\u00f9\3\2\2\2\u00fb!\3\2\2\2\u00fc\u00fd\5$\23\2\u00fd#\3\2\2"+
+		"\2\u00fe\u00ff\b\23\1\2\u00ff\u0100\5&\24\2\u0100\u0106\3\2\2\2\u0101"+
 		"\u0102\f\4\2\2\u0102\u0103\7)\2\2\u0103\u0105\5&\24\2\u0104\u0101\3\2"+
 		"\2\2\u0105\u0108\3\2\2\2\u0106\u0104\3\2\2\2\u0106\u0107\3\2\2\2\u0107"+
 		"%\3\2\2\2\u0108\u0106\3\2\2\2\u0109\u010a\b\24\1\2\u010a\u010b\5(\25\2"+
@@ -2797,7 +2799,7 @@ public class EduCodeParser extends Parser {
 		"\2\u0156\u0158\7 \2\2\u0157\u014a\3\2\2\2\u0157\u014b\3\2\2\2\u0157\u014c"+
 		"\3\2\2\2\u0157\u014d\3\2\2\2\u0157\u014e\3\2\2\2\u0157\u0153\3\2\2\2\u0157"+
 		"\u0154\3\2\2\2\u0157\u0155\3\2\2\2\u0157\u0156\3\2\2\2\u0158\65\3\2\2"+
-		"\2\u0159\u015e\5B\"\2\u015a\u015e\58\35\2\u015b\u015e\5<\37\2\u015c\u015e"+
+		"\2\u0159\u015e\5@!\2\u015a\u015e\58\35\2\u015b\u015e\5<\37\2\u015c\u015e"+
 		"\5:\36\2\u015d\u0159\3\2\2\2\u015d\u015a\3\2\2\2\u015d\u015b\3\2\2\2\u015d"+
 		"\u015c\3\2\2\2\u015e\67\3\2\2\2\u015f\u0160\7/\2\2\u01609\3\2\2\2\u0161"+
 		"\u0162\7\62\2\2\u0162\u0163\5<\37\2\u0163\u0164\7\b\2\2\u0164\u0165\5"+
