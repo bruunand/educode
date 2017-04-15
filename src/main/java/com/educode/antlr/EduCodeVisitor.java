@@ -197,15 +197,15 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEol(EduCodeParser.EolContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#reference}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReference(EduCodeParser.ReferenceContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#ident}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitIdent(EduCodeParser.IdentContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#identName}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIdentName(EduCodeParser.IdentNameContext ctx);
 }

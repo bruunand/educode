@@ -24,6 +24,7 @@ public class ParameterNode extends LeafNode implements Identifiable, Typeable
     @Override
     public Object accept(VisitorBase visitor)
     {
+        System.out.println("hej");
         return visitor.visit(this);
     }
 

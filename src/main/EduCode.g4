@@ -163,11 +163,12 @@ EQUALOP  : 'equals'
 NEWLINE  : NewLine
          ;
 
-ident    : identName ('[' arithExpr ']')?
+reference: reference '.' reference
+         | reference '[' arithExpr ']'
+         | ident
          ;
 
-identName: IDENT
-         | identName '.' IDENT
+ident    : IDENT
          ;
 
 /* Fragments */

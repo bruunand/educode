@@ -388,6 +388,18 @@ public class EduCodeBaseListener implements EduCodeListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterReference(EduCodeParser.ReferenceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReference(EduCodeParser.ReferenceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIdent(EduCodeParser.IdentContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -395,18 +407,6 @@ public class EduCodeBaseListener implements EduCodeListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIdent(EduCodeParser.IdentContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterIdentName(EduCodeParser.IdentNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIdentName(EduCodeParser.IdentNameContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

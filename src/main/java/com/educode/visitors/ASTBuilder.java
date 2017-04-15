@@ -12,6 +12,9 @@ import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
+import com.educode.nodes.referencing.ArrayReferencingNode;
+import com.educode.nodes.referencing.IdentNode;
+import com.educode.nodes.referencing.StructReferencingNode;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.ForEachNode;
 import com.educode.nodes.statement.ReturnNode;
@@ -279,20 +282,22 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     }
 
     @Override
+    public Node visitReference(EduCodeParser.ReferenceContext ctx)
+    {
+        if (ctx.ident() != null)
+            return visit(ctx.ident());
+        else if (ctx.arithExpr() != null)
+            return new ArrayReferencingNode(visit(ctx.reference(0)), visit(ctx.arithExpr()));
+        else
+            return new StructReferencingNode(visit(ctx.reference(0)), visit(ctx.reference(1)));
+    }
+
+    @Override
     public Node visitIdent(EduCodeParser.IdentContext ctx)
     {
         updateLineNumber(ctx);
 
-        if (ctx.arithExpr() != null)
-            return new IdentifierLiteralNode(visit(ctx.arithExpr()), ctx.identName().getText());
-        else
-            return new IdentifierLiteralNode(null, ctx.identName().getText());
-    }
-
-    @Override
-    public Node visitIdentName(EduCodeParser.IdentNameContext ctx)
-    {
-        return null;
+        return new IdentNode(ctx.IDENT().getText());
     }
 
     @Override

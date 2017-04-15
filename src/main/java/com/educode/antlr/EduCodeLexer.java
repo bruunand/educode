@@ -44,8 +44,8 @@ public class EduCodeLexer extends Lexer {
 		"','", "'return'", "'repeat while'", "'end repeat'", "'if'", "'then'", 
 		"'else if'", "'else'", "'end if'", "'foreach'", "'in'", "'end foreach'", 
 		"'='", "'new'", "'number'", "'bool'", "'Coordinates'", "'string'", "'Collection'", 
-		"'<'", "'>'", "'Block'", "'Entity'", "'Item'", "'Texture'", "'['", "']'", 
-		"'.'", "'true'", "'false'", null, null, "'and'", "'or'", "'not'", null, 
+		"'<'", "'>'", "'Block'", "'Entity'", "'Item'", "'Texture'", "'.'", "'['", 
+		"']'", "'true'", "'false'", null, null, "'and'", "'or'", "'not'", null, 
 		null, null, null, null, null, null, "'('", "')'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
@@ -222,8 +222,8 @@ public class EduCodeLexer extends Lexer {
 		"\2\2\u0136\u0137\7K\2\2\u0137\u0138\7v\2\2\u0138\u0139\7g\2\2\u0139\u013a"+
 		"\7o\2\2\u013a<\3\2\2\2\u013b\u013c\7V\2\2\u013c\u013d\7g\2\2\u013d\u013e"+
 		"\7z\2\2\u013e\u013f\7v\2\2\u013f\u0140\7w\2\2\u0140\u0141\7t\2\2\u0141"+
-		"\u0142\7g\2\2\u0142>\3\2\2\2\u0143\u0144\7]\2\2\u0144@\3\2\2\2\u0145\u0146"+
-		"\7_\2\2\u0146B\3\2\2\2\u0147\u0148\7\60\2\2\u0148D\3\2\2\2\u0149\u014a"+
+		"\u0142\7g\2\2\u0142>\3\2\2\2\u0143\u0144\7\60\2\2\u0144@\3\2\2\2\u0145"+
+		"\u0146\7]\2\2\u0146B\3\2\2\2\u0147\u0148\7_\2\2\u0148D\3\2\2\2\u0149\u014a"+
 		"\7v\2\2\u014a\u014b\7t\2\2\u014b\u014c\7w\2\2\u014c\u014d\7g\2\2\u014d"+
 		"F\3\2\2\2\u014e\u014f\7h\2\2\u014f\u0150\7c\2\2\u0150\u0151\7n\2\2\u0151"+
 		"\u0152\7u\2\2\u0152\u0153\7g\2\2\u0153H\3\2\2\2\u0154\u0155\t\2\2\2\u0155"+

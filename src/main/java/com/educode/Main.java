@@ -4,6 +4,7 @@ import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
+import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.visitors.*;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
@@ -26,6 +27,9 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
+        // Reflective visitor test
+        new Test().visit(new ProgramNode(null, null));
+
         ANTLRInputStream stream = new ANTLRFileStream("test.educ");
         EduCodeLexer lexer = new EduCodeLexer(stream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
