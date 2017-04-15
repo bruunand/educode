@@ -1,17 +1,16 @@
 package com.educode.nodes.referencing;
 
-import com.educode.nodes.Identifiable;
 import com.educode.nodes.base.LeafNode;
 import com.educode.visitors.VisitorBase;
 
 /**
  * Created by User on 14-Apr-17.
  */
-public class IdentNode extends LeafNode implements Identifiable, Reference
+public class IdentifierReferencing extends LeafNode implements Reference
 {
     private String _identifier;
 
-    public IdentNode(String identifier)
+    public IdentifierReferencing(String identifier)
     {
         this._identifier = identifier;
     }
@@ -22,9 +21,14 @@ public class IdentNode extends LeafNode implements Identifiable, Reference
         return visitor.visit(this);
     }
 
-    @Override
-    public String getIdentifier()
+    public String getText()
     {
         return this._identifier;
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.getText();
     }
 }

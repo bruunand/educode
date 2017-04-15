@@ -15,8 +15,16 @@ public abstract class VisitorBase
 {
     public abstract Object defaultVisit(Node node);
 
-    public Object visit(Node node)
+    public Object visit(Object node)
     {
+        if (node == null)
+        {
+            System.out.println("Attempted to invoke a null object!");
+            new Exception().printStackTrace(); // Print stack trace for debugging purposes
+            return null;
+        }
+
+        // Get best method for this object
         Method method = getMethodFor(node);
 
         // Attempt to invoke the method
@@ -36,7 +44,7 @@ public abstract class VisitorBase
         return null;
     }
 
-    private Method getMethodFor(Node node)
+    private Method getMethodFor(Object node)
     {
         Method ans = null;
 
