@@ -1,5 +1,7 @@
 package com.educode.types;
 
+import com.educode.symboltable.SymbolTable;
+
 /**
  * Created by zen on 3/10/17.
  */
@@ -10,6 +12,14 @@ public class Type
     public final byte Kind;
     public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5, ENTITY = 6, COLLECTION = 7;
 
+    private static SymbolTable _collectionSymbolTable, _entitySymbolTable;
+
+    static
+    {
+        _collectionSymbolTable = new SymbolTable(null);
+        _entitySymbolTable = new SymbolTable(null);
+    }
+
     public Type(byte kind)
     {
         this.Kind = kind;
@@ -17,8 +27,8 @@ public class Type
 
     public Type(Type child)
     {
+        this(COLLECTION);
         this._childType = child;
-        this.Kind = COLLECTION;
     }
 
     @Override
@@ -48,6 +58,15 @@ public class Type
     public boolean isReferenceType()
     {
         return this.Kind == COLLECTION || this.Kind == ENTITY;
+    }
+
+    public SymbolTable getSymbolTable()
+    {
+        if (this.equals(Type.EntityType))
+            return _entitySymbolTable;
+        else if (this.isCollection())
+            return _collectionSymbolTable;
+        return null;
     }
 
     public boolean isCollection()

@@ -19,6 +19,9 @@ program Test
 
         a = add(5, 5)
 
+        Entity c
+        c.toString()
+
     end method
 
     method add(number a, number b) returns number

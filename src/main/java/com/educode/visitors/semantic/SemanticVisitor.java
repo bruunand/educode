@@ -24,6 +24,7 @@ import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.TypeCastNode;
 import com.educode.symboltable.Symbol;
+import com.educode.symboltable.SymbolTable;
 import com.educode.symboltable.SymbolTableHandler;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.Type;
@@ -123,9 +124,19 @@ public class SemanticVisitor extends VisitorBase
 
     public void visit(MethodInvocationNode node)
     {
+        visit(node.getReference());
         visitChildren(node);
 
-        Symbol methodReference = getSymbolTableHandler().retrieveSymbol(node);
+        SymbolTable table = getSymbolTableHandler().getCurrent();
+
+        if (node.getReference() instanceof StructReferencingNode)
+        {
+            StructReferencingNode structReference = (StructReferencingNode) node.getReference();
+            table = structReference.getLeftChild().getType().getSymbolTable();
+        }
+
+        Symbol methodReference = table.retrieveSymbol(node);
+
         if (methodReference == null)
             getSymbolTableHandler().error(node, "No method %s found with matching parameters.", node.getReference());
         else
