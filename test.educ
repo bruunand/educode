@@ -6,6 +6,7 @@ program Test
         number a = 5
         a = 123
         a = true
+        a = add(a, a)
 
         Collection<number> test = new Collection<number>()
         foreach number c in test
@@ -20,8 +21,11 @@ program Test
         a = add(5, 5)
 
         Entity c
-        c.toString()
+        bool b = c.getHealth()
 
+        number xx = robot.getX()
+        number hh = robot.getHealth()
+        string asd = b.toString()
     end method
 
     method add(number a, number b) returns number

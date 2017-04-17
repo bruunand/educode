@@ -57,6 +57,12 @@ public class SemanticVisitor extends VisitorBase
 
         getSymbolTableHandler().enterSymbol(node);
 
+        // Run return check visitor
+        node.accept(new ReturnCheckVisitor(this.getSymbolTableHandler()));
+
+        // Add robot as a global variable
+        getSymbolTableHandler().enterSymbol(new VariableDeclarationNode(new IdentifierReferencing("robot"), Type.RobotType));
+
         // Enter all method declarations
         for (MethodDeclarationNode method : node.getMethodDeclarations())
             getSymbolTableHandler().enterSymbol(method);
@@ -124,18 +130,18 @@ public class SemanticVisitor extends VisitorBase
 
     public void visit(MethodInvocationNode node)
     {
-        visit(node.getReference());
         visitChildren(node);
 
         SymbolTable table = getSymbolTableHandler().getCurrent();
+        Symbol methodReference = null;
 
         if (node.getReference() instanceof StructReferencingNode)
         {
             StructReferencingNode structReference = (StructReferencingNode) node.getReference();
-            table = structReference.getLeftChild().getType().getSymbolTable();
+            methodReference = structReference.getLeftChild().getType().getSymbolTable().retrieveSymbol(structReference.getFieldName());
         }
-
-        Symbol methodReference = table.retrieveSymbol(node);
+        else
+            methodReference = getSymbolTableHandler().getCurrent().retrieveSymbol(node);
 
         if (methodReference == null)
             getSymbolTableHandler().error(node, "No method %s found with matching parameters.", node.getReference());
@@ -208,14 +214,15 @@ public class SemanticVisitor extends VisitorBase
         // Only visit left child (object) - not right side (field)
         visit(reference.getLeftChild());
 
-        if (!reference.getLeftChild().getType().isReferenceType())
-            getSymbolTableHandler().error(reference, "Object part of a structure reference must be a reference type.");
+        // Retrieve field
+        // Should not be called from MethodInvocation
+        SymbolTable table = reference.getLeftChild().getType().getSymbolTable();
+        Symbol symbol = table.retrieveSymbol(reference.getRightChild());
+
+        if (symbol == null)
+            getSymbolTableHandler().error(reference, "Struct does not contain field %s.", reference.getRightChild());
         else
-        {
-            // TODO: From the field name of the struct reference, determine the type of this reference
-            // All reference types support the toString() method
-            reference.setType(Type.VoidType); // TODO: set it here
-        }
+            reference.setType(symbol.getReference().getType());
     }
 
     public void visit(VariableDeclarationNode node)

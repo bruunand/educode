@@ -1,9 +1,11 @@
 package com.educode.visitors;
 
+import com.educode.Referencing;
 import com.educode.nodes.base.BinaryNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
+import com.educode.nodes.referencing.IdentifierReferencing;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

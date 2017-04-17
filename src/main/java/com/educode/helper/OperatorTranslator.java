@@ -14,7 +14,7 @@ public class OperatorTranslator
 {
     public static String toJava(Type type)
     {
-        switch (type.Kind)
+        switch (type.getKind())
         {
             case Type.NUMBER:
                 return "Float";
@@ -87,7 +87,7 @@ public class OperatorTranslator
 
     public static String toBytecode(Type type)
     {
-        switch (type.Kind)
+        switch (type.getKind())
         {
             case Type.NUMBER:
                 return "D";

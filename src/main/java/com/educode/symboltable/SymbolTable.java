@@ -2,10 +2,13 @@ package com.educode.symboltable;
 
 import com.educode.Referencing;
 import com.educode.antlr.EduCodeParser;
+import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
+import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.IdentifierReferencing;
+import com.educode.types.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +74,18 @@ public class SymbolTable
         }
 
         return null;
+    }
+
+    public void addDefaultMethod(String name, Type returnType, Type ... parameterTypes)
+    {
+        ListNode parameterNodes = new ListNode();
+        for (Type type : parameterTypes)
+            parameterNodes.addChild(new ParameterNode(null, type));
+
+        IdentifierReferencing reference = new IdentifierReferencing(name);
+        MethodDeclarationNode node = new MethodDeclarationNode(parameterNodes, null, reference, returnType);
+
+        this.insert(new Symbol(reference, node));
     }
 
     public void insert(Symbol symbol)
