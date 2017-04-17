@@ -29,4 +29,10 @@ public class StructReferencingNode extends BinaryNode implements Reference
     {
         return visitor.visit(this);
     }
+
+    @Override
+    public String toString()
+    {
+        return "Struct Reference";
+    }
 }

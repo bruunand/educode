@@ -30,4 +30,10 @@ public class ArrayReferencingNode extends BinaryNode implements Reference
     {
         return null;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Array Reference";
+    }
 }

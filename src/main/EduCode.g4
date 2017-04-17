@@ -116,7 +116,7 @@ literal  : reference
 stringLit: STRLIT
          ;
 
-coordLit : LPAREN numberLit ',' numberLit ',' numberLit RPAREN
+coordLit : LPAREN logicExpr ',' logicExpr ',' logicExpr RPAREN
          ;
 
 numberLit: NUMLIT

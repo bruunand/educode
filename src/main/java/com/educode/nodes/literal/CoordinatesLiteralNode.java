@@ -10,27 +10,27 @@ import com.educode.visitors.VisitorBase;
  */
 public class CoordinatesLiteralNode extends LeafNode
 {
-    private NumberLiteralNode _x, _y, _z;
+    private Node _x, _y, _z;
 
     public CoordinatesLiteralNode(Node x, Node y, Node z)
     {
-        this._x = (NumberLiteralNode) x;
-        this._y = (NumberLiteralNode) y;
-        this._z = (NumberLiteralNode) z;
+        this._x = x;
+        this._y = y;
+        this._z = z;
         setType(Type.CoordinatesType);
     }
 
-    public NumberLiteralNode getX()
+    public Node getX()
     {
         return this._x;
     }
 
-    public NumberLiteralNode getY()
+    public Node getY()
     {
         return this._y;
     }
 
-    public NumberLiteralNode getZ()
+    public Node getZ()
     {
         return this._z;
     }

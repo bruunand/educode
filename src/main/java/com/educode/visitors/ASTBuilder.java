@@ -483,7 +483,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitCoordLit(EduCodeParser.CoordLitContext ctx)
     {
-        return new CoordinatesLiteralNode(visit(ctx.numberLit(0)), visit(ctx.numberLit(1)), visit(ctx.numberLit(2)));
+        return new CoordinatesLiteralNode(visit(ctx.logicExpr(0)), visit(ctx.logicExpr(1)), visit(ctx.logicExpr(2)));
     }
 
     @Override

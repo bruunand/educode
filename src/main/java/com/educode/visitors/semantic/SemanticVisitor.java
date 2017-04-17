@@ -8,6 +8,7 @@ import com.educode.nodes.expression.logic.EqualExpressionNode;
 import com.educode.nodes.expression.logic.LogicExpressionNode;
 import com.educode.nodes.expression.logic.NegateNode;
 import com.educode.nodes.expression.logic.RelativeExpressionNode;
+import com.educode.nodes.literal.CoordinatesLiteralNode;
 import com.educode.nodes.literal.NumberLiteralNode;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
@@ -19,6 +20,9 @@ import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.ForEachNode;
 import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.statement.conditional.ConditionNode;
+import com.educode.nodes.statement.conditional.IfNode;
+import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
@@ -57,11 +61,12 @@ public class SemanticVisitor extends VisitorBase
 
         getSymbolTableHandler().enterSymbol(node);
 
+        // Add default methods and fields to symbol table
+        getSymbolTableHandler().getCurrent().addDefaultMethod("debug", Type.VoidType, Type.StringType);
+        getSymbolTableHandler().getCurrent().addDefaultField("robot", Type.RobotType);
+
         // Run return check visitor
         node.accept(new ReturnCheckVisitor(this.getSymbolTableHandler()));
-
-        // Add robot as a global variable
-        getSymbolTableHandler().enterSymbol(new VariableDeclarationNode(new IdentifierReferencing("robot"), Type.RobotType));
 
         // Enter all method declarations
         for (MethodDeclarationNode method : node.getMethodDeclarations())
@@ -74,6 +79,31 @@ public class SemanticVisitor extends VisitorBase
     }
 
     public void visit(NaryNode node)
+    {
+        visitChildren(node);
+    }
+
+    public void visit(ConditionNode node)
+    {
+        // Visit condition
+        visit(node.getLeftChild());
+
+        Type conditionType = node.getLeftChild().getType();
+
+        // Check if condition type is boolean
+        if (!conditionType.equals(Type.BoolType))
+            _symbolTableHandler.error(node, String.format("Condition must be of type %s, but is of type %s.", Type.BoolType, conditionType));
+
+        // Visit block
+        visit(node.getRightChild());
+    }
+
+    public void visit(RepeatWhileNode node)
+    {
+        visitChildren(node);
+    }
+
+    public void visit(IfNode node)
     {
         visitChildren(node);
     }
@@ -112,9 +142,9 @@ public class SemanticVisitor extends VisitorBase
         Type expressionType = node.getLeftChild().getType();
 
         if (!expressionType.isCollection())
-            _symbolTableHandler.error(node, String.format("Expression of type %s is not applicable in a for-each statement.", expressionType));
+            getSymbolTableHandler().error(node, String.format("Expression of type %s is not applicable in a for-each statement.", expressionType));
         else if (!node.getReference().getType().equals(expressionType.getChildType()))
-            _symbolTableHandler.error(node, String.format("Expression to iterate in for-each statement must be a collection of %s.", node.getType()));
+            getSymbolTableHandler().error(node, String.format("Expression to iterate in for-each statement must be a collection of %s.", node.getType()));
 
         _symbolTableHandler.closeScope();
     }
@@ -128,12 +158,22 @@ public class SemanticVisitor extends VisitorBase
         getSymbolTableHandler().closeScope();
     }
 
+
+    public void visit(CoordinatesLiteralNode node)
+    {
+        visit(node.getX());
+        visit(node.getY());
+        visit(node.getZ());
+
+        if (!node.getX().isType(Type.NumberType) || !node.getY().isType(Type.NumberType) || !node.getZ().isType(Type.NumberType))
+            getSymbolTableHandler().error(node, "Coordinate values must evaluate to a number.");
+    }
+
     public void visit(MethodInvocationNode node)
     {
         visitChildren(node);
 
-        SymbolTable table = getSymbolTableHandler().getCurrent();
-        Symbol methodReference = null;
+        Symbol methodReference;
 
         if (node.getReference() instanceof StructReferencingNode)
         {
@@ -191,9 +231,9 @@ public class SemanticVisitor extends VisitorBase
         // We need to visit children to ensure that actual parameters contain known variables
         visitChildren(node);
 
-        // Only allow instantiation of reference types
+        // Only allow instantiation of collections
         if (!node.getType().isCollection())
-            _symbolTableHandler.error(node, String.format("Cannot instantiate object of type %s.", node.getType()));
+            getSymbolTableHandler().error(node, String.format("Cannot instantiate object of type %s.", node.getType()));
         else if (node.getType().isCollection())
         {
             Type collectionChildType = node.getType().getChildType();
@@ -204,7 +244,7 @@ public class SemanticVisitor extends VisitorBase
                 Type actualType = actual.getType();
 
                 if (!actualType.equals(collectionChildType))
-                    _symbolTableHandler.error(node, String.format("Arguments in the instantiation of %s must be of type %s, but the argument was of type %s.", node.getType(), collectionChildType, actualType));
+                    getSymbolTableHandler().error(node, String.format("Arguments in the instantiation of %s must be of type %s, but the argument was of type %s.", node.getType(), collectionChildType, actualType));
             }
         }
     }
@@ -246,7 +286,7 @@ public class SemanticVisitor extends VisitorBase
 
         // Return type and parent method type should be equal
         if (!parentType.equals(childType))
-            _symbolTableHandler.error(node, String.format("Can not return an expression of type %s when parent method returns %s.", childType, parentType));
+            getSymbolTableHandler().error(node, String.format("Can not return an expression of type %s when parent method returns %s.", childType, parentType));
     }
 
     public void visit(MultiplicationExpression node)
@@ -264,11 +304,11 @@ public class SemanticVisitor extends VisitorBase
             if (node.getOperator().equals(ArithmeticOperator.Division) && node.getRightChild() instanceof NumberLiteralNode)
             {
                 if (((NumberLiteralNode) node.getRightChild()).getValue() == 0)
-                    _symbolTableHandler.error(node, "Division by 0 is not allowed.");
+                    getSymbolTableHandler().error(node, "Division by 0 is not allowed.");
             }
         }
         else
-            _symbolTableHandler.error(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), leftType, rightType));
+            getSymbolTableHandler().error(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), leftType, rightType));
     }
 
     public void visit(AdditionExpression node)
@@ -285,7 +325,7 @@ public class SemanticVisitor extends VisitorBase
         else if (leftType.equals(Type.CoordinatesType) && rightType.equals(Type.CoordinatesType))
             node.setType(Type.CoordinatesType);
         else
-            _symbolTableHandler.error(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), leftType, rightType));
+            getSymbolTableHandler().error(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), leftType, rightType));
     }
 
     public void visit(LogicExpressionNode node)
@@ -296,7 +336,7 @@ public class SemanticVisitor extends VisitorBase
         Type rightType = node.getRightChild().getType();
 
         if (!leftType.equals(Type.BoolType) || !rightType.equals(Type.BoolType))
-            _symbolTableHandler.error(node, String.format("Both sides of the %s expression must be of type %s, but are of type %s and %s.", node.getOperator(), Type.BoolType, leftType, rightType));
+            getSymbolTableHandler().error(node, String.format("Both sides of the %s expression must be of type %s, but are of type %s and %s.", node.getOperator(), Type.BoolType, leftType, rightType));
     }
 
     public void visit(RelativeExpressionNode node)
@@ -311,7 +351,7 @@ public class SemanticVisitor extends VisitorBase
 
         // Only number and string comparisons are allowed
         if (!isNumberComparison && !isStringComparison)
-            _symbolTableHandler.error(node, String.format("Logical operator %s can not be used for types %s and %s.", node.getOperator(), leftType, rightType));
+            getSymbolTableHandler().error(node, String.format("Logical operator %s can not be used for types %s and %s.", node.getOperator(), leftType, rightType));
     }
 
     public void visit(EqualExpressionNode node)
@@ -324,7 +364,7 @@ public class SemanticVisitor extends VisitorBase
         // Only same type comparisons allowed
         // Unless either side is string, in which case any non-string will be cast to string
         if (leftType != rightType)
-            _symbolTableHandler.error(node, String.format("Logical operator %s can not be used for types %s and %s.", node.getOperator(), leftType, rightType));
+            getSymbolTableHandler().error(node, String.format("Logical operator %s can not be used for types %s and %s.", node.getOperator(), leftType, rightType));
     }
 
     public void visit(NegateNode node)
@@ -332,7 +372,7 @@ public class SemanticVisitor extends VisitorBase
         visitChildren(node);
 
         if(!node.getChild().getType().equals(Type.BoolType))
-            _symbolTableHandler.error(node, "Negated expression was not of boolean type.");
+            getSymbolTableHandler().error(node, "Negated expression was not of boolean type.");
     }
 
     public void visit(TypeCastNode node)
@@ -345,7 +385,7 @@ public class SemanticVisitor extends VisitorBase
         if (fromType.equals(toType))
             _symbolTableHandler.warning(node, String.format("Redundant cast from %s to %s", fromType, toType));
         else if (!isExplicitCastAllowed(fromType, toType))
-            _symbolTableHandler.error(node, String.format("Type %s cannot be cast to type %s.", fromType, toType));
+            getSymbolTableHandler().error(node, String.format("Type %s cannot be cast to type %s.", fromType, toType));
     }
 
     private boolean isExplicitCastAllowed(Type fromType, Type toType)

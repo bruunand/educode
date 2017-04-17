@@ -2330,11 +2330,11 @@ public class EduCodeParser extends Parser {
 
 	public static class CoordLitContext extends ParserRuleContext {
 		public TerminalNode LPAREN() { return getToken(EduCodeParser.LPAREN, 0); }
-		public List<NumberLitContext> numberLit() {
-			return getRuleContexts(NumberLitContext.class);
+		public List<LogicExprContext> logicExpr() {
+			return getRuleContexts(LogicExprContext.class);
 		}
-		public NumberLitContext numberLit(int i) {
-			return getRuleContext(NumberLitContext.class,i);
+		public LogicExprContext logicExpr(int i) {
+			return getRuleContext(LogicExprContext.class,i);
 		}
 		public TerminalNode RPAREN() { return getToken(EduCodeParser.RPAREN, 0); }
 		public CoordLitContext(ParserRuleContext parent, int invokingState) {
@@ -2365,15 +2365,15 @@ public class EduCodeParser extends Parser {
 			setState(351);
 			match(LPAREN);
 			setState(352);
-			numberLit();
+			logicExpr();
 			setState(353);
 			match(T__5);
 			setState(354);
-			numberLit();
+			logicExpr();
 			setState(355);
 			match(T__5);
 			setState(356);
-			numberLit();
+			logicExpr();
 			setState(357);
 			match(RPAREN);
 			}
@@ -2802,10 +2802,10 @@ public class EduCodeParser extends Parser {
 		"\2\u0159\u015e\5@!\2\u015a\u015e\58\35\2\u015b\u015e\5<\37\2\u015c\u015e"+
 		"\5:\36\2\u015d\u0159\3\2\2\2\u015d\u015a\3\2\2\2\u015d\u015b\3\2\2\2\u015d"+
 		"\u015c\3\2\2\2\u015e\67\3\2\2\2\u015f\u0160\7/\2\2\u01609\3\2\2\2\u0161"+
-		"\u0162\7\62\2\2\u0162\u0163\5<\37\2\u0163\u0164\7\b\2\2\u0164\u0165\5"+
-		"<\37\2\u0165\u0166\7\b\2\2\u0166\u0167\5<\37\2\u0167\u0168\7\63\2\2\u0168"+
-		";\3\2\2\2\u0169\u016a\7.\2\2\u016a=\3\2\2\2\u016b\u016c\7-\2\2\u016c?"+
-		"\3\2\2\2\u016d\u016e\b!\1\2\u016e\u016f\5B\"\2\u016f\u017a\3\2\2\2\u0170"+
+		"\u0162\7\62\2\2\u0162\u0163\5\"\22\2\u0163\u0164\7\b\2\2\u0164\u0165\5"+
+		"\"\22\2\u0165\u0166\7\b\2\2\u0166\u0167\5\"\22\2\u0167\u0168\7\63\2\2"+
+		"\u0168;\3\2\2\2\u0169\u016a\7.\2\2\u016a=\3\2\2\2\u016b\u016c\7-\2\2\u016c"+
+		"?\3\2\2\2\u016d\u016e\b!\1\2\u016e\u016f\5B\"\2\u016f\u017a\3\2\2\2\u0170"+
 		"\u0171\f\5\2\2\u0171\u0172\7!\2\2\u0172\u0179\5@!\6\u0173\u0174\f\4\2"+
 		"\2\u0174\u0175\7\"\2\2\u0175\u0176\5.\30\2\u0176\u0177\7#\2\2\u0177\u0179"+
 		"\3\2\2\2\u0178\u0170\3\2\2\2\u0178\u0173\3\2\2\2\u0179\u017c\3\2\2\2\u017a"+

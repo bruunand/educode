@@ -8,8 +8,11 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.IdentifierReferencing;
+import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.types.Type;
+import net.java.games.input.Component;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +39,7 @@ public class SymbolTable
     {
         for (Symbol symbol : this._symbolList)
         {
-            if (!(symbol.getReference() instanceof IdentifierReferencing))
+            if (symbol.getSourceNode() instanceof MethodDeclarationNode || !(symbol.getReference() instanceof IdentifierReferencing))
                 continue;
 
             // Check if text matches
@@ -76,18 +79,6 @@ public class SymbolTable
         return null;
     }
 
-    public void addDefaultMethod(String name, Type returnType, Type ... parameterTypes)
-    {
-        ListNode parameterNodes = new ListNode();
-        for (Type type : parameterTypes)
-            parameterNodes.addChild(new ParameterNode(null, type));
-
-        IdentifierReferencing reference = new IdentifierReferencing(name);
-        MethodDeclarationNode node = new MethodDeclarationNode(parameterNodes, null, reference, returnType);
-
-        this.insert(new Symbol(reference, node));
-    }
-
     public void insert(Symbol symbol)
     {
         this._symbolList.add(symbol);
@@ -116,5 +107,25 @@ public class SymbolTable
             return getOuter().retrieveSymbol(origin);
         else
             return ans;
+    }
+
+    public void addDefaultField(String name, Type type)
+    {
+        IdentifierReferencing reference = new IdentifierReferencing(name);
+        VariableDeclarationNode node = new VariableDeclarationNode(reference, type);
+
+        this.insert(new Symbol(reference, node));
+    }
+
+    public void addDefaultMethod(String name, Type returnType, Type ... parameterTypes)
+    {
+        ListNode parameterNodes = new ListNode();
+        for (Type type : parameterTypes)
+            parameterNodes.addChild(new ParameterNode(null, type));
+
+        IdentifierReferencing reference = new IdentifierReferencing(name);
+        MethodDeclarationNode node = new MethodDeclarationNode(parameterNodes, null, reference, returnType);
+
+        this.insert(new Symbol(reference, node));
     }
 }
