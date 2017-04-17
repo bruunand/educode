@@ -10,6 +10,7 @@ import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zen on 3/9/17.
@@ -67,5 +68,64 @@ public class MethodDeclarationNode extends BinaryNode implements Referencing
     public Reference getReference()
     {
         return this._reference;
+    }
+
+    public boolean correspondsWith(MethodInvocationNode invocationNode)
+    {
+        // Check if name matches
+        if (!this.getReference().equals(invocationNode.getReference()))
+            return false;
+
+        // Get formal and actual arguments
+        List<ParameterNode> formalParameters = this.getParameters();
+        List<Node> actualArguments = invocationNode.getActualArguments();
+
+        // Check if amount matches
+        if (formalParameters.size() != actualArguments.size())
+            return false;
+
+        // Check parameter one by one to match type
+        for (int i = 0; i < formalParameters.size(); i++)
+        {
+            Type formalType = formalParameters.get(0).getType();
+            Type actualType = actualArguments.get(0).getType();
+
+            if (!formalType.equals(actualType))
+                return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if (!(other instanceof MethodDeclarationNode))
+            return false;
+        else
+        {
+            MethodDeclarationNode otherNode = (MethodDeclarationNode) other;
+
+            // Check if name matches
+            if (!this.getReference().equals(otherNode.getReference()))
+                return false;
+
+            // Get list of parameters for each node
+            List<ParameterNode> ownParameters = this.getParameters();
+            List<ParameterNode> otherParameters = otherNode.getParameters();
+
+            // Check if amount match
+            if (ownParameters.size() != otherParameters.size())
+                return false;
+
+            // Amount of parameters match, now check if each parameter matches in same order
+            for (int i = 0; i < ownParameters.size(); i++)
+            {
+                if (!ownParameters.get(i).equals(otherParameters.get(i)))
+                    return false;
+            }
+
+            return true;
+        }
     }
 }

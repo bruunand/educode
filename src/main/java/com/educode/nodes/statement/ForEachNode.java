@@ -12,7 +12,6 @@ import com.educode.visitors.VisitorBase;
  */
 public class ForEachNode extends BinaryNode implements Referencing
 {
-    private final Type _type;
     private final Reference _reference;
 
     // Left child : Expression
@@ -21,7 +20,7 @@ public class ForEachNode extends BinaryNode implements Referencing
     {
         super(leftChild, rightChild);
         this._reference = reference;
-        this._type = type;
+        setType(type);
     }
 
     @Override

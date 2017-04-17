@@ -1,12 +1,27 @@
 program Test
-    method Test()
+    method example() returns number
+    end method
+
+    method main()
         number a = 5
+        a = 123
         a = true
-        Collection<number> col = new Collection<number>()
-        col = 1
-        col[0] = 1
-        a[1] = 2
-        a.a = 10
-        c.test[5 + 5].q = 10
+
+        Collection<number> test = new Collection<number>()
+        foreach number c in test
+            c = 5
+            a = 1
+        end foreach
+        test[0] = a
+
+        Collection<Collection<number>> tester = new Collection<Collection<number>>()
+        tester[0] = test
+
+        a = add(5, 5)
+
+    end method
+
+    method add(number a, number b) returns number
+        return a + b
     end method
 end program

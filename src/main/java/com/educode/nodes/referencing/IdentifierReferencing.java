@@ -31,4 +31,13 @@ public class IdentifierReferencing extends LeafNode implements Reference
     {
         return this.getText();
     }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if (!(other instanceof IdentifierReferencing))
+            return false;
+        else
+            return ((IdentifierReferencing) other).getText().equals(this.getText());
+    }
 }

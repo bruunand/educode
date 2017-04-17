@@ -17,6 +17,7 @@ public class ParameterNode extends LeafNode implements Referencing
     {
         super();
         this._reference = visit;
+        setType(type);
     }
 
     @Override

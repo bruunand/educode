@@ -1,9 +1,11 @@
 package com.educode.symboltable;
 
+import com.educode.Referencing;
+import com.educode.antlr.EduCodeParser;
 import com.educode.nodes.base.Node;
+import com.educode.nodes.method.MethodDeclarationNode;
+import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.referencing.IdentifierReferencing;
-import com.educode.nodes.referencing.Reference;
-import org.apache.http.impl.io.IdentityInputStream;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +29,8 @@ public class SymbolTable
         return this._outer;
     }
 
-    private Symbol retrieveSymbol(IdentifierReferencing identifier)
+    private Symbol retrieveIdentifierSymbol(IdentifierReferencing identifier)
     {
-        // Look for previous entry
         for (Symbol symbol : this._symbolList)
         {
             if (!(symbol.getReference() instanceof IdentifierReferencing))
@@ -41,11 +42,35 @@ public class SymbolTable
                 return symbol;
         }
 
-        // Look in previous symbol table, otherwise return null
-        if (getOuter() != null)
-            return getOuter().retrieveSymbol(identifier);
-        else
-            return null;
+        return null;
+    }
+
+    private Symbol retrieveMethodDeclarationSymbol(MethodDeclarationNode node)
+    {
+        for (Symbol symbol : this._symbolList)
+        {
+            if (!(symbol.getSourceNode() instanceof MethodDeclarationNode))
+                continue;
+
+            if ((symbol.getSourceNode()).equals(node))
+                return symbol;
+        }
+
+        return null;
+    }
+
+    private Symbol retrieveMethodDeclarationSymbol(MethodInvocationNode requestee)
+    {
+        for (Symbol symbol : this._symbolList)
+        {
+            if (!(symbol.getSourceNode() instanceof MethodDeclarationNode))
+                continue;
+
+            if (((MethodDeclarationNode) symbol.getSourceNode()).correspondsWith(requestee))
+                return symbol;
+        }
+
+        return null;
     }
 
     public void insert(Symbol symbol)
@@ -53,13 +78,28 @@ public class SymbolTable
         this._symbolList.add(symbol);
     }
 
-    public Symbol retrieveSymbol(Reference reference)
+    public Symbol retrieveSymbol(Node origin)
     {
-        if (reference instanceof IdentifierReferencing)
-            return retrieveSymbol((IdentifierReferencing) reference);
-        else
-            System.out.println("No retriever for " + reference.getClass().getName());
+        Symbol ans;
 
-        return null;
+        if (origin instanceof IdentifierReferencing)
+            ans = retrieveIdentifierSymbol((IdentifierReferencing) origin);
+        else if (origin instanceof MethodDeclarationNode)
+            ans = retrieveMethodDeclarationSymbol((MethodDeclarationNode) origin);
+        else if (origin instanceof MethodInvocationNode)
+            ans = retrieveMethodDeclarationSymbol((MethodInvocationNode) origin);
+        else if (origin instanceof Referencing && ((Referencing) origin).getReference() instanceof IdentifierReferencing)
+            ans = retrieveIdentifierSymbol((IdentifierReferencing) ((Referencing) origin).getReference());
+        else
+        {
+            System.out.println("No retriever for " + origin.getClass().getName());
+            return null;
+        }
+
+        // Look in outer symbol table, otherwise return null
+        if (ans == null && getOuter() != null)
+            return getOuter().retrieveSymbol(origin);
+        else
+            return ans;
     }
 }

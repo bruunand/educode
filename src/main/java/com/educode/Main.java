@@ -5,7 +5,7 @@ import com.educode.antlr.EduCodeParser;
 import com.educode.nodes.base.Node;
 import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.PrintVisitor;
-import com.educode.visitors.SemanticVisitor;
+import com.educode.visitors.semantic.SemanticVisitor;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;

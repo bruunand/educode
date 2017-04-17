@@ -2,7 +2,7 @@ package com.educode.symboltable;
 
 import com.educode.Referencing;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.referencing.IdentifierReferencing;
+import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.referencing.Reference;
 
 import java.util.ArrayList;
@@ -15,6 +15,17 @@ public class SymbolTableHandler
 {
     private final List<SymbolTableMessage> _messageList = new ArrayList<>();
     private SymbolTable _current;
+    private MethodDeclarationNode _currentParentMethod;
+
+    public MethodDeclarationNode getCurrentParentMethod()
+    {
+        return this._currentParentMethod;
+    }
+
+    public void setCurrentParentMethod(MethodDeclarationNode newParentMethod)
+    {
+        this._currentParentMethod = newParentMethod;
+    }
 
     public void openScope()
     {
@@ -34,6 +45,11 @@ public class SymbolTableHandler
         return this._current;
     }
 
+    public Symbol retrieveSymbol(Node origin)
+    {
+        return getCurrent().retrieveSymbol(origin);
+    }
+
     public void enterSymbol(Node node)
     {
         if (_current == null)
@@ -42,20 +58,21 @@ public class SymbolTableHandler
             return;
         }
 
-        // In scope - attempt to enter symbol
-        if (node instanceof Referencing)
+        // Check if node is referencing
+        if (!(node instanceof Referencing))
         {
-            Reference reference = ((Referencing) node).getReference();
-
-            if (reference instanceof IdentifierReferencing)
-            {
-                Symbol previousSymbol = _current.retrieveSymbol(reference);
-                if (previousSymbol == null)
-                    _current.insert(new Symbol(reference, node));
-                else
-                    error(node, "Identifier %s previously declared at line %d.", reference, previousSymbol.getSourceNode().getLineNumber());
-            }
+            error(node, "Class %s is not a referencing instance.", node.getClass().getName());
+            return;
         }
+
+        // In scope - attempt to enter symbol
+        Reference reference = ((Referencing) node).getReference();
+        Symbol existing = retrieveSymbol(node);
+
+        if (existing == null)
+            _current.insert(new Symbol(reference, node));
+        else
+            error(node, "Symbol %s previously declared at line %d.", reference, existing.getSourceNode().getLineNumber());
     }
 
     public void printMessages()
