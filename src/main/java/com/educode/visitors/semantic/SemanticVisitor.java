@@ -283,6 +283,7 @@ public class SemanticVisitor extends VisitorBase
         Type childType = Type.VoidType;
         if (node.hasChild())
             childType = node.getChild().getType();
+        node.setType(childType);
 
         // Return type and parent method type should be equal
         if (!parentType.equals(childType))
