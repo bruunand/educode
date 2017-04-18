@@ -7,61 +7,40 @@
   return
 .end method
 
-.method public main()V
+.method public static main([Ljava/lang/String;)V
   .limit stack 100
   .limit locals 100
-null  dup
-  dstore -1
-  dstore 1
-null  dup
-  dstore -1
-  dstore 2
-null  dup
-ASDASD7
-null  dup
-  dstore -1
-  dstore 4
-null  dup
-ASDASD7
-null  dup
-ASDASD7
-null  dup
-ASDASD7
-  aload_0
-  invokevirtual Namespace
-  dup
-  dstore -1
-  dstore 8
-null  ifeq L0
-com.educode.nodes.ungrouped.BlockNode@3ab39c39L0:
-  nop
-null  dup
-  istore -1
-  istore 9
-null  dup
-  istore -1
-  istore 10
-null  dup
-  istore -1
-  istore 11
-null  ifeq L1
-com.educode.nodes.ungrouped.BlockNode@2eee9593L1:
-  nop
-null  dup
-  dstore -1
-  dstore 12
+  iconst_1
+  istore 1
+  iconst_0
+  istore 2
+  iload 2
+  iconst_0
+  if_icmpeq L1
+  ldc 0
   goto L2
-L3:
-  aload_0
-  invokevirtual Namespace
-null  dup
-  dstore -1
+L1:
+  ldc 1
 L2:
-null  ifne L3
+  nop
+  ifeq L3
+  iload 2
+  istore 1
+  goto L0
+L3:
+  iload 1
+  ifeq L5
+  iload 1
+  ifeq L4
+  iconst_1
+L4:
+  nop
+  istore 2
+  goto L0
+L5:
+  nop
+L0:
+  nop
+  return
 .end method
-
-.method public add(null,null)D
-  .limit stack 100
-  .limit locals 100
-null.end method
 

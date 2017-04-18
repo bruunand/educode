@@ -1,48 +1,15 @@
 program Test
     method main()
-        // Collection test
-        number a = 1
-        number b = 2
-        Collection<number> numberCollection = new Collection<number>(a, b)
+        bool a = true, b = false
 
-        // Collection of collection of numbers
-        Collection<Collection<number>> colleception = new Collection<Collection<number>>(numberCollection)
 
-        // Collection of collection of collection of numbers
-        Collection<Collection<Collection<number>>> deep = new Collection<Collection<Collection<number>>>(colleception)
 
-        // Should give an error
-        Collection<bool> errorCollection = new Collection<bool>(deep)
-
-        // Test addition
-        number result = add(10, 10)
-
-        if result equals 20 then
-            talk("Math checks out")
-        else
-            talk("Math does not check out")
+        if b equals false then
+          a = b
+        else if a then
+          b = a and true
         end if
 
-        // Test logic
-        bool foo = true
-        bool bar = false
-        bool andRes = foo and bar
-
-        if andRes equals false then
-            talk("And seems to work")
-        else
-            talk("And not working as intended, " + andRes + " should be false..")
-        end if
-
-        // Test repeat
-        number increment = 0
-        repeat while increment less than 100
-            talk("Repeating..")
-            increment = increment + 1
-        end repeat
-    end method
-
-    method add(number a, number b) returns number
-        return a + b
+        return
     end method
 end program

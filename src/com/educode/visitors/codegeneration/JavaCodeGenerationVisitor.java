@@ -243,7 +243,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     public Object visit(ReturnNode node) {
 
         StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "return %s", visit(node.getChild()));
+        //append(codeBuffer, "return %s", visit(node.getChild()));
         return codeBuffer;
     }
 
