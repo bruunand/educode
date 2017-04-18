@@ -11,6 +11,7 @@ import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
+import com.educode.nodes.referencing.IdentifierReferencing;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
@@ -37,7 +38,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     private FileWriter fw;
     private int OffSet;
     private int LabelCounter;
-    private ArrayList<Tuple<IdentifierLiteralNode, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<IdentifierLiteralNode, Integer>>();
+    private ArrayList<Tuple<IdentifierReferencing, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<IdentifierReferencing, Integer>>();
 
     public void append(StringBuffer buffer, String format, Object ... args)
     {
@@ -108,7 +109,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     {
         return null;
     }
-
     
     public Object visit(ObjectInstantiationNode node)
     {
