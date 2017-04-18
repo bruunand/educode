@@ -1,63 +1,52 @@
 package com.educode.symboltable;
 
-import com.educode.nodes.Identifiable;
+import com.educode.Referencing;
+import com.educode.Typeable;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.literal.IdentifierLiteralNode;
-import com.educode.nodes.method.MethodDeclarationNode;
-import com.educode.nodes.method.MethodInvocationNode;
-import com.educode.nodes.method.ParameterNode;
-import com.educode.nodes.statement.ForEachNode;
-import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.referencing.Reference;
 import com.educode.types.Type;
+import scala.ref.Reference$class;
 
 /**
- * Created by Thomas Buhl on 31/03/2017.
+ * Created by User on 15-Apr-17.
  */
-public class Symbol
+public class Symbol implements Typeable, Referencing
 {
-    private Identifiable _node;
-    private boolean _isValid;
+    private final Reference _reference;
+    private final Node _sourceNode;
 
-    public Symbol(Identifiable node, Boolean isValid)
+    public Symbol(Reference reference, Node sourceNode)
     {
-        this._node = node;
-        this._isValid = isValid;
+        this._reference = reference;
+        this._sourceNode = sourceNode;
     }
 
-    public Symbol(Identifiable node)
+    public Node getSourceNode()
     {
-        this(node, true);
+        return this._sourceNode;
     }
-
-    public String getName()
-    {
-        return _node.getIdentifier();
-    }
-
-    public Identifiable getNode() {return _node; }
 
     @Override
-    public boolean equals(Object other)
+    public Type getType()
     {
-        if (this._isValid && (other instanceof Identifiable))
-            return _node.equals(other);
-
-        return false;
+        return this._reference.getType();
     }
 
-    public boolean corresponds(Node other)
+    @Override
+    public void setType(Type type)
     {
-        if (this._isValid)
-        {
-            if (other instanceof MethodInvocationNode && _node instanceof MethodDeclarationNode)
-                return ((MethodDeclarationNode) _node).corresponds((MethodInvocationNode)other);
-            else if (other instanceof IdentifierLiteralNode)
-            {
-                if (_node instanceof VariableDeclarationNode || _node instanceof ParameterNode || _node instanceof ForEachNode)
-                    return _node.getIdentifier().equals(((IdentifierLiteralNode) other).getIdentifier());
-            }
-        }
+        this._reference.setType(type);
+    }
 
-        return false;
+    @Override
+    public boolean isType(Type type)
+    {
+        return this._reference.isType(type);
+    }
+
+    @Override
+    public Reference getReference()
+    {
+        return this._reference;
     }
 }

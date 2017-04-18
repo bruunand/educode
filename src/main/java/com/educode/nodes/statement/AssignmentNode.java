@@ -1,37 +1,24 @@
 package com.educode.nodes.statement;
 
-import com.educode.nodes.Identifiable;
+import com.educode.Referencing;
 import com.educode.nodes.SingleLineStatement;
-import com.educode.nodes.Typeable;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
-import com.educode.nodes.literal.IdentifierLiteralNode;
+import com.educode.nodes.referencing.Reference;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
 /**
  * Created by zen on 3/10/17.
  */
-public class AssignmentNode extends UnaryNode implements Identifiable, Typeable, SingleLineStatement
+public class AssignmentNode extends UnaryNode implements Referencing, SingleLineStatement
 {
-    private IdentifierLiteralNode _identifierNode;
-    private Type _type;
+    private Reference _reference;
 
-    public AssignmentNode(IdentifierLiteralNode identifierNode, Node child)
+    public AssignmentNode(Reference reference, Node child)
     {
         super(child);
-        this._identifierNode = identifierNode;
-    }
-
-    public IdentifierLiteralNode getIdentifierNode()
-    {
-        return this._identifierNode;
-    }
-
-    @Override
-    public String getIdentifier()
-    {
-        return _identifierNode.getIdentifier();
+        this._reference = reference;
     }
 
     @Override
@@ -41,14 +28,8 @@ public class AssignmentNode extends UnaryNode implements Identifiable, Typeable,
     }
 
     @Override
-    public Type getType()
+    public Reference getReference()
     {
-        return this._type;
-    }
-
-    @Override
-    public void setType(Type type)
-    {
-        this._type = type;
+        return this._reference;
     }
 }

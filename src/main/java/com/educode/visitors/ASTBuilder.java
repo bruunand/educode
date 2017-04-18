@@ -12,6 +12,10 @@ import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
+import com.educode.nodes.referencing.ArrayReferencingNode;
+import com.educode.nodes.referencing.IdentifierReferencing;
+import com.educode.nodes.referencing.Reference;
+import com.educode.nodes.referencing.StructReferencingNode;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.ForEachNode;
 import com.educode.nodes.statement.ReturnNode;
@@ -128,7 +132,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         updateLineNumber(ctx);
 
-        return new ParameterNode(ctx.IDENT().getText(), getType(ctx.dataType()));
+        return new ParameterNode((Reference) visit(ctx.ident()), getType(ctx.dataType()));
     }
 
     @Override
@@ -181,7 +185,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitIterStmt(EduCodeParser.IterStmtContext ctx)
     {
-        return new ForEachNode(ctx.ident().getText(), getType(ctx.dataType()), visit(ctx.expr()), visit(ctx.stmts()));
+        return new ForEachNode((Reference) visit(ctx.ident()), getType(ctx.dataType()), visit(ctx.expr()), visit(ctx.stmts()));
     }
 
     @Override
@@ -279,20 +283,22 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     }
 
     @Override
+    public Node visitReference(EduCodeParser.ReferenceContext ctx)
+    {
+        if (ctx.ident() != null)
+            return visit(ctx.ident());
+        else if (ctx.arithExpr() != null)
+            return new ArrayReferencingNode(visit(ctx.reference(0)), visit(ctx.arithExpr()));
+        else
+            return new StructReferencingNode(visit(ctx.reference(0)), visit(ctx.reference(1)));
+    }
+
+    @Override
     public Node visitIdent(EduCodeParser.IdentContext ctx)
     {
         updateLineNumber(ctx);
 
-        if (ctx.arithExpr() != null)
-            return new IdentifierLiteralNode(visit(ctx.arithExpr()), ctx.identName().getText());
-        else
-            return new IdentifierLiteralNode(null, ctx.identName().getText());
-    }
-
-    @Override
-    public Node visitIdentName(EduCodeParser.IdentNameContext ctx)
-    {
-        return null;
+        return new IdentifierReferencing(ctx.IDENT().getText());
     }
 
     @Override
@@ -303,7 +309,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         ArrayList<Node> nodes = new ArrayList<>();
         nodes.addAll(((NaryNode)visit(ctx.methods())).getChildren());
 
-        return new ProgramNode(nodes, ctx.ident().getText());
+        return new ProgramNode(nodes, (Reference) visit(ctx.ident()));
     }
 
     @Override
@@ -329,9 +335,9 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
             returnType = getType(ctx.dataType());
 
         if (ctx.params() != null)
-            return new MethodDeclarationNode(visit(ctx.params()), visit(ctx.stmts()), ctx.ident().getText(), returnType);
+            return new MethodDeclarationNode(visit(ctx.params()), visit(ctx.stmts()), (Reference) visit(ctx.ident()), returnType);
         else
-            return new MethodDeclarationNode(null, visit(ctx.stmts()), ctx.ident().getText(), returnType);
+            return new MethodDeclarationNode(null, visit(ctx.stmts()), (Reference) visit(ctx.ident()), returnType);
     }
 
     @Override
@@ -366,11 +372,11 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
 
         // Add nodes without assignments.
         for (EduCodeParser.IdentContext i : ctx.ident())
-            nodes.add(new VariableDeclarationNode((IdentifierLiteralNode) visit(i), getType(ctx.dataType())));
+            nodes.add(new VariableDeclarationNode((Reference) visit(i), getType(ctx.dataType())));
 
         // Add nodes with assignments
         for (EduCodeParser.AssignContext a : ctx.assign())
-            nodes.add(new VariableDeclarationNode(getType(ctx.dataType()), (AssignmentNode) visit(a)));
+            nodes.add(new VariableDeclarationNode((AssignmentNode) visit(a), getType(ctx.dataType())));
 
         return new ListNode(nodes);
     }
@@ -381,15 +387,15 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         updateLineNumber(ctx);
 
         if (ctx.expr() != null) // Assign to expression
-            return new AssignmentNode((IdentifierLiteralNode) visit(ctx.ident()), visit(ctx.expr()));
+            return new AssignmentNode((Reference) visit(ctx.reference()), visit(ctx.expr()));
         else if (ctx.dataType() != null) // Assign to instantiated object
         {
             Type classType = getType(ctx.dataType());
 
             if (ctx.args() != null)
-                return new AssignmentNode((IdentifierLiteralNode) visit(ctx.ident()), new ObjectInstantiationNode(visit(ctx.args()), classType));
+                return new AssignmentNode((Reference) visit(ctx.reference()), new ObjectInstantiationNode(visit(ctx.args()), classType));
             else
-                return new AssignmentNode((IdentifierLiteralNode) visit(ctx.ident()), new ObjectInstantiationNode(classType));
+                return new AssignmentNode((Reference) visit(ctx.reference()), new ObjectInstantiationNode(classType));
         }
 
         System.out.println("Error at line " + ctx.getStart().getLine());
@@ -419,9 +425,9 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         updateLineNumber(ctx);
 
         if (ctx.args() != null)
-            return new MethodInvocationNode(visit(ctx.args()), ctx.ident().getText());
+            return new MethodInvocationNode((Reference) visit(ctx.reference()), visit(ctx.args()));
         else
-            return new MethodInvocationNode(null, ctx.ident().getText());
+            return new MethodInvocationNode((Reference) visit(ctx.reference()), null);
     }
 
     @Override
@@ -477,7 +483,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitCoordLit(EduCodeParser.CoordLitContext ctx)
     {
-        return new CoordinatesLiteralNode(visit(ctx.numberLit(0)), visit(ctx.numberLit(1)), visit(ctx.numberLit(2)));
+        return new CoordinatesLiteralNode(visit(ctx.logicExpr(0)), visit(ctx.logicExpr(1)), visit(ctx.logicExpr(2)));
     }
 
     @Override

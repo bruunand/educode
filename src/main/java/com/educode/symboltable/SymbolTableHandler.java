@@ -1,61 +1,78 @@
 package com.educode.symboltable;
 
-import com.educode.nodes.Identifiable;
+import com.educode.Referencing;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.method.MethodDeclarationNode;
+import com.educode.nodes.referencing.Reference;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Thomas Buhl on 31/03/2017.
+ * Created by User on 15-Apr-17.
  */
 public class SymbolTableHandler
 {
-    public SymbolTable current = new SymbolTable(); // todo make getter/setter
-    private List<SymbolTableMessage> _messageList = new ArrayList<>();
-    private MethodDeclarationNode _currentParent;
+    private final List<SymbolTableMessage> _messageList = new ArrayList<>();
+    private SymbolTable _current;
+    private MethodDeclarationNode _currentParentMethod;
+
+    public MethodDeclarationNode getCurrentParentMethod()
+    {
+        return this._currentParentMethod;
+    }
+
+    public void setCurrentParentMethod(MethodDeclarationNode newParentMethod)
+    {
+        this._currentParentMethod = newParentMethod;
+    }
 
     public void openScope()
     {
-        current = new SymbolTable(current);
+        _current = new SymbolTable(_current);
     }
 
     public void closeScope()
     {
-        if(current.outer != null)
-            current = current.outer;
+        if (_current != null)
+            _current = _current.getOuter();
         else
-            error("Can not close scope when not within a scope.");
+            error("Attempted to close scope outside of a scope.");
     }
 
-    public void enterSymbol(Identifiable node)
+    public SymbolTable getCurrent()
     {
-        boolean isNew = !current.contains(node);
-
-        current.symbolList.add(new Symbol(node, isNew));
-
-        // Add an error for multiple declaration
-        if (!isNew)
-            error((Node) node, String.format("Identifier %s already declared.", node.getIdentifier()));
-        // todo: Should not be identifiable in parameter, we need to know line number which is contained in node
+        return this._current;
     }
 
-    public Symbol retreiveSymbol(Node node)
+    public Symbol retrieveSymbol(Node origin)
     {
-        return current.getSymbol(node);
+        return getCurrent().retrieveSymbol(origin);
     }
 
-    //needs modification
-    public boolean declaredLocally(Node node)
+    public void enterSymbol(Node node)
     {
-        for (Symbol s : current.symbolList)
+        if (_current == null)
         {
-            if (s.equals(node))
-                return true;
+            error("Attempted to enter symbol outside of a scope.");
+            return;
         }
 
-        return false;
+        // Check if node is referencing
+        if (!(node instanceof Referencing))
+        {
+            error(node, "Class %s is not a referencing instance.", node.getClass().getName());
+            return;
+        }
+
+        // In scope - attempt to enter symbol
+        Reference reference = ((Referencing) node).getReference();
+        Symbol existing = retrieveSymbol(node);
+
+        if (existing == null)
+            _current.insert(new Symbol(reference, node));
+        else
+            error(node, "Symbol %s previously declared at line %d.", reference, existing.getSourceNode().getLineNumber());
     }
 
     public void printMessages()
@@ -64,39 +81,18 @@ public class SymbolTableHandler
             System.out.println(message);
     }
 
-    private void error(String description)
+    private void error(String description, Object ... args)
     {
-        error(null, description);
+        error(null, description, args);
     }
 
-    public void error(Node relatedNode, String description)
+    public void error(Node relatedNode, String description, Object ... args)
     {
-        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.ERROR, relatedNode, description));
+        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.ERROR, relatedNode, String.format(description, args)));
     }
 
-    public void warning(Node relatedNode, String description)
+    public void warning(Node relatedNode, String description, Object ... args)
     {
-        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.WARNING, relatedNode, description));
-    }
-
-    public void setCurrentParent(MethodDeclarationNode currentParent)
-    {
-        this._currentParent = currentParent;
-    }
-
-    public MethodDeclarationNode getCurrentParent()
-    {
-        return this._currentParent;
-    }
-
-    public boolean hasErrors()
-    {
-        for (SymbolTableMessage message : _messageList)
-        {
-            if (message.getType() == SymbolTableMessage.MessageType.ERROR)
-                return true;
-        }
-
-        return false;
+        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.WARNING, relatedNode, String.format(description, args)));
     }
 }

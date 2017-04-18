@@ -9,7 +9,7 @@ methods  : (method eol+)*
 method   : 'method' ident LPAREN (params)? RPAREN ('returns' dataType)? eol+ stmts 'end method'
          ;
 
-methodC  : ident LPAREN (args)? RPAREN
+methodC  : reference LPAREN (args)? RPAREN
          ;
 
 args     : expr(',' expr)*
@@ -18,7 +18,7 @@ args     : expr(',' expr)*
 params   : param(',' param)*
          ;
 
-param    : dataType IDENT
+param    : dataType ident
          ;
 
 stmts    : (stmt eol+)*
@@ -48,8 +48,8 @@ iterStmt : 'foreach' dataType ident 'in' expr eol+ stmts 'end foreach'
 varDcl   : dataType (ident | assign) (',' (ident | assign))*
          ;
 
-assign   : ident '=' expr
-         | ident '=' 'new' dataType LPAREN (args)? RPAREN
+assign   : reference '=' expr
+         | reference '=' 'new' dataType LPAREN (args)? RPAREN
          ;
 
 expr     : assign
@@ -107,7 +107,7 @@ dataType : 'number'//Contains both ints and floats
          | 'Texture'//The look of a block/entity??
          ;
 
-literal  : ident
+literal  : reference
          | stringLit
          | numberLit
          | coordLit
@@ -116,7 +116,7 @@ literal  : ident
 stringLit: STRLIT
          ;
 
-coordLit : LPAREN numberLit ',' numberLit ',' numberLit RPAREN
+coordLit : LPAREN logicExpr ',' logicExpr ',' logicExpr RPAREN
          ;
 
 numberLit: NUMLIT
@@ -163,11 +163,12 @@ EQUALOP  : 'equals'
 NEWLINE  : NewLine
          ;
 
-ident    : identName ('[' arithExpr ']')?
+reference: reference '.' reference
+         | reference '[' arithExpr ']'
+         | ident
          ;
 
-identName: IDENT
-         | identName '.' IDENT
+ident    : IDENT
          ;
 
 /* Fragments */
