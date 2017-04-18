@@ -1,19 +1,14 @@
-program Test
-    method main()
-        Coordinates c = (5, 10, 5)
-        c.x = x + 1
-        number a = 5
-        a = 123
-        debug("T:" + a)
-
-        Collection<number> test = new Collection<number>(a, 5, 10)
-        foreach number c in test
-            debug("T:" + c)
-            robot.say("Value:" + c)
-        end foreach
-
-        robot.wait(500)
-
-        robot.say("hej")
-    end method
+program c
+  method main()
+    robot.say("out " + random(1, 20))
+    number num = 0
+    repeat while num less than 50
+      Coordinates coords = robot.getCoordinates()
+      robot.setWorldTime(1200)
+      coords.setX(coords.getX() + random(-2, 15))
+      robot.walkTo(coords)
+      robot.wait(5000)
+      num = num + 1
+    end repeat
+  end method
 end program

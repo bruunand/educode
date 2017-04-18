@@ -1,23 +1,21 @@
 import java.util.*;
 import com.educode.runtime.*;
 
-public class Test extends ScriptBase
+public class c extends ScriptBase
 {
 public void main()
 {
-Coordinates c = new Coordinates(5.000000F, 10.000000F, 5.000000F);
-c.x = (x + 1.000000F);
-Float a = 5.000000F;
-a = 123.000000F;
-System.out.println(("T:" + a));
-List<Float> test = Arrays.asList(a, 5.000000F, 10.000000F);
-for (Float c : test)
+robot.say(("out " + random(1.000000F, 20.000000F)));
+Float num = 0.000000F;
+while (num < 50.000000F)
 {
-System.out.println(("T:" + c));
-robot.say(("Value:" + c));
+Coordinates coords = robot.getCoordinates();
+robot.setWorldTime(1200.000000F);
+coords.setX((coords.getX() + random(-2.000000F, 15.000000F)));
+robot.walkTo(coords);
+robot.wait(5000.000000F);
+num = (num + 1.000000F);
 }
 
-robot.wait(500.000000F);
-robot.say("hej");
 }
 }

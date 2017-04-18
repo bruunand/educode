@@ -188,7 +188,7 @@ fragment USym     : '_'
                   ;
 
 /* Literals */
-NUMLIT   : Digit+('.' Digit*)?
+NUMLIT   : ('-')? Digit+('.' Digit*)?
          ;
 
 STRLIT   : USTRLIT '"'
