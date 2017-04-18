@@ -2,13 +2,19 @@ package com.educode;
 
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
+import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
 import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.PrintVisitor;
+import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
+import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+
+import java.io.File;
+import java.lang.reflect.Method;
 
 /**
  * Created by zen on 3/8/17.
@@ -31,22 +37,12 @@ public class Main
         SemanticVisitor sv = new SemanticVisitor();
         root.accept(sv);
         sv.getSymbolTableHandler().printMessages();
-        // Go through print visitor
 
-/*        PrettyPrintVisitor v = new PrettyPrintVisitor();
-        v.visit(root);
-        SemanticVisitor sem = new SemanticVisitor();
-        sem.visit(root);
-        sem.getSymbolTableHandler().printMessages();
+        JavaBytecodeGenerationVisitor byteCodeVisitor = new JavaBytecodeGenerationVisitor();
+        root.accept(byteCodeVisitor);
 
-        JavaBytecodeGenerationVisitor g = new JavaBytecodeGenerationVisitor();
-        g.visit(root);
-
-        DrawVisitor d = new DrawVisitor();
-        System.out.println(d.visit(root));
-
-        JavaCodeGenerationVisitor exampleVisitor = new JavaCodeGenerationVisitor("Test.java");
-        exampleVisitor.visit(root);
+        JavaCodeGenerationVisitor javaCodeVisitor = new JavaCodeGenerationVisitor("Test.java");
+        root.accept(javaCodeVisitor);
 
         // Test code generation
         CustomJavaCompiler compiler = new CustomJavaCompiler();
@@ -56,6 +52,6 @@ public class Main
         {
             if (m.getName().equals("main"))
                 m.invoke(instance);
-        }*/
+        }
     }
 }

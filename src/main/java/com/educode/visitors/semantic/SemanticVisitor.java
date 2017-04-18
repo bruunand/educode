@@ -68,8 +68,19 @@ public class SemanticVisitor extends VisitorBase
         node.accept(new ReturnCheckVisitor(this.getSymbolTableHandler()));
 
         // Enter all method declarations
+        boolean hasMainMethod = false;
         for (MethodDeclarationNode method : node.getMethodDeclarations())
+        {
             getSymbolTableHandler().enterSymbol(method);
+
+            // Check if signature of method matches main method
+            if (method.getReference().toString().equals("main") && method.getType().equals(Type.VoidType) && !method.hasParameterList())
+                hasMainMethod = true;
+        }
+
+        // If no main method, log error
+        if (!hasMainMethod)
+            _symbolTableHandler.error(node, "Program has no method called 'main' with no return type and parameters.");
 
         // Visit all children, which includes method declarations
         visitChildren(node);
