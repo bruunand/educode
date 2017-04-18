@@ -1,5 +1,7 @@
 program Test
     method main()
+        Coordinates c = (5, 10, 5)
+        c.x = x + 1
         number a = 5
         a = 123
         debug("T:" + a)
@@ -7,6 +9,11 @@ program Test
         Collection<number> test = new Collection<number>(a, 5, 10)
         foreach number c in test
             debug("T:" + c)
+            robot.say("Value:" + c)
         end foreach
+
+        robot.wait(500)
+
+        robot.say("hej")
     end method
 end program

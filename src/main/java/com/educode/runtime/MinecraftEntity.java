@@ -1,11 +1,12 @@
 package com.educode.runtime;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 
 /**
  * Created by User on 13-Apr-17.
  */
-public class MinecraftEntity
+public class MinecraftEntity implements IEntity
 {
     private Entity _wrappedEntity;
 
@@ -23,5 +24,20 @@ public class MinecraftEntity
     public String toString()
     {
         return getWrappedEntity().getName();
+    }
+
+    @Override
+    public Coordinates getCoordinates()
+    {
+        return new Coordinates(getWrappedEntity().getPosition());
+    }
+
+    @Override
+    public float getHealth()
+    {
+        if (!(getWrappedEntity() instanceof EntityLiving))
+            return -1;
+        else
+            return ((EntityLiving) getWrappedEntity()).getHealth();
     }
 }

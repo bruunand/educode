@@ -75,6 +75,17 @@ public class SymbolTableHandler
             error(node, "Symbol %s previously declared at line %d.", reference, existing.getSourceNode().getLineNumber());
     }
 
+    public boolean hasErrors()
+    {
+        for (SymbolTableMessage message : _messageList)
+        {
+            if (message.getType() == SymbolTableMessage.MessageType.ERROR)
+                return true;
+        }
+
+        return false;
+    }
+
     public void printMessages()
     {
         for (SymbolTableMessage message : _messageList)
@@ -94,5 +105,10 @@ public class SymbolTableHandler
     public void warning(Node relatedNode, String description, Object ... args)
     {
         this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.WARNING, relatedNode, String.format(description, args)));
+    }
+
+    public List<SymbolTableMessage> getMessages()
+    {
+        return this._messageList;
     }
 }

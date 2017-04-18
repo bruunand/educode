@@ -4,9 +4,9 @@ import com.educode.Referencing;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.method.MethodDeclarationNode;
-import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
+import com.educode.nodes.referencing.Reference;
 import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.types.Type;
 
@@ -48,7 +48,7 @@ public class SymbolTable
         return null;
     }
 
-    private Symbol retrieveMethodDeclarationSymbol(MethodDeclarationNode node)
+    private Symbol retrieveMethodSymbol(MethodDeclarationNode node)
     {
         for (Symbol symbol : this._symbolList)
         {
@@ -62,18 +62,21 @@ public class SymbolTable
         return null;
     }
 
-    private Symbol retrieveMethodDeclarationSymbol(MethodInvocationNode requestee)
+    public Symbol retrieveMethodSymbol(Reference reference, List<Node> actualArguments)
     {
         for (Symbol symbol : this._symbolList)
         {
             if (!(symbol.getSourceNode() instanceof MethodDeclarationNode))
                 continue;
 
-            if (((MethodDeclarationNode) symbol.getSourceNode()).correspondsWith(requestee))
+            if (((MethodDeclarationNode) symbol.getSourceNode()).correspondsWith(reference, actualArguments))
                 return symbol;
         }
 
-        return null;
+        if (getOuter() != null)
+            return getOuter().retrieveMethodSymbol(reference, actualArguments);
+        else
+            return null;
     }
 
     public void insert(Symbol symbol)
@@ -88,9 +91,7 @@ public class SymbolTable
         if (origin instanceof IdentifierReferencingNode)
             ans = retrieveIdentifierSymbol((IdentifierReferencingNode) origin);
         else if (origin instanceof MethodDeclarationNode)
-            ans = retrieveMethodDeclarationSymbol((MethodDeclarationNode) origin);
-        else if (origin instanceof MethodInvocationNode)
-            ans = retrieveMethodDeclarationSymbol((MethodInvocationNode) origin);
+            ans = retrieveMethodSymbol((MethodDeclarationNode) origin);
         else if (origin instanceof Referencing && ((Referencing) origin).getReference() instanceof IdentifierReferencingNode)
             ans = retrieveIdentifierSymbol((IdentifierReferencingNode) ((Referencing) origin).getReference());
         else

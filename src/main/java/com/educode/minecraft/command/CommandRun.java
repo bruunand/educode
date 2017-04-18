@@ -3,11 +3,18 @@ package com.educode.minecraft.command;
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
 import com.educode.minecraft.CompilerMod;
+import com.educode.minecraft.ScriptRunner;
+import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
+import com.educode.runtime.ScriptBase;
+import com.educode.symboltable.SymbolTableMessage;
 import com.educode.visitors.ASTBuilder;
+import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
+import com.educode.visitors.semantic.SemanticVisitor;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -71,31 +78,31 @@ public class CommandRun implements ICommand
             Node astRoot = builder.visit(parser.program());
 
             // Perform semantic checks
-/*            SemanticVisitor semanticVisitor = new SemanticVisitor();
-            semanticVisitor.visit(astRoot);
+            SemanticVisitor semanticVisitor = new SemanticVisitor();
+            astRoot.accept(semanticVisitor);
             if (semanticVisitor.getSymbolTableHandler().hasErrors())
             {
-                semanticVisitor.getSymbolTableHandler().printMessages();
-                throw new Exception("Could not translate source program.");
+                for (SymbolTableMessage message : semanticVisitor.getSymbolTableHandler().getMessages())
+                    sender.sendMessage(new TextComponentString(message.toString()));
+
+                return;
             }
 
             // Generate Java code
             JavaCodeGenerationVisitor javaVisitor = new JavaCodeGenerationVisitor(CompilerMod.SCRIPTS_LOCATION + scriptName + ".java");
-            javaVisitor.visit(astRoot);
+            astRoot.accept(javaVisitor);
 
             // Compile and main Java
             Class<?> compiledClass = new CustomJavaCompiler().compile(CompilerMod.SCRIPTS_LOCATION, scriptName);
             ScriptBase script = (ScriptBase) compiledClass.newInstance();
             script.init(server.getEntityWorld(), (EntityPlayer) sender);
-            new ScriptRunner(script).start();*/
+            new ScriptRunner(script).start();
         }
         catch (Exception e)
         {
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "[Error]" + TextFormatting.RESET + " " + e.getMessage()));
 
             e.printStackTrace();
-
-            return;
         }
     }
 

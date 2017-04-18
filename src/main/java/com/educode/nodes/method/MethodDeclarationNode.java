@@ -70,33 +70,6 @@ public class MethodDeclarationNode extends BinaryNode implements Referencing
         return this._reference;
     }
 
-    public boolean correspondsWith(MethodInvocationNode invocationNode)
-    {
-        // Check if name matches
-        if (!this.getReference().equals(invocationNode.getReference()))
-            return false;
-
-        // Get formal and actual arguments
-        List<ParameterNode> formalParameters = this.getParameters();
-        List<Node> actualArguments = invocationNode.getActualArguments();
-
-        // Check if amount matches
-        if (formalParameters.size() != actualArguments.size())
-            return false;
-
-        // Check parameter one by one to match type
-        for (int i = 0; i < formalParameters.size(); i++)
-        {
-            Type formalType = formalParameters.get(0).getType();
-            Type actualType = actualArguments.get(0).getType();
-
-            if (!formalType.equals(actualType))
-                return false;
-        }
-
-        return true;
-    }
-
     @Override
     public boolean equals(Object other)
     {
@@ -127,5 +100,31 @@ public class MethodDeclarationNode extends BinaryNode implements Referencing
 
             return true;
         }
+    }
+
+    public boolean correspondsWith(Reference reference, List<Node> actualArguments)
+    {
+        // Check if name matches
+        if (!this.getReference().equals(reference))
+            return false;
+
+        // Get formal parameters
+        List<ParameterNode> formalParameters = this.getParameters();
+
+        // Check if amount matches
+        if (formalParameters.size() != actualArguments.size())
+            return false;
+
+        // Check parameter one by one to match type
+        for (int i = 0; i < formalParameters.size(); i++)
+        {
+            Type formalType = formalParameters.get(0).getType();
+            Type actualType = actualArguments.get(0).getType();
+
+            if (!formalType.equals(actualType))
+                return false;
+        }
+
+        return true;
     }
 }
