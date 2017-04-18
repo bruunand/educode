@@ -11,230 +11,107 @@ This mapping 'snapshot_20161220' was designed for MC 1.11! Use at your own peril
 #################################################
 :deobfCompileDummyTask
 :deobfProvidedDummyTask
-:generateApiGrammarSource UP-TO-DATE
-:sourceApiJava
-:compileApiJava UP-TO-DATE
-:processApiResources UP-TO-DATE
-:apiClasses UP-TO-DATE
-:generateGrammarSource UP-TO-DATE
-:sourceMainJava
-:compileJava/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:40: error: cannot find symbol
-    private ArrayList<Tuple<IdentifierLiteralNode, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<IdentifierLiteralNode, Integer>>();
-                            ^
-  symbol:   class IdentifierLiteralNode
-  location: class JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:334: error: cannot find symbol
-    public Object visit(IdentifierLiteralNode node)
-                        ^
-  symbol:   class IdentifierLiteralNode
-  location: class JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:482: error: cannot find symbol
-    public int getOffSetByNode(IdentifierLiteralNode node)
-                               ^
-  symbol:   class IdentifierLiteralNode
-  location: class JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:40: error: cannot find symbol
-    private ArrayList<Tuple<IdentifierLiteralNode, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<IdentifierLiteralNode, Integer>>();
-                                                                                                          ^
-  symbol:   class IdentifierLiteralNode
-  location: class JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:59: error: name clash: visit(ProgramNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(ProgramNode node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:63: error: cannot find symbol
-        append(codeBuffer, ".class public %s\n", node.getIdentifier());
-                                                     ^
-  symbol:   method getIdentifier()
-  location: variable node of type ProgramNode
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:78: error: cannot find symbol
-            fw = new FileWriter(node.getIdentifier() + ".j");
-                                    ^
-  symbol:   method getIdentifier()
-  location: variable node of type ProgramNode
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:91: error: name clash: visit(BlockNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(BlockNode node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:107: error: name clash: visit(ListNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(ListNode node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:113: error: name clash: visit(ObjectInstantiationNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(ObjectInstantiationNode node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:129: error: name clash: visit(MethodDeclarationNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(MethodDeclarationNode node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:135: error: cannot find symbol
-        if (node.getIdentifier().equals("main"))
-                ^
-  symbol:   method getIdentifier()
-  location: variable node of type MethodDeclarationNode
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:140: error: cannot find symbol
-            append(codeBuffer, ".method public %s(%s)%s\n", node.getIdentifier(), getParameters(node.getParameterList()),OperatorTranslator.toBytecode(node.getType()));
-                                                                ^
-  symbol:   method getIdentifier()
-  location: variable node of type MethodDeclarationNode
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:155: error: name clash: visit(MethodInvocationNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(MethodInvocationNode node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:170: error: name clash: visit(ParameterNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(ParameterNode node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:176: error: name clash: visit(AssignmentNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(AssignmentNode node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:183: error: cannot find symbol
-        append(codeBuffer, "  %sstore %s\n", getPrefix(node.getIdentifierNode().getType()),getOffSetByNode(node.getIdentifierNode()));
-                                                           ^
-  symbol:   method getIdentifierNode()
-  location: variable node of type AssignmentNode
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:183: error: cannot find symbol
-        append(codeBuffer, "  %sstore %s\n", getPrefix(node.getIdentifierNode().getType()),getOffSetByNode(node.getIdentifierNode()));
-                                                                                                               ^
-  symbol:   method getIdentifierNode()
-  location: variable node of type AssignmentNode
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:189: error: name clash: visit(VariableDeclarationNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(VariableDeclarationNode node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:192: error: cannot find symbol
-        DeclaratoinOffsetTable.add(new Tuple<IdentifierLiteralNode, Integer>(node.getIdentifierNode(), ++OffSet));
-                                             ^
-  symbol:   class IdentifierLiteralNode
-  location: class JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:207: error: name clash: visit(IfNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(IfNode node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:245: error: name clash: visit(ConditionNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(ConditionNode node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:259: error: name clash: visit(RepeatWhileNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(RepeatWhileNode node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:275: error: name clash: visit(ReturnNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(ReturnNode node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:281: error: name clash: visit(MultiplicationExpression) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(MultiplicationExpression node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:293: error: name clash: visit(AdditionExpression) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(AdditionExpression node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:300: error: cannot find symbol
-        if (node.getType().Kind == Type.STRING)
-                          ^
-  symbol:   variable Kind
-  location: class Type
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:305: error: cannot find symbol
-        else if (node.getType().Kind == Type.NUMBER)
-                               ^
-  symbol:   variable Kind
-  location: class Type
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:314: error: name clash: visit(NumberLiteralNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(NumberLiteralNode node)
-                  ^
-  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:324: error: name clash: visit(StringLiteralNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(StringLiteralNode node)
-                  ^
-  first method:  visit(Object) in VisitorBase
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:344: error: name clash: visit(BoolLiteralNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(BoolLiteralNode node)
-                  ^
-  first method:  visit(Object) in VisitorBase
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:357: error: name clash: visit(CoordinatesLiteralNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(CoordinatesLiteralNode node)
-                  ^
-  first method:  visit(Object) in VisitorBase
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:363: error: name clash: visit(OrExpressionNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(OrExpressionNode node)
-                  ^
-  first method:  visit(Object) in VisitorBase
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:379: error: name clash: visit(AndExpressionNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(AndExpressionNode node)
-                  ^
-  first method:  visit(Object) in VisitorBase
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:395: error: name clash: visit(RelativeExpressionNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(RelativeExpressionNode node)
-                  ^
-  first method:  visit(Object) in VisitorBase
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:401: error: name clash: visit(EqualExpressionNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(EqualExpressionNode node)
-                  ^
-  first method:  visit(Object) in VisitorBase
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:422: error: name clash: visit(NegateNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(NegateNode node)
-                  ^
-  first method:  visit(Object) in VisitorBase
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:439: error: name clash: visit(TypeCastNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
-    public Object visit(TypeCastNode node)
-                  ^
-  first method:  visit(Object) in VisitorBase
-  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:448: error: cannot find symbol
-        switch (type.Kind)
-                    ^
-  symbol:   variable Kind
-  location: variable type of type Type
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:448: error: illegal start of type
-        switch (type.Kind)
-               ^
-/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:484: error: cannot find symbol
-        for (Tuple<IdentifierLiteralNode, Integer> tuple:DeclaratoinOffsetTable)
-                   ^
-  symbol:   class IdentifierLiteralNode
-  location: class JavaBytecodeGenerationVisitor
-Note: Some input files use unchecked or unsafe operations.
-Note: Recompile with -Xlint:unchecked for details.
-41 errors
- FAILED
+:ideaModule
+Download https://repo1.maven.org/maven2/org/antlr/antlr4/4.6/antlr4-4.6-sources.jar
+Download https://repo1.maven.org/maven2/org/antlr/antlr4/4.6/antlr4-4.6-javadoc.jar
+Download https://repo1.maven.org/maven2/org/antlr/antlr4-runtime/4.6/antlr4-runtime-4.6-sources.jar
+Download https://repo1.maven.org/maven2/org/antlr/antlr4-runtime/4.6/antlr4-runtime-4.6-javadoc.jar
+Download https://repo1.maven.org/maven2/org/antlr/antlr-runtime/3.5.2/antlr-runtime-3.5.2-sources.jar
+Download https://repo1.maven.org/maven2/org/antlr/antlr-runtime/3.5.2/antlr-runtime-3.5.2-javadoc.jar
+Download https://repo1.maven.org/maven2/org/antlr/ST4/4.0.8/ST4-4.0.8-sources.jar
+Download https://repo1.maven.org/maven2/org/antlr/ST4/4.0.8/ST4-4.0.8-javadoc.jar
+Download https://repo1.maven.org/maven2/org/abego/treelayout/org.abego.treelayout.core/1.0.3/org.abego.treelayout.core-1.0.3-sources.jar
+Download https://repo1.maven.org/maven2/org/abego/treelayout/org.abego.treelayout.core/1.0.3/org.abego.treelayout.core-1.0.3-javadoc.jar
+Download https://repo1.maven.org/maven2/org/glassfish/javax.json/1.0.4/javax.json-1.0.4-sources.jar
+Download https://repo1.maven.org/maven2/org/glassfish/javax.json/1.0.4/javax.json-1.0.4-javadoc.jar
+Download https://repo1.maven.org/maven2/com/google/code/findbugs/jsr305/3.0.1/jsr305-3.0.1-sources.jar
+Download https://repo1.maven.org/maven2/com/google/code/findbugs/jsr305/3.0.1/jsr305-3.0.1-javadoc.jar
+Download https://libraries.minecraft.net/com/mojang/netty/1.6/netty-1.6-sources.jar
+Download https://libraries.minecraft.net/oshi-project/oshi-core/1.1/oshi-core-1.1-sources.jar
+Download https://repo1.maven.org/maven2/net/java/dev/jna/jna/3.4.0/jna-3.4.0-sources.jar
+Download https://repo1.maven.org/maven2/net/java/dev/jna/jna/3.4.0/jna-3.4.0-javadoc.jar
+Download https://repo1.maven.org/maven2/net/java/dev/jna/platform/3.4.0/platform-3.4.0-sources.jar
+Download https://repo1.maven.org/maven2/net/java/dev/jna/platform/3.4.0/platform-3.4.0-javadoc.jar
+Download https://libraries.minecraft.net/com/ibm/icu/icu4j-core-mojang/51.2/icu4j-core-mojang-51.2-sources.jar
+Download https://repo1.maven.org/maven2/net/sf/jopt-simple/jopt-simple/4.6/jopt-simple-4.6-sources.jar
+Download https://repo1.maven.org/maven2/net/sf/jopt-simple/jopt-simple/4.6/jopt-simple-4.6-javadoc.jar
+Download https://repo1.maven.org/maven2/io/netty/netty-all/4.0.23.Final/netty-all-4.0.23.Final-sources.jar
+Download https://repo1.maven.org/maven2/io/netty/netty-all/4.0.23.Final/netty-all-4.0.23.Final-javadoc.jar
+Download https://repo1.maven.org/maven2/com/google/guava/guava/17.0/guava-17.0-sources.jar
+Download https://repo1.maven.org/maven2/com/google/guava/guava/17.0/guava-17.0-javadoc.jar
+Download https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2-sources.jar
+Download https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2-javadoc.jar
+Download https://repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4-sources.jar
+Download https://repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4-javadoc.jar
+Download https://repo1.maven.org/maven2/commons-codec/commons-codec/1.9/commons-codec-1.9-sources.jar
+Download https://repo1.maven.org/maven2/commons-codec/commons-codec/1.9/commons-codec-1.9-javadoc.jar
+Download https://repo1.maven.org/maven2/net/java/jutils/jutils/1.0.0/jutils-1.0.0-sources.jar
+Download https://repo1.maven.org/maven2/net/java/jutils/jutils/1.0.0/jutils-1.0.0-javadoc.jar
+Download https://repo1.maven.org/maven2/com/google/code/gson/gson/2.2.4/gson-2.2.4-sources.jar
+Download https://repo1.maven.org/maven2/com/google/code/gson/gson/2.2.4/gson-2.2.4-javadoc.jar
+Download https://libraries.minecraft.net/com/mojang/authlib/1.5.24/authlib-1.5.24-sources.jar
+Download https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.8.1/commons-compress-1.8.1-sources.jar
+Download https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.8.1/commons-compress-1.8.1-javadoc.jar
+Download https://repo1.maven.org/maven2/org/apache/httpcomponents/httpclient/4.3.3/httpclient-4.3.3-sources.jar
+Download https://repo1.maven.org/maven2/org/apache/httpcomponents/httpclient/4.3.3/httpclient-4.3.3-javadoc.jar
+Download https://repo1.maven.org/maven2/commons-logging/commons-logging/1.1.3/commons-logging-1.1.3-sources.jar
+Download https://repo1.maven.org/maven2/commons-logging/commons-logging/1.1.3/commons-logging-1.1.3-javadoc.jar
+Download https://repo1.maven.org/maven2/org/apache/httpcomponents/httpcore/4.3.2/httpcore-4.3.2-sources.jar
+Download https://repo1.maven.org/maven2/org/apache/httpcomponents/httpcore/4.3.2/httpcore-4.3.2-javadoc.jar
+Download https://libraries.minecraft.net/it/unimi/dsi/fastutil/7.0.12_mojang/fastutil-7.0.12_mojang-sources.jar
+Download https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.0-beta9/log4j-api-2.0-beta9-sources.jar
+Download https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.0-beta9/log4j-api-2.0-beta9-javadoc.jar
+Download https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.0-beta9/log4j-core-2.0-beta9-sources.jar
+Download https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.0-beta9/log4j-core-2.0-beta9-javadoc.jar
+Download https://libraries.minecraft.net/net/minecraft/launchwrapper/1.12/launchwrapper-1.12-sources.jar
+Download https://repo1.maven.org/maven2/jline/jline/2.13/jline-2.13-sources.jar
+Download https://repo1.maven.org/maven2/jline/jline/2.13/jline-2.13-javadoc.jar
+Download https://repo1.maven.org/maven2/org/ow2/asm/asm-debug-all/5.0.3/asm-debug-all-5.0.3-sources.jar
+Download https://repo1.maven.org/maven2/org/ow2/asm/asm-debug-all/5.0.3/asm-debug-all-5.0.3-javadoc.jar
+Download https://repo1.maven.org/maven2/com/typesafe/akka/akka-actor_2.11/2.3.3/akka-actor_2.11-2.3.3-sources.jar
+Download https://repo1.maven.org/maven2/com/typesafe/akka/akka-actor_2.11/2.3.3/akka-actor_2.11-2.3.3-javadoc.jar
+Download https://repo1.maven.org/maven2/com/typesafe/config/1.2.1/config-1.2.1-sources.jar
+Download https://repo1.maven.org/maven2/com/typesafe/config/1.2.1/config-1.2.1-javadoc.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/scala-actors-migration_2.11/1.1.0/scala-actors-migration_2.11-1.1.0-sources.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/scala-actors-migration_2.11/1.1.0/scala-actors-migration_2.11-1.1.0-javadoc.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.1/scala-compiler-2.11.1-sources.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.1/scala-compiler-2.11.1-javadoc.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/plugins/scala-continuations-library_2.11/1.0.2/scala-continuations-library_2.11-1.0.2-sources.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/plugins/scala-continuations-library_2.11/1.0.2/scala-continuations-library_2.11-1.0.2-javadoc.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/plugins/scala-continuations-plugin_2.11.1/1.0.2/scala-continuations-plugin_2.11.1-1.0.2-sources.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/plugins/scala-continuations-plugin_2.11.1/1.0.2/scala-continuations-plugin_2.11.1-1.0.2-javadoc.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.1/scala-library-2.11.1-sources.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.1/scala-library-2.11.1-javadoc.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.1/scala-parser-combinators_2.11-1.0.1-sources.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.1/scala-parser-combinators_2.11-1.0.1-javadoc.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.1/scala-reflect-2.11.1-sources.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.1/scala-reflect-2.11.1-javadoc.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/modules/scala-swing_2.11/1.0.1/scala-swing_2.11-1.0.1-sources.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/modules/scala-swing_2.11/1.0.1/scala-swing_2.11-1.0.1-javadoc.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.11/1.0.2/scala-xml_2.11-1.0.2-sources.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.11/1.0.2/scala-xml_2.11-1.0.2-javadoc.jar
+Download https://repo1.maven.org/maven2/net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3-sources.jar
+Download https://repo1.maven.org/maven2/net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3-javadoc.jar
+Download https://libraries.minecraft.net/com/paulscode/codecjorbis/20101023/codecjorbis-20101023-sources.jar
+Download https://libraries.minecraft.net/com/paulscode/codecwav/20101023/codecwav-20101023-sources.jar
+Download https://libraries.minecraft.net/com/paulscode/libraryjavasound/20101123/libraryjavasound-20101123-sources.jar
+Download https://libraries.minecraft.net/com/paulscode/librarylwjglopenal/20100824/librarylwjglopenal-20100824-sources.jar
+Download https://libraries.minecraft.net/com/paulscode/soundsystem/20120107/soundsystem-20120107-sources.jar
+Download https://repo1.maven.org/maven2/net/java/jinput/jinput/2.0.5/jinput-2.0.5-sources.jar
+Download https://repo1.maven.org/maven2/net/java/jinput/jinput/2.0.5/jinput-2.0.5-javadoc.jar
+Download https://libraries.minecraft.net/org/lwjgl/lwjgl/lwjgl/2.9.4-nightly-20150209/lwjgl-2.9.4-nightly-20150209-sources.jar
+Download https://libraries.minecraft.net/org/lwjgl/lwjgl/lwjgl/2.9.4-nightly-20150209/lwjgl-2.9.4-nightly-20150209-javadoc.jar
+Download https://libraries.minecraft.net/org/lwjgl/lwjgl/lwjgl_util/2.9.4-nightly-20150209/lwjgl_util-2.9.4-nightly-20150209-sources.jar
+Download https://libraries.minecraft.net/org/lwjgl/lwjgl/lwjgl_util/2.9.4-nightly-20150209/lwjgl_util-2.9.4-nightly-20150209-javadoc.jar
+Download https://libraries.minecraft.net/java3d/vecmath/1.5.2/vecmath-1.5.2-sources.jar
+Download https://repo1.maven.org/maven2/org/fusesource/jansi/jansi/1.11/jansi-1.11-sources.jar
+Download https://repo1.maven.org/maven2/org/fusesource/jansi/jansi/1.11/jansi-1.11-javadoc.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/scala-actors/2.11.0/scala-actors-2.11.0-sources.jar
+Download https://repo1.maven.org/maven2/org/scala-lang/scala-actors/2.11.0/scala-actors-2.11.0-javadoc.jar
+:ideaProject
+:ideaWorkspace
+:idea
 
-FAILURE: Build failed with an exception.
+BUILD SUCCESSFUL
 
-* What went wrong:
-Execution failed for task ':compileJava'.
-> Compilation failed; see the compiler error output for details.
-
-* Try:
-Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.
-
-BUILD FAILED
-
-Total time: 22.848 secs
+Total time: 41.259 secs
