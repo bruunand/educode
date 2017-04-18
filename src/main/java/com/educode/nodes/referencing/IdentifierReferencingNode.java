@@ -6,11 +6,11 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by User on 14-Apr-17.
  */
-public class IdentifierReferencing extends LeafNode implements Reference
+public class IdentifierReferencingNode extends LeafNode implements Reference
 {
     private String _identifier;
 
-    public IdentifierReferencing(String identifier)
+    public IdentifierReferencingNode(String identifier)
     {
         this._identifier = identifier;
     }
@@ -35,9 +35,9 @@ public class IdentifierReferencing extends LeafNode implements Reference
     @Override
     public boolean equals(Object other)
     {
-        if (!(other instanceof IdentifierReferencing))
+        if (!(other instanceof IdentifierReferencingNode))
             return false;
         else
-            return ((IdentifierReferencing) other).getText().equals(this.getText());
+            return ((IdentifierReferencingNode) other).getText().equals(this.getText());
     }
 }

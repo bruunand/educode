@@ -13,7 +13,7 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.ArrayReferencingNode;
-import com.educode.nodes.referencing.IdentifierReferencing;
+import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.referencing.Reference;
 import com.educode.nodes.referencing.StructReferencingNode;
 import com.educode.nodes.statement.AssignmentNode;
@@ -298,7 +298,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         updateLineNumber(ctx);
 
-        return new IdentifierReferencing(ctx.IDENT().getText());
+        return new IdentifierReferencingNode(ctx.IDENT().getText());
     }
 
     @Override
