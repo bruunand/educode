@@ -12,6 +12,7 @@ import com.educode.nodes.statement.conditional.*;
 import com.educode.nodes.ungrouped.*;
 import com.educode.types.*;
 import com.educode.visitors.VisitorBase;
+import sun.security.krb5.internal.APOptions;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -73,7 +74,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         return null;
     }
-
     
     public Object visit(BlockNode node)
     {
@@ -89,7 +89,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         OffSet = StartOffset;
         return codeBuffer;
     }
-
     
     public Object visit(ListNode node)
     {
@@ -101,16 +100,14 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         StringBuffer codeBuffer = new StringBuffer();
 
         append(codeBuffer, "  new %s\n", node.getType());
-        //append(codeBuffer, "  dup\n");
+        append(codeBuffer, "  dup\n");
 
         for (Node child:node.getActualArguments())
             append(codeBuffer, "%s", visit(child));
 
-        append(codeBuffer, "  invokespecial %s\n", node.getType());
-
+        append(codeBuffer, "  invokespecial %s/<init>()V\n", node.getType()); //TODO:get class name
         return null;
     }
-
     
     public Object visit(MethodDeclarationNode node)
     {
@@ -118,12 +115,12 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         OffSet = 0;
         LabelCounter = 0;
-        if (node.getReference().equals("main"))
+        if (node.getReference().toString().equals("main"))
             append(codeBuffer, ".method public static main([Ljava/lang/String;)V\n");
         else
         {
             // Visit parameters
-            append(codeBuffer, ".method public %s(%s)%s\n", node.getReference(), getParameters(node.getParameterList()),OperatorTranslator.toBytecode(node.getType()));
+            append(codeBuffer, ".method public %s(%s)%s\n", node.getReference(), getParameters(node.getParameters()),OperatorTranslator.toBytecode(node.getType()));
         }
 
         append(codeBuffer, "  .limit stack 100\n");     //TODO: calc
@@ -136,41 +133,46 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
     
     public Object visit(MethodInvocationNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
 
-        append(codeBuffer, "  aload_0\n");
+        if (getOffSetByNode(node.getReference()) == -1)
+        {
+            append(codeBuffer, "  new classname\n"); //TODO
+            append(codeBuffer, "  dup\n");
+            append(codeBuffer, "  astore %s\n", ++OffSet);
+            append(codeBuffer, "  invokevirtual classname/<init>()V\n");
+            DeclaratoinOffsetTable.add(new Tuple<Reference, Integer>(node.getReference(),OffSet));
+        }
+
+        append(codeBuffer, "  aload %s\n", getOffSetByNode(node.getReference()));
 
         for (Node child:node.getActualArguments())
             append(codeBuffer, "%s", visit(child));
 
-        append(codeBuffer, "  invokespecial Namespace\n"); //TODO: Get namespace
+        append(codeBuffer, "  invokespecial classname/%s(%s)%s\n", node.getReference().toString()); //TODO: Get namespace
 
         return codeBuffer;
     }
-
     
     public Object visit(ParameterNode node)
     {
         return OperatorTranslator.toBytecode(node.getType());
     }
 
-    
     public Object visit(AssignmentNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
 
         append(codeBuffer, "%s", visit(node.getChild()));
-        //append(codeBuffer, "  dup\n");
+        append(codeBuffer, "  dup\n");
 
         append(codeBuffer, "  %sstore %s\n", getPrefix(node.getReference().getType()),getOffSetByNode(node.getReference()));
 
         return codeBuffer;
     }
-
     
     public Object visit(VariableDeclarationNode node)
     {
@@ -188,7 +190,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
     
     public Object visit(IfNode node)
     {
@@ -199,34 +200,27 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         ArrayList<ConditionNode> conditionNodeList = node.getConditionBlocks();
 
         append(codeBuffer, "%s", visit(conditionNodeList.get(0)));
-        //append(codeBuffer, "  pop\n");
         append(codeBuffer, "  goto L%s\n", endIfLabel);
 
         for (int i = 1; i < conditionNodeList.size(); i++)
         {
             append(codeBuffer, "L%s:\n", LabelCounter++);
             append(codeBuffer, "%s", visit(conditionNodeList.get(i)));
-            //append(codeBuffer, "  pop\n");
             append(codeBuffer, "  goto L%s\n", endIfLabel);
         }
 
+        append(codeBuffer, "L%s:\n", LabelCounter++);
+
         if (node.getElseBlock() != null)
-        {
-            append(codeBuffer, "L%s:\n", LabelCounter++);
             append(codeBuffer, "%s", visit(node.getElseBlock()));
-        }
         else
-        {
-            append(codeBuffer, "L%s:\n", LabelCounter++);
             append(codeBuffer, "  nop\n");
-        }
 
         append(codeBuffer, "L%s:\n", endIfLabel);
         append(codeBuffer, "  nop\n");
 
         return codeBuffer;
     }
-
     
     public Object visit(ConditionNode node)
     {
@@ -240,7 +234,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
     
     public Object visit(RepeatWhileNode node)
     {
@@ -256,7 +249,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
     
     public Object visit(ReturnNode node)
     {
@@ -272,7 +264,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
     
     public Object visit(MultiplicationExpression node)
     {
@@ -284,7 +275,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
     
     public Object visit(AdditionExpression node)
     {
@@ -305,7 +295,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
     
     public Object visit(NumberLiteralNode node)
     {
@@ -315,7 +304,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
     
     public Object visit(StringLiteralNode node)
     {
@@ -325,7 +313,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
     
     public Object visit(IdentifierReferencingNode node)
     {
@@ -335,7 +322,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
     
     public Object visit(BoolLiteralNode node)
     {
@@ -348,38 +334,35 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
     
     public Object visit(CoordinatesLiteralNode node)
     {
         return null;
     }
-
     
     public Object visit(OrExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
 
         append(codeBuffer, "%s", visit(node.getLeftChild()));
-        //append(codeBuffer, "  dup\n");
+        append(codeBuffer, "  dup\n");
         append(codeBuffer, "  ifne L%s\n", LabelCounter);
-        //append(codeBuffer, "  pop\n");
+        append(codeBuffer, "  pop\n");
         append(codeBuffer, "%s", visit(node.getRightChild()));
         append(codeBuffer, "L%s:\n", LabelCounter++);
         append(codeBuffer, "  nop\n");
 
         return codeBuffer;
     }
-
     
     public Object visit(AndExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
         int label =  LabelCounter++;
         append(codeBuffer, "%s", visit(node.getLeftChild()));
-        //append(codeBuffer, "  dup\n");
+        append(codeBuffer, "  dup\n");
         append(codeBuffer, "  ifeq L%s\n", label);
-        //append(codeBuffer, "  pop\n");
+        append(codeBuffer, "  pop\n");
         append(codeBuffer, "%s", visit(node.getRightChild()));
         append(codeBuffer, "L%s:\n", label);
         append(codeBuffer, "  nop\n");
@@ -387,7 +370,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    
     public Object visit(RelativeExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -424,7 +406,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
     
     public Object visit(EqualExpressionNode node)
     {
@@ -446,7 +427,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    
     public Object visit(NegateNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -463,7 +443,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    
     public Object visit(TypeCastNode node)
     {
         return null;
@@ -490,18 +469,18 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return prefix;
     }
 
-    public String getParameters(Node node)
+    public String getParameters(ArrayList<ParameterNode> node)
     {
         String parameters = "";
 
         if (node == null)
             return parameters;
 
-        for (Node child : ((ListNode) node).getChildren())
-            parameters += visit(child) + ",";
-
-        if (!parameters.isEmpty())
-            parameters = parameters.substring(0, parameters.length() - 1);
+        for (ParameterNode child : node)
+        {
+            parameters += visit(child);
+            DeclaratoinOffsetTable.add(new Tuple<Reference, Integer>(child.getReference(), ++OffSet));
+        }
 
         return parameters;
     }
