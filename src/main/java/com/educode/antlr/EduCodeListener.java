@@ -318,6 +318,16 @@ public interface EduCodeListener extends ParseTreeListener {
 	 */
 	void exitEol(EduCodeParser.EolContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link EduCodeParser#reference}.
+	 * @param ctx the parse tree
+	 */
+	void enterReference(EduCodeParser.ReferenceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EduCodeParser#reference}.
+	 * @param ctx the parse tree
+	 */
+	void exitReference(EduCodeParser.ReferenceContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link EduCodeParser#ident}.
 	 * @param ctx the parse tree
 	 */
@@ -327,14 +337,4 @@ public interface EduCodeListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIdent(EduCodeParser.IdentContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link EduCodeParser#identName}.
-	 * @param ctx the parse tree
-	 */
-	void enterIdentName(EduCodeParser.IdentNameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link EduCodeParser#identName}.
-	 * @param ctx the parse tree
-	 */
-	void exitIdentName(EduCodeParser.IdentNameContext ctx);
 }

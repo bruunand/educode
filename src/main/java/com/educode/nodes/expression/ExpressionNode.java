@@ -15,14 +15,4 @@ public abstract class ExpressionNode extends BinaryNode
     {
         super(leftChild, rightChild);
     }
-
-    protected void setType(Type type) throws Exception
-    {
-        this._type = type;
-    }
-
-    public Type getType()
-    {
-        return _type;
-    }
 }

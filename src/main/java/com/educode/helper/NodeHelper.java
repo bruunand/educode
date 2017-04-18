@@ -1,6 +1,5 @@
 package com.educode.helper;
 
-import com.educode.nodes.Typeable;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;

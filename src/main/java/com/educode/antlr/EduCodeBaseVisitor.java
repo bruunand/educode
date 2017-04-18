@@ -234,12 +234,12 @@ public class EduCodeBaseVisitor<T> extends AbstractParseTreeVisitor<T> implement
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIdent(EduCodeParser.IdentContext ctx) { return visitChildren(ctx); }
+	@Override public T visitReference(EduCodeParser.ReferenceContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIdentName(EduCodeParser.IdentNameContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIdent(EduCodeParser.IdentContext ctx) { return visitChildren(ctx); }
 }

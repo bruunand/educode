@@ -1,24 +1,23 @@
 package com.educode.nodes.method;
 
-import com.educode.nodes.Identifiable;
-import com.educode.nodes.Typeable;
+import com.educode.Referencing;
 import com.educode.nodes.base.LeafNode;
-import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.referencing.Reference;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
 /**
  * Created by zen on 3/24/17.
  */
-public class ParameterNode extends LeafNode implements Identifiable, Typeable
+public class ParameterNode extends LeafNode implements Referencing
 {
-    private Type _type;
-    private String _identifier;
+    private Reference _reference;
 
-    public ParameterNode(String identifier, Type type)
+    public ParameterNode(Reference visit, Type type)
     {
-        this._identifier = identifier;
-        this._type = type;
+        super();
+        this._reference = visit;
+        setType(type);
     }
 
     @Override
@@ -28,40 +27,8 @@ public class ParameterNode extends LeafNode implements Identifiable, Typeable
     }
 
     @Override
-    public Type getType()
+    public Reference getReference()
     {
-        return _type;
-    }
-
-    @Override
-    public void setType(Type type)
-    {
-        if (this._type != null)
-            return;
-        this._type = type;
-    }
-
-    @Override
-    public String getIdentifier()
-    {
-        return this._identifier;
-    }
-
-    @Override
-    public boolean equals(Object other)
-    {
-        if (!(other instanceof ParameterNode))
-        {
-            if (other instanceof VariableDeclarationNode)
-                return ((VariableDeclarationNode) other).getIdentifier().equals(this.getIdentifier());
-
-            return false;
-        }
-        else
-        {
-            ParameterNode otherNode = (ParameterNode) other;
-
-            return otherNode.getIdentifier().equals(this.getIdentifier());
-        }
+        return this._reference;
     }
 }

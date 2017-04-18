@@ -1,55 +1,131 @@
 package com.educode.symboltable;
 
-import com.educode.nodes.Identifiable;
+import com.educode.Referencing;
+import com.educode.antlr.EduCodeParser;
+import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
+import com.educode.nodes.method.MethodDeclarationNode;
+import com.educode.nodes.method.MethodInvocationNode;
+import com.educode.nodes.method.ParameterNode;
+import com.educode.nodes.referencing.IdentifierReferencing;
+import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.types.Type;
+import net.java.games.input.Component;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by Thomas Buhl on 31/03/2017.
+ * Created by User on 15-Apr-17.
  */
 public class SymbolTable
 {
-    public SymbolTable outer;
-    public ArrayList<Symbol> symbolList = new ArrayList<Symbol>();
+    private SymbolTable _outer;
+
+    private final List<Symbol> _symbolList = new ArrayList();
 
     public SymbolTable(SymbolTable outer)
     {
-        this.outer = outer;
+        this._outer = outer;
     }
 
-    public SymbolTable()
+    public SymbolTable getOuter()
     {
-        this(null);
+        return this._outer;
     }
 
-    public Symbol getSymbol(Node node)
+    private Symbol retrieveIdentifierSymbol(IdentifierReferencing identifier)
     {
-        for (Symbol s : symbolList)
+        for (Symbol symbol : this._symbolList)
         {
-            if (s.corresponds(node))
-                return s;
-        }
+            if (symbol.getSourceNode() instanceof MethodDeclarationNode || !(symbol.getReference() instanceof IdentifierReferencing))
+                continue;
 
-        if (outer != null)
-            return outer.getSymbol(node);
+            // Check if text matches
+            IdentifierReferencing otherIdentifier = (IdentifierReferencing) symbol.getReference();
+            if (identifier.getText().equals(otherIdentifier.getText()))
+                return symbol;
+        }
 
         return null;
     }
 
-    public boolean contains(Identifiable node)
+    private Symbol retrieveMethodDeclarationSymbol(MethodDeclarationNode node)
     {
-        for (Symbol s : symbolList)
+        for (Symbol symbol : this._symbolList)
         {
-            if(s.equals(node))
-                return true;
+            if (!(symbol.getSourceNode() instanceof MethodDeclarationNode))
+                continue;
+
+            if ((symbol.getSourceNode()).equals(node))
+                return symbol;
         }
 
-        if(outer != null)
-            return outer.contains(node);
-
-        return false;
+        return null;
     }
 
+    private Symbol retrieveMethodDeclarationSymbol(MethodInvocationNode requestee)
+    {
+        for (Symbol symbol : this._symbolList)
+        {
+            if (!(symbol.getSourceNode() instanceof MethodDeclarationNode))
+                continue;
 
+            if (((MethodDeclarationNode) symbol.getSourceNode()).correspondsWith(requestee))
+                return symbol;
+        }
+
+        return null;
+    }
+
+    public void insert(Symbol symbol)
+    {
+        this._symbolList.add(symbol);
+    }
+
+    public Symbol retrieveSymbol(Node origin)
+    {
+        Symbol ans;
+
+        if (origin instanceof IdentifierReferencing)
+            ans = retrieveIdentifierSymbol((IdentifierReferencing) origin);
+        else if (origin instanceof MethodDeclarationNode)
+            ans = retrieveMethodDeclarationSymbol((MethodDeclarationNode) origin);
+        else if (origin instanceof MethodInvocationNode)
+            ans = retrieveMethodDeclarationSymbol((MethodInvocationNode) origin);
+        else if (origin instanceof Referencing && ((Referencing) origin).getReference() instanceof IdentifierReferencing)
+            ans = retrieveIdentifierSymbol((IdentifierReferencing) ((Referencing) origin).getReference());
+        else
+        {
+            System.out.println("No retriever for " + origin.getClass().getName());
+            return null;
+        }
+
+        // Look in outer symbol table, otherwise return null
+        if (ans == null && getOuter() != null)
+            return getOuter().retrieveSymbol(origin);
+        else
+            return ans;
+    }
+
+    public void addDefaultField(String name, Type type)
+    {
+        IdentifierReferencing reference = new IdentifierReferencing(name);
+        VariableDeclarationNode node = new VariableDeclarationNode(reference, type);
+
+        this.insert(new Symbol(reference, node));
+    }
+
+    public void addDefaultMethod(String name, Type returnType, Type ... parameterTypes)
+    {
+        ListNode parameterNodes = new ListNode();
+        for (Type type : parameterTypes)
+            parameterNodes.addChild(new ParameterNode(null, type));
+
+        IdentifierReferencing reference = new IdentifierReferencing(name);
+        MethodDeclarationNode node = new MethodDeclarationNode(parameterNodes, null, reference, returnType);
+
+        this.insert(new Symbol(reference, node));
+    }
 }

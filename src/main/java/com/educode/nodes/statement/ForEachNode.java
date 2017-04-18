@@ -1,27 +1,26 @@
 package com.educode.nodes.statement;
 
-import com.educode.nodes.Identifiable;
-import com.educode.nodes.Typeable;
+import com.educode.Referencing;
 import com.educode.nodes.base.BinaryNode;
 import com.educode.nodes.base.Node;
+import com.educode.nodes.referencing.Reference;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
 /**
  * Created by User on 13-Apr-17.
  */
-public class ForEachNode extends BinaryNode implements Identifiable, Typeable
+public class ForEachNode extends BinaryNode implements Referencing
 {
-    private final Type _type;
-    private final String _identifier;
+    private final Reference _reference;
 
     // Left child : Expression
     // Right child: Block to execute in each iteration
-    public ForEachNode(String identifier, Type type, Node leftChild, Node rightChild)
+    public ForEachNode(Reference reference, Type type, Node leftChild, Node rightChild)
     {
         super(leftChild, rightChild);
-        this._identifier = identifier;
-        this._type = type;
+        this._reference = reference;
+        setType(type);
     }
 
     @Override
@@ -31,26 +30,8 @@ public class ForEachNode extends BinaryNode implements Identifiable, Typeable
     }
 
     @Override
-    public String getIdentifier()
+    public Reference getReference()
     {
-        return this._identifier;
-    }
-
-    @Override
-    public Type getType()
-    {
-        return this._type;
-    }
-
-    @Override
-    public void setType(Type type)
-    {
-        // Cannot set type of for each node
-    }
-
-    @Override
-    public boolean equals(Object other)
-    {
-        return false;
+        return this._reference;
     }
 }

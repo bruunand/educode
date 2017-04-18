@@ -1,48 +1,36 @@
 package com.educode.nodes.statement;
 
-import com.educode.nodes.Identifiable;
+import com.educode.Referencing;
 import com.educode.nodes.SingleLineStatement;
-import com.educode.nodes.Typeable;
-import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
-import com.educode.nodes.literal.IdentifierLiteralNode;
+import com.educode.nodes.referencing.Reference;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
 /**
  * Created by zen on 3/10/17.
  */
-public class VariableDeclarationNode extends UnaryNode implements Identifiable, Typeable, SingleLineStatement
+public class VariableDeclarationNode extends UnaryNode implements Referencing, SingleLineStatement
 {
-    private Type _type;
-    private IdentifierLiteralNode _identifierNode;
+    private final Reference _reference;
 
-    public VariableDeclarationNode(Type type, AssignmentNode assignmentChild)
+    public VariableDeclarationNode(AssignmentNode assignmentChild, Type type)
     {
         super(assignmentChild);
-        this._identifierNode = assignmentChild.getIdentifierNode();
-        this._type = type;
+        this._reference = assignmentChild.getReference();
+        setType(type);
     }
 
-    public VariableDeclarationNode(IdentifierLiteralNode identifierNode, Type type)
+    public VariableDeclarationNode(Reference reference, Type type)
     {
         super(null);
-        this._identifierNode = identifierNode;
-        this._type = type;
+        this._reference = reference;
+        setType(type);
     }
 
-    @Override
-    public boolean equals(Object other)
+    public Reference getIdentifierNode()
     {
-        if (other instanceof Identifiable)
-            return ((Identifiable)other).getIdentifier().equals(this.getIdentifier());
-        else
-            return false;
-    }
-
-    public IdentifierLiteralNode getIdentifierNode()
-    {
-        return this._identifierNode;
+        return this._reference;
     }
 
     @Override
@@ -52,20 +40,8 @@ public class VariableDeclarationNode extends UnaryNode implements Identifiable, 
     }
 
     @Override
-    public String getIdentifier()
+    public Reference getReference()
     {
-        return this._identifierNode.getIdentifier();
-    }
-
-    @Override
-    public Type getType()
-    {
-        return this._type;
-    }
-
-    @Override
-    public void setType(Type type)
-    {
-        this._type = type;
+        return this._reference;
     }
 }

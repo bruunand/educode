@@ -1,32 +1,29 @@
 package com.educode.nodes.method;
 
-import com.educode.nodes.Identifiable;
-import com.educode.nodes.Typeable;
+import com.educode.Referencing;
 import com.educode.nodes.base.BinaryNode;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.base.UnaryNode;
-import com.educode.nodes.expression.ExpressionNode;
+import com.educode.nodes.referencing.Reference;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by zen on 3/9/17.
  */
-public class MethodDeclarationNode extends BinaryNode implements Identifiable, Typeable
+public class MethodDeclarationNode extends BinaryNode implements Referencing
 {
-    private String _identifier;
-    private Type _returnType;
+    private Reference _reference;
 
-    public MethodDeclarationNode(Node leftChild, Node rightChild, String identifier, Type returnType)
+    public MethodDeclarationNode(Node leftChild, Node rightChild, Reference reference, Type returnType)
     {
         super(leftChild, rightChild);
-        this._identifier = identifier;
-        this._returnType = returnType;
+        this._reference = reference;
+        setType(returnType);
     }
 
     public ArrayList<ParameterNode> getParameters()
@@ -62,36 +59,21 @@ public class MethodDeclarationNode extends BinaryNode implements Identifiable, T
     }
 
     @Override
-    public String getIdentifier()
-    {
-        return this._identifier;
-    }
-
-    @Override
     public Object accept(VisitorBase visitor)
     {
         return visitor.visit(this);
     }
 
     @Override
-    public Type getType()
+    public Reference getReference()
     {
-        return this._returnType;
+        return this._reference;
     }
 
-    @Override
-    public void setType(Type type)
-    {
-        if (_returnType != null)
-            return;
-        _returnType = type;
-    }
-
-    // Check if declaration corresponds to an invocation
-    public boolean corresponds(MethodInvocationNode invocationNode)
+    public boolean correspondsWith(MethodInvocationNode invocationNode)
     {
         // Check if name matches
-        if (!this.getIdentifier().equals(invocationNode.getIdentifier()))
+        if (!this.getReference().equals(invocationNode.getReference()))
             return false;
 
         // Get formal and actual arguments
@@ -106,12 +88,10 @@ public class MethodDeclarationNode extends BinaryNode implements Identifiable, T
         for (int i = 0; i < formalParameters.size(); i++)
         {
             Type formalType = formalParameters.get(0).getType();
-            Type actualType = ((Typeable)actualArguments.get(0)).getType();
+            Type actualType = actualArguments.get(0).getType();
 
             if (!formalType.equals(actualType))
-            {
                 return false;
-            }
         }
 
         return true;
@@ -127,7 +107,7 @@ public class MethodDeclarationNode extends BinaryNode implements Identifiable, T
             MethodDeclarationNode otherNode = (MethodDeclarationNode) other;
 
             // Check if name matches
-            if (!this.getIdentifier().equals(otherNode.getIdentifier()))
+            if (!this.getReference().equals(otherNode.getReference()))
                 return false;
 
             // Get list of parameters for each node
@@ -148,5 +128,4 @@ public class MethodDeclarationNode extends BinaryNode implements Identifiable, T
             return true;
         }
     }
-
 }

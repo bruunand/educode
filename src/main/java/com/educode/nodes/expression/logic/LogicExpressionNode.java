@@ -1,6 +1,5 @@
 package com.educode.nodes.expression.logic;
 
-import com.educode.nodes.Typeable;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.ExpressionNode;
 import com.educode.types.LogicalOperator;
@@ -9,7 +8,7 @@ import com.educode.types.Type;
 /**
  * Created by zen on 3/10/17.
  */
-public abstract class LogicExpressionNode extends ExpressionNode implements Typeable
+public abstract class LogicExpressionNode extends ExpressionNode
 {
     private LogicalOperator _operator;
 
@@ -17,21 +16,11 @@ public abstract class LogicExpressionNode extends ExpressionNode implements Type
     {
         super(leftExpr, rightExpr);
         this._operator = operator;
+        setType(Type.BoolType);
     }
 
     public LogicalOperator getOperator()
     {
         return this._operator;
-    }
-
-    @Override
-    public Type getType()
-    {
-        return Type.BoolType;
-    }
-
-    @Override
-    public void setType(Type type)
-    {
     }
 }
