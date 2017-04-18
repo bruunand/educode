@@ -1,15 +1,30 @@
 program Test
+    method example() returns number
+    end method
+
     method main()
-        bool a = true, b = false
+        number a = 5
+        a = 123
+        a = true
+        a = add(a, a)
 
+        Collection<number> test = new Collection<number>()
+        foreach number c in test
+            c = 5
+            a = 1
+        end foreach
+        test[0] = a
 
+        Collection<Collection<number>> tester = new Collection<Collection<number>>()
+        tester[0] = test
 
-        if b equals false then
-          a = b
-        else if a then
-          b = a and true
-        end if
+        a = add(5, 5)
 
-        return
+        Entity c
+        bool b = c.getHealth()
+
+        number xx = robot.getX()
+        number hh = robot.getHealth()
+        string asd = b.toString()
     end method
 end program
