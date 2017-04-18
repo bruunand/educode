@@ -1,18 +1,15 @@
 package com.educode.symboltable;
 
 import com.educode.Referencing;
-import com.educode.antlr.EduCodeParser;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
-import com.educode.nodes.referencing.IdentifierReferencing;
+import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.types.Type;
-import net.java.games.input.Component;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,15 +32,15 @@ public class SymbolTable
         return this._outer;
     }
 
-    private Symbol retrieveIdentifierSymbol(IdentifierReferencing identifier)
+    private Symbol retrieveIdentifierSymbol(IdentifierReferencingNode identifier)
     {
         for (Symbol symbol : this._symbolList)
         {
-            if (symbol.getSourceNode() instanceof MethodDeclarationNode || !(symbol.getReference() instanceof IdentifierReferencing))
+            if (symbol.getSourceNode() instanceof MethodDeclarationNode || !(symbol.getReference() instanceof IdentifierReferencingNode))
                 continue;
 
             // Check if text matches
-            IdentifierReferencing otherIdentifier = (IdentifierReferencing) symbol.getReference();
+            IdentifierReferencingNode otherIdentifier = (IdentifierReferencingNode) symbol.getReference();
             if (identifier.getText().equals(otherIdentifier.getText()))
                 return symbol;
         }
@@ -88,14 +85,14 @@ public class SymbolTable
     {
         Symbol ans;
 
-        if (origin instanceof IdentifierReferencing)
-            ans = retrieveIdentifierSymbol((IdentifierReferencing) origin);
+        if (origin instanceof IdentifierReferencingNode)
+            ans = retrieveIdentifierSymbol((IdentifierReferencingNode) origin);
         else if (origin instanceof MethodDeclarationNode)
             ans = retrieveMethodDeclarationSymbol((MethodDeclarationNode) origin);
         else if (origin instanceof MethodInvocationNode)
             ans = retrieveMethodDeclarationSymbol((MethodInvocationNode) origin);
-        else if (origin instanceof Referencing && ((Referencing) origin).getReference() instanceof IdentifierReferencing)
-            ans = retrieveIdentifierSymbol((IdentifierReferencing) ((Referencing) origin).getReference());
+        else if (origin instanceof Referencing && ((Referencing) origin).getReference() instanceof IdentifierReferencingNode)
+            ans = retrieveIdentifierSymbol((IdentifierReferencingNode) ((Referencing) origin).getReference());
         else
         {
             System.out.println("No retriever for " + origin.getClass().getName());
@@ -111,7 +108,7 @@ public class SymbolTable
 
     public void addDefaultField(String name, Type type)
     {
-        IdentifierReferencing reference = new IdentifierReferencing(name);
+        IdentifierReferencingNode reference = new IdentifierReferencingNode(name);
         VariableDeclarationNode node = new VariableDeclarationNode(reference, type);
 
         this.insert(new Symbol(reference, node));
@@ -123,7 +120,7 @@ public class SymbolTable
         for (Type type : parameterTypes)
             parameterNodes.addChild(new ParameterNode(null, type));
 
-        IdentifierReferencing reference = new IdentifierReferencing(name);
+        IdentifierReferencingNode reference = new IdentifierReferencingNode(name);
         MethodDeclarationNode node = new MethodDeclarationNode(parameterNodes, null, reference, returnType);
 
         this.insert(new Symbol(reference, node));

@@ -14,7 +14,7 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.ArrayReferencingNode;
-import com.educode.nodes.referencing.IdentifierReferencing;
+import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.referencing.StructReferencingNode;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.ForEachNode;
@@ -33,7 +33,6 @@ import com.educode.symboltable.SymbolTableHandler;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
-import net.minecraftforge.client.model.animation.ModelBlockAnimation;
 
 /**
  * Created by User on 15-Apr-17.
@@ -199,7 +198,7 @@ public class SemanticVisitor extends VisitorBase
             getSymbolTableHandler().error(node, "Cannot assign %s, which is of type %s, to an expression of type %s.", node.getReference(), node.getReference().getType(), node.getChild().getType());
     }
 
-    public Symbol visit(IdentifierReferencing reference)
+    public Symbol visit(IdentifierReferencingNode reference)
     {
         Symbol referencingSymbol = getSymbolTableHandler().retrieveSymbol(reference);
 
@@ -267,7 +266,7 @@ public class SemanticVisitor extends VisitorBase
 
     public void visit(VariableDeclarationNode node)
     {
-        if (!(node.getReference() instanceof IdentifierReferencing))
+        if (!(node.getReference() instanceof IdentifierReferencingNode))
             getSymbolTableHandler().error(node, "A variable declaration cannot reference a struct or an array.");
         else
             getSymbolTableHandler().enterSymbol(node);

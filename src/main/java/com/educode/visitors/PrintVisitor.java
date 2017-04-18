@@ -3,9 +3,7 @@ package com.educode.visitors;
 import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.ArithmeticExpression;
-import com.educode.nodes.expression.MultiplicationExpression;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.BoolLiteralNode;
 import com.educode.nodes.literal.CoordinatesLiteralNode;
@@ -15,7 +13,7 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.ArrayReferencingNode;
-import com.educode.nodes.referencing.IdentifierReferencing;
+import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.referencing.StructReferencingNode;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.ForEachNode;
@@ -28,8 +26,6 @@ import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.TypeCastNode;
-
-import java.sql.Struct;
 
 /**
  * Created by User on 15-Apr-17.
@@ -119,7 +115,7 @@ public class PrintVisitor extends VisitorBase
         return String.format("Condition [%s][%s]", visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
-    public Object visit(IdentifierReferencing node)
+    public Object visit(IdentifierReferencingNode node)
     {
         return String.format("Identifier [%s]", node.getText());
     }

@@ -2,7 +2,6 @@ package com.educode.visitors.codegeneration;
 
 import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.SingleLineStatement;
-import com.educode.nodes.Typeable;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
@@ -13,6 +12,9 @@ import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
+import com.educode.nodes.referencing.ArrayReferencingNode;
+import com.educode.nodes.referencing.IdentifierReferencingNode;
+import com.educode.nodes.referencing.StructReferencingNode;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.ForEachNode;
 import com.educode.nodes.statement.ReturnNode;
@@ -27,11 +29,9 @@ import com.educode.nodes.ungrouped.TypeCastNode;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
-import sun.rmi.runtime.Log;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.StringJoiner;
 
 /**
@@ -59,13 +59,18 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         }
     }
 
+    public Object visitDefault(Node node)
+    {
+        return "NOT IMPLEMENTED:" + node.getClass().getName();
+    }
+
     public Object visit(ProgramNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
 
         append(codeBuffer, "import java.util.*;\nimport com.educode.runtime.*;\n\n");
 
-        append(codeBuffer, "public class %s extends ScriptBase\n{\n", node.getIdentifier());
+        append(codeBuffer, "public class %s extends ScriptBase\n{\n", node.getReference());
 
         // Visit method declarations
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
@@ -89,7 +94,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return null;
     }
 
-    @Override
+    
     public Object visit(BlockNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -111,7 +116,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(ListNode node)
     {
         //
@@ -124,7 +129,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(ObjectInstantiationNode node)
     {
         // Join actual arguments
@@ -148,7 +153,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
             return String.format("new %s(%s)", OperatorTranslator.toJava(node.getType()), argumentJoiner);
     }
 
-    @Override
+    
     public Object visit(MethodDeclarationNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -159,7 +164,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
             parameterJoiner.add(visit(parameterNodeDecl).toString());
 
         // Add declaration with joined parameters
-        append(codeBuffer, String.format("public %s %s(%s)\n", OperatorTranslator.toJava(node.getType()), node.getIdentifier(), parameterJoiner));
+        append(codeBuffer, String.format("public %s %s(%s)\n", OperatorTranslator.toJava(node.getType()), visit(node.getReference()), parameterJoiner));
 
         // Append block
         append(codeBuffer, "%s", visit(node.getBlockNode()));
@@ -167,7 +172,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(MethodInvocationNode node)
     {
         StringJoiner actualArgumentsJoiner = new StringJoiner(", ");
@@ -179,7 +184,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         // Replace identifier if applicable
         // TODO: Use a dictionary or a better structure for this
-        String methodIdentifier = node.getIdentifier();
+        String methodIdentifier = (String) visit(node.getReference());
         if (methodIdentifier.equals("debug"))
             methodIdentifier = "System.out.println";
         else if (methodIdentifier.equals("say"))
@@ -190,23 +195,23 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return String.format("%s(%s)", methodIdentifier, actualArgumentsJoiner);
     }
 
-    @Override
+    
     public Object visit(ParameterNode node)
     {
         //formal parameter node
         StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "%s %s", OperatorTranslator.toJava(node.getType()), node.getIdentifier());
+        append(codeBuffer, "%s %s", OperatorTranslator.toJava(node.getType()), visit(node.getReference()));
 
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(AssignmentNode node)
     {
-        return String.format("%s = %s", node.getIdentifier(), visit(node.getChild()));
+        return String.format("%s = %s",  visit(node.getReference()), visit(node.getChild()));
     }
 
-    @Override
+    
     public Object visit(VariableDeclarationNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -215,12 +220,12 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         if (node.getChild() != null)
             append(codeBuffer, "%s", visit(node.getChild()));
         else
-            append(codeBuffer, "%s;", node.getIdentifier());
+            append(codeBuffer, "%s;", visit(node.getReference()));
 
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(IfNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -245,7 +250,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     }
 
-    @Override
+    
     public Object visit(ConditionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -253,24 +258,22 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(RepeatWhileNode node)
     {
-
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "while %s", visit(node.getChild()));
-
 
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(ForEachNode node)
     {
-        return String.format("for (%s %s : %s)\n%s", OperatorTranslator.toJava(node.getType()), node.getIdentifier(), visit(node.getLeftChild()), visit(node.getRightChild()));
+        return String.format("for (%s %s : %s)\n%s", OperatorTranslator.toJava(node.getType()), visit(node.getReference()), visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
-    @Override
+    
     public Object visit(ReturnNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -278,7 +281,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(MultiplicationExpression node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -287,7 +290,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(AdditionExpression node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -296,38 +299,30 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(NumberLiteralNode node)
     {
         return String.format("%fF", node.getValue());
     }
 
-    @Override
+    
     public Object visit(StringLiteralNode node)
     {
         return node.getValue();
     }
 
-    @Override
-    public Object visit(IdentifierLiteralNode node)
-    {
-        return node.getIdentifier();
-    }
-
-    @Override
+    
     public Object visit(BoolLiteralNode node)
     {
         return node.getValue();
     }
-
-    @Override
+    
     public Object visit(CoordinatesLiteralNode node)
     {
         // Uses the Coordinates runtime type
         return String.format("new Coordinates(%s, %s, %s)", visit(node.getX()), visit(node.getY()), visit(node.getZ()));
     }
-
-    @Override
+    
     public Object visit(OrExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -335,8 +330,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
-    @Override
+    
     public Object visit(AndExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -345,7 +339,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
     public Object visit(RelativeExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -353,12 +346,11 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
-    @Override
+    
     public Object visit(EqualExpressionNode node)
     {
-        Type leftType  = ((Typeable)node.getLeftChild()).getType();
-        Type rightType = ((Typeable)node.getRightChild()).getType();
+        Type leftType  = node.getLeftChild().getType();
+        Type rightType = node.getRightChild().getType();
 
         // In case of a string comparison, we need to use equals() it is implicit that if one type is a string,
         // both are.
@@ -379,7 +371,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         }
     }
 
-    @Override
     public Object visit(NegateNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -387,10 +378,24 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
-    @Override
+    
     public Object visit(TypeCastNode node)
     {
         return String.format("(%s)(%s)", OperatorTranslator.toJava(node.getType()), visit(node.getChild()));
+    }
+
+    public Object visit(IdentifierReferencingNode node)
+    {
+        return node.getText();
+    }
+
+    public Object visit(ArrayReferencingNode node)
+    {
+        return String.format("%s[%s]", visit(node.getArrayName()), visit(node.getExpression()));
+    }
+
+    public Object visit(StructReferencingNode node)
+    {
+        return String.format("%s.%s", visit(node.getObjectName()), visit(node.getFieldName()));
     }
 }
