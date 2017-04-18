@@ -33,9 +33,12 @@ public class Type
 
         // Add default fields for coordinates
         _coordinatesSymbolTable = new SymbolTable(_baseSymbolTable);
-        _coordinatesSymbolTable.addDefaultField("x", Type.NumberType);
-        _coordinatesSymbolTable.addDefaultField("y", Type.NumberType);
-        _coordinatesSymbolTable.addDefaultField("z", Type.NumberType);
+        _coordinatesSymbolTable.addDefaultMethod("getX", Type.NumberType);
+        _coordinatesSymbolTable.addDefaultMethod("getY", Type.NumberType);
+        _coordinatesSymbolTable.addDefaultMethod("getZ", Type.NumberType);
+        _coordinatesSymbolTable.addDefaultMethod("setX", Type.VoidType, Type.NumberType);
+        _coordinatesSymbolTable.addDefaultMethod("setY", Type.VoidType, Type.NumberType);
+        _coordinatesSymbolTable.addDefaultMethod("setZ", Type.VoidType, Type.NumberType);
 
         // Add default methods for collections
         _collectionSymbolTable = new SymbolTable(_baseSymbolTable);
@@ -43,13 +46,20 @@ public class Type
         // Add default methods for entities
         _entitySymbolTable = new SymbolTable(_baseSymbolTable);
         _entitySymbolTable.addDefaultMethod("getHealth", Type.NumberType);
-        _entitySymbolTable.addDefaultMethod("getX", Type.NumberType);
-        _entitySymbolTable.addDefaultMethod("getY", Type.NumberType);
-        _entitySymbolTable.addDefaultMethod("getZ", Type.NumberType);
+        _entitySymbolTable.addDefaultMethod("getCoordinates", Type.CoordinatesType);
 
         // Add default methods for robot
         _robotSymbolTable = new SymbolTable(_entitySymbolTable);
+        _robotSymbolTable.addDefaultMethod("wait", Type.VoidType, Type.NumberType);
         _robotSymbolTable.addDefaultMethod("move", Type.VoidType, Type.StringType);
+        _robotSymbolTable.addDefaultMethod("mine", Type.VoidType, Type.StringType);
+        _robotSymbolTable.addDefaultMethod("say", Type.VoidType, Type.StringType);
+        _robotSymbolTable.addDefaultMethod("setWorldTime", Type.VoidType, Type.NumberType);
+        _robotSymbolTable.addDefaultMethod("explode", Type.VoidType, Type.NumberType);
+        _robotSymbolTable.addDefaultMethod("getOwner", Type.EntityType);
+        _robotSymbolTable.addDefaultMethod("getNearbyEntities", new Type(Type.EntityType));
+        _robotSymbolTable.addDefaultMethod("walkTo", Type.VoidType, Type.CoordinatesType);
+        _robotSymbolTable.addDefaultMethod("getDistanceTo", Type.NumberType, Type.EntityType);
     }
 
     public Type(byte kind)

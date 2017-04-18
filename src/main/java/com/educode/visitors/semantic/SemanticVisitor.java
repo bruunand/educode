@@ -15,6 +15,7 @@ import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.ArrayReferencingNode;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
+import com.educode.nodes.referencing.Reference;
 import com.educode.nodes.referencing.StructReferencingNode;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.ForEachNode;
@@ -62,6 +63,7 @@ public class SemanticVisitor extends VisitorBase
 
         // Add default methods and fields to symbol table
         getSymbolTableHandler().getCurrent().addDefaultMethod("debug", Type.VoidType, Type.StringType);
+        getSymbolTableHandler().getCurrent().addDefaultMethod("random", Type.NumberType, Type.NumberType, Type.NumberType);
         getSymbolTableHandler().getCurrent().addDefaultField("robot", Type.RobotType);
 
         // Run return check visitor
@@ -185,14 +187,22 @@ public class SemanticVisitor extends VisitorBase
 
         Symbol methodReference;
 
+        // If node references a struct, there is a special case
         if (node.getReference() instanceof StructReferencingNode)
         {
             StructReferencingNode structReference = (StructReferencingNode) node.getReference();
-            methodReference = structReference.getLeftChild().getType().getSymbolTable().retrieveSymbol(structReference.getFieldName());
+
+            // Visit object name to gets it type
+            visit(structReference.getObjectName());
+
+            // Retrieve symbol from object's type's symbol table
+            // In a struct, the right child is the name of the method
+            methodReference = structReference.getObjectName().getType().getSymbolTable().retrieveMethodSymbol((Reference) structReference.getFieldName(), node.getActualArguments());
         }
         else
-            methodReference = getSymbolTableHandler().getCurrent().retrieveSymbol(node);
+            methodReference = getSymbolTableHandler().getCurrent().retrieveMethodSymbol(node.getReference(), node.getActualArguments());
 
+        // Check if method was found
         if (methodReference == null)
             getSymbolTableHandler().error(node, "No method %s found with matching parameters.", node.getReference());
         else
@@ -272,7 +282,7 @@ public class SemanticVisitor extends VisitorBase
         if (symbol == null)
             getSymbolTableHandler().error(reference, "Struct does not contain field %s.", reference.getRightChild());
         else
-            reference.setType(symbol.getReference().getType());
+            reference.setType(symbol.getSourceNode().getType());
     }
 
     public void visit(VariableDeclarationNode node)

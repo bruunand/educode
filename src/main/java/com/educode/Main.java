@@ -44,6 +44,7 @@ public class Main
         JavaCodeGenerationVisitor javaCodeVisitor = new JavaCodeGenerationVisitor("Test.java");
         root.accept(javaCodeVisitor);
 
+        int d = (int) 5.0F;
         // Test code generation
         CustomJavaCompiler compiler = new CustomJavaCompiler();
         Class compiledClass = compiler.compile(new File("").getAbsolutePath() + File.separator, "Test");

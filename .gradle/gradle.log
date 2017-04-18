@@ -11,11 +11,871 @@ This mapping 'snapshot_20161220' was designed for MC 1.11! Use at your own peril
 #################################################
 :deobfCompileDummyTask
 :deobfProvidedDummyTask
-:ideaModule
-:ideaProject
-:ideaWorkspace
-:idea
+:generateApiGrammarSource UP-TO-DATE
+:sourceApiJava UP-TO-DATE
+:compileApiJava UP-TO-DATE
+:processApiResources UP-TO-DATE
+:apiClasses UP-TO-DATE
+:generateGrammarSource UP-TO-DATE
+:sourceMainJava
+:compileJavawarning: [options] bootstrap class path not set in conjunction with -source 1.7
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+1 warning
 
-BUILD SUCCESSFUL
+:processResources UP-TO-DATE
+:classes
+:jar
+:getVersionJson
+:extractNatives SKIPPED
+:extractUserdev UP-TO-DATE
+:getAssetIndex UP-TO-DATE
+:getAssets
+Current status: 550/1196   45%
+Current status: 1056/1196   88%
+:makeStart SKIPPED
+:runClient
+[13:52:02] [main/INFO] [GradleStart]: Extra: []
+[13:52:02] [main/INFO] [GradleStart]: Running with arguments: [--userProperties, {}, --assetsDir, /home/zen/.gradle/caches/minecraft/assets, --assetIndex, 1.11, --accessToken{REDACTED}, --version, 1.11.2, --tweakClass, net.minecraftforge.fml.common.launcher.FMLTweaker, --tweakClass, net.minecraftforge.gradle.tweakers.CoremodTweaker]
+[13:52:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[13:52:02] [main/INFO] [LaunchWrapper]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[13:52:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.CoremodTweaker
+[13:52:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
+[13:52:02] [main/INFO] [FML]: Forge Mod Loader version 13.20.0.2228 for Minecraft 1.11.2 loading
+[13:52:02] [main/INFO] [FML]: Java is OpenJDK 64-Bit Server VM, version 1.8.0_121, running on Linux:amd64:4.8.0-46-generic, installed at /usr/lib/jvm/java-8-openjdk-amd64/jre
+[13:52:02] [main/INFO] [FML]: Managed to load a deobfuscated Minecraft name- we are in a deobfuscated environment. Skipping runtime deobfuscation
+[13:52:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.CoremodTweaker
+[13:52:02] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.fml.relauncher.FMLCorePlugin
+[13:52:02] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.classloading.FMLForgePlugin
+[13:52:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[13:52:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[13:52:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
+[13:52:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[13:52:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[13:52:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[13:52:02] [main/ERROR] [FML]: The binary patch set is missing. Either you are in a development environment, or things are not going to work!
+[13:52:03] [main/ERROR] [FML]: FML appears to be missing any signature data. This is not a good thing
+[13:52:03] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[13:52:03] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[13:52:03] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
+[13:52:03] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
+[13:52:03] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
+[13:52:03] [main/INFO] [LaunchWrapper]: Launching wrapped minecraft {net.minecraft.client.main.Main}
+[13:52:05] [Client thread/INFO]: Setting user: Player788
+[13:52:10] [Client thread/WARN]: Skipping bad option: lastServer:
+[13:52:10] [Client thread/INFO]: LWJGL Version: 2.9.4
+[13:52:10] [Client thread/INFO]: [STDOUT]: ---- Minecraft Crash Report ----
+// Don't do that.
 
-Total time: 8.235 secs
+Time: 4/18/17 1:52 PM
+Description: Loading screen debug info
+
+This is just a prompt for computer specs to be printed. THIS IS NOT A ERROR
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- System Details --
+Details:
+	Minecraft Version: 1.11.2
+	Operating System: Linux (amd64) version 4.8.0-46-generic
+	Java Version: 1.8.0_121, Oracle Corporation
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 424483264 bytes (404 MB) / 721944576 bytes (688 MB) up to 1838153728 bytes (1753 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+	FML: 
+	Loaded coremods (and transformers): 
+	GL info: ' Vendor: 'Intel Open Source Technology Center' Version: '3.0 Mesa 12.0.6' Renderer: 'Mesa DRI Intel(R) HD Graphics 5300 (Broadwell GT2) '
+[13:52:10] [Client thread/INFO] [FML]: MinecraftForge v13.20.0.2228 Initialized
+[13:52:11] [Client thread/INFO] [FML]: Replaced 232 ore recipes
+[13:52:11] [Client thread/INFO] [FML]: Found 0 mods from the command line. Injecting into mod discoverer
+[13:52:11] [Client thread/INFO] [FML]: Searching /home/zen/Git/Reload/run/mods for mods
+[13:52:13] [Client thread/INFO] [compilermod]: Mod compilermod is missing the required element 'name'. Substituting compilermod
+[13:52:13] [Client thread/INFO] [FML]: Forge Mod Loader has identified 5 mods to load
+[13:52:14] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, compilermod] at CLIENT
+[13:52:14] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, compilermod] at SERVER
+[13:52:14] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:compilermod
+[13:52:14] [Client thread/INFO] [FML]: Processing ObjectHolder annotations
+[13:52:14] [Client thread/INFO] [FML]: Found 444 ObjectHolder annotations
+[13:52:14] [Client thread/INFO] [FML]: Identifying ItemStackHolder annotations
+[13:52:14] [Client thread/INFO] [FML]: Found 0 ItemStackHolder annotations
+[13:52:14] [Client thread/INFO] [FML]: Applying holder lookups
+[13:52:14] [Client thread/INFO] [FML]: Holder lookups applied
+[13:52:14] [Client thread/INFO] [FML]: Applying holder lookups
+[13:52:14] [Client thread/INFO] [FML]: Holder lookups applied
+[13:52:14] [Client thread/INFO] [FML]: Applying holder lookups
+[13:52:14] [Client thread/INFO] [FML]: Holder lookups applied
+[13:52:15] [Client thread/INFO] [FML]: Configured a dormant chunk cache size of 0
+[13:52:15] [Forge Version Check/INFO] [ForgeVersionCheck]: [forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
+[13:52:15] [Client thread/INFO] [FML]: Applying holder lookups
+[13:52:15] [Client thread/INFO] [FML]: Holder lookups applied
+[13:52:15] [Client thread/INFO] [FML]: Injecting itemstacks
+[13:52:15] [Client thread/INFO] [FML]: Itemstack injection complete
+[13:52:15] [Forge Version Check/INFO] [ForgeVersionCheck]: [forge] Found status: UP_TO_DATE Target: null
+[13:52:16] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[13:52:16] [Thread-7/INFO]: Initializing LWJGL OpenAL
+[13:52:16] [Thread-7/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[13:52:16] [Thread-7/INFO]: OpenAL initialized.
+[13:52:16] [Sound Library Loader/INFO]: Sound engine started
+[13:52:19] [Client thread/INFO] [FML]: Max texture size: 8192
+[13:52:19] [Client thread/INFO]: Created: 16x16 textures-atlas
+[13:52:20] [Client thread/INFO] [FML]: Injecting itemstacks
+[13:52:20] [Client thread/INFO] [FML]: Itemstack injection complete
+[13:52:20] [Client thread/INFO] [FML]: Forge Mod Loader has successfully loaded 5 mods
+[13:52:20] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:compilermod
+[13:52:21] [Client thread/INFO]: SoundSystem shutting down...
+[13:52:21] [Client thread/WARN]: Author: Paul Lamb, www.paulscode.com
+[13:52:21] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[13:52:21] [Thread-9/INFO]: Initializing LWJGL OpenAL
+[13:52:21] [Thread-9/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[13:52:21] [Thread-9/INFO]: OpenAL initialized.
+[13:52:21] [Sound Library Loader/INFO]: Sound engine started
+[13:52:22] [Client thread/INFO] [FML]: Max texture size: 8192
+[13:52:22] [Client thread/INFO]: Created: 512x512 textures-atlas
+[13:52:24] [Client thread/WARN]: Skipping bad option: lastServer:
+[13:52:26] [Realms Notification Availability checker #1/INFO]: Could not authorize you against Realms server: Invalid session id
+[13:52:35] [Server thread/INFO]: Starting integrated minecraft server version 1.11.2
+[13:52:35] [Server thread/INFO]: Generating keypair
+[13:52:36] [Server thread/INFO] [FML]: Injecting existing block and item data into this server instance
+[13:52:36] [Server thread/INFO] [FML]: Applying holder lookups
+[13:52:36] [Server thread/INFO] [FML]: Holder lookups applied
+[13:52:36] [Server thread/INFO] [FML]: Loading dimension 0 (New World) (net.minecraft.server.integrated.IntegratedServer@593f3b38)
+[13:52:36] [Server thread/INFO] [FML]: Loading dimension 1 (New World) (net.minecraft.server.integrated.IntegratedServer@593f3b38)
+[13:52:36] [Server thread/INFO] [FML]: Loading dimension -1 (New World) (net.minecraft.server.integrated.IntegratedServer@593f3b38)
+[13:52:36] [Server thread/INFO]: Preparing start region for level 0
+[13:52:37] [Server thread/INFO]: Preparing spawn area: 1%
+[13:52:38] [Server thread/INFO]: Preparing spawn area: 80%
+[13:52:39] [Server thread/INFO]: Changing view distance to 12, from 10
+[13:52:40] [Netty Local Client IO #0/INFO] [FML]: Server protocol version 2
+[13:52:41] [Netty Server IO #1/INFO] [FML]: Client protocol version 2
+[13:52:41] [Netty Server IO #1/INFO] [FML]: Client attempting to join with 5 mods : minecraft@1.11.2,FML@8.0.99.99,forge@13.20.0.2228,mcp@9.19,compilermod@1.0
+[13:52:41] [Netty Local Client IO #0/INFO] [FML]: [Netty Local Client IO #0] Client side modded connection established
+[13:52:41] [Server thread/INFO] [FML]: [Server thread] Server side modded connection established
+[13:52:41] [Server thread/INFO]: Player788[local:E:57e55807] logged in with entity id 293 at (179.3915862355456, 72.0, 60.476300799793925)
+[13:52:41] [Server thread/INFO]: Player788 joined the game
+[13:52:42] [Server thread/INFO]: Saving and pausing game...
+[13:52:42] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[13:52:43] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[13:52:43] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[13:52:43] [pool-2-thread-1/WARN]: Couldn't look up profile properties for com.mojang.authlib.GameProfile@f063209[id=596302c2-a8ac-3ac1-b055-653042871aa0,name=Player788,properties={},legacy=false]
+com.mojang.authlib.exceptions.AuthenticationException: The client has sent too many requests within a certain amount of time
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:79) ~[YggdrasilAuthenticationService.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillGameProfile(YggdrasilMinecraftSessionService.java:180) [YggdrasilMinecraftSessionService.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:60) [YggdrasilMinecraftSessionService$1.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:57) [YggdrasilMinecraftSessionService$1.class:?]
+	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3524) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2317) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2280) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2195) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache.get(LocalCache.java:3934) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache.getOrLoad(LocalCache.java:3938) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$LocalLoadingCache.get(LocalCache.java:4821) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$LocalLoadingCache.getUnchecked(LocalCache.java:4827) [guava-17.0.jar:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillProfileProperties(YggdrasilMinecraftSessionService.java:170) [YggdrasilMinecraftSessionService.class:?]
+	at net.minecraft.client.Minecraft.getProfileProperties(Minecraft.java:3056) [Minecraft.class:?]
+	at net.minecraft.client.resources.SkinManager$3.run(SkinManager.java:138) [SkinManager$3.class:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [?:1.8.0_121]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [?:1.8.0_121]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [?:1.8.0_121]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [?:1.8.0_121]
+	at java.lang.Thread.run(Thread.java:745) [?:1.8.0_121]
+[13:52:43] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 2994ms behind, skipping 59 tick(s)
+[13:52:54] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:53:02] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:53:02] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:53:06] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:53:09] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:53:11] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:53:12] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:53:15] [Client thread/INFO]: [CHAT] §a[Success]§r File was saved.
+[13:53:17] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:53:18] [Client thread/INFO]: [CHAT] §a[Success]§r File was saved.
+No visitor for node com.educode.nodes.literal.StringLiteralNode.
+No visitor for node com.educode.nodes.literal.StringLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+[13:53:23] [Client thread/INFO]: [CHAT] §e[Matias @ Player788] §r Starting script...
+[13:53:23] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 2120ms behind, skipping 42 tick(s)
+[13:53:23] [Client thread/INFO]: [CHAT] §e[Matias @ Player788] §r coordsX: 179.000000, Y: 72.000000, Z: 64.000000
+[13:53:23] [Client thread/INFO]: [CHAT] §e[Matias @ Player788] §r out 3.3648303
+[13:53:34] [Client thread/INFO]: [CHAT] §e[Matias @ Player788] §r Ending script...
+[13:53:36] [Server thread/INFO]: Saving and pausing game...
+[13:53:36] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[13:53:36] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[13:53:36] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[13:53:57] [Server thread/INFO]: Saving and pausing game...
+[13:53:57] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[13:53:57] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[13:53:57] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[13:54:18] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:54:19] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:54:21] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:54:28] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:54:28] [Client thread/INFO]: [CHAT] §a[Success]§r File was saved.
+[13:54:30] [Server thread/INFO]: [STDERR]: line 6:39 mismatched input '.' expecting {',', ADDOP, MULTOP, 'and', 'or', NEWLINE}
+[13:54:30] [Server thread/INFO]: [STDOUT]: TermError at line 6
+No visitor for node com.educode.nodes.literal.StringLiteralNode.
+No visitor for node com.educode.nodes.literal.StringLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+[13:54:30] [Server thread/INFO]: [STDERR]: java.lang.reflect.InvocationTargetException
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.AssignmentNode.accept(AssignmentNode.java:27)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:88)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:295)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.VariableDeclarationNode.accept(VariableDeclarationNode.java:39)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:168)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:134)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodDeclarationNode.accept(MethodDeclarationNode.java:64)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:88)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.ungrouped.ProgramNode.accept(ProgramNode.java:42)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.minecraft.command.CommandRun.execute(CommandRun.java:82)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.tryExecute(CommandHandler.java:129)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.executeCommand(CommandHandler.java:101)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.handleSlashCommand(NetHandlerPlayServer.java:946)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.processChatMessage(NetHandlerPlayServer.java:922)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:47)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:8)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.PacketThreadUtil$1.run(PacketThreadUtil.java:21)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.util.Util.runTask(Util.java:29)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:754)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:699)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:156)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:548)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at java.lang.Thread.run(Thread.java:745)
+[13:54:30] [Server thread/INFO]: [STDERR]: Caused by: java.lang.NullPointerException
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:218)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	... 47 more
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+[13:54:30] [Server thread/INFO]: [STDOUT]: Attempted to invoke a null object!
+[13:54:30] [Server thread/INFO]: [STDERR]: java.lang.Exception
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:23)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.codegeneration.JavaCodeGenerationVisitor.visit(JavaCodeGenerationVisitor.java:193)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.codegeneration.JavaCodeGenerationVisitor.visit(JavaCodeGenerationVisitor.java:203)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.codegeneration.JavaCodeGenerationVisitor.visit(JavaCodeGenerationVisitor.java:109)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.codegeneration.JavaCodeGenerationVisitor.visit(JavaCodeGenerationVisitor.java:156)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.codegeneration.JavaCodeGenerationVisitor.visit(JavaCodeGenerationVisitor.java:77)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.ungrouped.ProgramNode.accept(ProgramNode.java:42)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at com.educode.minecraft.command.CommandRun.execute(CommandRun.java:93)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.tryExecute(CommandHandler.java:129)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.executeCommand(CommandHandler.java:101)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.handleSlashCommand(NetHandlerPlayServer.java:946)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.processChatMessage(NetHandlerPlayServer.java:922)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:47)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:8)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.PacketThreadUtil$1.run(PacketThreadUtil.java:21)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.util.Util.runTask(Util.java:29)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:754)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:699)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:156)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:548)
+[13:54:30] [Server thread/INFO]: [STDERR]: 	at java.lang.Thread.run(Thread.java:745)
+[13:54:30] [Client thread/INFO]: [CHAT] §e[Theis @ Player788] §r Starting script...
+[13:54:31] [Client thread/INFO]: [CHAT] §e[Theis @ Player788] §r coordsX: 188.000000, Y: 73.000000, Z: 65.000000
+[13:54:31] [Client thread/INFO]: [CHAT] §e[Theis @ Player788] §r out 9.952122
+[13:54:38] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 3343ms behind, skipping 66 tick(s)
+[13:54:41] [Client thread/INFO]: [CHAT] §e[Theis @ Player788] §r Ending script...
+[13:54:55] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:54:58] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:54:59] [Client thread/INFO]: [CHAT] §a[Success]§r File was saved.
+[13:55:00] [Server thread/INFO]: [STDERR]: line 6:41 mismatched input '.' expecting {',', ADDOP, MULTOP, 'and', 'or', NEWLINE}
+[13:55:00] [Server thread/INFO]: [STDOUT]: TermError at line 6
+No visitor for node com.educode.nodes.literal.StringLiteralNode.
+No visitor for node com.educode.nodes.literal.StringLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+[13:55:00] [Server thread/INFO]: [STDERR]: java.lang.reflect.InvocationTargetException
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.AssignmentNode.accept(AssignmentNode.java:27)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:88)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:295)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.VariableDeclarationNode.accept(VariableDeclarationNode.java:39)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:168)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:134)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodDeclarationNode.accept(MethodDeclarationNode.java:64)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:88)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.ungrouped.ProgramNode.accept(ProgramNode.java:42)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.minecraft.command.CommandRun.execute(CommandRun.java:82)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.tryExecute(CommandHandler.java:129)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.executeCommand(CommandHandler.java:101)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.handleSlashCommand(NetHandlerPlayServer.java:946)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.processChatMessage(NetHandlerPlayServer.java:922)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:47)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:8)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.PacketThreadUtil$1.run(PacketThreadUtil.java:21)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.util.Util.runTask(Util.java:29)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:754)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:699)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:156)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:548)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at java.lang.Thread.run(Thread.java:745)
+[13:55:00] [Server thread/INFO]: [STDERR]: Caused by: java.lang.NullPointerException
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:218)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	... 47 more
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+[13:55:00] [Server thread/INFO]: [STDOUT]: Attempted to invoke a null object!
+[13:55:00] [Server thread/INFO]: [STDERR]: java.lang.Exception
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:23)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.codegeneration.JavaCodeGenerationVisitor.visit(JavaCodeGenerationVisitor.java:193)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.codegeneration.JavaCodeGenerationVisitor.visit(JavaCodeGenerationVisitor.java:203)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.codegeneration.JavaCodeGenerationVisitor.visit(JavaCodeGenerationVisitor.java:109)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.codegeneration.JavaCodeGenerationVisitor.visit(JavaCodeGenerationVisitor.java:156)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.codegeneration.JavaCodeGenerationVisitor.visit(JavaCodeGenerationVisitor.java:77)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.ungrouped.ProgramNode.accept(ProgramNode.java:42)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at com.educode.minecraft.command.CommandRun.execute(CommandRun.java:93)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.tryExecute(CommandHandler.java:129)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.executeCommand(CommandHandler.java:101)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.handleSlashCommand(NetHandlerPlayServer.java:946)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.processChatMessage(NetHandlerPlayServer.java:922)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:47)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:8)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.PacketThreadUtil$1.run(PacketThreadUtil.java:21)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.util.Util.runTask(Util.java:29)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:754)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:699)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:156)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:548)
+[13:55:00] [Server thread/INFO]: [STDERR]: 	at java.lang.Thread.run(Thread.java:745)
+[13:55:01] [Client thread/INFO]: [CHAT] §c[Andreas @ Player788] §r Starting script...
+[13:55:01] [Client thread/INFO]: [CHAT] §c[Andreas @ Player788] §r coordsX: 212.000000, Y: 71.000000, Z: 56.000000
+[13:55:01] [Client thread/INFO]: [CHAT] §c[Andreas @ Player788] §r out 19.548529
+[13:55:12] [Client thread/INFO]: [CHAT] §c[Andreas @ Player788] §r Ending script...
+[13:55:12] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 5358ms behind, skipping 107 tick(s)
+[13:55:39] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:55:41] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:55:41] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:55:43] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:55:47] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:55:47] [Client thread/INFO]: [STDOUT]: Key code:58
+[13:55:56] [Client thread/INFO]: [STDOUT]: Key code:58
+[13:55:58] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:55:59] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:00] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:01] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:04] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:10] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:12] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:12] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:13] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:14] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:19] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:25] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:25] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:26] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:44] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:45] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:51] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:56:53] [Client thread/INFO]: [CHAT] §a[Success]§r File was saved.
+[13:56:55] [Server thread/INFO]: [STDERR]: line 10:41 no viable alternative at input 'coords.getX() + random(-'
+[13:56:55] [Server thread/INFO]: [STDERR]: line 10:32 mismatched input '+' expecting NEWLINE
+[13:56:55] [Server thread/INFO]: [STDERR]: line 14:4 extraneous input 'end repeat' expecting {'end method', 'return', 'repeat while', 'if', 'foreach', 'number', 'bool', 'Coordinates', 'string', 'Collection', 'Block', 'Entity', 'Item', 'Texture', NEWLINE, IDENT}
+[13:56:55] [Server thread/INFO]: [STDOUT]: Unexpected child count in equals-expression
+No visitor for node com.educode.nodes.literal.StringLiteralNode.
+No visitor for node com.educode.nodes.literal.StringLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+[13:56:55] [Server thread/INFO]: [STDERR]: java.lang.reflect.InvocationTargetException
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.GeneratedMethodAccessor13.invoke(Unknown Source)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.base.ListNode.accept(ListNode.java:25)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:88)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:186)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.GeneratedMethodAccessor10.invoke(Unknown Source)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodInvocationNode.accept(MethodInvocationNode.java:34)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:168)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:110)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.conditional.ConditionNode.accept(ConditionNode.java:20)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:88)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:115)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.conditional.RepeatWhileNode.accept(RepeatWhileNode.java:20)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:168)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:134)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodDeclarationNode.accept(MethodDeclarationNode.java:64)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:88)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.ungrouped.ProgramNode.accept(ProgramNode.java:42)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.minecraft.command.CommandRun.execute(CommandRun.java:82)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.tryExecute(CommandHandler.java:129)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.executeCommand(CommandHandler.java:101)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.handleSlashCommand(NetHandlerPlayServer.java:946)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.processChatMessage(NetHandlerPlayServer.java:922)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:47)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:8)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.PacketThreadUtil$1.run(PacketThreadUtil.java:21)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.util.Util.runTask(Util.java:29)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:754)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:699)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:156)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:548)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.Thread.run(Thread.java:745)
+[13:56:55] [Server thread/INFO]: [STDERR]: Caused by: java.lang.NullPointerException
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:95)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	... 67 more
+[13:56:55] [Server thread/INFO]: [STDERR]: java.lang.reflect.InvocationTargetException
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.GeneratedMethodAccessor10.invoke(Unknown Source)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodInvocationNode.accept(MethodInvocationNode.java:34)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:168)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:110)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.conditional.ConditionNode.accept(ConditionNode.java:20)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:88)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:115)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.conditional.RepeatWhileNode.accept(RepeatWhileNode.java:20)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:168)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:134)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodDeclarationNode.accept(MethodDeclarationNode.java:64)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:88)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.ungrouped.ProgramNode.accept(ProgramNode.java:42)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.minecraft.command.CommandRun.execute(CommandRun.java:82)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.tryExecute(CommandHandler.java:129)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.executeCommand(CommandHandler.java:101)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.handleSlashCommand(NetHandlerPlayServer.java:946)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.processChatMessage(NetHandlerPlayServer.java:922)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:47)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:8)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.PacketThreadUtil$1.run(PacketThreadUtil.java:21)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.util.Util.runTask(Util.java:29)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:754)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:699)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:156)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:548)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at java.lang.Thread.run(Thread.java:745)
+[13:56:55] [Server thread/INFO]: [STDERR]: Caused by: java.lang.NullPointerException
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodDeclarationNode.correspondsWith(MethodDeclarationNode.java:122)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.symboltable.SymbolTable.retrieveMethodSymbol(SymbolTable.java:72)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:200)
+[13:56:55] [Server thread/INFO]: [STDERR]: 	... 60 more
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+[13:56:55] [Client thread/INFO]: [CHAT] Error at line 8: Symbol coords previously declared at line 3.
+[13:57:10] [Client thread/INFO]: [STDOUT]: Key code:42
+[13:57:23] [Client thread/INFO]: [CHAT] §a[Success]§r File was saved.
+[13:57:24] [Server thread/INFO]: [STDERR]: line 8:41 no viable alternative at input 'coords.getX() + random(-'
+[13:57:24] [Server thread/INFO]: [STDERR]: line 8:32 mismatched input '+' expecting NEWLINE
+[13:57:24] [Server thread/INFO]: [STDERR]: line 12:4 extraneous input 'end repeat' expecting {'end method', 'return', 'repeat while', 'if', 'foreach', 'number', 'bool', 'Coordinates', 'string', 'Collection', 'Block', 'Entity', 'Item', 'Texture', NEWLINE, IDENT}
+[13:57:24] [Server thread/INFO]: [STDOUT]: Unexpected child count in equals-expression
+No visitor for node com.educode.nodes.literal.StringLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+[13:57:24] [Server thread/INFO]: [STDERR]: java.lang.reflect.InvocationTargetException
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.GeneratedMethodAccessor13.invoke(Unknown Source)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.base.ListNode.accept(ListNode.java:25)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:88)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:186)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.GeneratedMethodAccessor10.invoke(Unknown Source)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodInvocationNode.accept(MethodInvocationNode.java:34)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:168)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:110)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.conditional.ConditionNode.accept(ConditionNode.java:20)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:88)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:115)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.conditional.RepeatWhileNode.accept(RepeatWhileNode.java:20)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:168)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:134)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodDeclarationNode.accept(MethodDeclarationNode.java:64)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:88)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.ungrouped.ProgramNode.accept(ProgramNode.java:42)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.minecraft.command.CommandRun.execute(CommandRun.java:82)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.tryExecute(CommandHandler.java:129)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.executeCommand(CommandHandler.java:101)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.handleSlashCommand(NetHandlerPlayServer.java:946)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.processChatMessage(NetHandlerPlayServer.java:922)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:47)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:8)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.PacketThreadUtil$1.run(PacketThreadUtil.java:21)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.util.Util.runTask(Util.java:29)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:754)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:699)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:156)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:548)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.Thread.run(Thread.java:745)
+[13:57:24] [Server thread/INFO]: [STDERR]: Caused by: java.lang.NullPointerException
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:95)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	... 67 more
+[13:57:24] [Server thread/INFO]: [STDERR]: java.lang.reflect.InvocationTargetException
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.GeneratedMethodAccessor10.invoke(Unknown Source)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodInvocationNode.accept(MethodInvocationNode.java:34)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:168)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:110)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.conditional.ConditionNode.accept(ConditionNode.java:20)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:88)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:115)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.conditional.RepeatWhileNode.accept(RepeatWhileNode.java:20)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:168)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:134)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodDeclarationNode.accept(MethodDeclarationNode.java:64)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:88)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.ungrouped.ProgramNode.accept(ProgramNode.java:42)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.minecraft.command.CommandRun.execute(CommandRun.java:82)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.tryExecute(CommandHandler.java:129)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.executeCommand(CommandHandler.java:101)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.handleSlashCommand(NetHandlerPlayServer.java:946)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.processChatMessage(NetHandlerPlayServer.java:922)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:47)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:8)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.PacketThreadUtil$1.run(PacketThreadUtil.java:21)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.util.Util.runTask(Util.java:29)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:754)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:699)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:156)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:548)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at java.lang.Thread.run(Thread.java:745)
+[13:57:24] [Server thread/INFO]: [STDERR]: Caused by: java.lang.NullPointerException
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodDeclarationNode.correspondsWith(MethodDeclarationNode.java:122)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.symboltable.SymbolTable.retrieveMethodSymbol(SymbolTable.java:72)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:200)
+[13:57:24] [Server thread/INFO]: [STDERR]: 	... 60 more
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+[13:57:24] [Client thread/INFO]: [CHAT] Error at line 9: Identifier coords is not declared.
+[13:57:24] [Client thread/INFO]: [CHAT] Error at line 9: No method Struct Reference found with matching parameters.
+[13:57:40] [Server thread/INFO]: [STDERR]: line 8:41 no viable alternative at input 'coords.getX() + random(-'
+[13:57:40] [Server thread/INFO]: [STDERR]: line 8:32 mismatched input '+' expecting NEWLINE
+[13:57:40] [Server thread/INFO]: [STDERR]: line 12:4 extraneous input 'end repeat' expecting {'end method', 'return', 'repeat while', 'if', 'foreach', 'number', 'bool', 'Coordinates', 'string', 'Collection', 'Block', 'Entity', 'Item', 'Texture', NEWLINE, IDENT}
+[13:57:40] [Server thread/INFO]: [STDOUT]: Unexpected child count in equals-expression
+No visitor for node com.educode.nodes.literal.StringLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+No visitor for node com.educode.nodes.literal.NumberLiteralNode.
+[13:57:40] [Server thread/INFO]: [STDERR]: java.lang.reflect.InvocationTargetException
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.GeneratedMethodAccessor13.invoke(Unknown Source)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.base.ListNode.accept(ListNode.java:25)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:88)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:186)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.GeneratedMethodAccessor10.invoke(Unknown Source)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodInvocationNode.accept(MethodInvocationNode.java:34)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:168)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:110)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.conditional.ConditionNode.accept(ConditionNode.java:20)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:88)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:115)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.conditional.RepeatWhileNode.accept(RepeatWhileNode.java:20)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:168)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:134)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodDeclarationNode.accept(MethodDeclarationNode.java:64)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:88)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.ungrouped.ProgramNode.accept(ProgramNode.java:42)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.minecraft.command.CommandRun.execute(CommandRun.java:82)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.tryExecute(CommandHandler.java:129)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at net.minecraft.command.CommandHandler.executeCommand(CommandHandler.java:101)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.handleSlashCommand(NetHandlerPlayServer.java:946)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.NetHandlerPlayServer.processChatMessage(NetHandlerPlayServer.java:922)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:47)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.play.client.CPacketChatMessage.processPacket(CPacketChatMessage.java:8)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at net.minecraft.network.PacketThreadUtil$1.run(PacketThreadUtil.java:21)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at net.minecraft.util.Util.runTask(Util.java:29)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:754)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:699)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:156)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:548)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at java.lang.Thread.run(Thread.java:745)
+[13:57:40] [Server thread/INFO]: [STDERR]: Caused by: java.lang.NullPointerException
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:95)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	... 67 more
+[13:57:40] [Server thread/INFO]: [STDERR]: java.lang.reflect.InvocationTargetException
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.GeneratedMethodAccessor10.invoke(Unknown Source)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.method.MethodInvocationNode.accept(MethodInvocationNode.java:34)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:168)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:110)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.conditional.ConditionNode.accept(ConditionNode.java:20)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:88)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:115)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at java.lang.reflect.Method.invoke(Method.java:498)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visit(VisitorBase.java:33)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.nodes.statement.conditional.RepeatWhileNode.accept(RepeatWhileNode.java:20)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.VisitorBase.visitChildren(VisitorBase.java:102)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:168)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at com.educode.visitors.semantic.SemanticVisitor.visit(SemanticVisitor.java:134)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[13:57:40] [Server thread/INFO]: [STDERR]: 	at sun.reflect.NativeMethodAccessorImpl.invoke(Nat

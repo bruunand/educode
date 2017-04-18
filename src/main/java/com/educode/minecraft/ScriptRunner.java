@@ -16,17 +16,17 @@ public class ScriptRunner extends Thread
 	{
 		try
 		{
-			_script.notify("Starting script...");
+			_script.say("Starting script...");
 			_script.main();
 		}
 		catch (Exception e)
 		{
-			_script.notify("Script error: " + e.getMessage());
+			_script.say("Script error: " + e.getMessage());
 			e.printStackTrace();
 		}
 		finally
 		{
-			_script.notify("Ending script...");
+			_script.say("Ending script...");
 			_script.selfDestruct();
 		}
 	}

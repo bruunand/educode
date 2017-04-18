@@ -10,16 +10,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import scala.collection.parallel.ParIterableLike;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public abstract class ScriptBase
+public abstract class ScriptBase implements IRobot
 {
     private World _world;
     private EntityRobot _scriptedEntity;
     private EntityPlayer _player;
+    private Random _rand = new Random();
+
+    protected final ScriptBase robot = this;
 
     public void init(World world, EntityPlayer player)
     {
@@ -51,6 +54,11 @@ public abstract class ScriptBase
         this._world.spawnEntity(_scriptedEntity);
     }
 
+    public float random(float min, float max)
+    {
+        return (max - min) * _rand.nextFloat() + min;
+    }
+
     public void wait(float time)
     {
         try
@@ -79,6 +87,7 @@ public abstract class ScriptBase
         return null;
     }
 
+    @Override
     public void setWorldTime(float time)
     {
         Command command = queueAndWait();
@@ -88,18 +97,13 @@ public abstract class ScriptBase
         command.setHasBeenExecuted(true);
     }
 
-    public void notify(String notifyString)
+    public void say(String notifyString)
     {
         Command command = queueAndWait();
 
         _player.sendMessage(new TextComponentString(_scriptedEntity.getFormatting() + "[" + _scriptedEntity.getName() + "]" + " " + TextFormatting.RESET + " " + notifyString));
 
         command.setHasBeenExecuted(true);
-    }
-
-    public String toString(MinecraftEntity entity)
-    {
-        return entity.toString();
     }
 
     public void selfDestruct()
@@ -141,19 +145,27 @@ public abstract class ScriptBase
         return (float) _scriptedEntity.posZ;
     }
 
-    private Coordinates getOwnerPosition()
+    @Override
+    public Coordinates getCoordinates()
     {
-        return new Coordinates(_player.getPosition());
+        return new Coordinates(_scriptedEntity.getPosition());
     }
 
-    public float getDistanceToEntity(MinecraftEntity entity)
+    @Override
+    public float getDistanceTo(MinecraftEntity entity)
     {
     	return _scriptedEntity.getDistanceToEntity(entity.getWrappedEntity());
     }
-    
-    public synchronized void walkToEntity(MinecraftEntity entity)
+
+    private synchronized void walkToEntity(MinecraftEntity entity)
     {
         navigateToBlock(entity.getWrappedEntity().getPosition());
+    }
+
+    @Override
+    public synchronized void walkTo(Coordinates coords)
+    {
+        navigateToBlock(coords.toBlockPos());
     }
     
     private synchronized void navigateToBlock(BlockPos pos)
@@ -166,6 +178,7 @@ public abstract class ScriptBase
         wait(250F);
     }
 
+    @Override
     public synchronized List<MinecraftEntity> getNearbyEntities()
     {
         Command command = queueAndWait();
@@ -184,11 +197,13 @@ public abstract class ScriptBase
         return returnList;
     }
 
-    public MinecraftEntity getOwnerEntity()
+    @Override
+    public MinecraftEntity getOwner()
     {
         return new MinecraftEntity(this._player);
     }
 
+    @Override
     public void move(String direction)
     {
         BlockPos targetPosition = _scriptedEntity.getPosition();
@@ -207,13 +222,26 @@ public abstract class ScriptBase
                 targetPosition = targetPosition.west();
                 break;
             default:
-                notify(String.format("Unknown direction '%s'!", direction));
+                say(String.format("Unknown direction '%s'!", direction));
                 return;
         }
         
         navigateToBlock(targetPosition);
     }
-    
+
+    @Override
+    public String toString()
+    {
+        return this._scriptedEntity.getName();
+    }
+
+    @Override
+    public float getHealth()
+    {
+        return this._scriptedEntity.getHealth();
+    }
+
+    @Override
     public void mine(String direction)
     {
     	mine(direction, 0);
@@ -246,7 +274,7 @@ public abstract class ScriptBase
                 faceAndMine((targetBlockPosition = targetBlockPosition.west()));
                 break;
             default:
-                notify(String.format("Unknown direction '%s'!", direction));
+                say(String.format("Unknown direction '%s'!", direction));
                 return;
         }
         
