@@ -39,8 +39,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     private int LabelCounter;
     private ArrayList<Tuple<IdentifierLiteralNode, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<IdentifierLiteralNode, Integer>>();
 
-
-
     public void append(StringBuffer buffer, String format, Object ... args)
     {
         try
@@ -53,7 +51,11 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         }
     }
 
-    @Override
+    public Object defaultVisit(Node node)
+    {
+        return "NOT IMPLEMENTED:" + node.getClass().getName();
+    }
+    
     public Object visit(ProgramNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -85,7 +87,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return null;
     }
 
-    @Override
+    
     public Object visit(BlockNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -101,13 +103,13 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(ListNode node)
     {
         return null;
     }
 
-    @Override
+    
     public Object visit(ObjectInstantiationNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -123,7 +125,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return null;
     }
 
-    @Override
+    
     public Object visit(MethodDeclarationNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -149,7 +151,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(MethodInvocationNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -164,13 +166,13 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(ParameterNode node)
     {
         return OperatorTranslator.toBytecode(node.getType());
     }
 
-    @Override
+    
     public Object visit(AssignmentNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -183,7 +185,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(VariableDeclarationNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -201,7 +203,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(IfNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -239,7 +241,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(ConditionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -253,7 +255,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(RepeatWhileNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -269,13 +271,13 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(ReturnNode node)
     {
         return "  return\n";
     }
 
-    @Override
+    
     public Object visit(MultiplicationExpression node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -287,7 +289,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(AdditionExpression node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -308,7 +310,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(NumberLiteralNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -318,7 +320,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(StringLiteralNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -328,7 +330,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(IdentifierLiteralNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -338,7 +340,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(BoolLiteralNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -351,13 +353,13 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(CoordinatesLiteralNode node)
     {
         return null;
     }
 
-    @Override
+    
     public Object visit(OrExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -373,7 +375,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(AndExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -389,13 +391,13 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(RelativeExpressionNode node)
     {
         return null;
     }
 
-    @Override
+    
     public Object visit(EqualExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -416,7 +418,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(NegateNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -433,7 +435,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    @Override
+    
     public Object visit(TypeCastNode node)
     {
 
