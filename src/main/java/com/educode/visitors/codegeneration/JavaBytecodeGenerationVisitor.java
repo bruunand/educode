@@ -377,9 +377,9 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         StringBuffer codeBuffer = new StringBuffer();
         int label =  LabelCounter++;
         append(codeBuffer, "%s", visit(node.getLeftChild()));
-        append(codeBuffer, "  dup\n");
+        //append(codeBuffer, "  dup\n");
         append(codeBuffer, "  ifeq L%s\n", label);
-        append(codeBuffer, "  pop\n");
+        //append(codeBuffer, "  pop\n");
         append(codeBuffer, "%s", visit(node.getRightChild()));
         append(codeBuffer, "L%s:\n", label);
         append(codeBuffer, "  nop\n");
