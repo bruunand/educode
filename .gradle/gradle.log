@@ -18,97 +18,223 @@ This mapping 'snapshot_20161220' was designed for MC 1.11! Use at your own peril
 :apiClasses UP-TO-DATE
 :generateGrammarSource UP-TO-DATE
 :sourceMainJava
-:compileJava
-Download https://repo1.maven.org/maven2/org/antlr/antlr4/4.6/antlr4-4.6.pom
-Download https://repo1.maven.org/maven2/org/antlr/antlr4-master/4.6/antlr4-master-4.6.pom
-Download https://repo1.maven.org/maven2/org/antlr/antlr4-runtime/4.6/antlr4-runtime-4.6.pom
-Download https://repo1.maven.org/maven2/org/antlr/antlr-runtime/3.5.2/antlr-runtime-3.5.2.pom
-Download https://repo1.maven.org/maven2/org/antlr/antlr-master/3.5.2/antlr-master-3.5.2.pom
-Download https://repo1.maven.org/maven2/org/antlr/ST4/4.0.8/ST4-4.0.8.pom
-Download https://repo1.maven.org/maven2/org/abego/treelayout/org.abego.treelayout.core/1.0.3/org.abego.treelayout.core-1.0.3.pom
-Download https://repo1.maven.org/maven2/org/glassfish/javax.json/1.0.4/javax.json-1.0.4.pom
-Download https://repo1.maven.org/maven2/org/glassfish/json/1.0.4/json-1.0.4.pom
-Download https://repo1.maven.org/maven2/net/java/jvnet-parent/3/jvnet-parent-3.pom
-Download https://repo1.maven.org/maven2/org/antlr/antlr4/4.6/antlr4-4.6.jar
-Download https://repo1.maven.org/maven2/org/antlr/antlr4-runtime/4.6/antlr4-runtime-4.6.jar
-Download https://repo1.maven.org/maven2/org/antlr/antlr-runtime/3.5.2/antlr-runtime-3.5.2.jar
-Download https://repo1.maven.org/maven2/org/antlr/ST4/4.0.8/ST4-4.0.8.jar
-Download https://repo1.maven.org/maven2/org/abego/treelayout/org.abego.treelayout.core/1.0.3/org.abego.treelayout.core-1.0.3.jar
-Download https://repo1.maven.org/maven2/org/glassfish/javax.json/1.0.4/javax.json-1.0.4.jar
+:compileJava/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:40: error: cannot find symbol
+    private ArrayList<Tuple<IdentifierLiteralNode, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<IdentifierLiteralNode, Integer>>();
+                            ^
+  symbol:   class IdentifierLiteralNode
+  location: class JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:334: error: cannot find symbol
+    public Object visit(IdentifierLiteralNode node)
+                        ^
+  symbol:   class IdentifierLiteralNode
+  location: class JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:482: error: cannot find symbol
+    public int getOffSetByNode(IdentifierLiteralNode node)
+                               ^
+  symbol:   class IdentifierLiteralNode
+  location: class JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:40: error: cannot find symbol
+    private ArrayList<Tuple<IdentifierLiteralNode, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<IdentifierLiteralNode, Integer>>();
+                                                                                                          ^
+  symbol:   class IdentifierLiteralNode
+  location: class JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:59: error: name clash: visit(ProgramNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(ProgramNode node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:63: error: cannot find symbol
+        append(codeBuffer, ".class public %s\n", node.getIdentifier());
+                                                     ^
+  symbol:   method getIdentifier()
+  location: variable node of type ProgramNode
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:78: error: cannot find symbol
+            fw = new FileWriter(node.getIdentifier() + ".j");
+                                    ^
+  symbol:   method getIdentifier()
+  location: variable node of type ProgramNode
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:91: error: name clash: visit(BlockNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(BlockNode node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:107: error: name clash: visit(ListNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(ListNode node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:113: error: name clash: visit(ObjectInstantiationNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(ObjectInstantiationNode node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:129: error: name clash: visit(MethodDeclarationNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(MethodDeclarationNode node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:135: error: cannot find symbol
+        if (node.getIdentifier().equals("main"))
+                ^
+  symbol:   method getIdentifier()
+  location: variable node of type MethodDeclarationNode
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:140: error: cannot find symbol
+            append(codeBuffer, ".method public %s(%s)%s\n", node.getIdentifier(), getParameters(node.getParameterList()),OperatorTranslator.toBytecode(node.getType()));
+                                                                ^
+  symbol:   method getIdentifier()
+  location: variable node of type MethodDeclarationNode
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:155: error: name clash: visit(MethodInvocationNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(MethodInvocationNode node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:170: error: name clash: visit(ParameterNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(ParameterNode node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:176: error: name clash: visit(AssignmentNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(AssignmentNode node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:183: error: cannot find symbol
+        append(codeBuffer, "  %sstore %s\n", getPrefix(node.getIdentifierNode().getType()),getOffSetByNode(node.getIdentifierNode()));
+                                                           ^
+  symbol:   method getIdentifierNode()
+  location: variable node of type AssignmentNode
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:183: error: cannot find symbol
+        append(codeBuffer, "  %sstore %s\n", getPrefix(node.getIdentifierNode().getType()),getOffSetByNode(node.getIdentifierNode()));
+                                                                                                               ^
+  symbol:   method getIdentifierNode()
+  location: variable node of type AssignmentNode
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:189: error: name clash: visit(VariableDeclarationNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(VariableDeclarationNode node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:192: error: cannot find symbol
+        DeclaratoinOffsetTable.add(new Tuple<IdentifierLiteralNode, Integer>(node.getIdentifierNode(), ++OffSet));
+                                             ^
+  symbol:   class IdentifierLiteralNode
+  location: class JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:207: error: name clash: visit(IfNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(IfNode node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:245: error: name clash: visit(ConditionNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(ConditionNode node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:259: error: name clash: visit(RepeatWhileNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(RepeatWhileNode node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:275: error: name clash: visit(ReturnNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(ReturnNode node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:281: error: name clash: visit(MultiplicationExpression) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(MultiplicationExpression node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:293: error: name clash: visit(AdditionExpression) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(AdditionExpression node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:300: error: cannot find symbol
+        if (node.getType().Kind == Type.STRING)
+                          ^
+  symbol:   variable Kind
+  location: class Type
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:305: error: cannot find symbol
+        else if (node.getType().Kind == Type.NUMBER)
+                               ^
+  symbol:   variable Kind
+  location: class Type
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:314: error: name clash: visit(NumberLiteralNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(NumberLiteralNode node)
+                  ^
+  first method:  visit(StringLiteralNode) in JavaBytecodeGenerationVisitor
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:324: error: name clash: visit(StringLiteralNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(StringLiteralNode node)
+                  ^
+  first method:  visit(Object) in VisitorBase
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:344: error: name clash: visit(BoolLiteralNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(BoolLiteralNode node)
+                  ^
+  first method:  visit(Object) in VisitorBase
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:357: error: name clash: visit(CoordinatesLiteralNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(CoordinatesLiteralNode node)
+                  ^
+  first method:  visit(Object) in VisitorBase
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:363: error: name clash: visit(OrExpressionNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(OrExpressionNode node)
+                  ^
+  first method:  visit(Object) in VisitorBase
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:379: error: name clash: visit(AndExpressionNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(AndExpressionNode node)
+                  ^
+  first method:  visit(Object) in VisitorBase
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:395: error: name clash: visit(RelativeExpressionNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(RelativeExpressionNode node)
+                  ^
+  first method:  visit(Object) in VisitorBase
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:401: error: name clash: visit(EqualExpressionNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(EqualExpressionNode node)
+                  ^
+  first method:  visit(Object) in VisitorBase
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:422: error: name clash: visit(NegateNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(NegateNode node)
+                  ^
+  first method:  visit(Object) in VisitorBase
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:439: error: name clash: visit(TypeCastNode) in JavaBytecodeGenerationVisitor overrides a method whose erasure is the same as another method, yet neither overrides the other
+    public Object visit(TypeCastNode node)
+                  ^
+  first method:  visit(Object) in VisitorBase
+  second method: visit(IdentifierLiteralNode) in JavaBytecodeGenerationVisitor
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:448: error: cannot find symbol
+        switch (type.Kind)
+                    ^
+  symbol:   variable Kind
+  location: variable type of type Type
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:448: error: illegal start of type
+        switch (type.Kind)
+               ^
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/visitors/codegeneration/JavaBytecodeGenerationVisitor.java:484: error: cannot find symbol
+        for (Tuple<IdentifierLiteralNode, Integer> tuple:DeclaratoinOffsetTable)
+                   ^
+  symbol:   class IdentifierLiteralNode
+  location: class JavaBytecodeGenerationVisitor
 Note: Some input files use unchecked or unsafe operations.
 Note: Recompile with -Xlint:unchecked for details.
-:processResources
-:classes
-:jar
-:getVersionJson
-:extractNatives SKIPPED
-:extractUserdev
-:getAssetIndex UP-TO-DATE
-:getAssets
-Current status: 539/1196   45%
-Current status: 1007/1196   84%
-:makeStart SKIPPED
-:runClient
-[09:56:02] [main/INFO] [GradleStart]: Extra: []
-[09:56:02] [main/INFO] [GradleStart]: Running with arguments: [--userProperties, {}, --assetsDir, /home/zen/.gradle/caches/minecraft/assets, --assetIndex, 1.11, --accessToken{REDACTED}, --version, 1.11.2, --tweakClass, net.minecraftforge.fml.common.launcher.FMLTweaker, --tweakClass, net.minecraftforge.gradle.tweakers.CoremodTweaker]
-[09:56:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[09:56:02] [main/INFO] [LaunchWrapper]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[09:56:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.CoremodTweaker
-[09:56:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
-[09:56:02] [main/INFO] [FML]: Forge Mod Loader version 13.20.0.2228 for Minecraft 1.11.2 loading
-[09:56:02] [main/INFO] [FML]: Java is OpenJDK 64-Bit Server VM, version 1.8.0_121, running on Linux:amd64:4.8.0-46-generic, installed at /usr/lib/jvm/java-8-openjdk-amd64/jre
-[09:56:02] [main/INFO] [FML]: Managed to load a deobfuscated Minecraft name- we are in a deobfuscated environment. Skipping runtime deobfuscation
-[09:56:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.CoremodTweaker
-[09:56:02] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.fml.relauncher.FMLCorePlugin
-[09:56:02] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.classloading.FMLForgePlugin
-[09:56:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[09:56:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[09:56:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
-[09:56:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[09:56:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[09:56:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[09:56:02] [main/ERROR] [FML]: The binary patch set is missing. Either you are in a development environment, or things are not going to work!
-[09:56:03] [main/ERROR] [FML]: FML appears to be missing any signature data. This is not a good thing
-[09:56:03] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[09:56:03] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[09:56:04] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
-[09:56:04] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
-[09:56:04] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
-[09:56:04] [main/INFO] [LaunchWrapper]: Launching wrapped minecraft {net.minecraft.client.main.Main}
-[09:56:05] [Client thread/INFO]: Setting user: Player80
-[09:56:10] [Client thread/INFO]: LWJGL Version: 2.9.4
-[09:56:10] [Client thread/INFO] [FML]: Could not load splash.properties, will create a default one
-[09:56:10] [Client thread/INFO]: [STDOUT]: ---- Minecraft Crash Report ----
-// You're mean.
+41 errors
+ FAILED
 
-Time: 4/18/17 9:56 AM
-Description: Loading screen debug info
+FAILURE: Build failed with an exception.
 
-This is just a prompt for computer specs to be printed. THIS IS NOT A ERROR
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler error output for details.
 
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.
 
-A detailed walkthrough of the error, its code path and all known details is as follows:
----------------------------------------------------------------------------------------
+BUILD FAILED
 
--- System Details --
-Details:
-	Minecraft Version: 1.11.2
-	Operating System: Linux (amd64) version 4.8.0-46-generic
-	Java Version: 1.8.0_121, Oracle Corporation
-	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode), Oracle Corporation
-	Memory: 417498480 bytes (398 MB) / 727187456 bytes (693 MB) up to 1838153728 bytes (1753 MB)
-	JVM Flags: 0 total; 
-	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
-	FML: 
-	Loaded coremods (and transformers): 
-	GL info: ' Vendor: 'Intel Open Source Technology Center' Version: '3.0 Mesa 12.0.6' Renderer: 'Mesa DRI Intel(R) HD Graphics 5300 (Broadwell GT2) '
-[09:56:11] [Client thread/INFO] [FML]: MinecraftForge v13.20.0.2228 Initialized
-[09:56:11] [Client thread/INFO] [FML]: Replaced 232 ore recipes
-[09:56:11] [Client thread/INFO] [FML]: Found 0 mods from the command line. Injecting into mod discoverer
-[09:56:11] [Client thread/INFO] [FML]: Searching /home/zen/Git/EduCode-P4/run/mods for mods
-[09:56:14] [Client thread/INFO] [compilermod]: Mod compilermod is missing the required element 'name'. Substituting compilermod
-[09:56:14] [Client thread/INFO] [FML]: Forge Mod Loader has identified 5 mods to load
-[09:56:14] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, compilermod] at CLIENT
-[09:56:14] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, compilermod] at SERVER
-[09:56:16] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:compilermod
-[09:56:16] [Client 
+Total time: 22.848 secs

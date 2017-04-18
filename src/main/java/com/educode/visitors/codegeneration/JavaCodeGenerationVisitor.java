@@ -59,7 +59,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         }
     }
 
-    public Object visitDefault(Node node)
+    public Object defaultVisit(Node node)
     {
         return "NOT IMPLEMENTED:" + node.getClass().getName();
     }
@@ -94,7 +94,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return null;
     }
 
-    
+
     public Object visit(BlockNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -116,7 +116,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    
+
     public Object visit(ListNode node)
     {
         //
@@ -129,7 +129,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    
+
     public Object visit(ObjectInstantiationNode node)
     {
         // Join actual arguments
@@ -153,7 +153,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
             return String.format("new %s(%s)", OperatorTranslator.toJava(node.getType()), argumentJoiner);
     }
 
-    
+
     public Object visit(MethodDeclarationNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -172,7 +172,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    
+
     public Object visit(MethodInvocationNode node)
     {
         StringJoiner actualArgumentsJoiner = new StringJoiner(", ");
@@ -195,7 +195,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return String.format("%s(%s)", methodIdentifier, actualArgumentsJoiner);
     }
 
-    
+
     public Object visit(ParameterNode node)
     {
         //formal parameter node
@@ -205,13 +205,13 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    
+
     public Object visit(AssignmentNode node)
     {
         return String.format("%s = %s",  visit(node.getReference()), visit(node.getChild()));
     }
 
-    
+
     public Object visit(VariableDeclarationNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -225,7 +225,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    
+
     public Object visit(IfNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -250,7 +250,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     }
 
-    
+
     public Object visit(ConditionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -258,7 +258,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    
+
     public Object visit(RepeatWhileNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -267,13 +267,13 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    
+
     public Object visit(ForEachNode node)
     {
         return String.format("for (%s %s : %s)\n%s", OperatorTranslator.toJava(node.getType()), visit(node.getReference()), visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
-    
+
     public Object visit(ReturnNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -281,7 +281,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    
+
     public Object visit(MultiplicationExpression node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -290,7 +290,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    
+
     public Object visit(AdditionExpression node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -299,30 +299,30 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    
+
     public Object visit(NumberLiteralNode node)
     {
         return String.format("%fF", node.getValue());
     }
 
-    
+
     public Object visit(StringLiteralNode node)
     {
         return node.getValue();
     }
 
-    
+
     public Object visit(BoolLiteralNode node)
     {
         return node.getValue();
     }
-    
+
     public Object visit(CoordinatesLiteralNode node)
     {
         // Uses the Coordinates runtime type
         return String.format("new Coordinates(%s, %s, %s)", visit(node.getX()), visit(node.getY()), visit(node.getZ()));
     }
-    
+
     public Object visit(OrExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -330,7 +330,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-    
+
     public Object visit(AndExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -346,7 +346,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-    
+
     public Object visit(EqualExpressionNode node)
     {
         Type leftType  = node.getLeftChild().getType();
@@ -378,7 +378,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-    
+
     public Object visit(TypeCastNode node)
     {
         return String.format("(%s)(%s)", OperatorTranslator.toJava(node.getType()), visit(node.getChild()));
