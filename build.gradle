@@ -7,19 +7,17 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
-apply plugin: 'antlr'
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-
+apply plugin: 'antlr'
 
 version = "1.0"
-group = "com.educode.minecraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "EduCode"
+group = "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "modid"
 
-compileJava
-{
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+sourceCompatibility = targetCompatibility = "1.7" // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.7"
 }
 
 minecraft {
@@ -36,13 +34,13 @@ minecraft {
 }
 
 dependencies {
-    antlr  group: "org.antlr", name: "antlr4", version: "4.6"
-    compile group: "org.antlr", name: "antlr4-runtime", version: "4.6"
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
     //compile "some.group:artifact:version"
-      
+    antlr  group: "org.antlr", name: "antlr4", version: "4.6"
+    compile group: "org.antlr", name: "antlr4-runtime", version: "4.6"
+
     // real examples
     //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
     //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
