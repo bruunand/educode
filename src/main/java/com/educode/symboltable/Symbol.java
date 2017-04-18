@@ -5,7 +5,6 @@ import com.educode.Typeable;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.referencing.Reference;
 import com.educode.types.Type;
-import scala.ref.Reference$class;
 
 /**
  * Created by User on 15-Apr-17.

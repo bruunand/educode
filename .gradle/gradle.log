@@ -9,13 +9,8 @@ This mapping 'snapshot_20161220' was designed for MC 1.11! Use at your own peril
          by: Searge, ProfMobius, Fesh0r,         
          R4wk, ZeuX, IngisKahn, bspkrs           
 #################################################
-:deobfCompileDummyTask
-:deobfProvidedDummyTask
-:ideaModule
-:ideaProject
-:ideaWorkspace
-:idea
+:genIntellijRuns
 
 BUILD SUCCESSFUL
 
-Total time: 8.235 secs
+Total time: 7.672 secs
