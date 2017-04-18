@@ -1,7 +1,22 @@
-program c
+program Test
   method main()
+    Collection<number> rangeTest = range(5, 10)
+    rangeTest.addItem(500)
+    foreach number c in rangeTest
+        debug("val:" + c)
+    end foreach
+    number x = robot.getOwner().getCoordinates().getX()
+    string s = "test"
+    s = s.toString().toString().toString().toString().toString().toString()
+
+    if "test" equals s then
+        debug("it works")
+    end if
+
     robot.say("out " + random(1, 20))
     number num = 0
+    number test
+    num = test = 2
     repeat while num less than 50
       Coordinates coords = robot.getCoordinates()
       robot.setWorldTime(1200)

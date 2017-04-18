@@ -1,5 +1,6 @@
 package com.educode.runtime;
 
+import com.educode.minecraft.entity.EntityRobot;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 
@@ -30,6 +31,12 @@ public class MinecraftEntity implements IEntity
     public Coordinates getCoordinates()
     {
         return new Coordinates(getWrappedEntity().getPosition());
+    }
+
+    @Override
+    public boolean isRobot()
+    {
+        return getWrappedEntity() instanceof EntityRobot;
     }
 
     @Override

@@ -10,6 +10,7 @@ method   : 'method' ident LPAREN (params)? RPAREN ('returns' dataType)? eol+ stm
          ;
 
 methodC  : reference LPAREN (args)? RPAREN
+         | methodC '.' methodC
          ;
 
 args     : expr(',' expr)*

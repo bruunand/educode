@@ -54,9 +54,30 @@ public abstract class ScriptBase implements IRobot
         this._world.spawnEntity(_scriptedEntity);
     }
 
+    public ExtendedCollection<Float> range(float min, float max)
+    {
+        ExtendedCollection<Float> ret = new ExtendedCollection<Float>();
+
+        for (float c = min; c <= max; c++)
+            ret.addItem(c);
+
+        return ret;
+    }
+
+    public float abs(float value)
+    {
+        return Math.abs(value);
+    }
+
     public float random(float min, float max)
     {
         return (max - min) * _rand.nextFloat() + min;
+    }
+
+    @Override
+    public boolean isRobot()
+    {
+        return true;
     }
 
     public void wait(float time)
@@ -179,17 +200,17 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public synchronized List<MinecraftEntity> getNearbyEntities()
+    public synchronized ExtendedCollection<MinecraftEntity> getNearbyEntities()
     {
         Command command = queueAndWait();
 
-        List<MinecraftEntity> returnList = new ArrayList<>();
+        ExtendedCollection<MinecraftEntity> returnList = new ExtendedCollection<>();
         for (Entity entity : this._world.getEntitiesWithinAABB(EntityLiving.class, this._scriptedEntity.getEntityBoundingBox().expand(30, 5, 30)))
         {
             if (entity.equals(this._scriptedEntity) || entity.equals(this._player))
                 continue;
 
-            returnList.add(new MinecraftEntity(entity));
+            returnList.addItem(new MinecraftEntity(entity));
         }
 
         command.setHasBeenExecuted(true);

@@ -424,10 +424,15 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         updateLineNumber(ctx);
 
-        if (ctx.args() != null)
-            return new MethodInvocationNode((Reference) visit(ctx.reference()), visit(ctx.args()));
+        if (ctx.methodC().size() == 2)
+            return new StructReferencingNode(visit(ctx.methodC(0)), visit(ctx.methodC(1)));
         else
-            return new MethodInvocationNode((Reference) visit(ctx.reference()), null);
+        {
+            if (ctx.args() != null)
+                return new MethodInvocationNode((Reference) visit(ctx.reference()), visit(ctx.args()));
+            else
+                return new MethodInvocationNode((Reference) visit(ctx.reference()), null);
+        }
     }
 
     @Override
