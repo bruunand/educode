@@ -1,0 +1,114 @@
+This mapping 'snapshot_20161220' was designed for MC 1.11! Use at your own peril.This mapping 'snapshot_20161220' was designed for MC 1.11! Use at your own peril.
+
+#################################################
+         ForgeGradle 2.2-SNAPSHOT-7f5a769        
+  https://github.com/MinecraftForge/ForgeGradle  
+#################################################
+               Powered by MCP unknown               
+             http://modcoderpack.com             
+         by: Searge, ProfMobius, Fesh0r,         
+         R4wk, ZeuX, IngisKahn, bspkrs           
+#################################################
+:deobfCompileDummyTask
+:deobfProvidedDummyTask
+:generateApiGrammarSource UP-TO-DATE
+:sourceApiJava
+:compileApiJava UP-TO-DATE
+:processApiResources UP-TO-DATE
+:apiClasses UP-TO-DATE
+:generateGrammarSource UP-TO-DATE
+:sourceMainJava
+:compileJava
+Download https://repo1.maven.org/maven2/org/antlr/antlr4/4.6/antlr4-4.6.pom
+Download https://repo1.maven.org/maven2/org/antlr/antlr4-master/4.6/antlr4-master-4.6.pom
+Download https://repo1.maven.org/maven2/org/antlr/antlr4-runtime/4.6/antlr4-runtime-4.6.pom
+Download https://repo1.maven.org/maven2/org/antlr/antlr-runtime/3.5.2/antlr-runtime-3.5.2.pom
+Download https://repo1.maven.org/maven2/org/antlr/antlr-master/3.5.2/antlr-master-3.5.2.pom
+Download https://repo1.maven.org/maven2/org/antlr/ST4/4.0.8/ST4-4.0.8.pom
+Download https://repo1.maven.org/maven2/org/abego/treelayout/org.abego.treelayout.core/1.0.3/org.abego.treelayout.core-1.0.3.pom
+Download https://repo1.maven.org/maven2/org/glassfish/javax.json/1.0.4/javax.json-1.0.4.pom
+Download https://repo1.maven.org/maven2/org/glassfish/json/1.0.4/json-1.0.4.pom
+Download https://repo1.maven.org/maven2/net/java/jvnet-parent/3/jvnet-parent-3.pom
+Download https://repo1.maven.org/maven2/org/antlr/antlr4/4.6/antlr4-4.6.jar
+Download https://repo1.maven.org/maven2/org/antlr/antlr4-runtime/4.6/antlr4-runtime-4.6.jar
+Download https://repo1.maven.org/maven2/org/antlr/antlr-runtime/3.5.2/antlr-runtime-3.5.2.jar
+Download https://repo1.maven.org/maven2/org/antlr/ST4/4.0.8/ST4-4.0.8.jar
+Download https://repo1.maven.org/maven2/org/abego/treelayout/org.abego.treelayout.core/1.0.3/org.abego.treelayout.core-1.0.3.jar
+Download https://repo1.maven.org/maven2/org/glassfish/javax.json/1.0.4/javax.json-1.0.4.jar
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+:processResources
+:classes
+:jar
+:getVersionJson
+:extractNatives SKIPPED
+:extractUserdev
+:getAssetIndex UP-TO-DATE
+:getAssets
+Current status: 539/1196   45%
+Current status: 1007/1196   84%
+:makeStart SKIPPED
+:runClient
+[09:56:02] [main/INFO] [GradleStart]: Extra: []
+[09:56:02] [main/INFO] [GradleStart]: Running with arguments: [--userProperties, {}, --assetsDir, /home/zen/.gradle/caches/minecraft/assets, --assetIndex, 1.11, --accessToken{REDACTED}, --version, 1.11.2, --tweakClass, net.minecraftforge.fml.common.launcher.FMLTweaker, --tweakClass, net.minecraftforge.gradle.tweakers.CoremodTweaker]
+[09:56:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[09:56:02] [main/INFO] [LaunchWrapper]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[09:56:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.CoremodTweaker
+[09:56:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
+[09:56:02] [main/INFO] [FML]: Forge Mod Loader version 13.20.0.2228 for Minecraft 1.11.2 loading
+[09:56:02] [main/INFO] [FML]: Java is OpenJDK 64-Bit Server VM, version 1.8.0_121, running on Linux:amd64:4.8.0-46-generic, installed at /usr/lib/jvm/java-8-openjdk-amd64/jre
+[09:56:02] [main/INFO] [FML]: Managed to load a deobfuscated Minecraft name- we are in a deobfuscated environment. Skipping runtime deobfuscation
+[09:56:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.CoremodTweaker
+[09:56:02] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.fml.relauncher.FMLCorePlugin
+[09:56:02] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.classloading.FMLForgePlugin
+[09:56:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[09:56:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[09:56:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
+[09:56:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[09:56:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[09:56:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[09:56:02] [main/ERROR] [FML]: The binary patch set is missing. Either you are in a development environment, or things are not going to work!
+[09:56:03] [main/ERROR] [FML]: FML appears to be missing any signature data. This is not a good thing
+[09:56:03] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[09:56:03] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[09:56:04] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
+[09:56:04] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
+[09:56:04] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
+[09:56:04] [main/INFO] [LaunchWrapper]: Launching wrapped minecraft {net.minecraft.client.main.Main}
+[09:56:05] [Client thread/INFO]: Setting user: Player80
+[09:56:10] [Client thread/INFO]: LWJGL Version: 2.9.4
+[09:56:10] [Client thread/INFO] [FML]: Could not load splash.properties, will create a default one
+[09:56:10] [Client thread/INFO]: [STDOUT]: ---- Minecraft Crash Report ----
+// You're mean.
+
+Time: 4/18/17 9:56 AM
+Description: Loading screen debug info
+
+This is just a prompt for computer specs to be printed. THIS IS NOT A ERROR
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- System Details --
+Details:
+	Minecraft Version: 1.11.2
+	Operating System: Linux (amd64) version 4.8.0-46-generic
+	Java Version: 1.8.0_121, Oracle Corporation
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 417498480 bytes (398 MB) / 727187456 bytes (693 MB) up to 1838153728 bytes (1753 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+	FML: 
+	Loaded coremods (and transformers): 
+	GL info: ' Vendor: 'Intel Open Source Technology Center' Version: '3.0 Mesa 12.0.6' Renderer: 'Mesa DRI Intel(R) HD Graphics 5300 (Broadwell GT2) '
+[09:56:11] [Client thread/INFO] [FML]: MinecraftForge v13.20.0.2228 Initialized
+[09:56:11] [Client thread/INFO] [FML]: Replaced 232 ore recipes
+[09:56:11] [Client thread/INFO] [FML]: Found 0 mods from the command line. Injecting into mod discoverer
+[09:56:11] [Client thread/INFO] [FML]: Searching /home/zen/Git/EduCode-P4/run/mods for mods
+[09:56:14] [Client thread/INFO] [compilermod]: Mod compilermod is missing the required element 'name'. Substituting compilermod
+[09:56:14] [Client thread/INFO] [FML]: Forge Mod Loader has identified 5 mods to load
+[09:56:14] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, compilermod] at CLIENT
+[09:56:14] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, compilermod] at SERVER
+[09:56:16] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:compilermod
+[09:56:16] [Client 

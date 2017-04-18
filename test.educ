@@ -27,8 +27,4 @@ program Test
         number hh = robot.getHealth()
         string asd = b.toString()
     end method
-
-    method add(number a, number b) returns number
-        return a + b
-    end method
 end program
