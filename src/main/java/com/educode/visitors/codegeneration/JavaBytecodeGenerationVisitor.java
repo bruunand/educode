@@ -1,34 +1,19 @@
 package com.educode.visitors.codegeneration;
 
-import com.educode.helper.OperatorTranslator;
-import com.educode.helper.Tuple;
-import com.educode.nodes.base.ListNode;
-import com.educode.nodes.base.Node;
-import com.educode.nodes.expression.AdditionExpression;
-import com.educode.nodes.expression.MultiplicationExpression;
+import com.educode.helper.*;
+import com.educode.nodes.base.*;
+import com.educode.nodes.expression.*;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.*;
-import com.educode.nodes.method.MethodDeclarationNode;
-import com.educode.nodes.method.MethodInvocationNode;
-import com.educode.nodes.method.ParameterNode;
-import com.educode.nodes.referencing.IdentifierReferencingNode;
-import com.educode.nodes.referencing.Reference;
-import com.educode.nodes.statement.AssignmentNode;
-import com.educode.nodes.statement.ReturnNode;
-import com.educode.nodes.statement.VariableDeclarationNode;
-import com.educode.nodes.statement.conditional.ConditionNode;
-import com.educode.nodes.statement.conditional.IfNode;
-import com.educode.nodes.statement.conditional.RepeatWhileNode;
-import com.educode.nodes.ungrouped.BlockNode;
-import com.educode.nodes.ungrouped.ObjectInstantiationNode;
-import com.educode.nodes.ungrouped.ProgramNode;
-import com.educode.nodes.ungrouped.TypeCastNode;
-import com.educode.types.Type;
+import com.educode.nodes.method.*;
+import com.educode.nodes.referencing.*;
+import com.educode.nodes.statement.*;
+import com.educode.nodes.statement.conditional.*;
+import com.educode.nodes.ungrouped.*;
+import com.educode.types.*;
 import com.educode.visitors.VisitorBase;
-import org.stringtemplate.v4.ST;
 
 import java.io.FileWriter;
-import java.net.Proxy;
 import java.util.ArrayList;
 
 /**
@@ -275,7 +260,17 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     
     public Object visit(ReturnNode node)
     {
-        return "  return\n";
+        StringBuffer codeBuffer = new StringBuffer();
+
+        if (node.hasChild())
+        {
+            append(codeBuffer, "%s", visit(node.getChild()));
+            append(codeBuffer, "  %sreturn\n", getPrefix(node.getType()));
+        }
+        else
+            append(codeBuffer, "  return\n");
+
+        return codeBuffer;
     }
 
     
@@ -395,7 +390,39 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     
     public Object visit(RelativeExpressionNode node)
     {
-        return null;
+        StringBuffer codeBuffer = new StringBuffer();
+        int trueLabel = LabelCounter++;
+
+        append(codeBuffer, "%s", visit(node.getLeftChild()));
+        append(codeBuffer, "%s", visit(node.getRightChild()));
+
+        switch (node.getOperator().Kind)
+        {
+            case LogicalOperator.GREATER_THAN:
+                append(codeBuffer, "  if_icmpgt L%s\n", trueLabel);
+                break;
+            case LogicalOperator.LESS_THAN:
+                append(codeBuffer, "  if_icmplt L%s\n", trueLabel);
+                break;
+            case LogicalOperator.GREATER_THAN_OR_EQUALS:
+                append(codeBuffer, "  if_icmpge L%s\n", trueLabel);
+                break;
+            case LogicalOperator.LESS_THAN_OR_EQUALS:
+                append(codeBuffer, "  if_icmple L%s\n", trueLabel);
+                break;
+            default:
+                //TODO: ERROR
+                break;
+        }
+
+        append(codeBuffer, "  iconst_0\n");
+        append(codeBuffer, "  goto L%s", LabelCounter);
+        append(codeBuffer, "L%s:\n", trueLabel);
+        append(codeBuffer, "  iconst_1\n");
+        append(codeBuffer, "L%s:\n", LabelCounter++);
+        append(codeBuffer, "  nop\n");
+
+        return codeBuffer;
     }
 
     
@@ -408,10 +435,10 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "%s", visit(node.getLeftChild()));
         append(codeBuffer, "%s", visit(node.getRightChild()));
         append(codeBuffer, "  if_icmpeq L%s\n", trueLabel);
-        append(codeBuffer, "  ldc 0\n");
+        append(codeBuffer, "  iconst_0\n");
         append(codeBuffer, "  goto L%s\n", LabelCounter);
         append(codeBuffer, "L%s:\n", trueLabel);
-        append(codeBuffer, "  ldc 1\n");
+        append(codeBuffer, "  iconst_1\n");
         append(codeBuffer, "L%s:\n", LabelCounter++);
         append(codeBuffer, "  nop\n");
 
@@ -439,7 +466,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     
     public Object visit(TypeCastNode node)
     {
-
         return null;
     }
 
