@@ -5,12 +5,12 @@ package com.educode.helper;
  */
 public class Tuple<X,Y>
 {
-    public final X _x;
-    public final Y _y;
+    public final X x;
+    public final Y y;
 
     public Tuple(X x, Y y)
     {
-        this._x = x;
-        this._y = y;
+        this.x = x;
+        this.y = y;
     }
 }

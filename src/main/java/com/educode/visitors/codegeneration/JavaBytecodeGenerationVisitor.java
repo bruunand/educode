@@ -11,7 +11,8 @@ import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
-import com.educode.nodes.referencing.IdentifierReferencing;
+import com.educode.nodes.referencing.IdentifierReferencingNode;
+import com.educode.nodes.referencing.Reference;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
@@ -38,7 +39,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     private FileWriter fw;
     private int OffSet;
     private int LabelCounter;
-    private ArrayList<Tuple<IdentifierReferencing, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<IdentifierReferencing, Integer>>();
+    private ArrayList<Tuple<Reference, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<Reference, Integer>>();
 
     public void append(StringBuffer buffer, String format, Object ... args)
     {
@@ -61,7 +62,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     {
         StringBuffer codeBuffer = new StringBuffer();
 
-        append(codeBuffer, ".class public %s\n", node.getIdentifier());
+        append(codeBuffer, ".class public %s\n", node.getReference());
         append(codeBuffer, ".super java/lang/Object\n\n");
         append(codeBuffer, ".method public <init>()V\n" );
         append(codeBuffer, "  aload_0\n");
@@ -76,7 +77,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         // Write codeBuffer to file
         try
         {
-            fw = new FileWriter(node.getIdentifier() + ".j");
+            fw = new FileWriter(node.getReference()+ ".j");
             fw.append(codeBuffer);
             fw.close();
         }
@@ -132,12 +133,12 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         OffSet = 0;
         LabelCounter = 0;
-        if (node.getIdentifier().equals("main"))
+        if (node.getReference().equals("main"))
             append(codeBuffer, ".method public static main([Ljava/lang/String;)V\n");
         else
         {
             // Visit parameters
-            append(codeBuffer, ".method public %s(%s)%s\n", node.getIdentifier(), getParameters(node.getParameterList()),OperatorTranslator.toBytecode(node.getType()));
+            append(codeBuffer, ".method public %s(%s)%s\n", node.getReference(), getParameters(node.getParameterList()),OperatorTranslator.toBytecode(node.getType()));
         }
 
         append(codeBuffer, "  .limit stack 100\n");     //TODO: calc
@@ -180,7 +181,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "%s", visit(node.getChild()));
         //append(codeBuffer, "  dup\n");
 
-        append(codeBuffer, "  %sstore %s\n", getPrefix(node.getIdentifierNode().getType()),getOffSetByNode(node.getIdentifierNode()));
+        append(codeBuffer, "  %sstore %s\n", getPrefix(node.getReference().getType()),getOffSetByNode(node.getReference()));
 
         return codeBuffer;
     }
@@ -189,7 +190,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     public Object visit(VariableDeclarationNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
-        DeclaratoinOffsetTable.add(new Tuple<IdentifierLiteralNode, Integer>(node.getIdentifierNode(), ++OffSet));
+        DeclaratoinOffsetTable.add(new Tuple<Reference, Integer>(node.getReference(), ++OffSet));
 
         if (!node.hasChild())
             return "";
@@ -297,12 +298,12 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "%s", visit(node.getLeftChild()));
         append(codeBuffer, "%s", visit(node.getRightChild()));
 
-        if (node.getType().Kind == Type.STRING)
+        if (node.getType().getKind()== Type.STRING)
         {
             String s = "java/lang/String";
             append(codeBuffer, "  invokevirtual %s/concat(L%s;)L%s;\n", s, s, s);
         }
-        else if (node.getType().Kind == Type.NUMBER)
+        else if (node.getType().getKind() == Type.NUMBER)
             append(codeBuffer, "  fadd\n");
         else
             ;//TODO: ERROR NOT IMPLEMENTED
@@ -331,7 +332,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     }
 
     
-    public Object visit(IdentifierLiteralNode node)
+    public Object visit(IdentifierReferencingNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
 
@@ -445,7 +446,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     public String getPrefix(Type type)
     {
         String prefix = new String();
-        switch (type.Kind)
+        switch (type.getKind())
         {
             case Type.NUMBER:
                 prefix = "f";
@@ -479,11 +480,11 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return parameters;
     }
 
-    public int getOffSetByNode(IdentifierLiteralNode node)
+    public int getOffSetByNode(Reference node)
     {
-        for (Tuple<IdentifierLiteralNode, Integer> tuple:DeclaratoinOffsetTable)
+        for (Tuple<Reference, Integer> tuple:DeclaratoinOffsetTable)
         {
-            if (tuple.x.getIdentifier().equals(node.getIdentifier()))
+            if (tuple.x.toString().equals(node.toString()))
                 return tuple.y;
         }
 
