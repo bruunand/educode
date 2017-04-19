@@ -1,7 +1,7 @@
 package com.educode.nodes.ungrouped;
 
 import com.educode.IReferencing;
-import com.educode.nodes.Visitable;
+import com.educode.nodes.IVisitable;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.method.MethodDeclarationNode;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by zen on 3/9/17.
  */
-public class ProgramNode extends NaryNode implements Visitable, IReferencing
+public class ProgramNode extends NaryNode implements IVisitable, IReferencing
 {
     private IReference _reference;
 

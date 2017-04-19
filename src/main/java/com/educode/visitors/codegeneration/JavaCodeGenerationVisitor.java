@@ -1,7 +1,7 @@
 package com.educode.visitors.codegeneration;
 
 import com.educode.helper.OperatorTranslator;
-import com.educode.nodes.SingleLineStatement;
+import com.educode.nodes.ISingleLineStatement;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
@@ -103,7 +103,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         for (Node childNode : node.getChildren())
         {
             //this if statement is here in order to ensure that if statements does not have semicolon
-            if (childNode instanceof SingleLineStatement)
+            if (childNode instanceof ISingleLineStatement)
                 append(codeBuffer, "%s;\n", visit(childNode));
             else
                 append(codeBuffer, "%s\n", visit(childNode));

@@ -1,7 +1,7 @@
 package com.educode.nodes.ungrouped;
 
 import com.educode.helper.NodeHelper;
-import com.educode.nodes.SingleLineStatement;
+import com.educode.nodes.ISingleLineStatement;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
 import com.educode.types.Type;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by User on 24-Mar-17.
  */
-public class ObjectInstantiationNode extends UnaryNode implements SingleLineStatement
+public class ObjectInstantiationNode extends UnaryNode implements ISingleLineStatement
 {
     public ObjectInstantiationNode(Type type)
     {

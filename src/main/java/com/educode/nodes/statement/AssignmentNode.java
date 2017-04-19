@@ -1,7 +1,7 @@
 package com.educode.nodes.statement;
 
 import com.educode.IReferencing;
-import com.educode.nodes.SingleLineStatement;
+import com.educode.nodes.ISingleLineStatement;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
 import com.educode.nodes.referencing.IReference;
@@ -10,7 +10,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by zen on 3/10/17.
  */
-public class AssignmentNode extends UnaryNode implements IReferencing, SingleLineStatement
+public class AssignmentNode extends UnaryNode implements IReferencing, ISingleLineStatement
 {
     private IReference _reference;
 

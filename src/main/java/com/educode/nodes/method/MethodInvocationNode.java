@@ -2,7 +2,7 @@ package com.educode.nodes.method;
 
 import com.educode.IReferencing;
 import com.educode.helper.NodeHelper;
-import com.educode.nodes.SingleLineStatement;
+import com.educode.nodes.ISingleLineStatement;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
 import com.educode.nodes.referencing.IReference;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by zen on 3/23/17.
  */
-public class MethodInvocationNode extends UnaryNode implements SingleLineStatement, IReferencing
+public class MethodInvocationNode extends UnaryNode implements ISingleLineStatement, IReferencing
 {
     private IReference _reference;
 
