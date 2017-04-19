@@ -1,6 +1,11 @@
 package com.educode.types;
 
+import com.educode.helper.OperatorTranslator;
+import com.educode.runtime.ICollection;
+import com.educode.runtime.ICoordinates;
 import com.educode.symboltable.SymbolTable;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by zen on 3/10/17.
@@ -46,6 +51,10 @@ public class Type
         _collectionSymbolTable = new SymbolTable(_baseSymbolTable);
         _collectionSymbolTable.addDefaultMethod("removeAt", Type.VoidType, Type.NumberType);
         _collectionSymbolTable.addDefaultMethod("getSize", Type.NumberType);
+        for (Method method : ICollection.class.getDeclaredMethods())
+        {
+            Type type = OperatorTranslator.fromJavaClass(method.getReturnType());
+        }
 
         // Add default methods for entities
         _entitySymbolTable = new SymbolTable(_baseSymbolTable);
