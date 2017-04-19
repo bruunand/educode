@@ -9,8 +9,6 @@ import com.educode.types.Type;
  */
 public abstract class ExpressionNode extends BinaryNode
 {
-    private Type _type;
-
     public ExpressionNode(Node leftChild, Node rightChild)
     {
         super(leftChild, rightChild);
