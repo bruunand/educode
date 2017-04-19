@@ -64,6 +64,8 @@ public class SemanticVisitor extends VisitorBase
         // Add default methods and fields to symbol table
         getSymbolTableHandler().getCurrent().addDefaultMethod("debug", Type.VoidType, Type.StringType);
         getSymbolTableHandler().getCurrent().addDefaultMethod("random", Type.NumberType, Type.NumberType, Type.NumberType);
+        getSymbolTableHandler().getCurrent().addDefaultMethod("abs", Type.NumberType, Type.NumberType);
+        getSymbolTableHandler().getCurrent().addDefaultMethod("range", new Type(Type.NumberType), Type.NumberType, Type.NumberType);
         getSymbolTableHandler().getCurrent().addDefaultField("robot", Type.RobotType);
 
         // Run return check visitor
@@ -217,6 +219,10 @@ public class SemanticVisitor extends VisitorBase
         // Check if left side types matches right side type
         if (!node.getReference().isType(node.getChild().getType()))
             getSymbolTableHandler().error(node, "Cannot assign %s, which is of type %s, to an expression of type %s.", node.getReference(), node.getReference().getType(), node.getChild().getType());
+
+        // Set the type of the assignment to have the same type as its right side
+        // We need to do this because assignments can be used as expressions and not just single statements
+        node.setType(node.getChild().getType());
     }
 
     public Symbol visit(IdentifierReferencingNode reference)
@@ -274,15 +280,29 @@ public class SemanticVisitor extends VisitorBase
         // Only visit left child (object) - not right side (field)
         visit(reference.getLeftChild());
 
-        // Retrieve field
-        // Should not be called from MethodInvocation
+        // Use type of left side as symbol table
         SymbolTable table = reference.getLeftChild().getType().getSymbolTable();
-        Symbol symbol = table.retrieveSymbol(reference.getRightChild());
 
-        if (symbol == null)
-            getSymbolTableHandler().error(reference, "Struct does not contain field %s.", reference.getRightChild());
-        else
-            reference.setType(symbol.getSourceNode().getType());
+        // Fields and methods have different approaches for retrieval
+        if (reference.getRightChild() instanceof IdentifierReferencingNode)
+        {
+            Symbol symbol = table.retrieveSymbol(reference.getRightChild());
+
+            if (symbol == null)
+                getSymbolTableHandler().error(reference, "Struct of type %s does not contain field %s.", reference.getLeftChild().getType(), reference.getRightChild());
+            else
+                reference.setType(symbol.getSourceNode().getType());
+        }
+        else if (reference.getRightChild() instanceof MethodInvocationNode)
+        {
+            MethodInvocationNode methodInv = (MethodInvocationNode) reference.getRightChild();
+            Symbol symbol = table.retrieveMethodSymbol(methodInv.getReference(), methodInv.getActualArguments());
+
+            if (symbol == null)
+                getSymbolTableHandler().error(reference, "Struct of type %s does not contain method %s.", reference.getLeftChild().getType(), methodInv.getReference());
+            else
+                reference.setType(symbol.getSourceNode().getType());
+        }
     }
 
     public void visit(VariableDeclarationNode node)
@@ -341,7 +361,7 @@ public class SemanticVisitor extends VisitorBase
 
         if (leftType.equals(Type.NumberType) && rightType.equals(Type.NumberType))
             node.setType(Type.NumberType);
-        else if (leftType.equals(Type.StringType) || leftType.equals(Type.StringType))
+        else if (leftType.equals(Type.StringType) || rightType.equals(Type.StringType))
             node.setType(Type.StringType);
         else if (leftType.equals(Type.CoordinatesType) && rightType.equals(Type.CoordinatesType))
             node.setType(Type.CoordinatesType);

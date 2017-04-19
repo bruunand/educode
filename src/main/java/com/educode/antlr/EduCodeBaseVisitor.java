@@ -1,4 +1,4 @@
-// Generated from C:/Users/User/Desktop/EduCode-P4/src/main\EduCode.g4 by ANTLR 4.6
+// Generated from C:/Users/User/Desktop/EduCode-P4/src\EduCode.g4 by ANTLR 4.6
 package com.educode.antlr;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 

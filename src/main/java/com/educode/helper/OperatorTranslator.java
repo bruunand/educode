@@ -27,7 +27,7 @@ public class OperatorTranslator
             case Type.VOID:
                 return "void";
             case Type.COLLECTION:
-                return String.format("List<%s>", toJava(type.getChildType()));
+                return String.format("ExtendedCollection<%s>", toJava(type.getChildType()));
             case Type.ENTITY:
                 return "MinecraftEntity";
         }

@@ -1,19 +1,29 @@
 program Test
-    method main()
-        Coordinates c = (5, 10, 5)
-        c.x = x + 1
-        number a = 5
-        a = 123
-        debug("T:" + a)
+  method main()
+    Collection<number> rangeTest = range(5, 10)
+    rangeTest.addItem(500)
+    foreach number c in rangeTest
+        debug("val:" + c)
+    end foreach
+    number x = robot.getOwner().getCoordinates().getX()
+    string s = "test"
+    s = s.toString().toString().toString().toString().toString().toString()
 
-        Collection<number> test = new Collection<number>(a, 5, 10)
-        foreach number c in test
-            debug("T:" + c)
-            robot.say("Value:" + c)
-        end foreach
+    if "test" equals s then
+        debug("it works")
+    end if
 
-        robot.wait(500)
-
-        robot.say("hej")
-    end method
+    robot.say("out " + random(1, 20))
+    number num = 0
+    number test
+    num = test = 2
+    repeat while num less than 50
+      Coordinates coords = robot.getCoordinates()
+      robot.setWorldTime(1200)
+      coords.setX(coords.getX() + random(-2, 15))
+      robot.walkTo(coords)
+      robot.wait(5000)
+      num = num + 1
+    end repeat
+  end method
 end program

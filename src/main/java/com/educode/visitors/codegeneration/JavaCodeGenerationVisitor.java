@@ -64,13 +64,13 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return "NOT IMPLEMENTED:" + node.getClass().getName();
     }
 
-    public Object visit(ProgramNode node)
+    public void visit(ProgramNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
 
         append(codeBuffer, "import java.util.*;\nimport com.educode.runtime.*;\n\n");
 
-        append(codeBuffer, "public class %s extends ScriptBase\n{\n", node.getReference());
+        append(codeBuffer, "public class %s extends com.educode.runtime.ScriptBase\n{\n", node.getReference());
 
         // Visit method declarations
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
@@ -90,8 +90,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         {
             e.printStackTrace();
         }
-
-        return null;
     }
 
 
@@ -133,7 +131,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
             if (node.hasChild())
                 return String.format("Arrays.asList(%s)", argumentJoiner);
             else
-                return String.format("new ArrayList<%s>()", OperatorTranslator.toJava(node.getType().getChildType()));
+                return String.format("new ExtendedCollection<%s>()", OperatorTranslator.toJava(node.getType().getChildType()));
         }
         else
             return String.format("new %s(%s)", OperatorTranslator.toJava(node.getType()), argumentJoiner);

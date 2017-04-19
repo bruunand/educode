@@ -7,4 +7,5 @@ public interface IEntity extends IBase
 {
     Coordinates getCoordinates();
     float getHealth();
+    boolean isRobot();
 }

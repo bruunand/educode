@@ -13,7 +13,7 @@ public class Type
 
     public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5, ENTITY = 6, COLLECTION = 7, ROBOT = 8;
 
-    private static SymbolTable _baseSymbolTable, _collectionSymbolTable, _entitySymbolTable, _robotSymbolTable, _coordinatesSymbolTable;
+    private static SymbolTable _primitiveSymbolTable, _baseSymbolTable, _collectionSymbolTable, _entitySymbolTable, _robotSymbolTable, _coordinatesSymbolTable;
 
     static
     {
@@ -26,6 +26,9 @@ public class Type
         EntityType = new Type(ENTITY);
         RobotType = new Type(ROBOT);
         Error = new Type(ERROR);
+
+        // Create primitive symbol table
+        _primitiveSymbolTable = new SymbolTable(null);
 
         // Add base symbol table
         _baseSymbolTable = new SymbolTable(null);
@@ -42,6 +45,8 @@ public class Type
 
         // Add default methods for collections
         _collectionSymbolTable = new SymbolTable(_baseSymbolTable);
+        _collectionSymbolTable.addDefaultMethod("removeAt", Type.VoidType, Type.NumberType);
+        _collectionSymbolTable.addDefaultMethod("getSize", Type.NumberType);
 
         // Add default methods for entities
         _entitySymbolTable = new SymbolTable(_baseSymbolTable);
@@ -67,6 +72,7 @@ public class Type
         this._kind = kind;
     }
 
+    // Constructor for creation of new collection types
     public Type(Type child)
     {
         this(COLLECTION);
@@ -109,16 +115,35 @@ public class Type
 
     public SymbolTable getSymbolTable()
     {
+        // Some types have special symbol tables and the primitives have an empty symbol table
+        // In other cases, we return the base symbol table
+
         if (this.equals(Type.EntityType))
             return _entitySymbolTable;
         else if (this.equals(Type.RobotType))
             return _robotSymbolTable;
         else if (this.equals(Type.CoordinatesType))
             return _coordinatesSymbolTable;
+        else if (this.isPrimitive())
+            return _primitiveSymbolTable;
         else if (this.isCollection())
-            return _collectionSymbolTable;
+        {
+            // Returns a temporary symbol table derived from collectionSymbolTable
+            // This method has methods that are specific to the child type of the collection
+
+            SymbolTable tempTable = new SymbolTable(_collectionSymbolTable);
+            tempTable.addDefaultMethod("addItem", Type.VoidType, this.getChildType());
+            tempTable.addDefaultMethod("getItemAt", this.getChildType(), Type.NumberType);
+
+            return tempTable;
+        }
 
         return _baseSymbolTable;
+    }
+
+    public boolean isPrimitive()
+    {
+        return this._kind == NUMBER || this._kind == BOOL || this._kind == VOID || this._kind == ERROR;
     }
 
     public boolean isCollection()
