@@ -33,6 +33,6 @@ public class StructReferencingNode extends BinaryNode implements IReference
     @Override
     public String toString()
     {
-        return "Struct IReference";
+        return String.format("%s.%s", getLeftChild(), getRightChild());
     }
 }

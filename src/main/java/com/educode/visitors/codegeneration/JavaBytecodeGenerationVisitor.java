@@ -151,7 +151,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         for (Node child:node.getActualArguments())
             append(codeBuffer, "%s", visit(child));
 
-        append(codeBuffer, "  invokespecial classname/%s(%s)%s\n", node.getReference().toString()); //TODO: Get namespace
+        append(codeBuffer, "  invokespecial classname/%s(%s)%s\n", node.getReference().toString(), "TODO", "TODO"); //TODO: Get namespace
 
         return codeBuffer;
     }
@@ -377,7 +377,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "%s", visit(node.getLeftChild()));
         append(codeBuffer, "%s", visit(node.getRightChild()));
 
-        switch (node.getOperator().Kind)
+        switch (node.getOperator().getKind())
         {
             case LogicalOperator.GREATER_THAN:
                 append(codeBuffer, "  if_icmpgt L%s\n", trueLabel);

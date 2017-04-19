@@ -41,6 +41,11 @@ public class ArithmeticOperator
         }
     }
 
+    public byte getKind()
+    {
+        return _kind;
+    }
+
     public static final ArithmeticOperator Addition = new ArithmeticOperator(ADDITION);
     public static final ArithmeticOperator Subtraction = new ArithmeticOperator(SUBTRACTION);
     public static final ArithmeticOperator Multiplication = new ArithmeticOperator(MULTIPLICATION);

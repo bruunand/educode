@@ -34,6 +34,6 @@ public class ArrayReferencingNode extends BinaryNode implements IReference
     @Override
     public String toString()
     {
-        return "Array IReference";
+        return String.format("%s[%s]", getLeftChild(), getRightChild());
     }
 }

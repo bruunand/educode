@@ -50,6 +50,11 @@ public class LogicalOperator
         }
     }
 
+    public byte getKind()
+    {
+        return _kind;
+    }
+
     public static LogicalOperator Equals = new LogicalOperator(EQUALS);
     public static LogicalOperator NotEquals = new LogicalOperator(NOT_EQUALS);
 

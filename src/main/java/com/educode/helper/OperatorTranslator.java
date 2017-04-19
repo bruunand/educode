@@ -39,7 +39,7 @@ public class OperatorTranslator
 
     public static String toJava(LogicalOperator operator)
     {
-        switch (operator.Kind)
+        switch (operator.getKind())
         {
             case LogicalOperator.AND:
                 return "&&";
@@ -66,7 +66,7 @@ public class OperatorTranslator
 
     public static String toJava(ArithmeticOperator operator)
     {
-        switch (operator.Kind)
+        switch (operator.getKind())
         {
             case ArithmeticOperator.ADDITION:
                 return "+";
