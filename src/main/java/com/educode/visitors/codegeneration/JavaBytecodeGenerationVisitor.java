@@ -24,6 +24,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     private FileWriter fw;
     private int OffSet;
     private int LabelCounter;
+    private int VisitedAssignmentExpressionCounter = 0;
     private ArrayList<Tuple<IReference, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<IReference, Integer>>();
 
     public void append(StringBuffer buffer, String format, Object ... args)
@@ -136,6 +137,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     public Object visit(MethodInvocationNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
+        StringBuffer temp = new StringBuffer();
 
         if (getOffSetByNode(node.getReference()) == -1)
         {
@@ -151,6 +153,11 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         for (Node child:node.getActualArguments())
             append(codeBuffer, "%s", visit(child));
 
+        for (Node child:node.getActualArguments())
+        {
+
+        }
+
         append(codeBuffer, "  invokespecial classname/%s(%s)%s\n", node.getReference().toString(), "TODO", "TODO"); //TODO: Get namespace
 
         return codeBuffer;
@@ -164,6 +171,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     public Object visit(AssignmentNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
+        VisitedAssignmentExpressionCounter++;
 
         append(codeBuffer, "%s", visit(node.getChild()));
         append(codeBuffer, "  dup\n");
@@ -181,11 +189,8 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         if (!node.hasChild())
             return "";
 
-
-
-        append(codeBuffer, "%s", visit(((AssignmentNode) node.getChild()).getChild()));
-
-        append(codeBuffer, "  %sstore %s\n", getPrefix(node.getType()),getOffSetByNode(node.getIdentifierNode()));
+        append(codeBuffer, "%s", visit(((AssignmentNode) node.getChild())));
+        append(codeBuffer,"  pop\n");
 
         return codeBuffer;
     }
@@ -194,8 +199,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     {
         StringBuffer codeBuffer = new StringBuffer();
         int endIfLabel = LabelCounter++;
-        int label;
-        boolean first = true;
+
         ArrayList<ConditionNode> conditionNodeList = node.getConditionBlocks();
 
         append(codeBuffer, "%s", visit(conditionNodeList.get(0)));
@@ -211,7 +215,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "L%s:\n", LabelCounter++);
 
         if (node.getElseBlock() != null)
-            append(codeBuffer, "%s", visit(node.getElseBlock()));
+            append(codeBuffer, "%s", visitPop(node.getElseBlock()));
         else
             append(codeBuffer, "  nop\n");
 
@@ -227,7 +231,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         StringBuffer tempBuffer = new StringBuffer();
 
         append(codeBuffer, "%s", visit(node.getLeftChild()));
-        append(tempBuffer, "%s", visit(node.getRightChild()));
+        append(tempBuffer, "%s", visitPop(node.getRightChild()));
         append(codeBuffer, "  ifeq L%s\n", LabelCounter);
         append(codeBuffer, "%s", tempBuffer);
 
@@ -241,7 +245,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         append(codeBuffer, "  goto L%s\n", conditionLabel);
         append(codeBuffer, "L%s:\n", LabelCounter);
-        append(codeBuffer, "%s", visit(((ConditionNode) node.getChild()).getRightChild()));
+        append(codeBuffer, "%s", visitPop(((ConditionNode) node.getChild()).getRightChild()));
         append(codeBuffer, "L%s:\n", conditionLabel);
         append(codeBuffer, "%s", visit(((ConditionNode) node.getChild()).getLeftChild()));
         append(codeBuffer, "  ifne L%s\n", LabelCounter++);
@@ -377,19 +381,22 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "%s", visit(node.getLeftChild()));
         append(codeBuffer, "%s", visit(node.getRightChild()));
 
+        append(codeBuffer, "  dup2\n");
+        append(codeBuffer, "  fcmpg\n");
+
         switch (node.getOperator().getKind())
         {
             case LogicalOperator.GREATER_THAN:
-                append(codeBuffer, "  if_icmpgt L%s\n", trueLabel);
+                append(codeBuffer, "  ifgt L%s\n", trueLabel);
                 break;
             case LogicalOperator.LESS_THAN:
-                append(codeBuffer, "  if_icmplt L%s\n", trueLabel);
+                append(codeBuffer, "  iflt L%s\n", trueLabel);
                 break;
             case LogicalOperator.GREATER_THAN_OR_EQUALS:
-                append(codeBuffer, "  if_icmpge L%s\n", trueLabel);
+                append(codeBuffer, "  ifge L%s\n", trueLabel);
                 break;
             case LogicalOperator.LESS_THAN_OR_EQUALS:
-                append(codeBuffer, "  if_icmple L%s\n", trueLabel);
+                append(codeBuffer, "  ifle L%s\n", trueLabel);
                 break;
             default:
                 //TODO: ERROR
@@ -412,13 +419,24 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         int trueLabel = LabelCounter++;
 
+
         append(codeBuffer, "%s", visit(node.getLeftChild()));
         append(codeBuffer, "%s", visit(node.getRightChild()));
-        append(codeBuffer, "  if_icmpeq L%s\n", trueLabel);
+
+        if (node.getLeftChild().getType().getKind() == Type.NUMBER)
+        {
+            append(codeBuffer, "  dup2\n");
+            append(codeBuffer, "  fcmpg\n");
+            append(codeBuffer, "  ifeq L%s\n", trueLabel);
+        }
+        else
+            append(codeBuffer, "  if_icmpeq L%s\n", trueLabel);
+
         append(codeBuffer, "  iconst_0\n");
         append(codeBuffer, "  goto L%s\n", LabelCounter);
         append(codeBuffer, "L%s:\n", trueLabel);
         append(codeBuffer, "  iconst_1\n");
+
         append(codeBuffer, "L%s:\n", LabelCounter++);
         append(codeBuffer, "  nop\n");
 
@@ -445,6 +463,19 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     public Object visit(TypeCastNode node)
     {
         return null;
+    }
+
+    public Object visitPop(Node node)
+    {
+        StringBuffer codeBuffer = new StringBuffer();
+        VisitedAssignmentExpressionCounter = 0;
+
+        append(codeBuffer, "%s", visit(node));
+
+        for (; VisitedAssignmentExpressionCounter > 0; VisitedAssignmentExpressionCounter--)
+            append(codeBuffer, "  pop\n");
+
+        return codeBuffer;
     }
 
     public String getPrefix(Type type)

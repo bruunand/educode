@@ -13,7 +13,7 @@ String s = "test";
 s = s.toString().toString().toString().toString().toString().toString();
 if("test".equals(s))
 {
-System.out.println("it works");
+a = (a - 1.000000F);
 }
 
 for (Float c : rangeTest)
@@ -34,7 +34,5 @@ coords.setX((coords.getX() + random(-2.000000F, 15.000000F)));
 robot.walkTo(coords);
 robot.wait(5000.000000F);
 num = (num + 1.000000F);
-}
-
 }
 }
