@@ -200,7 +200,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         if (node.getChild() != null)
             append(codeBuffer, "%s", visit(node.getChild()));
         else
-            append(codeBuffer, "%s;", visit(node.getReference()));
+            append(codeBuffer, "%s", visit(node.getReference()));
 
         return codeBuffer;
     }

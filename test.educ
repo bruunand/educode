@@ -2,16 +2,22 @@ program Test
   method main()
     Collection<number> rangeTest = range(5, 10)
     rangeTest.addItem(500)
-    foreach number c in rangeTest
-        debug("val:" + c)
-    end foreach
-    number x = robot.getOwner().getCoordinates().getX()
+
+
+    number testa = 5 modulo 3.5
+    debug("res:" + testa)
+
     string s = "test"
     s = s.toString().toString().toString().toString().toString().toString()
 
     if "test" equals s then
         debug("it works")
     end if
+
+    foreach number c in rangeTest
+        debug("val:" + c)
+    end foreach
+    number x = robot.getOwner().getCoordinates().getX()
 
     robot.say("out " + random(1, 20))
     number num = 0

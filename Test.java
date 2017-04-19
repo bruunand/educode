@@ -7,12 +7,8 @@ public void main()
 {
 ExtendedCollection<Float> rangeTest = range(5.000000F, 10.000000F);
 rangeTest.addItem(500.000000F);
-for (Float c : rangeTest)
-{
-System.out.println(("val:" + c));
-}
-
-Float x = robot.getOwner().getCoordinates().getX();
+Float testa = (5.000000F % 3.500000F);
+System.out.println(("res:" + testa));
 String s = "test";
 s = s.toString().toString().toString().toString().toString().toString();
 if("test".equals(s))
@@ -20,9 +16,15 @@ if("test".equals(s))
 System.out.println("it works");
 }
 
+for (Float c : rangeTest)
+{
+System.out.println(("val:" + c));
+}
+
+Float x = robot.getOwner().getCoordinates().getX();
 robot.say(("out " + random(1.000000F, 20.000000F)));
 Float num = 0.000000F;
-Float test;;
+Float test;
 num = test = 2.000000F;
 while (num < 50.000000F)
 {
