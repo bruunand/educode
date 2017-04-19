@@ -7,7 +7,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by User on 14-Apr-17.
  */
-public class StructReferencingNode extends BinaryNode implements Reference
+public class StructReferencingNode extends BinaryNode implements IReference
 {
     public StructReferencingNode(Node objectName, Node fieldName)
     {
@@ -33,6 +33,6 @@ public class StructReferencingNode extends BinaryNode implements Reference
     @Override
     public String toString()
     {
-        return "Struct Reference";
+        return "Struct IReference";
     }
 }

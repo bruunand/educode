@@ -1,11 +1,11 @@
 package com.educode.nodes.ungrouped;
 
-import com.educode.Referencing;
+import com.educode.IReferencing;
 import com.educode.nodes.Visitable;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.method.MethodDeclarationNode;
-import com.educode.nodes.referencing.Reference;
+import com.educode.nodes.referencing.IReference;
 import com.educode.visitors.VisitorBase;
 
 import java.util.ArrayList;
@@ -13,11 +13,11 @@ import java.util.ArrayList;
 /**
  * Created by zen on 3/9/17.
  */
-public class ProgramNode extends NaryNode implements Visitable, Referencing
+public class ProgramNode extends NaryNode implements Visitable, IReferencing
 {
-    private Reference _reference;
+    private IReference _reference;
 
-    public ProgramNode(ArrayList<Node> childNodes, Reference reference)
+    public ProgramNode(ArrayList<Node> childNodes, IReference reference)
     {
         super(childNodes);
         this._reference = reference;
@@ -43,7 +43,7 @@ public class ProgramNode extends NaryNode implements Visitable, Referencing
     }
 
     @Override
-    public Reference getReference()
+    public IReference getReference()
     {
         return this._reference;
     }

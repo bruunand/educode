@@ -6,7 +6,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by User on 14-Apr-17.
  */
-public class IdentifierReferencingNode extends LeafNode implements Reference
+public class IdentifierReferencingNode extends LeafNode implements IReference
 {
     private String _identifier;
 

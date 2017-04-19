@@ -12,7 +12,6 @@ import com.educode.nodes.statement.conditional.*;
 import com.educode.nodes.ungrouped.*;
 import com.educode.types.*;
 import com.educode.visitors.VisitorBase;
-import sun.security.krb5.internal.APOptions;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     private FileWriter fw;
     private int OffSet;
     private int LabelCounter;
-    private ArrayList<Tuple<Reference, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<Reference, Integer>>();
+    private ArrayList<Tuple<IReference, Integer>> DeclaratoinOffsetTable = new ArrayList<Tuple<IReference, Integer>>();
 
     public void append(StringBuffer buffer, String format, Object ... args)
     {
@@ -144,7 +143,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
             append(codeBuffer, "  dup\n");
             append(codeBuffer, "  astore %s\n", ++OffSet);
             append(codeBuffer, "  invokevirtual classname/<init>()V\n");
-            DeclaratoinOffsetTable.add(new Tuple<Reference, Integer>(node.getReference(),OffSet));
+            DeclaratoinOffsetTable.add(new Tuple<IReference, Integer>(node.getReference(),OffSet));
         }
 
         append(codeBuffer, "  aload %s\n", getOffSetByNode(node.getReference()));
@@ -177,7 +176,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     public Object visit(VariableDeclarationNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
-        DeclaratoinOffsetTable.add(new Tuple<Reference, Integer>(node.getReference(), ++OffSet));
+        DeclaratoinOffsetTable.add(new Tuple<IReference, Integer>(node.getReference(), ++OffSet));
 
         if (!node.hasChild())
             return "";
@@ -479,15 +478,15 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         for (ParameterNode child : node)
         {
             parameters += visit(child);
-            DeclaratoinOffsetTable.add(new Tuple<Reference, Integer>(child.getReference(), ++OffSet));
+            DeclaratoinOffsetTable.add(new Tuple<IReference, Integer>(child.getReference(), ++OffSet));
         }
 
         return parameters;
     }
 
-    public int getOffSetByNode(Reference node)
+    public int getOffSetByNode(IReference node)
     {
-        for (Tuple<Reference, Integer> tuple:DeclaratoinOffsetTable)
+        for (Tuple<IReference, Integer> tuple:DeclaratoinOffsetTable)
         {
             if (tuple.x.toString().equals(node.toString()))
                 return tuple.y;

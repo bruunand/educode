@@ -1,19 +1,19 @@
 package com.educode.nodes.method;
 
-import com.educode.Referencing;
+import com.educode.IReferencing;
 import com.educode.nodes.base.LeafNode;
-import com.educode.nodes.referencing.Reference;
+import com.educode.nodes.referencing.IReference;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
 /**
  * Created by zen on 3/24/17.
  */
-public class ParameterNode extends LeafNode implements Referencing
+public class ParameterNode extends LeafNode implements IReferencing
 {
-    private Reference _reference;
+    private IReference _reference;
 
-    public ParameterNode(Reference visit, Type type)
+    public ParameterNode(IReference visit, Type type)
     {
         super();
         this._reference = visit;
@@ -27,7 +27,7 @@ public class ParameterNode extends LeafNode implements Referencing
     }
 
     @Override
-    public Reference getReference()
+    public IReference getReference()
     {
         return this._reference;
     }

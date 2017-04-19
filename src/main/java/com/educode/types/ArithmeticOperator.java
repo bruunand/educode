@@ -5,26 +5,26 @@ package com.educode.types;
  */
 public class ArithmeticOperator
 {
-    public final byte Kind;
+    private final byte _kind;
     public final static byte ERROR = 0, ADDITION = 1, SUBTRACTION = 2, MULTIPLICATION = 3, DIVISION = 4, MODULO = 5;
 
     public ArithmeticOperator(byte kind)
     {
-        this.Kind = kind;
+        this._kind = kind;
     }
 
     @Override
     public boolean equals(Object o)
     {
         if (o instanceof ArithmeticOperator)
-            return ((ArithmeticOperator)o).Kind == this.Kind;
+            return ((ArithmeticOperator)o)._kind == this._kind;
         return false;
     }
 
     @Override
     public String toString()
     {
-        switch (Kind)
+        switch (_kind)
         {
             case ArithmeticOperator.ADDITION:
                 return "+";

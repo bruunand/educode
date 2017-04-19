@@ -1,22 +1,22 @@
 package com.educode.nodes.statement;
 
-import com.educode.Referencing;
+import com.educode.IReferencing;
 import com.educode.nodes.base.BinaryNode;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.referencing.Reference;
+import com.educode.nodes.referencing.IReference;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
 /**
  * Created by User on 13-Apr-17.
  */
-public class ForEachNode extends BinaryNode implements Referencing
+public class ForEachNode extends BinaryNode implements IReferencing
 {
-    private final Reference _reference;
+    private final IReference _reference;
 
     // Left child : Expression
     // Right child: Block to execute in each iteration
-    public ForEachNode(Reference reference, Type type, Node leftChild, Node rightChild)
+    public ForEachNode(IReference reference, Type type, Node leftChild, Node rightChild)
     {
         super(leftChild, rightChild);
         this._reference = reference;
@@ -30,7 +30,7 @@ public class ForEachNode extends BinaryNode implements Referencing
     }
 
     @Override
-    public Reference getReference()
+    public IReference getReference()
     {
         return this._reference;
     }

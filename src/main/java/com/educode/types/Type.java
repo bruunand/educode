@@ -1,6 +1,5 @@
 package com.educode.types;
 
-import com.educode.Typeable;
 import com.educode.symboltable.SymbolTable;
 
 /**

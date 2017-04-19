@@ -1,9 +1,9 @@
 package com.educode.symboltable;
 
-import com.educode.Referencing;
+import com.educode.IReferencing;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.method.MethodDeclarationNode;
-import com.educode.nodes.referencing.Reference;
+import com.educode.nodes.referencing.IReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,14 +59,14 @@ public class SymbolTableHandler
         }
 
         // Check if node is referencing
-        if (!(node instanceof Referencing))
+        if (!(node instanceof IReferencing))
         {
             error(node, "Class %s is not a referencing instance.", node.getClass().getName());
             return;
         }
 
         // In scope - attempt to enter symbol
-        Reference reference = ((Referencing) node).getReference();
+        IReference reference = ((IReferencing) node).getReference();
         Symbol existing = retrieveSymbol(node);
 
         if (existing == null)

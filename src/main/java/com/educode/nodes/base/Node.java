@@ -1,6 +1,6 @@
 package com.educode.nodes.base;
 
-import com.educode.Typeable;
+import com.educode.ITypeable;
 import com.educode.nodes.Visitable;
 import com.educode.types.Type;
 import com.educode.visitors.ASTBuilder;
@@ -8,7 +8,7 @@ import com.educode.visitors.ASTBuilder;
 /**
  * Created by zen on 3/8/17.
  */
-public abstract class Node implements Visitable, Typeable
+public abstract class Node implements Visitable, ITypeable
 {
     private int _lineNumber;
     private Type _type = Type.Error;

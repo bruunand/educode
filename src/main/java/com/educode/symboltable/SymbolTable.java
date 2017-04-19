@@ -1,12 +1,12 @@
 package com.educode.symboltable;
 
-import com.educode.Referencing;
+import com.educode.IReferencing;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.ParameterNode;
+import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
-import com.educode.nodes.referencing.Reference;
 import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.types.Type;
 
@@ -62,7 +62,7 @@ public class SymbolTable
         return null;
     }
 
-    public Symbol retrieveMethodSymbol(Reference reference, List<Node> actualArguments)
+    public Symbol retrieveMethodSymbol(IReference reference, List<Node> actualArguments)
     {
         for (Symbol symbol : this._symbolList)
         {
@@ -92,8 +92,8 @@ public class SymbolTable
             ans = retrieveIdentifierSymbol((IdentifierReferencingNode) origin);
         else if (origin instanceof MethodDeclarationNode)
             ans = retrieveMethodSymbol((MethodDeclarationNode) origin);
-        else if (origin instanceof Referencing && ((Referencing) origin).getReference() instanceof IdentifierReferencingNode)
-            ans = retrieveIdentifierSymbol((IdentifierReferencingNode) ((Referencing) origin).getReference());
+        else if (origin instanceof IReferencing && ((IReferencing) origin).getReference() instanceof IdentifierReferencingNode)
+            ans = retrieveIdentifierSymbol((IdentifierReferencingNode) ((IReferencing) origin).getReference());
         else
         {
             System.out.println("No retriever for " + origin.getClass().getName());

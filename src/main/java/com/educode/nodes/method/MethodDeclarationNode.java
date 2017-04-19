@@ -1,10 +1,10 @@
 package com.educode.nodes.method;
 
-import com.educode.Referencing;
+import com.educode.IReferencing;
 import com.educode.nodes.base.BinaryNode;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.referencing.Reference;
+import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
@@ -15,11 +15,11 @@ import java.util.List;
 /**
  * Created by zen on 3/9/17.
  */
-public class MethodDeclarationNode extends BinaryNode implements Referencing
+public class MethodDeclarationNode extends BinaryNode implements IReferencing
 {
-    private Reference _reference;
+    private IReference _reference;
 
-    public MethodDeclarationNode(Node leftChild, Node rightChild, Reference reference, Type returnType)
+    public MethodDeclarationNode(Node leftChild, Node rightChild, IReference reference, Type returnType)
     {
         super(leftChild, rightChild);
         this._reference = reference;
@@ -65,7 +65,7 @@ public class MethodDeclarationNode extends BinaryNode implements Referencing
     }
 
     @Override
-    public Reference getReference()
+    public IReference getReference()
     {
         return this._reference;
     }
@@ -102,7 +102,7 @@ public class MethodDeclarationNode extends BinaryNode implements Referencing
         }
     }
 
-    public boolean correspondsWith(Reference reference, List<Node> actualArguments)
+    public boolean correspondsWith(IReference reference, List<Node> actualArguments)
     {
         // Check if name matches
         if (!this.getReference().equals(reference))

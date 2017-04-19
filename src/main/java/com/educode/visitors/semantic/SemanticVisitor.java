@@ -14,8 +14,8 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.ArrayReferencingNode;
+import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
-import com.educode.nodes.referencing.Reference;
 import com.educode.nodes.referencing.StructReferencingNode;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.ForEachNode;
@@ -199,7 +199,7 @@ public class SemanticVisitor extends VisitorBase
 
             // Retrieve symbol from object's type's symbol table
             // In a struct, the right child is the name of the method
-            methodReference = structReference.getObjectName().getType().getSymbolTable().retrieveMethodSymbol((Reference) structReference.getFieldName(), node.getActualArguments());
+            methodReference = structReference.getObjectName().getType().getSymbolTable().retrieveMethodSymbol((IReference) structReference.getFieldName(), node.getActualArguments());
         }
         else
             methodReference = getSymbolTableHandler().getCurrent().retrieveMethodSymbol(node.getReference(), node.getActualArguments());

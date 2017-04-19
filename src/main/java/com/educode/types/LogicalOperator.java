@@ -5,19 +5,19 @@ package com.educode.types;
  */
 public class LogicalOperator
 {
-    public final byte Kind;
+    private final byte _kind;
     public static final byte ERROR = 0, EQUALS = 1, NOT_EQUALS = 2, LESS_THAN = 3, LESS_THAN_OR_EQUALS = 4, GREATER_THAN = 5, GREATER_THAN_OR_EQUALS = 6, OR = 7, AND = 8;
 
     public LogicalOperator(byte kind)
     {
-        this.Kind = kind;
+        this._kind = kind;
     }
 
     @Override
     public boolean equals(Object o)
     {
         if (o instanceof LogicalOperator)
-            return ((LogicalOperator)o).Kind == this.Kind;
+            return ((LogicalOperator)o)._kind == this._kind;
 
         return false;
     }
@@ -25,7 +25,7 @@ public class LogicalOperator
     @Override
     public String toString()
     {
-        switch (Kind)
+        switch (_kind)
         {
             case EQUALS:
                 return "EQUALS";

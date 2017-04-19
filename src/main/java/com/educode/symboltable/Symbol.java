@@ -1,20 +1,20 @@
 package com.educode.symboltable;
 
-import com.educode.Referencing;
-import com.educode.Typeable;
+import com.educode.IReferencing;
+import com.educode.ITypeable;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.referencing.Reference;
+import com.educode.nodes.referencing.IReference;
 import com.educode.types.Type;
 
 /**
  * Created by User on 15-Apr-17.
  */
-public class Symbol implements Typeable, Referencing
+public class Symbol implements ITypeable, IReferencing
 {
-    private final Reference _reference;
+    private final IReference _reference;
     private final Node _sourceNode;
 
-    public Symbol(Reference reference, Node sourceNode)
+    public Symbol(IReference reference, Node sourceNode)
     {
         this._reference = reference;
         this._sourceNode = sourceNode;
@@ -44,7 +44,7 @@ public class Symbol implements Typeable, Referencing
     }
 
     @Override
-    public Reference getReference()
+    public IReference getReference()
     {
         return this._reference;
     }

@@ -1,11 +1,11 @@
 package com.educode.nodes.method;
 
-import com.educode.Referencing;
+import com.educode.IReferencing;
 import com.educode.helper.NodeHelper;
 import com.educode.nodes.SingleLineStatement;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
-import com.educode.nodes.referencing.Reference;
+import com.educode.nodes.referencing.IReference;
 import com.educode.visitors.VisitorBase;
 
 import java.util.List;
@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * Created by zen on 3/23/17.
  */
-public class MethodInvocationNode extends UnaryNode implements SingleLineStatement, Referencing
+public class MethodInvocationNode extends UnaryNode implements SingleLineStatement, IReferencing
 {
-    private Reference _reference;
+    private IReference _reference;
 
-    public MethodInvocationNode(Reference calleeReference, Node child)
+    public MethodInvocationNode(IReference calleeReference, Node child)
     {
         super(child);
         this._reference = calleeReference;
@@ -35,7 +35,7 @@ public class MethodInvocationNode extends UnaryNode implements SingleLineStateme
     }
 
     @Override
-    public Reference getReference()
+    public IReference getReference()
     {
         return this._reference;
     }
