@@ -51,10 +51,6 @@ public class Type
         _collectionSymbolTable = new SymbolTable(_baseSymbolTable);
         _collectionSymbolTable.addDefaultMethod("removeAt", Type.VoidType, Type.NumberType);
         _collectionSymbolTable.addDefaultMethod("getSize", Type.NumberType);
-        for (Method method : ICollection.class.getDeclaredMethods())
-        {
-            Type type = OperatorTranslator.fromJavaClass(method.getReturnType());
-        }
 
         // Add default methods for entities
         _entitySymbolTable = new SymbolTable(_baseSymbolTable);
@@ -63,7 +59,6 @@ public class Type
 
         // Add default methods for robot
         _robotSymbolTable = new SymbolTable(_entitySymbolTable);
-        _robotSymbolTable.addDefaultMethod("wait", Type.VoidType, Type.NumberType);
         _robotSymbolTable.addDefaultMethod("move", Type.VoidType, Type.StringType);
         _robotSymbolTable.addDefaultMethod("mine", Type.VoidType, Type.StringType);
         _robotSymbolTable.addDefaultMethod("say", Type.VoidType, Type.StringType);

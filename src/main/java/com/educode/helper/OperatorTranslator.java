@@ -67,18 +67,6 @@ public class OperatorTranslator
         return null;
     }
 
-    public static Type fromJavaClass(Class<?> fromClass)
-    {
-        if (fromClass.isAssignableFrom(Float.class) || fromClass.isAssignableFrom(float.class))
-            return Type.NumberType;
-        else if (fromClass.isAssignableFrom(ExtendedCollection.class))
-        {
-            Class genericClass = ((ParameterizedType) fromClass.getGenericSuperclass()).getActualTypeArguments()[0].getClass();
-            return new Type(fromJavaClass(genericClass));
-        }
-        return Type.VoidType;
-    }
-
     public static String toJava(ArithmeticOperator operator)
     {
         switch (operator.getKind())

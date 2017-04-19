@@ -3,7 +3,6 @@ program Test
     Collection<number> rangeTest = range(5, 10)
     rangeTest.addItem(500)
 
-
     number testa = 5 modulo 3.5
     debug("res:" + testa)
 

@@ -65,6 +65,7 @@ public class SemanticVisitor extends VisitorBase
         getSymbolTableHandler().getCurrent().addDefaultMethod("debug", Type.VoidType, Type.StringType);
         getSymbolTableHandler().getCurrent().addDefaultMethod("random", Type.NumberType, Type.NumberType, Type.NumberType);
         getSymbolTableHandler().getCurrent().addDefaultMethod("abs", Type.NumberType, Type.NumberType);
+        getSymbolTableHandler().getCurrent().addDefaultMethod("wait", Type.VoidType, Type.NumberType);
         getSymbolTableHandler().getCurrent().addDefaultMethod("range", new Type(Type.NumberType), Type.NumberType, Type.NumberType);
         getSymbolTableHandler().getCurrent().addDefaultField("robot", Type.RobotType);
 
