@@ -68,3 +68,5 @@ test.j
 \.gradle/2\.14/taskArtifacts/cache\.properties\.lock
 
 \.gradle/gradle\.log
+
+Test\.class

@@ -62,8 +62,9 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     		this.world.removeEntity(this);
     		return;
     	}
-    	
+
         // Poll next command
+        // Only one command is executed at a time
         Command nextCommand = CommandQueue.poll();
         if (nextCommand != null)
         {

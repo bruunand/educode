@@ -9,402 +9,44 @@ This mapping 'snapshot_20161220' was designed for MC 1.11! Use at your own peril
          by: Searge, ProfMobius, Fesh0r,         
          R4wk, ZeuX, IngisKahn, bspkrs           
 #################################################
-:genIntellijRuns
+:deobfCompileDummyTask
+:deobfProvidedDummyTask
+:generateApiGrammarSource UP-TO-DATE
+:sourceApiJava
+:compileApiJava UP-TO-DATE
+:processApiResources UP-TO-DATE
+:apiClasses UP-TO-DATE
+:generateGrammarSource UP-TO-DATE
+:sourceMainJava
+:compileJavawarning: [options] bootstrap class path not set in conjunction with -source 1.7
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+1 warning
 
-:processResources UP-TO-DATE
+:processResources
 :classes
 :jar
+:generateTestGrammarSource UP-TO-DATE
+:sourceTestJava
+:compileTestJava UP-TO-DATE
+:processTestResources UP-TO-DATE
+:testClasses UP-TO-DATE
+:test UP-TO-DATE
+:extractMcpData SKIPPED
+:extractMcpMappings SKIPPED
 :getVersionJson
-:extractNatives SKIPPED
-:extractUserdev UP-TO-DATE
-:getAssetIndex UP-TO-DATE
-:getAssets
-:makeStart
-:runClient
-2017-04-18 20:43:17,658 WARN Unable to instantiate org.fusesource.jansi.WindowsAnsiOutputStream
-2017-04-18 20:43:17,659 WARN Unable to instantiate org.fusesource.jansi.WindowsAnsiOutputStream
-[20:43:17] [main/INFO] [GradleStart]: Extra: []
-[20:43:17] [main/INFO] [GradleStart]: Running with arguments: [--userProperties, {}, --assetsDir, C:/Users/User/.gradle/caches/minecraft/assets, --assetIndex, 1.11, --accessToken{REDACTED}, --version, 1.11.2, --tweakClass, net.minecraftforge.fml.common.launcher.FMLTweaker, --tweakClass, net.minecraftforge.gradle.tweakers.CoremodTweaker]
-[20:43:17] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[20:43:17] [main/INFO] [LaunchWrapper]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[20:43:17] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.CoremodTweaker
-[20:43:17] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
-[20:43:17] [main/INFO] [FML]: Forge Mod Loader version 13.20.0.2228 for Minecraft 1.11.2 loading
-[20:43:17] [main/INFO] [FML]: Java is Java HotSpot(TM) 64-Bit Server VM, version 1.8.0_121, running on Windows 10:amd64:10.0, installed at C:\Program Files\Java\jdk1.8.0_121\jre
-[20:43:17] [main/INFO] [FML]: Managed to load a deobfuscated Minecraft name- we are in a deobfuscated environment. Skipping runtime deobfuscation
-[20:43:17] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.CoremodTweaker
-[20:43:17] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.fml.relauncher.FMLCorePlugin
-[20:43:17] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.classloading.FMLForgePlugin
-[20:43:17] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[20:43:17] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[20:43:17] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
-[20:43:17] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[20:43:17] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[20:43:17] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[20:43:17] [main/ERROR] [FML]: The binary patch set is missing. Either you are in a development environment, or things are not going to work!
-[20:43:18] [main/ERROR] [FML]: FML appears to be missing any signature data. This is not a good thing
-[20:43:18] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[20:43:18] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[20:43:18] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
-[20:43:18] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
-[20:43:18] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
-[20:43:18] [main/INFO] [LaunchWrapper]: Launching wrapped minecraft {net.minecraft.client.main.Main}
-2017-04-18 20:43:18,913 WARN Unable to instantiate org.fusesource.jansi.WindowsAnsiOutputStream
-2017-04-18 20:43:18,930 WARN Unable to instantiate org.fusesource.jansi.WindowsAnsiOutputStream
-2017-04-18 20:43:18,931 WARN Unable to instantiate org.fusesource.jansi.WindowsAnsiOutputStream
-[20:43:19] [Client thread/INFO]: Setting user: Player562
-[20:43:21] [Client thread/WARN]: Skipping bad option: lastServer:
-[20:43:21] [Client thread/INFO]: LWJGL Version: 2.9.4
-[20:43:21] [Client thread/INFO]: [STDOUT]: ---- Minecraft Crash Report ----
-// Would you like a cupcake?
+:extractUserdev
+:genSrgs SKIPPED
+:reobfJar
+:extractRangemapReplacedMain
+/home/zen/Git/Reload/build/sources/main/java
+:retromapReplacedMain
+remapping source...
+:sourceJar
+:assemble
+:check UP-TO-DATE
+:build
 
-Time: 4/18/17 8:43 PM
-Description: Loading screen debug info
+BUILD SUCCESSFUL
 
-This is just a prompt for computer specs to be printed. THIS IS NOT A ERROR
-
-
-A detailed walkthrough of the error, its code path and all known details is as follows:
----------------------------------------------------------------------------------------
-
--- System Details --
-Details:
-	Minecraft Version: 1.11.2
-	Operating System: Windows 10 (amd64) version 10.0
-	Java Version: 1.8.0_121, Oracle Corporation
-	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
-	Memory: 622469384 bytes (593 MB) / 822607872 bytes (784 MB) up to 3786407936 bytes (3611 MB)
-	JVM Flags: 0 total; 
-	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
-	FML: 
-	Loaded coremods (and transformers): 
-	GL info: ' Vendor: 'NVIDIA Corporation' Version: '4.5.0 NVIDIA 376.53' Renderer: 'GeForce GTX 770/PCIe/SSE2'
-[20:43:21] [Client thread/INFO] [FML]: MinecraftForge v13.20.0.2228 Initialized
-[20:43:21] [Client thread/INFO] [FML]: Replaced 232 ore recipes
-[20:43:22] [Client thread/INFO] [FML]: Found 0 mods from the command line. Injecting into mod discoverer
-[20:43:22] [Client thread/INFO] [FML]: Searching C:\Users\User\Desktop\EduCode-P4\run\mods for mods
-[20:43:22] [Client thread/INFO] [compilermod]: Mod compilermod is missing the required element 'name'. Substituting compilermod
-[20:43:22] [Client thread/INFO] [FML]: Forge Mod Loader has identified 5 mods to load
-[20:43:22] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, compilermod] at CLIENT
-[20:43:22] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, compilermod] at SERVER
-[20:43:23] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:compilermod
-[20:43:23] [Client thread/INFO] [FML]: Processing ObjectHolder annotations
-[20:43:23] [Client thread/INFO] [FML]: Found 444 ObjectHolder annotations
-[20:43:23] [Client thread/INFO] [FML]: Identifying ItemStackHolder annotations
-[20:43:23] [Client thread/INFO] [FML]: Found 0 ItemStackHolder annotations
-[20:43:23] [Client thread/INFO] [FML]: Applying holder lookups
-[20:43:23] [Client thread/INFO] [FML]: Holder lookups applied
-[20:43:23] [Client thread/INFO] [FML]: Applying holder lookups
-[20:43:23] [Client thread/INFO] [FML]: Holder lookups applied
-[20:43:23] [Client thread/INFO] [FML]: Applying holder lookups
-[20:43:23] [Client thread/INFO] [FML]: Holder lookups applied
-[20:43:23] [Client thread/INFO] [FML]: Configured a dormant chunk cache size of 0
-[20:43:23] [Forge Version Check/INFO] [ForgeVersionCheck]: [forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
-[20:43:23] [Client thread/INFO] [FML]: Applying holder lookups
-[20:43:23] [Client thread/INFO] [FML]: Holder lookups applied
-[20:43:23] [Client thread/INFO] [FML]: Injecting itemstacks
-[20:43:23] [Client thread/INFO] [FML]: Itemstack injection complete
-[20:43:23] [Forge Version Check/INFO] [ForgeVersionCheck]: [forge] Found status: UP_TO_DATE Target: null
-[20:43:24] [Sound Library Loader/INFO]: Starting up SoundSystem...
-[20:43:24] [Thread-8/INFO]: Initializing LWJGL OpenAL
-[20:43:24] [Thread-8/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
-[20:43:24] [Thread-8/INFO]: OpenAL initialized.
-[20:43:24] [Sound Library Loader/INFO]: Sound engine started
-[20:43:25] [Client thread/INFO] [FML]: Max texture size: 16384
-[20:43:25] [Client thread/INFO]: Created: 16x16 textures-atlas
-[20:43:26] [Client thread/INFO] [FML]: Injecting itemstacks
-[20:43:26] [Client thread/INFO] [FML]: Itemstack injection complete
-[20:43:26] [Client thread/INFO] [FML]: Forge Mod Loader has successfully loaded 5 mods
-[20:43:26] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:compilermod
-[20:43:27] [Client thread/INFO]: SoundSystem shutting down...
-[20:43:27] [Client thread/WARN]: Author: Paul Lamb, www.paulscode.com
-[20:43:27] [Sound Library Loader/INFO]: Starting up SoundSystem...
-[20:43:27] [Thread-10/INFO]: Initializing LWJGL OpenAL
-[20:43:27] [Thread-10/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
-[20:43:27] [Thread-10/INFO]: OpenAL initialized.
-[20:43:28] [Sound Library Loader/INFO]: Sound engine started
-[20:43:28] [Client thread/INFO] [FML]: Max texture size: 16384
-[20:43:28] [Client thread/INFO]: Created: 512x512 textures-atlas
-[20:43:29] [Client thread/WARN]: Skipping bad option: lastServer:
-[20:43:30] [Realms Notification Availability checker #1/INFO]: Could not authorize you against Realms server: Invalid session id
-[20:44:54] [Server thread/INFO]: Starting integrated minecraft server version 1.11.2
-[20:44:54] [Server thread/INFO]: Generating keypair
-[20:44:54] [Server thread/INFO] [FML]: Injecting existing block and item data into this server instance
-[20:44:54] [Server thread/INFO] [FML]: Applying holder lookups
-[20:44:54] [Server thread/INFO] [FML]: Holder lookups applied
-[20:44:54] [Server thread/INFO] [FML]: Loading dimension 0 (New World) (net.minecraft.server.integrated.IntegratedServer@6b797a15)
-[20:44:54] [Server thread/INFO] [FML]: Loading dimension 1 (New World) (net.minecraft.server.integrated.IntegratedServer@6b797a15)
-[20:44:54] [Server thread/INFO] [FML]: Loading dimension -1 (New World) (net.minecraft.server.integrated.IntegratedServer@6b797a15)
-[20:44:54] [Server thread/INFO]: Preparing start region for level 0
-[20:44:55] [Server thread/INFO]: Changing view distance to 12, from 10
-[20:44:56] [Netty Local Client IO #0/INFO] [FML]: Server protocol version 2
-[20:44:56] [Netty Server IO #1/INFO] [FML]: Client protocol version 2
-[20:44:56] [Netty Server IO #1/INFO] [FML]: Client attempting to join with 5 mods : minecraft@1.11.2,FML@8.0.99.99,forge@13.20.0.2228,mcp@9.19,compilermod@1.0
-[20:44:56] [Netty Local Client IO #0/INFO] [FML]: [Netty Local Client IO #0] Client side modded connection established
-[20:44:56] [Server thread/INFO] [FML]: [Server thread] Server side modded connection established
-[20:44:56] [Server thread/INFO]: Player562[local:E:01699015] logged in with entity id 191 at (281.99536880125805, 63.0, 195.6718589322325)
-[20:44:56] [Server thread/INFO]: Player562 joined the game
-[20:44:57] [Server thread/INFO]: Saving and pausing game...
-[20:44:57] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[20:44:57] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[20:44:57] [Server thread/INFO]: Saving chunks for level 'New World'/The End
-[20:44:57] [pool-2-thread-1/WARN]: Couldn't look up profile properties for com.mojang.authlib.GameProfile@21fafa35[id=37815b4b-a277-3e88-89c9-687629f7c447,name=Player562,properties={},legacy=false]
-com.mojang.authlib.exceptions.AuthenticationException: The client has sent too many requests within a certain amount of time
-	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:79) ~[YggdrasilAuthenticationService.class:?]
-	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillGameProfile(YggdrasilMinecraftSessionService.java:180) [YggdrasilMinecraftSessionService.class:?]
-	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:60) [YggdrasilMinecraftSessionService$1.class:?]
-	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:57) [YggdrasilMinecraftSessionService$1.class:?]
-	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3524) [guava-17.0.jar:?]
-	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2317) [guava-17.0.jar:?]
-	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2280) [guava-17.0.jar:?]
-	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2195) [guava-17.0.jar:?]
-	at com.google.common.cache.LocalCache.get(LocalCache.java:3934) [guava-17.0.jar:?]
-	at com.google.common.cache.LocalCache.getOrLoad(LocalCache.java:3938) [guava-17.0.jar:?]
-	at com.google.common.cache.LocalCache$LocalLoadingCache.get(LocalCache.java:4821) [guava-17.0.jar:?]
-	at com.google.common.cache.LocalCache$LocalLoadingCache.getUnchecked(LocalCache.java:4827) [guava-17.0.jar:?]
-	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillProfileProperties(YggdrasilMinecraftSessionService.java:170) [YggdrasilMinecraftSessionService.class:?]
-	at net.minecraft.client.Minecraft.getProfileProperties(Minecraft.java:3056) [Minecraft.class:?]
-	at net.minecraft.client.resources.SkinManager$3.run(SkinManager.java:138) [SkinManager$3.class:?]
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [?:1.8.0_121]
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [?:1.8.0_121]
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [?:1.8.0_121]
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [?:1.8.0_121]
-	at java.lang.Thread.run(Thread.java:745) [?:1.8.0_121]
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-[20:45:07] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Starting script...
-[20:45:07] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Chicken at 260.0
-[20:45:07] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Y difference: 1.0
-[20:45:12] [Server thread/INFO]: [Player562: Set the time to 1000]
-[20:45:12] [Client thread/INFO]: [CHAT] Set the time to 1000
-[20:45:15] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!200.0
-[20:45:15] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!201.0
-[20:45:15] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!202.0
-[20:45:15] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!203.0
-[20:45:16] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!204.0
-[20:45:16] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!205.0
-[20:45:16] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Health: 20.0
-[20:45:16] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Chicken at 257.0
-[20:45:16] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Y difference: 0.0
-[20:45:19] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!200.0
-[20:45:19] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!201.0
-[20:45:19] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!202.0
-[20:45:19] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!203.0
-[20:45:19] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!204.0
-[20:45:19] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!205.0
-[20:45:19] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Health: 20.0
-[20:45:19] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Chicken at 264.0
-[20:45:19] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Y difference: 0.0
-[20:45:23] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!200.0
-[20:45:23] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!201.0
-[20:45:23] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!202.0
-[20:45:23] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!203.0
-[20:45:23] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!204.0
-[20:45:23] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!205.0
-[20:45:23] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Health: 20.0
-[20:45:23] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Chicken at 265.0
-[20:45:23] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Y difference: 0.0
-[20:45:26] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!200.0
-[20:45:26] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!201.0
-[20:45:26] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!202.0
-[20:45:26] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!203.0
-[20:45:26] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!204.0
-[20:45:26] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!205.0
-[20:45:26] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Health: 20.0
-[20:45:26] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Chicken at 256.0
-[20:45:26] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Y difference: 1.0
-[20:45:34] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!200.0
-[20:45:34] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!201.0
-[20:45:34] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!202.0
-[20:45:34] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!203.0
-[20:45:34] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!204.0
-[20:45:34] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!205.0
-[20:45:34] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Health: 20.0
-[20:45:34] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Chicken at 269.0
-[20:45:34] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Y difference: 1.0
-[20:45:40] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!200.0
-[20:45:40] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!201.0
-[20:45:40] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!202.0
-[20:45:40] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!203.0
-[20:45:40] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!204.0
-[20:45:40] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!205.0
-[20:45:40] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Health: 20.0
-[20:45:40] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Chicken at 257.0
-[20:45:40] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Y difference: 1.0
-[20:45:46] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!200.0
-[20:45:46] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!201.0
-[20:45:46] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!202.0
-[20:45:46] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!203.0
-[20:45:46] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!204.0
-[20:45:46] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!205.0
-[20:45:46] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Health: 20.0
-[20:45:46] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Chicken at 280.0
-[20:45:46] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Y difference: 0.0
-[20:45:52] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!200.0
-[20:45:52] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!201.0
-[20:45:52] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!202.0
-[20:45:52] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!203.0
-[20:45:52] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!204.0
-[20:45:53] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!205.0
-[20:45:53] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Health: 20.0
-[20:45:53] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Skeleton at 295.0
-[20:45:53] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Y difference: 1.0
-[20:46:02] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!200.0
-[20:46:02] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!201.0
-[20:46:02] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!202.0
-[20:46:02] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!203.0
-[20:46:02] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!204.0
-[20:46:02] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!205.0
-[20:46:02] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Health: 20.0
-[20:46:03] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Squid at 308.0
-[20:46:03] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Y difference: 4.0
-[20:46:03] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!200.0
-[20:46:03] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!201.0
-[20:46:03] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!202.0
-[20:46:03] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!203.0
-[20:46:03] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!204.0
-[20:46:03] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!205.0
-[20:46:03] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Health: 20.0
-[20:46:03] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Spider at 306.0
-[20:46:03] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Y difference: 1.0
-[20:46:09] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!200.0
-[20:46:09] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!201.0
-[20:46:09] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!202.0
-[20:46:09] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!203.0
-[20:46:09] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!204.0
-[20:46:09] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!205.0
-[20:46:09] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Health: 17.0
-[20:46:09] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Ending script...
-[20:46:16] [Server thread/INFO]: Saving and pausing game...
-[20:46:16] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[20:46:16] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[20:46:16] [Server thread/INFO]: Saving chunks for level 'New World'/The End
-[20:50:55] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:50:57] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:50:58] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:50:59] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:01] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:02] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:03] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:15] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:15] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:17] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:19] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:30] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:30] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:31] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:37] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:38] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:38] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:40] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:43] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:44] [Client thread/INFO]: [STDOUT]: Key code:42
-[20:51:44] [Client thread/INFO]: [CHAT] �a[Success]�r File was saved.
-[20:51:45] [Server thread/INFO]: [Player562: Set the time to 1000]
-[20:51:45] [Client thread/INFO]: [CHAT] Set the time to 1000
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-[20:51:47] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Starting script...
-[20:51:47] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Chicken at 254.0
-[20:51:47] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Y difference: 1.0
-[20:51:56] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!200.0
-[20:51:56] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!201.0
-[20:51:56] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!202.0
-[20:51:56] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!203.0
-[20:51:56] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!204.0
-[20:51:56] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!205.0
-[20:51:56] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Health: 20.0
-[20:51:56] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Chicken at 263.0
-[20:51:57] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Y difference: 1.0
-[20:52:03] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!200.0
-[20:52:03] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!201.0
-[20:52:03] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!202.0
-[20:52:03] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!203.0
-[20:52:03] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!204.0
-[20:52:03] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!205.0
-[20:52:03] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Health: 20.0
-[20:52:03] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Chicken at 278.0
-[20:52:03] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Y difference: 1.0
-[20:52:08] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!200.0
-[20:52:08] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!201.0
-[20:52:08] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!202.0
-[20:52:08] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!203.0
-[20:52:08] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!204.0
-[20:52:08] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!205.0
-[20:52:08] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Health: 20.0
-[20:52:08] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Chicken at 272.0
-[20:52:08] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Y difference: 1.0
-[20:52:15] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!200.0
-[20:52:15] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!201.0
-[20:52:15] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!202.0
-[20:52:15] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!203.0
-[20:52:15] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!204.0
-[20:52:15] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!205.0
-[20:52:15] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Health: 20.0
-[20:52:15] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Zombie at 301.0
-[20:52:15] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Y difference: 9.0
-[20:52:15] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!200.0
-[20:52:15] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!201.0
-[20:52:15] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!202.0
-[20:52:15] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!203.0
-[20:52:15] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!204.0
-[20:52:16] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!205.0
-[20:52:16] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Health: 20.0
-[20:52:16] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Skeleton at 301.0
-[20:52:16] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Y difference: 0.0
-[20:52:25] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!200.0
-[20:52:25] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!201.0
-[20:52:25] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!202.0
-[20:52:25] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!203.0
-[20:52:25] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!204.0
-[20:52:25] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r REEEE!!!205.0
-[20:52:26] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Health: 20.0
-[20:52:26] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Chickens chased:4.0
-[20:52:26] [Client thread/INFO]: [CHAT] �e[Theis @ Player562] �r Ending script...
-[20:53:38] [Server thread/INFO]: Saving and pausing game...
-[20:53:38] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[20:53:38] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[20:53:38] [Server thread/INFO]: Saving chunks for level 'New World'/The End
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-No visitor for node com.educode.nodes.literal.NumberLiteralNode.
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-No visitor for node com.educode.nodes.literal.StringLiteralNode.
-[20:53:48] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Starting script...
-[20:53:48] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Sheep at 274.0
-[20:53:48] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Y difference: 1.0
-[20:53:51] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!200.0
-[20:53:51] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!201.0
-[20:53:51] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!202.0
-[20:53:51] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!203.0
-[20:53:51] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!204.0
-[20:53:51] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r REEEE!!!205.0
-[20:53:51] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Health: 20.0
-[20:53:51] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Skeleton at 304.0
-[20:53:52] [Client thread/INFO]: [CHAT] �a[Simon @ Player562] �r Y difference: 1.0
-[20:53:57] [Server thread/INFO]: Saving and pausing game...
-[20:53:57] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[20:53:57] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[20:
+Total time: 27.092 secs

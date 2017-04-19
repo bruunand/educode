@@ -6,6 +6,7 @@ import com.educode.minecraft.entity.EntityRobot;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -172,6 +173,15 @@ public abstract class ScriptBase implements IRobot
         return new Coordinates(_scriptedEntity.getPosition());
     }
 
+
+    @Override
+    public void attack(MinecraftEntity entity){
+        //attack target
+        if (this.getDistanceTo(entity) < 5.0) {
+            entity.getWrappedEntity().attackEntityFrom(DamageSource.GENERIC, 1.0f);
+        }
+    }
+
     @Override
     public float getDistanceTo(MinecraftEntity entity)
     {
@@ -261,6 +271,7 @@ public abstract class ScriptBase implements IRobot
     {
         return this._scriptedEntity.getHealth();
     }
+
 
     @Override
     public void mine(String direction)
