@@ -14,7 +14,7 @@ public class ExtendedCollection<E> extends ArrayList<E> implements ICollection<E
     }
 
     @Override
-    public void removeAt(float index)
+    public void removeItemAt(float index)
     {
         remove((int) index);
     }
@@ -22,13 +22,20 @@ public class ExtendedCollection<E> extends ArrayList<E> implements ICollection<E
     @Override
     public E getItemAt(float index)
     {
-        return get((int) index);
+        return super.get((int) index);
     }
 
     @Override
     public void addItem(E item)
     {
         super.add(item);
+    }
+
+    @Override
+    public E setItemAt(float index, E item)
+    {
+        super.set((int) index, item);
+        return item;
     }
 
     @Override

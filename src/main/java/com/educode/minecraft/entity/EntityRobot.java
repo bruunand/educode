@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class EntityRobot extends EntityCreature implements IWorldNameable, IEntityAdditionalSpawnData 
+public class EntityRobot extends EntityCreature implements IWorldNameable, IEntityAdditionalSpawnData
 {
     public BlockingQueue<Command> CommandQueue = new ArrayBlockingQueue<Command>(16);
 
@@ -48,14 +48,16 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     public EntityRobot(World worldIn, EntityPlayer owner)
     {
     	this(worldIn);
-    	
+
     	_name = CompilerMod.NAMES[this.rand.nextInt(CompilerMod.NAMES.length)] + " @ " + owner.getName();
     	CompilerMod.CHILD_ENTITIES.add(this.getUniqueID());
     }
-    
+
     @Override
     public void onEntityUpdate()
     {
+        this.updateArmSwingProgress();
+
     	// Remove entity if not spawned in this server instance
     	if (this._tickCounter++ == 0 && !this.world.isRemote && !CompilerMod.CHILD_ENTITIES.contains(this.getUniqueID()))
     	{
@@ -87,22 +89,26 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     public void onDeath(DamageSource cause)
     {
         super.onDeath(cause);
-        
-        /*for (int i = 0; i < getInventory().getSizeInventory(); i++)
+
+        // Drop items on death
+        dropItems();
+    }
+
+    public void dropItems()
+    {
+        for (int i = 0; i < getInventory().getSizeInventory(); i++)
         {
             ItemStack stack = getInventory().getStackInSlot(i);
-            if (stack == null)
-                return;
             getInventory().removeStackFromSlot(i);
             dropItem(stack.getItem(), stack.getCount());
-        }*/
+        }
     }
-    
+
     @Override
     protected void updateEquipmentIfNeeded(EntityItem itemEntity)
     {
         if (isDead) return;
-        
+
         ItemStack entityItem = getInventory().addItem(itemEntity.getEntityItem());
 
         this.onItemPickup(itemEntity, entityItem.getCount());
@@ -174,7 +180,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     {
         return new TextComponentString(getFormatting() + getName());
     }
-    
+
     protected SoundEvent getAmbientSound()
     {
         return SoundEvents.ENTITY_SHEEP_AMBIENT;
@@ -189,7 +195,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     {
         return SoundEvents.ENTITY_SHEEP_DEATH;
     }
-    
+
     protected SoundEvent getStepSound()
     {
         return SoundEvents.ENTITY_SHEEP_STEP;

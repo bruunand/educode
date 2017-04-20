@@ -19,12 +19,14 @@ public class Command
     
     public synchronized void waitForCanExecute() throws InterruptedException
     {
-        while (!this._canExecute) wait();
+        while (!this._canExecute)
+            wait();
     }
     
     public synchronized void waitForHasBeenExecuted()  throws InterruptedException
     {
     	long now = System.currentTimeMillis();
-        while (!this._hasBeenExecuted && (System.currentTimeMillis() - now) < 500) wait();
+        while (!this._hasBeenExecuted && (System.currentTimeMillis() - now) < 500)
+            wait();
     }
 }

@@ -49,7 +49,7 @@ public class Type
 
         // Add default methods for collections
         _collectionSymbolTable = new SymbolTable(_baseSymbolTable);
-        _collectionSymbolTable.addDefaultMethod("removeAt", Type.VoidType, Type.NumberType);
+        _collectionSymbolTable.addDefaultMethod("removeItemAt", Type.VoidType, Type.NumberType);
         _collectionSymbolTable.addDefaultMethod("getSize", Type.NumberType);
 
         // Add default methods for entities
@@ -59,6 +59,7 @@ public class Type
 
         // Add default methods for robot
         _robotSymbolTable = new SymbolTable(_entitySymbolTable);
+        _robotSymbolTable.addDefaultMethod("dropItems", Type.VoidType);
         _robotSymbolTable.addDefaultMethod("move", Type.VoidType, Type.StringType);
         _robotSymbolTable.addDefaultMethod("mine", Type.VoidType, Type.StringType);
         _robotSymbolTable.addDefaultMethod("say", Type.VoidType, Type.StringType);
@@ -69,7 +70,6 @@ public class Type
         _robotSymbolTable.addDefaultMethod("walkTo", Type.VoidType, Type.CoordinatesType);
         _robotSymbolTable.addDefaultMethod("getDistanceTo", Type.NumberType, Type.EntityType);
         _robotSymbolTable.addDefaultMethod("attack", Type.VoidType, Type.EntityType);
-
     }
 
     public Type(byte kind)
@@ -138,7 +138,6 @@ public class Type
 
             SymbolTable tempTable = new SymbolTable(_collectionSymbolTable);
             tempTable.addDefaultMethod("addItem", Type.VoidType, this.getChildType());
-            tempTable.addDefaultMethod("getItemAt", this.getChildType(), Type.NumberType);
 
             return tempTable;
         }

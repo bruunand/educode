@@ -3,10 +3,14 @@ package com.educode.runtime;
 import com.educode.minecraft.Command;
 import com.educode.minecraft.entity.EntityRobot;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -143,11 +147,20 @@ public abstract class ScriptBase implements IRobot
         command.setHasBeenExecuted(true);
     }
 
-    public void removeEntity()
+    private void removeEntity()
     {
         Command command = queueAndWait();
 
         _world.removeEntity(_scriptedEntity);
+
+        command.setHasBeenExecuted(true);
+    }
+
+    public void dropItems()
+    {
+        Command command = queueAndWait();
+
+        _scriptedEntity.dropItems();
 
         command.setHasBeenExecuted(true);
     }
@@ -173,13 +186,29 @@ public abstract class ScriptBase implements IRobot
         return new Coordinates(_scriptedEntity.getPosition());
     }
 
-
     @Override
-    public void attack(MinecraftEntity entity){
+    public void attack(MinecraftEntity entity)
+    {
+        if (this._scriptedEntity.isDead)
+            return;
+
+        //turn and face entity
+        this._scriptedEntity.faceEntity(entity.getWrappedEntity(), 360.0f, 360.0f);
+
         //attack target
-        if (this.getDistanceTo(entity) < 5.0) {
-            entity.getWrappedEntity().attackEntityFrom(DamageSource.GENERIC, 1.0f);
+        if (this.getDistanceTo(entity) < 3.0)
+        {
+            // calculate damage
+            float damage = 1.0F + _scriptedEntity.getHeldItem(EnumHand.MAIN_HAND).getItemDamage();
+
+            //swing animation
+            this._scriptedEntity.swingArm(EnumHand.MAIN_HAND);
+
+            //give damage;
+            entity.getWrappedEntity().attackEntityFrom(DamageSource.causeMobDamage(_scriptedEntity), damage);
         }
+
+        wait(350F);
     }
 
     @Override
@@ -206,7 +235,7 @@ public abstract class ScriptBase implements IRobot
         _scriptedEntity.getNavigator().setPath(_scriptedEntity.getNavigator().getPathToPos(pos), 0.5D);
         command.setHasBeenExecuted(true);
 
-        wait(250F);
+        wait(500F);
     }
 
     @Override

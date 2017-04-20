@@ -70,7 +70,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         append(codeBuffer, "import java.util.*;\nimport com.educode.runtime.*;\n\n");
 
-        append(codeBuffer, "public class %s extends com.educode.runtime.ScriptBase\n{\n", node.getReference());
+        append(codeBuffer, "public class %s extends ScriptBase\n{\n", node.getReference());
 
         // Visit method declarations
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
@@ -188,6 +188,13 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object visit(AssignmentNode node)
     {
+        // Special case for array references.
+        if (node.getReference() instanceof ArrayReferencingNode)
+        {
+            ArrayReferencingNode arrayReference = (ArrayReferencingNode) node.getReference();
+            return String.format("%s.setItemAt(%s, %s)", visit(arrayReference.getLeftChild()), visit(arrayReference.getRightChild()), visit(node.getChild()));
+        }
+
         return String.format("%s = %s",  visit(node.getReference()), visit(node.getChild()));
     }
 
@@ -365,7 +372,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object visit(ArrayReferencingNode node)
     {
-        return String.format("%s[%s]", visit(node.getArrayName()), visit(node.getExpression()));
+        return String.format("%s.getItemAt(%s)", visit(node.getArrayName()), visit(node.getExpression()));
     }
 
     public Object visit(StructReferencingNode node)

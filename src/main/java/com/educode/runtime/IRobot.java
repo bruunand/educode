@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface IRobot extends IEntity
 {
+    void dropItems();
     void say(String text);
     void wait(float time);
     void move(String direction);
