@@ -4,7 +4,7 @@ program Test
        debug(testIf())
        debug(testLoop())
        debug(testAssign())
-       bla()
+       multipleTests()
 
        return
     end method
@@ -43,7 +43,7 @@ program Test
        return b
     end method
 
-    method bla()
+    method multipleTests()
        // Collection test
        number a = 1
        number b = 2
@@ -68,12 +68,43 @@ program Test
            debug("And not working as intended")
        end if
 
+       //Test greater than
+       if b greater than a then
+           debug("Greater than works")
+       else
+           debug("Greater than doesnt work")
+       end if
+
+       //Test less than
+       if a less than b then
+          debug("Less than works")
+       else
+          debug("Less than doesnt work")
+       end if
+
+       //Test not
+       if not false then
+          debug("not works")
+       else
+          debug("not doesnt work")
+       end if
+
        // Test repeat
        number increment = 0
-       repeat while increment less than 100
-           debug("Repeating..")
+       repeat while increment less than or equals 100
            increment = increment + 1
        end repeat
+       debug(increment)
+
+       //Some logic
+       if true equals ((true or false) and (a less than or equals b)) then
+           debug("logic works")
+       else
+           debug("logic not working")
+       end if
+
+       //String concat
+       debug("If this te"+"xt appears, shit works")
 
        return
    end method
