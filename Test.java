@@ -5,6 +5,8 @@ public class Test extends ScriptBase
 {
 public void main()
 {
+ExtendedCollection<MinecraftEntity> ents;
+MinecraftEntity enttt = ents.getItemAt(0.000000F);
 ExtendedCollection<Float> rangeTest = range(5.000000F, 10.000000F);
 Float res = rangeTest.setItemAt(1.000000F, 1234.000000F);
 rangeTest.setItemAt(0.000000F, rangeTest.setItemAt(1.000000F, 1337.000000F));
