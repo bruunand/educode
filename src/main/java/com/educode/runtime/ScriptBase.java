@@ -143,11 +143,20 @@ public abstract class ScriptBase implements IRobot
         command.setHasBeenExecuted(true);
     }
 
-    public void removeEntity()
+    private void removeEntity()
     {
         Command command = queueAndWait();
 
         _world.removeEntity(_scriptedEntity);
+
+        command.setHasBeenExecuted(true);
+    }
+
+    public void dropItems()
+    {
+        Command command = queueAndWait();
+
+        _scriptedEntity.dropItems();
 
         command.setHasBeenExecuted(true);
     }

@@ -20,9 +20,9 @@ public class ArrayReferencingNode extends BinaryNode implements IReference
         return this.getLeftChild();
     }
 
-    public ArithmeticExpression getExpression()
+    public Node getExpression()
     {
-        return (ArithmeticExpression) this.getRightChild();
+        return this.getRightChild();
     }
 
     @Override

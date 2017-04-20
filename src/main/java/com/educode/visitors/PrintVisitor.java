@@ -26,6 +26,7 @@ import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.TypeCastNode;
+import com.educode.runtime.ExtendedCollection;
 
 /**
  * Created by User on 15-Apr-17.
@@ -96,9 +97,9 @@ public class PrintVisitor extends VisitorBase
     public Object visit(VariableDeclarationNode node)
     {
         if (!node.hasChild())
-            return String.format("Declare %s %s", visit(node.getReference()), node.getType());
+            return String.format("Declare [%s] [Type %s]", visit(node.getReference()), node.getType());
         else
-            return String.format("Decl/Assign [%s %s][%s]", visit(node.getReference()), node.getType(), visit(node.getChild()));
+            return String.format("Decl/Assign [%s][Type %s][%s]", visit(node.getReference()), node.getType(), visit(node.getChild()));
     }
 
     public Object visit(IfNode node)
@@ -117,7 +118,7 @@ public class PrintVisitor extends VisitorBase
 
     public Object visit(IdentifierReferencingNode node)
     {
-        return String.format("Identifier [%s]", node.getText());
+        return String.format("Identifier %s", node.getText());
     }
 
     public Object visit(RepeatWhileNode node)

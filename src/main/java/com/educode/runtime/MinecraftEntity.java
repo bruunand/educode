@@ -3,6 +3,7 @@ package com.educode.runtime;
 import com.educode.minecraft.entity.EntityRobot;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 
 /**
  * Created by User on 13-Apr-17.
@@ -42,9 +43,9 @@ public class MinecraftEntity implements IEntity
     @Override
     public float getHealth()
     {
-        if (!(getWrappedEntity() instanceof EntityLiving))
+        if (!(getWrappedEntity() instanceof EntityLivingBase))
             return -1;
         else
-            return ((EntityLiving) getWrappedEntity()).getHealth();
+            return ((EntityLivingBase) getWrappedEntity()).getHealth();
     }
 }

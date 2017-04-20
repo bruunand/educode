@@ -1,6 +1,8 @@
 program Test
   method main()
     Collection<number> rangeTest = range(5, 10)
+    number res = rangeTest[1] = 1234
+    debug("out:" + res)
     rangeTest.addItem(500)
 
     number testa = 5 modulo 3.5
@@ -27,7 +29,7 @@ program Test
       robot.setWorldTime(1200)
       coords.setX(coords.getX() + random(-2, 15))
       robot.walkTo(coords)
-      robot.wait(5000)
+      wait(5000)
       num = num + 1
     end repeat
   end method
