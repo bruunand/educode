@@ -26,27 +26,306 @@ Note: Recompile with -Xlint:unchecked for details.
 :processResources
 :classes
 :jar
-:generateTestGrammarSource UP-TO-DATE
-:sourceTestJava
-:compileTestJava UP-TO-DATE
-:processTestResources UP-TO-DATE
-:testClasses UP-TO-DATE
-:test UP-TO-DATE
-:extractMcpData SKIPPED
-:extractMcpMappings SKIPPED
 :getVersionJson
+:extractNatives SKIPPED
 :extractUserdev
-:genSrgs SKIPPED
-:reobfJar
-:extractRangemapReplacedMain
-/home/zen/Git/Reload/build/sources/main/java
-:retromapReplacedMain
-remapping source...
-:sourceJar
-:assemble
-:check UP-TO-DATE
-:build
+:getAssetIndex UP-TO-DATE
+:getAssets
+Current status: 29/1196   2%
+Current status: 71/1196   5%
+Current status: 102/1196   8%
+Current status: 132/1196   11%
+Current status: 171/1196   14%
+Current status: 209/1196   17%
+Current status: 241/1196   20%
+Current status: 270/1196   22%
+Current status: 295/1196   24%
+Current status: 333/1196   27%
+Current status: 376/1196   31%
+Current status: 431/1196   36%
+Current status: 491/1196   41%
+Current status: 547/1196   45%
+Current status: 555/1196   46%
+Current status: 595/1196   49%
+Current status: 623/1196   52%
+Current status: 653/1196   54%
+Current status: 687/1196   57%
+Current status: 745/1196   62%
+Current status: 823/1196   68%
+Current status: 878/1196   73%
+Current status: 932/1196   77%
+Current status: 957/1196   80%
+Current status: 983/1196   82%
+Current status: 1034/1196   86%
+Current status: 1072/1196   89%
+Current status: 1128/1196   94%
+Current status: 1182/1196   98%
+:makeStart
+:runClient
+2017-04-20 13:36:50,948 WARN Unable to instantiate org.fusesource.jansi.WindowsAnsiOutputStream
+2017-04-20 13:36:50,951 WARN Unable to instantiate org.fusesource.jansi.WindowsAnsiOutputStream
+[13:36:52] [main/INFO] [GradleStart]: Extra: []
+[13:36:53] [main/INFO] [GradleStart]: Running with arguments: [--userProperties, {}, --assetsDir, C:/Users/Andreas/.gradle/caches/minecraft/assets, --assetIndex, 1.11, --accessToken{REDACTED}, --version, 1.11.2, --tweakClass, net.minecraftforge.fml.common.launcher.FMLTweaker, --tweakClass, net.minecraftforge.gradle.tweakers.CoremodTweaker]
+[13:36:53] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[13:36:54] [main/INFO] [LaunchWrapper]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[13:36:54] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.CoremodTweaker
+[13:36:54] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
+[13:36:54] [main/INFO] [FML]: Forge Mod Loader version 13.20.0.2228 for Minecraft 1.11.2 loading
+[13:36:54] [main/INFO] [FML]: Java is Java HotSpot(TM) 64-Bit Server VM, version 1.8.0_121, running on Windows 10:amd64:10.0, installed at C:\Program Files\Java\jdk1.8.0_121\jre
+[13:36:54] [main/INFO] [FML]: Managed to load a deobfuscated Minecraft name- we are in a deobfuscated environment. Skipping runtime deobfuscation
+[13:36:54] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.CoremodTweaker
+[13:36:54] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.fml.relauncher.FMLCorePlugin
+[13:36:54] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.classloading.FMLForgePlugin
+[13:36:54] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[13:36:54] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[13:36:54] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
+[13:36:54] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[13:36:54] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[13:36:54] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[13:36:56] [main/ERROR] [FML]: The binary patch set is missing. Either you are in a development environment, or things are not going to work!
+[13:36:59] [main/ERROR] [FML]: FML appears to be missing any signature data. This is not a good thing
+[13:36:59] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[13:36:59] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[13:37:01] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
+[13:37:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
+[13:37:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
+[13:37:02] [main/INFO] [LaunchWrapper]: Launching wrapped minecraft {net.minecraft.client.main.Main}
+2017-04-20 13:37:16,055 WARN Unable to instantiate org.fusesource.jansi.WindowsAnsiOutputStream
+2017-04-20 13:37:16,580 WARN Unable to instantiate org.fusesource.jansi.WindowsAnsiOutputStream
+2017-04-20 13:37:16,584 WARN Unable to instantiate org.fusesource.jansi.WindowsAnsiOutputStream
+[13:37:21] [Client thread/INFO]: Setting user: Player940
+[13:37:39] [Client thread/WARN]: Skipping bad option: lastServer:
+[13:37:39] [Client thread/INFO]: LWJGL Version: 2.9.4
+[13:37:57] [Client thread/INFO]: [STDOUT]: ---- Minecraft Crash Report ----
+// I bet Cylons wouldn't have this problem.
 
-BUILD SUCCESSFUL
+Time: 4/20/17 1:37 PM
+Description: Loading screen debug info
 
-Total time: 27.092 secs
+This is just a prompt for computer specs to be printed. THIS IS NOT A ERROR
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- System Details --
+Details:
+	Minecraft Version: 1.11.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_121, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 140499776 bytes (133 MB) / 371720192 bytes (354 MB) up to 878182400 bytes (837 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+	FML: 
+	Loaded coremods (and transformers): 
+	GL info: ' Vendor: 'NVIDIA Corporation' Version: '4.5.0 NVIDIA 376.54' Renderer: 'GeForce GT 540M/PCIe/SSE2'
+[13:37:58] [Client thread/INFO] [FML]: MinecraftForge v13.20.0.2228 Initialized
+[13:37:58] [Client thread/INFO] [FML]: Replaced 232 ore recipes
+[13:38:00] [Client thread/INFO] [FML]: Found 0 mods from the command line. Injecting into mod discoverer
+[13:38:00] [Client thread/INFO] [FML]: Searching C:\Users\Andreas\Documents\P4\EduCode-P4\run\mods for mods
+[13:38:09] [Client thread/INFO] [compilermod]: Mod compilermod is missing the required element 'name'. Substituting compilermod
+[13:38:09] [Client thread/INFO] [FML]: Forge Mod Loader has identified 5 mods to load
+[13:38:10] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, compilermod] at CLIENT
+[13:38:10] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, compilermod] at SERVER
+[13:38:17] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:compilermod
+[13:38:18] [Client thread/INFO] [FML]: Processing ObjectHolder annotations
+[13:38:18] [Client thread/INFO] [FML]: Found 444 ObjectHolder annotations
+[13:38:18] [Client thread/INFO] [FML]: Identifying ItemStackHolder annotations
+[13:38:18] [Client thread/INFO] [FML]: Found 0 ItemStackHolder annotations
+[13:38:18] [Client thread/INFO] [FML]: Applying holder lookups
+[13:38:18] [Client thread/INFO] [FML]: Holder lookups applied
+[13:38:18] [Client thread/INFO] [FML]: Applying holder lookups
+[13:38:18] [Client thread/INFO] [FML]: Holder lookups applied
+[13:38:18] [Client thread/INFO] [FML]: Applying holder lookups
+[13:38:18] [Client thread/INFO] [FML]: Holder lookups applied
+[13:38:19] [Client thread/INFO] [FML]: Configured a dormant chunk cache size of 0
+[13:38:19] [Forge Version Check/INFO] [ForgeVersionCheck]: [forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
+[13:38:19] [Client thread/INFO] [FML]: Applying holder lookups
+[13:38:19] [Client thread/INFO] [FML]: Holder lookups applied
+[13:38:19] [Client thread/INFO] [FML]: Injecting itemstacks
+[13:38:19] [Client thread/INFO] [FML]: Itemstack injection complete
+[13:38:34] [Forge Version Check/INFO] [ForgeVersionCheck]: [forge] Found status: UP_TO_DATE Target: null
+[13:38:47] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[13:38:48] [Thread-8/INFO]: Initializing LWJGL OpenAL
+[13:38:48] [Thread-8/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[13:38:49] [Thread-8/INFO]: OpenAL initialized.
+[13:38:49] [Sound Library Loader/INFO]: Sound engine started
+[13:38:58] [Client thread/INFO] [FML]: Max texture size: 16384
+[13:38:58] [Client thread/INFO]: Created: 16x16 textures-atlas
+[13:39:02] [Client thread/INFO] [FML]: Injecting itemstacks
+[13:39:02] [Client thread/INFO] [FML]: Itemstack injection complete
+[13:39:02] [Client thread/INFO] [FML]: Forge Mod Loader has successfully loaded 5 mods
+[13:39:02] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:compilermod
+[13:39:07] [Client thread/INFO]: SoundSystem shutting down...
+[13:39:07] [Client thread/WARN]: Author: Paul Lamb, www.paulscode.com
+[13:39:07] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[13:39:08] [Thread-10/INFO]: Initializing LWJGL OpenAL
+[13:39:08] [Thread-10/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[13:39:08] [Thread-10/INFO]: OpenAL initialized.
+[13:39:08] [Sound Library Loader/INFO]: Sound engine started
+[13:39:14] [Client thread/INFO] [FML]: Max texture size: 16384
+[13:39:24] [Client thread/INFO]: Created: 512x512 textures-atlas
+[13:39:30] [Client thread/WARN]: Skipping bad option: lastServer:
+[13:39:49] [Realms Notification Availability checker #1/INFO]: Could not authorize you against Realms server: Invalid session id
+[13:40:06] [Server thread/INFO]: Starting integrated minecraft server version 1.11.2
+[13:40:06] [Server thread/INFO]: Generating keypair
+[13:40:08] [Server thread/INFO] [FML]: Injecting existing block and item data into this server instance
+[13:40:09] [Server thread/INFO] [FML]: Applying holder lookups
+[13:40:09] [Server thread/INFO] [FML]: Holder lookups applied
+[13:40:13] [Server thread/INFO] [FML]: Loading dimension 0 (Test World) (net.minecraft.server.integrated.IntegratedServer@571576ee)
+[13:40:14] [Server thread/INFO] [FML]: Loading dimension 1 (Test World) (net.minecraft.server.integrated.IntegratedServer@571576ee)
+[13:40:14] [Server thread/INFO] [FML]: Loading dimension -1 (Test World) (net.minecraft.server.integrated.IntegratedServer@571576ee)
+[13:40:14] [Server thread/INFO]: Preparing start region for level 0
+[13:40:15] [Server thread/INFO]: Preparing spawn area: 0%
+[13:40:16] [Server thread/INFO]: Preparing spawn area: 9%
+[13:40:17] [Server thread/INFO]: Preparing spawn area: 25%
+[13:40:19] [Server thread/INFO]: Preparing spawn area: 96%
+[13:40:20] [Server thread/INFO]: Changing view distance to 12, from 10
+[13:40:27] [Netty Local Client IO #0/INFO] [FML]: Server protocol version 2
+[13:40:27] [Netty Server IO #1/INFO] [FML]: Client protocol version 2
+[13:40:27] [Netty Server IO #1/INFO] [FML]: Client attempting to join with 5 mods : minecraft@1.11.2,FML@8.0.99.99,forge@13.20.0.2228,mcp@9.19,compilermod@1.0
+[13:40:27] [Netty Local Client IO #0/INFO] [FML]: [Netty Local Client IO #0] Client side modded connection established
+[13:40:27] [Server thread/INFO] [FML]: [Server thread] Server side modded connection established
+[13:40:28] [Server thread/INFO]: Player940[local:E:25e0dbe9] logged in with entity id 92 at (742.4947153368988, 4.0, 126.70106533411031)
+[13:40:28] [Server thread/INFO]: Player940 joined the game
+[13:40:36] [Server thread/INFO]: Saving and pausing game...
+[13:40:38] [Server thread/INFO]: Saving chunks for level 'Test World'/Overworld
+[13:40:40] [Server thread/INFO]: Saving chunks for level 'Test World'/Nether
+[13:40:40] [Server thread/INFO]: Saving chunks for level 'Test World'/The End
+[13:40:40] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 12853ms behind, skipping 257 tick(s)
+[13:40:47] [pool-2-thread-1/WARN]: Couldn't look up profile properties for com.mojang.authlib.GameProfile@3dbf3cd[id=63415afc-3fc6-3204-b29f-d3e2c160b7a4,name=Player940,properties={},legacy=false]
+com.mojang.authlib.exceptions.AuthenticationException: The client has sent too many requests within a certain amount of time
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:79) ~[YggdrasilAuthenticationService.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillGameProfile(YggdrasilMinecraftSessionService.java:180) [YggdrasilMinecraftSessionService.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:60) [YggdrasilMinecraftSessionService$1.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:57) [YggdrasilMinecraftSessionService$1.class:?]
+	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3524) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2317) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2280) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2195) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache.get(LocalCache.java:3934) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache.getOrLoad(LocalCache.java:3938) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$LocalLoadingCache.get(LocalCache.java:4821) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$LocalLoadingCache.getUnchecked(LocalCache.java:4827) [guava-17.0.jar:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillProfileProperties(YggdrasilMinecraftSessionService.java:170) [YggdrasilMinecraftSessionService.class:?]
+	at net.minecraft.client.Minecraft.getProfileProperties(Minecraft.java:3056) [Minecraft.class:?]
+	at net.minecraft.client.resources.SkinManager$3.run(SkinManager.java:138) [SkinManager$3.class:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [?:1.8.0_121]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [?:1.8.0_121]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [?:1.8.0_121]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [?:1.8.0_121]
+	at java.lang.Thread.run(Thread.java:745) [?:1.8.0_121]
+[13:40:59] [Server thread/INFO]: [STDERR]: line 5:52 mismatched input '\n' expecting {'.', ',', ADDOP, MULTOP, 'and', 'or', ')'}
+No visitor for node com.educode.nodes.literal.BoolLiteralNode.
+No visitor for node com.educode.nodes.literal.StringLiteralNode.
+[13:41:17] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 18277ms behind, skipping 365 tick(s)
+[13:41:17] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r Starting script...
+[13:41:17] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:18] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:18] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:18] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:19] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 2044ms behind, skipping 40 tick(s)
+[13:41:19] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:19] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:19] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:20] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:20] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:20] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:21] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:21] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:21] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:22] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:22] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:22] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:22] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:23] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:23] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:23] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:24] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:24] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:24] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:25] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:25] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:26] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:26] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:26] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:26] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:27] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:27] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:27] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:28] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:28] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:28] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:29] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:29] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:29] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:30] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:30] [Thread-14/INFO]: Player940 died
+[13:41:30] [Client thread/INFO]: [CHAT] Player940 died
+[13:41:30] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:31] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:31] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:31] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:32] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:32] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:33] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:33] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:33] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:34] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:34] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:34] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:35] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:35] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:35] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:36] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:36] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:36] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:37] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:37] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:37] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:38] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:38] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:38] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:38] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:39] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:39] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:40] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:40] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:40] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:41] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:41] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:41] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:42] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:42] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:42] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:43] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:43] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:43] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:44] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:44] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:44] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:45] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:45] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:45] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:46] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:46] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:46] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:47] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:47] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:47] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:48] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:48] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:48] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:49] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:49] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:49] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:50] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:50] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:50] [Server thread/INFO]: Player940 has just earned the achievement [Taking Inventory]
+[13:41:50] [Client thread/INFO]: [CHAT] Player940 has just earned the achievement [Taking Inventory]
+[13:41:50] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:51] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:51] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:51] [Client thread/INFO]: [CHAT] §c[Andreas @ Player940] §r REEE!
+[13:41:52] [Client thread/

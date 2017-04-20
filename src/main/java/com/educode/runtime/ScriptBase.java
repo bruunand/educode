@@ -182,15 +182,22 @@ public abstract class ScriptBase implements IRobot
         return new Coordinates(_scriptedEntity.getPosition());
     }
 
-
     @Override
-    public void attack(MinecraftEntity entity)
-    {
+    public void attack(MinecraftEntity entity){
+        //turn and face entity
+        this._scriptedEntity.faceEntity(entity.getWrappedEntity(),360.0f,360.0f);
+
+        //equip weapon
+
         //attack target
-        if (this.getDistanceTo(entity) < 3.0)
-        {
+        if (this.getDistanceTo(entity) <3.0) {
+
+            //swing animation
             _scriptedEntity.swingArm(_scriptedEntity.getActiveHand());
-            entity.getWrappedEntity().attackEntityFrom(DamageSource.GENERIC, 3.0f);
+
+            //give damage;
+            entity.getWrappedEntity().attackEntityFrom(DamageSource.GENERIC, 1.0f);
+
         }
     }
 
