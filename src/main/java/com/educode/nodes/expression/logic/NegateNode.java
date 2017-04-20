@@ -13,6 +13,7 @@ public class NegateNode extends UnaryNode
     public NegateNode(Node child)
     {
         super(child);
+        setType(Type.BoolType);
     }
 
     @Override

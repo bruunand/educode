@@ -8,7 +8,7 @@ import java.util.UUID;
 import com.educode.minecraft.command.CommandEdit;
 import com.educode.minecraft.command.CommandRun;
 import com.educode.minecraft.entity.EntityRobot;
-import com.educode.minecraft.handler.ClientTickHandler;
+import com.educode.minecraft.handler.TickHandler;
 import com.educode.minecraft.proxy.ServerProxy;
 import com.educode.minecraft.handler.GuiHandler;
 
@@ -52,7 +52,7 @@ public class CompilerMod
     	Proxy.preInit();
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, ROBOT_TEXTURE_LOCATION), EntityRobot.class, "EntityTest", 255, Instance, 64, 1, true);
         NetworkRegistry.INSTANCE.registerGuiHandler(Instance, new GuiHandler());
-        MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
+        MinecraftForge.EVENT_BUS.register(new TickHandler());
     }
     
     @EventHandler
@@ -64,6 +64,10 @@ public class CompilerMod
     @EventHandler
     public void serverStart(FMLServerStartingEvent event)
     {
+        File scriptsDir = new File(SCRIPTS_LOCATION);
+        if (!scriptsDir.exists())
+            scriptsDir.mkdir();
+
         event.registerServerCommand(new CommandRun());
         event.registerServerCommand(new CommandEdit());
     }

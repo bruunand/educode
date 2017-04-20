@@ -56,6 +56,7 @@ public class Type
         _entitySymbolTable = new SymbolTable(_baseSymbolTable);
         _entitySymbolTable.addDefaultMethod("getHealth", Type.NumberType);
         _entitySymbolTable.addDefaultMethod("getCoordinates", Type.CoordinatesType);
+        _entitySymbolTable.addDefaultMethod("isRobot", Type.BoolType);
 
         // Add default methods for robot
         _robotSymbolTable = new SymbolTable(_entitySymbolTable);

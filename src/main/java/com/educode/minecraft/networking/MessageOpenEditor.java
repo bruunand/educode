@@ -1,6 +1,6 @@
 package com.educode.minecraft.networking;
 
-import com.educode.minecraft.handler.ClientTickHandler;
+import com.educode.minecraft.handler.TickHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -51,7 +51,7 @@ public class MessageOpenEditor implements IMessage
 		public IMessage onMessage(MessageOpenEditor message, MessageContext ctx)
 		{
 			if (ctx.side.isClient())
-				ClientTickHandler.queueMessage(message);
+				TickHandler.queueMessage(message);
 
 			return null;
 		}
