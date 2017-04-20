@@ -28,7 +28,7 @@ public class ArrayReferencingNode extends BinaryNode implements IReference
     @Override
     public Object accept(VisitorBase visitor)
     {
-        return null;
+        return visitor.visit(this);
     }
 
     @Override
