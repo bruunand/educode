@@ -3,10 +3,14 @@ package com.educode.runtime;
 import com.educode.minecraft.Command;
 import com.educode.minecraft.entity.EntityRobot;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -183,22 +187,28 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public void attack(MinecraftEntity entity){
-        //turn and face entity
-        this._scriptedEntity.faceEntity(entity.getWrappedEntity(),360.0f,360.0f);
+    public void attack(MinecraftEntity entity)
+    {
+        if (this._scriptedEntity.isDead)
+            return;
 
-        //equip weapon
+        //turn and face entity
+        this._scriptedEntity.faceEntity(entity.getWrappedEntity(), 360.0f, 360.0f);
 
         //attack target
-        if (this.getDistanceTo(entity) <3.0) {
+        if (this.getDistanceTo(entity) < 3.0)
+        {
+            // calculate damage
+            float damage = 1.0F + _scriptedEntity.getHeldItem(EnumHand.MAIN_HAND).getItemDamage();
 
             //swing animation
-            _scriptedEntity.swingArm(_scriptedEntity.getActiveHand());
+            this._scriptedEntity.swingArm(EnumHand.MAIN_HAND);
 
             //give damage;
-            entity.getWrappedEntity().attackEntityFrom(DamageSource.GENERIC, 1.0f);
-
+            entity.getWrappedEntity().attackEntityFrom(DamageSource.causeMobDamage(_scriptedEntity), damage);
         }
+
+        wait(350F);
     }
 
     @Override
@@ -225,7 +235,7 @@ public abstract class ScriptBase implements IRobot
         _scriptedEntity.getNavigator().setPath(_scriptedEntity.getNavigator().getPathToPos(pos), 0.5D);
         command.setHasBeenExecuted(true);
 
-        wait(250F);
+        wait(500F);
     }
 
     @Override
