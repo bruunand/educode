@@ -2,6 +2,7 @@ program Test
   method main()
     Collection<number> rangeTest = range(5, 10)
     number res = rangeTest[1] = 1234
+    rangeTest[0] = rangeTest[1] = 1337
     debug("out:" + res)
     rangeTest.addItem(500)
 
