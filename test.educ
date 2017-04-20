@@ -1,34 +1,84 @@
 program Test
-  method main()
-    Collection<number> rangeTest = range(5, 10)
-    rangeTest.addItem(500)
+    method main()
+       debug(testNum())
+       debug(testIf())
+       debug(testLoop())
+       debug(testAssign())
+       bla()
 
-    number testa = 5 modulo 3.5
-    debug("res:" + testa)
+       return
+    end method
 
-    string s = "test"
-    s = s.toString().toString().toString().toString().toString().toString()
+    method testAssign() returns number
+        number a,b,c,d = 10
+        if d equals 10 then
+            a = b = c = d
+        else
+            a = 15
+        end if
+        return a
+    end method
 
-    if "test" equals s then
-        debug("it works")
-    end if
+    method testNum() returns number
+       number testNum = 5
+       return testNum
+    end method
 
-    foreach number c in rangeTest
-        debug("val:" + c)
-    end foreach
-    number x = robot.getOwner().getCoordinates().getX()
+    method testIf() returns bool
+       if true equals true then
+           return true
+       else
+           return false
+       end if
+    end method
 
-    robot.say("out " + random(1, 20))
-    number num = 0
-    number test
-    num = test = 2
-    repeat while num less than 50
-      Coordinates coords = robot.getCoordinates()
-      robot.setWorldTime(1200)
-      coords.setX(coords.getX() + random(-2, 15))
-      robot.walkTo(coords)
-      robot.wait(5000)
-      num = num + 1
-    end repeat
-  end method
+    method testLoop() returns number
+       number a = 5
+       number b = 0
+       repeat while a greater than 0
+           b = b+1
+           a = a - 1
+       end repeat
+
+       return b
+    end method
+
+    method bla()
+       // Collection test
+       number a = 1
+       number b = 2
+
+       // Test addition
+       number result = add(10, 10)
+
+       if result equals 20 then
+           debug("Math checks out")
+       else
+           debug("Math does not check out")
+       end if
+
+       // Test logic
+       bool foo = true
+       bool bar = false
+       bool andRes = foo and bar
+
+       if andRes equals false then
+           debug("And seems to work")
+       else
+           debug("And not working as intended")
+       end if
+
+       // Test repeat
+       number increment = 0
+       repeat while increment less than 100
+           debug("Repeating..")
+           increment = increment + 1
+       end repeat
+
+       return
+   end method
+
+   method add(number a, number b) returns number
+       return a + b
+   end method
 end program

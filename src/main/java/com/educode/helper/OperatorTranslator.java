@@ -97,7 +97,7 @@ public class OperatorTranslator
             case Type.STRING:
                 return "Ljava.lang.String;";
             case Type.BOOL:
-                return "Z";
+                return "I";
             case Type.COORDINATES:
                 return "L<NotImplemented>;";
             case Type.VOID:

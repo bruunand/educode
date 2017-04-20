@@ -142,6 +142,7 @@ public class SemanticVisitor extends VisitorBase
     public void visit(ParameterNode node)
     {
         getSymbolTableHandler().enterSymbol(node);
+        node.getReference().setType(node.getType()); // todo better solution
     }
 
     public void visit(ForEachNode node)
