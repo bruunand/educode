@@ -56,6 +56,8 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     @Override
     public void onEntityUpdate()
     {
+        this.updateArmSwingProgress();
+        
     	// Remove entity if not spawned in this server instance
     	if (this._tickCounter++ == 0 && !this.world.isRemote && !CompilerMod.CHILD_ENTITIES.contains(this.getUniqueID()))
     	{

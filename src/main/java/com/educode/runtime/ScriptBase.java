@@ -184,10 +184,13 @@ public abstract class ScriptBase implements IRobot
 
 
     @Override
-    public void attack(MinecraftEntity entity){
+    public void attack(MinecraftEntity entity)
+    {
         //attack target
-        if (this.getDistanceTo(entity) < 5.0) {
-            entity.getWrappedEntity().attackEntityFrom(DamageSource.GENERIC, 1.0f);
+        if (this.getDistanceTo(entity) < 3.0)
+        {
+            _scriptedEntity.swingArm(_scriptedEntity.getActiveHand());
+            entity.getWrappedEntity().attackEntityFrom(DamageSource.GENERIC, 3.0f);
         }
     }
 

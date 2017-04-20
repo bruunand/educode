@@ -1,7 +1,7 @@
 import java.util.*;
 import com.educode.runtime.*;
 
-public class progdram extends ScriptBase
+public class Test extends ScriptBase
 {
 public void main()
 {
