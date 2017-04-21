@@ -23,8 +23,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public abstract class ScriptBase implements IRobot
@@ -134,7 +132,7 @@ public abstract class ScriptBase implements IRobot
     {
         Command command = queueAndWait();
 
-        _player.sendMessage(new TextComponentString(_scriptedEntity.getFormatting() + "[" + _scriptedEntity.getName() + "]" + " " + TextFormatting.RESET + " " + notifyString));
+        _player.sendMessage(new TextComponentString(_scriptedEntity.getFormatting()+ "[" + _scriptedEntity.getName() + "]" + " " + TextFormatting.RESET + " " + notifyString));
 
         command.setHasBeenExecuted(true);
     }
@@ -219,26 +217,36 @@ public abstract class ScriptBase implements IRobot
     @Override
     public void attack(MinecraftEntity entity)
     {
-        if (this._scriptedEntity.isDead)
-            return;
+        if (this._scriptedEntity.isDead || this.getDistanceTo(entity) > 3.0F)
+            return false;
 
-        //turn and face entity
-        this._scriptedEntity.faceEntity(entity.getWrappedEntity(), 360.0f, 360.0f);
+        Command command = queueAndWait();
 
-        //attack target
-        if (this.getDistanceTo(entity) < 3.0)
-        {
-            // calculate damage
-            float damage = 1.0F + _scriptedEntity.getHeldItem(EnumHand.MAIN_HAND).getItemDamage();
+        _scriptedEntity.attackEntity(entity.getWrappedEntity());
 
-            //swing animation
-            this._scriptedEntity.swingArm(EnumHand.MAIN_HAND);
-
-            //give damage;
-            entity.getWrappedEntity().attackEntityFrom(DamageSource.causeMobDamage(_scriptedEntity), damage);
-        }
+        command.setHasBeenExecuted(true);
 
         wait(350F);
+
+        return true;
+    }
+
+
+    private Object executeOnTick(IExecutable executable)
+    {
+        Command command = queueAndWait();
+
+        Object executionResult = executable.execute();
+
+        command.setHasBeenExecuted(true);
+
+        return executionResult;
+    }
+
+    @Override
+    public synchronized float dropInventoryItem(String name, final float quantity)
+    {
+        return (float) executeOnTick(() -> _scriptedEntity.dropInventoryItem(name, quantity));
     }
 
     @Override

@@ -1,20 +1,15 @@
 package com.educode.minecraft.entity;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-
 import com.educode.minecraft.Command;
 import com.educode.minecraft.CompilerMod;
-
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -35,6 +30,8 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import javax.annotation.Nullable;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class EntityRobot extends EntityCreature implements IWorldNameable, IEntityAdditionalSpawnData
 {
@@ -45,7 +42,9 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     private String _name = "Unnamed";
     
     private int _tickCounter = 0;
-    
+
+    private TextFormatting _textFormatting = TextFormatting.RESET;
+
     public EntityRobot(World worldIn)
     {
         super(worldIn);
@@ -58,11 +57,10 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     public EntityRobot(World worldIn, EntityPlayer owner)
     {
     	this(worldIn);
-    	EntityZombie zombie;
-        net.minecraft.entity.monster.EntitySkeleton d;
 
     	_name = CompilerMod.NAMES[this.rand.nextInt(CompilerMod.NAMES.length)] + " @ " + owner.getName();
     	CompilerMod.CHILD_ENTITIES.add(this.getUniqueID());
+        updateTextFormatting();
     }
 
     @Override
@@ -116,6 +114,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         for (int i = 0; i < getInventory().getSizeInventory(); i++)
         {
             ItemStack stack = getInventory().getStackInSlot(i);
+            System.out.println(i + "=" + stack.getDisplayName()); // todo remove
             getInventory().removeStackFromSlot(i);
             dropItem(stack.getItem(), stack.getCount());
         }
@@ -124,34 +123,40 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     @Override
     protected void updateEquipmentIfNeeded(EntityItem itemEntity)
     {
-        if (isDead) return;
+        if (isDead)
+            return;
 
         ItemStack entityItem = getInventory().addItem(itemEntity.getEntityItem());
 
         this.onItemPickup(itemEntity, entityItem.getCount());
     }
-    
-    public TextFormatting getFormatting()
+
+    @Nullable
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
+    {
+        return super.onInitialSpawn(difficulty, livingdata);
+    }
+
+    public void updateTextFormatting()
     {
         int modHash = Math.abs(getName().hashCode()) % 5;
-        
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
+
         switch (modHash)
         {
             case 0:
-                return TextFormatting.BLUE;
+                this._textFormatting = TextFormatting.BLUE;
             case 1:
-                return TextFormatting.GREEN;
+                this._textFormatting = TextFormatting.GREEN;
             case 2:
-                return TextFormatting.RED;
+                this._textFormatting = TextFormatting.RED;
             case 3:
-                return TextFormatting.YELLOW;
+                this._textFormatting = TextFormatting.YELLOW;
             case 4:
-                return TextFormatting.GREEN;
+                this._textFormatting = TextFormatting.GREEN;
         }
-        
-        return TextFormatting.RESET;
     }
-    
 
     public InventoryBasic getInventory()
     {
@@ -195,7 +200,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     @Override
     public ITextComponent getDisplayName()
     {
-        return new TextComponentString(getFormatting() + getName());
+        return new TextComponentString(this.getFormatting() + getName());
     }
 
     protected SoundEvent getAmbientSound()
@@ -233,5 +238,46 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
 	public void readSpawnData(ByteBuf additionalData)
 	{
 		_name = ByteBufUtils.readUTF8String(additionalData);
+		this.updateTextFormatting();
 	}
+
+    public TextFormatting getFormatting()
+    {
+        return this._textFormatting;
+    }
+
+    public void attackEntity(Entity entity)
+    {
+        //turn and face entity
+        this.faceEntity(entity, 360.0f, 360.0f);
+
+        // calculate damage
+        float damage = 1.0F + this.getHeldItemMainhand().getItemDamage();
+
+        //swing animation
+        this.swingArm(EnumHand.MAIN_HAND);
+
+        //give damage;
+        entity.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
+    }
+
+    public float dropInventoryItem(String name, float quantity)
+    {
+        int i = 0;
+        float droppedItems = 0;
+
+        while (i++ < getInventory().getSizeInventory() && droppedItems < quantity)
+        {
+            ItemStack stack = getInventory().getStackInSlot(i);
+            if (!stack.getDisplayName().equalsIgnoreCase(name))
+                continue;
+
+            // Don't drop more than needed
+            int maxCount = Math.min(stack.getCount(), (int)(quantity - droppedItems));
+            dropItem(stack.getItem(), maxCount);
+            droppedItems += maxCount;
+        }
+
+        return droppedItems;
+    }
 }

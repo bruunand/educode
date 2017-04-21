@@ -1,11 +1,6 @@
 package com.educode.types;
 
-import com.educode.helper.OperatorTranslator;
-import com.educode.runtime.ICollection;
-import com.educode.runtime.ICoordinates;
 import com.educode.symboltable.SymbolTable;
-
-import java.lang.reflect.Method;
 
 /**
  * Created by zen on 3/10/17.
