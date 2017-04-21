@@ -13,4 +13,8 @@ This mapping 'snapshot_20161220' was designed for MC 1.11! Use at your own peril
 
 BUILD SUCCESSFUL
 
+<<<<<<< HEAD
 Total time: 6.971 secs
+=======
+Total time: 14.901 secs
+>>>>>>> master
