@@ -4,12 +4,19 @@ import com.educode.minecraft.Command;
 import com.educode.minecraft.entity.EntityRobot;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCake;
+import net.minecraft.block.BlockClay;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -186,6 +193,29 @@ public abstract class ScriptBase implements IRobot
         return new Coordinates(_scriptedEntity.getPosition());
     }
 
+
+    //TODO: should maybe be in interface as well?, Andreas
+    @Override
+    public boolean placeBlock(Coordinates coordinates)
+    {
+        // if the _scriptedEntity is close to the target coordinate then
+        if (this._scriptedEntity.getPosition().getDistance((int)coordinates.getX(), (int)coordinates.getY(), (int)coordinates.getZ()) < 3.0)
+        {
+            // TODO: if the _scriptedEntity is facing the target coordinate then, Andreas
+            if (true)
+            {
+                // spawn a block motherfucker <3 maybe use this._scriptedEntity.getHeldItem(this._scriptedEntity.getActiveHand())
+                this._world.setBlockState(new BlockPos(coordinates.getX(), coordinates.getY(), coordinates.getZ()), Blocks.DIAMOND_BLOCK.getDefaultState());
+                return true;
+            }
+            // if the _scriptedEntity isn't close to the target coordinate then
+            else { return false; }
+        }
+        // if the _scriptedEntity is not facing the target coordinate then
+        else { return false;}
+    }
+
+    //TODO: should maybe be in interface aswell?, Andreas
     @Override
     public void attack(MinecraftEntity entity)
     {

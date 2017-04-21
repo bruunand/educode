@@ -18,6 +18,7 @@ public interface IRobot extends IEntity
     void explode(float strength);
     void walkTo(Coordinates coords);
     void attack(MinecraftEntity entity);
+    boolean placeBlock(Coordinates coordinates);
     float getDistanceTo(MinecraftEntity entity);
     MinecraftEntity getOwner();
     List<MinecraftEntity> getNearbyEntities();
