@@ -129,6 +129,8 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         // Visit block
         append(codeBuffer, "%s", visit(node.getBlockNode()));
 
+        if (node.isType(Type.BoolType))
+            append(codeBuffer, "  return\n");
         append(codeBuffer, ".end method\n\n");
 
         return codeBuffer;
@@ -145,6 +147,18 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
             append(codeBuffer, "  getstatic java/lang/System/out Ljava/io/PrintStream;\n");
             append(codeBuffer, "%s", visit(child));
             temp = OperatorTranslator.toBytecode(child.getType());
+            if (child.getType().getKind() == Type.BOOL)
+            {
+                int falseLabel = LabelCounter++;
+                append(codeBuffer, "  ifeq L%s\n", falseLabel);
+                append(codeBuffer, "  ldc \"true\"\n");
+                append(codeBuffer, "  goto L%s\n", LabelCounter);
+                append(codeBuffer, "L%s:\n", falseLabel);
+                append(codeBuffer, "  ldc \"false\"\n");
+                append(codeBuffer, "L%s:\n", LabelCounter++);
+                append(codeBuffer, "  nop\n");
+                temp = "Ljava/lang/String;";
+            }
             append(codeBuffer,"  invokevirtual java/io/PrintStream/println(%s)V\n", temp);
         }
         else
@@ -290,23 +304,41 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         {
             Node child;
             String s = "java/lang/String";
-            append(codeBuffer, "%s", visit(node.getLeftChild()));
+
             if ((child = node.getLeftChild()).getType().getKind() != Type.STRING || (child = node.getRightChild()).getType().getKind() != Type.STRING)
             {
+                if (child.equals(node.getLeftChild()))
+                    append(codeBuffer, "%s", visit(node.getLeftChild()));
+                else
+                {
+                    append(codeBuffer, "%s", visit(node.getLeftChild()));
+                    append(codeBuffer, "%s", visit(node.getRightChild()));
+                }
                 switch (child.getType().getKind())
                 {
                     case Type.NUMBER:
                         append(codeBuffer, "  invokestatic java/lang/Double/toString(D)L%s;\n", s);
                         break;
                     case Type.BOOL:
-                        append(codeBuffer, " invokestatic java/lang/Int/toString(I)L%s;\n", s);
+                        int falseLabel = LabelCounter++;
+                        append(codeBuffer, "  ifeq L%s\n", falseLabel);
+                        append(codeBuffer, "  ldc \"true\"\n");
+                        append(codeBuffer, "  goto L%s\n", LabelCounter);
+                        append(codeBuffer, "L%s:\n", falseLabel);
+                        append(codeBuffer, "  ldc \"false\"\n");
+                        append(codeBuffer, "L%s:\n", LabelCounter++);
+                        append(codeBuffer, "  nop\n");
+                        break;
                 }
+
+                if (child.equals(node.getLeftChild()))
+                    append(codeBuffer, "%s", visit(node.getRightChild()));
+
             }
-
-            append(codeBuffer, "%s", visit(node.getRightChild()));
-            if (node.getRightChild().getType().getKind() != Type.STRING)
+            else
             {
-
+                append(codeBuffer, "%s", visit(node.getLeftChild()));
+                append(codeBuffer, "%s", visit(node.getRightChild()));
             }
 
 

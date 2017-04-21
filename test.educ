@@ -5,13 +5,13 @@ program Test
        debug(testLoop())
        debug(testAssign())
        multipleTests()
-       debug(testConcat())
+       testConcat()
 
        return
     end method
 
     method testConcat()
-       String s = "works"
+       string s = "works"
        number n = 2
        bool b = true
 
@@ -22,6 +22,7 @@ program Test
        debug(b + s)
        debug(s + b)
 
+       return
     end method
 
     method testAssign() returns number
@@ -58,73 +59,73 @@ program Test
        return b
     end method
 
-    method multipleTests()
-       // Collection test
-       number a = 1
-       number b = 2
+        method multipleTests()
+           // Collection test
+           number a = 1
+           number b = 2
 
-       // Test addition
-       number result = add(10, 10)
+           // Test addition
+           number result = add(10, 10)
 
-       if result equals 20 then
-           debug("Math checks out")
-       else
-           debug("Math does not check out")
-       end if
+           if result equals 20 then
+               debug("Math checks out")
+           else
+               debug("Math does not check out")
+           end if
 
-       // Test logic
-       bool foo = true
-       bool bar = false
-       bool andRes = foo and bar
+           // Test logic
+           bool foo = true
+           bool bar = false
+           bool andRes = foo and bar
 
-       if andRes equals false then
-           debug("And seems to work")
-       else
-           debug("And not working as intended")
-       end if
+           if andRes equals false then
+               debug("And seems to work")
+           else
+               debug("And not working as intended")
+           end if
 
-       //Test greater than
-       if b greater than a then
-           debug("Greater than works")
-       else
-           debug("Greater than doesnt work")
-       end if
+           //Test greater than
+           if b greater than a then
+               debug("Greater than works")
+           else
+               debug("Greater than doesnt work")
+           end if
 
-       //Test less than
-       if a less than b then
-          debug("Less than works")
-       else
-          debug("Less than doesnt work")
-       end if
+           //Test less than
+           if a less than b then
+              debug("Less than works")
+           else
+              debug("Less than doesnt work")
+           end if
 
-       //Test not
-       if not false then
-          debug("not works")
-       else
-          debug("not doesnt work")
-       end if
+           //Test not
+           if not false then
+              debug("not works")
+           else
+              debug("not doesnt work")
+           end if
 
-       // Test repeat
-       number increment = 0
-       repeat while increment less than or equals 100
-           increment = increment + 1
-       end repeat
-       debug(increment)
+           // Test repeat
+           number increment = 0
+           repeat while increment less than or equals 100
+               increment = increment + 1
+           end repeat
+           debug(increment)
 
-       //Some logic
-       if true equals ((true or false) and (a less than or equals b)) then
-           debug("logic works")
-       else
-           debug("logic not working")
-       end if
+           //Some logic
+           if true equals ((true or false) and (a less than or equals b)) then
+               debug("logic works")
+           else
+               debug("logic not working")
+           end if
 
-       //String concat
-       debug("If this te"+"xt appears, shit works")
+           //String concat
+           debug("If this te"+"xt appears, shit works")
 
-       return
-   end method
+           return
+       end method
 
-   method add(number a, number b) returns number
-       return a + b
-   end method
+       method add(number a, number b) returns number
+           return a + b
+       end method
 end program
