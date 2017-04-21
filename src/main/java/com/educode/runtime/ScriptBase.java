@@ -2,22 +2,18 @@ package com.educode.runtime;
 
 import com.educode.minecraft.Command;
 import com.educode.minecraft.entity.EntityRobot;
-
-import net.minecraft.block.Block;
+import com.educode.runtime.types.Coordinates;
+import com.educode.runtime.types.ExtendedCollection;
+import com.educode.runtime.types.IRobot;
+import com.educode.runtime.types.MinecraftEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public abstract class ScriptBase implements IRobot
@@ -187,28 +183,38 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public void attack(MinecraftEntity entity)
+    public boolean attack(MinecraftEntity entity)
     {
-        if (this._scriptedEntity.isDead)
-            return;
+        if (this._scriptedEntity.isDead || this.getDistanceTo(entity) > 3.0F)
+            return false;
 
-        //turn and face entity
-        this._scriptedEntity.faceEntity(entity.getWrappedEntity(), 360.0f, 360.0f);
+        Command command = queueAndWait();
 
-        //attack target
-        if (this.getDistanceTo(entity) < 3.0)
-        {
-            // calculate damage
-            float damage = 1.0F + _scriptedEntity.getHeldItem(EnumHand.MAIN_HAND).getItemDamage();
+        _scriptedEntity.attackEntity(entity.getWrappedEntity());
 
-            //swing animation
-            this._scriptedEntity.swingArm(EnumHand.MAIN_HAND);
-
-            //give damage;
-            entity.getWrappedEntity().attackEntityFrom(DamageSource.causeMobDamage(_scriptedEntity), damage);
-        }
+        command.setHasBeenExecuted(true);
 
         wait(350F);
+
+        return true;
+    }
+
+
+    private Object executeOnTick(IExecutable executable)
+    {
+        Command command = queueAndWait();
+
+        Object executionResult = executable.execute();
+
+        command.setHasBeenExecuted(true);
+
+        return executionResult;
+    }
+
+    @Override
+    public synchronized float dropInventoryItem(String name, final float quantity)
+    {
+        return (float) executeOnTick(() -> _scriptedEntity.dropInventoryItem(name, quantity));
     }
 
     @Override
