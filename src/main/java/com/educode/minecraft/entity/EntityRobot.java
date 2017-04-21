@@ -1,40 +1,30 @@
 package com.educode.minecraft.entity;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-
 import com.educode.minecraft.Command;
 import com.educode.minecraft.CompilerMod;
-
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-import javax.annotation.Nullable;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class EntityRobot extends EntityCreature implements IWorldNameable, IEntityAdditionalSpawnData
 {
@@ -45,7 +35,9 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     private String _name = "Unnamed";
     
     private int _tickCounter = 0;
-    
+
+    private TextFormatting _textFormatting = TextFormatting.RESET;
+
     public EntityRobot(World worldIn)
     {
         super(worldIn);
@@ -124,34 +116,32 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     @Override
     protected void updateEquipmentIfNeeded(EntityItem itemEntity)
     {
-        if (isDead) return;
+        if (isDead)
+            return;
 
         ItemStack entityItem = getInventory().addItem(itemEntity.getEntityItem());
 
         this.onItemPickup(itemEntity, entityItem.getCount());
     }
     
-    public TextFormatting getFormatting()
+    public void updateTextFormatting()
     {
         int modHash = Math.abs(getName().hashCode()) % 5;
         
         switch (modHash)
         {
             case 0:
-                return TextFormatting.BLUE;
+                this._textFormatting = TextFormatting.BLUE;
             case 1:
-                return TextFormatting.GREEN;
+                this._textFormatting = TextFormatting.GREEN;
             case 2:
-                return TextFormatting.RED;
+                this._textFormatting =  TextFormatting.RED;
             case 3:
-                return TextFormatting.YELLOW;
+                this._textFormatting =  TextFormatting.YELLOW;
             case 4:
-                return TextFormatting.GREEN;
+                this._textFormatting =  TextFormatting.GREEN;
         }
-        
-        return TextFormatting.RESET;
     }
-    
 
     public InventoryBasic getInventory()
     {
@@ -195,7 +185,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     @Override
     public ITextComponent getDisplayName()
     {
-        return new TextComponentString(getFormatting() + getName());
+        return new TextComponentString(this._textFormatting + getName());
     }
 
     protected SoundEvent getAmbientSound()
@@ -233,5 +223,6 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
 	public void readSpawnData(ByteBuf additionalData)
 	{
 		_name = ByteBufUtils.readUTF8String(additionalData);
+		this.updateTextFormatting();
 	}
 }
