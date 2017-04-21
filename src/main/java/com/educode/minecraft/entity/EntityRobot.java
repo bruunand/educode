@@ -58,6 +58,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
 
     	_name = CompilerMod.NAMES[this.rand.nextInt(CompilerMod.NAMES.length)] + " @ " + owner.getName();
     	CompilerMod.CHILD_ENTITIES.add(this.getUniqueID());
+        updateTextFormatting();
     }
 
     @Override
