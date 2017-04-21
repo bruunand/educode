@@ -286,16 +286,37 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     {
         StringBuffer codeBuffer = new StringBuffer();
 
-        append(codeBuffer, "%s", visit(node.getLeftChild()));
-        append(codeBuffer, "%s", visit(node.getRightChild()));
-
         if (node.getType().getKind()== Type.STRING && node.getOperator().getKind() == ArithmeticOperator.ADDITION)
         {
+            Node child;
             String s = "java/lang/String";
+            append(codeBuffer, "%s", visit(node.getLeftChild()));
+            if ((child = node.getLeftChild()).getType().getKind() != Type.STRING || (child = node.getRightChild()).getType().getKind() != Type.STRING)
+            {
+                switch (child.getType().getKind())
+                {
+                    case Type.NUMBER:
+                        append(codeBuffer, "  invokestatic java/lang/Double/toString(D)L%s;\n", s);
+                        break;
+                    case Type.BOOL:
+                        append(codeBuffer, " invokestatic java/lang/Int/toString(I)L%s;\n", s);
+                }
+            }
+
+            append(codeBuffer, "%s", visit(node.getRightChild()));
+            if (node.getRightChild().getType().getKind() != Type.STRING)
+            {
+
+            }
+
+
             append(codeBuffer, "  invokevirtual %s/concat(L%s;)L%s;\n", s, s, s);
         }
         else if (node.getType().getKind() == Type.NUMBER)
         {
+            append(codeBuffer, "%s", visit(node.getLeftChild()));
+            append(codeBuffer, "%s", visit(node.getRightChild()));
+
             if (node.getOperator().getKind() == ArithmeticOperator.ADDITION)
                 append(codeBuffer, "  dadd\n");
             else

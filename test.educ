@@ -5,8 +5,23 @@ program Test
        debug(testLoop())
        debug(testAssign())
        multipleTests()
+       debug(testConcat())
 
        return
+    end method
+
+    method testConcat()
+       String s = "works"
+       number n = 2
+       bool b = true
+
+
+       debug(s + s)
+       debug(n + s)
+       debug(s + n)
+       debug(b + s)
+       debug(s + b)
+
     end method
 
     method testAssign() returns number
