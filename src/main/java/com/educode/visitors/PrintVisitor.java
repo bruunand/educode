@@ -26,7 +26,6 @@ import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.TypeCastNode;
-import com.educode.runtime.ExtendedCollection;
 
 /**
  * Created by User on 15-Apr-17.

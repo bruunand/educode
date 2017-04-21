@@ -1,4 +1,4 @@
-package com.educode.runtime;
+package com.educode.runtime.types;
 
 import java.util.ArrayList;
 

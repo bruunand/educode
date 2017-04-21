@@ -1,6 +1,4 @@
-package com.educode.runtime;
-
-import scala.collection.parallel.ParIterableLike;
+package com.educode.runtime.types;
 
 import java.util.List;
 
@@ -17,7 +15,8 @@ public interface IRobot extends IEntity
     void setWorldTime(float time);
     void explode(float strength);
     void walkTo(Coordinates coords);
-    void attack(MinecraftEntity entity);
+    boolean attack(MinecraftEntity entity);
+    float dropInventoryItem(String name, float quantity);
     float getDistanceTo(MinecraftEntity entity);
     MinecraftEntity getOwner();
     List<MinecraftEntity> getNearbyEntities();

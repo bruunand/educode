@@ -1,11 +1,6 @@
 package com.educode.types;
 
-import com.educode.helper.OperatorTranslator;
-import com.educode.runtime.ICollection;
-import com.educode.runtime.ICoordinates;
 import com.educode.symboltable.SymbolTable;
-
-import java.lang.reflect.Method;
 
 /**
  * Created by zen on 3/10/17.
@@ -70,7 +65,8 @@ public class Type
         _robotSymbolTable.addDefaultMethod("getNearbyEntities", new Type(Type.EntityType));
         _robotSymbolTable.addDefaultMethod("walkTo", Type.VoidType, Type.CoordinatesType);
         _robotSymbolTable.addDefaultMethod("getDistanceTo", Type.NumberType, Type.EntityType);
-        _robotSymbolTable.addDefaultMethod("attack", Type.VoidType, Type.EntityType);
+        _robotSymbolTable.addDefaultMethod("attack", Type.BoolType, Type.EntityType);
+        _robotSymbolTable.addDefaultMethod("dropInventoryItem", Type.NumberType, Type.StringType, Type.NumberType);
     }
 
     public Type(byte kind)

@@ -1,8 +1,9 @@
-package com.educode.runtime;
+package com.educode.runtime.types;
 
 import com.educode.minecraft.entity.EntityRobot;
+import com.educode.runtime.types.Coordinates;
+import com.educode.runtime.types.IEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 
 /**
