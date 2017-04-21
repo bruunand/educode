@@ -9,7 +9,9 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,8 +55,6 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     public EntityRobot(World worldIn, EntityPlayer owner)
     {
     	this(worldIn);
-    	EntityZombie zombie;
-        net.minecraft.entity.monster.EntitySkeleton d;
 
     	_name = CompilerMod.NAMES[this.rand.nextInt(CompilerMod.NAMES.length)] + " @ " + owner.getName();
     	CompilerMod.CHILD_ENTITIES.add(this.getUniqueID());
@@ -137,7 +137,8 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     public void updateTextFormatting()
     {
         int modHash = Math.abs(getName().hashCode()) % 5;
-        
+        this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Blocks.PUMPKIN));
+
         switch (modHash)
         {
             case 0:
@@ -145,11 +146,11 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
             case 1:
                 this._textFormatting = TextFormatting.GREEN;
             case 2:
-                this._textFormatting =  TextFormatting.RED;
+                this._textFormatting = TextFormatting.RED;
             case 3:
-                this._textFormatting =  TextFormatting.YELLOW;
+                this._textFormatting = TextFormatting.YELLOW;
             case 4:
-                this._textFormatting =  TextFormatting.GREEN;
+                this._textFormatting = TextFormatting.GREEN;
         }
     }
 
