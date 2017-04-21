@@ -127,7 +127,7 @@ public abstract class ScriptBase implements IRobot
     {
         Command command = queueAndWait();
 
-        //_player.sendMessage(new TextComponentString(_scriptedEntity.getFormatting() + "[" + _scriptedEntity.getName() + "]" + " " + TextFormatting.RESET + " " + notifyString));
+        _player.sendMessage(new TextComponentString(_scriptedEntity.getFormatting()+ "[" + _scriptedEntity.getName() + "]" + " " + TextFormatting.RESET + " " + notifyString));
 
         command.setHasBeenExecuted(true);
     }
