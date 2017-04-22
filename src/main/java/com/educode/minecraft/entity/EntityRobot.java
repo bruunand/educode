@@ -280,4 +280,11 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
 
         return droppedItems;
     }
+
+    public boolean sendMessageTo(EntityPlayer player, String message)
+    {
+        player.sendMessage(new TextComponentString(this.getFormatting()+ "[" + this.getName() + "]" + " " + TextFormatting.RESET + " " + message));
+
+        return true;
+    }
 }
