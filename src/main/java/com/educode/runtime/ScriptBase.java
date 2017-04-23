@@ -3,21 +3,13 @@ package com.educode.runtime;
 import com.educode.minecraft.Command;
 import com.educode.minecraft.entity.EntityRobot;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockCake;
-import net.minecraft.block.BlockClay;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import com.educode.runtime.types.Coordinates;
+import com.educode.runtime.types.ExtendedCollection;
+import com.educode.runtime.types.MinecraftEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -176,7 +168,7 @@ public abstract class ScriptBase implements IRobot
     public boolean placeBlock(Coordinates coordinates)
     {
         // if the _scriptedEntity is close to the target coordinate then
-        if (this._scriptedEntity.getPosition().getDistance((int)coordinates.getX(), (int)coordinates.getY(), (int)coordinates.getZ()) < 3.0)
+        if (this._robot.getPosition().getDistance((int)coordinates.getX(), (int)coordinates.getY(), (int)coordinates.getZ()) < 3.0)
         {
             // TODO: if the _scriptedEntity is facing the target coordinate then, Andreas
             if (true)
@@ -194,7 +186,7 @@ public abstract class ScriptBase implements IRobot
 
     //TODO: should maybe be in interface aswell?, Andreas
     @Override
-    public void attack(MinecraftEntity entity)
+    public boolean attack(MinecraftEntity entity)
     {
         if (this._robot.isDead || this.getDistanceTo(entity) > 3.0F)
             return false;
