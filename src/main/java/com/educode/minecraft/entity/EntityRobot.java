@@ -51,7 +51,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
 
         this.setSize(0.6F, 1.8F);
         this.setCanPickUpLoot(true);
-        this._inventory = new InventoryBasic("Items", false, 4);
+        this._inventory = new InventoryBasic("Items", false, 8);
     }
     
     public EntityRobot(World worldIn, EntityPlayer owner)

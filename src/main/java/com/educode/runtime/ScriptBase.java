@@ -20,8 +20,9 @@ public abstract class ScriptBase implements IRobot
     private World _world;
     private EntityRobot _robot;
     private EntityPlayer _player;
-    private Random _rand = new Random();
+    private final Random _rand = new Random();
 
+    // Used by implemented scripts
     protected final ScriptBase robot = this;
 
     public void init(World world, EntityPlayer player)
@@ -141,16 +142,19 @@ public abstract class ScriptBase implements IRobot
         executeOnTick(() -> _robot.dropItems());
     }
 
+    @Override
     public float getX()
     {
         return (float) _robot.posX;
     }
 
+    @Override
     public float getY()
     {
         return (float) _robot.posY;
     }
 
+    @Override
     public float getZ()
     {
         return (float) _robot.posZ;
@@ -167,20 +171,20 @@ public abstract class ScriptBase implements IRobot
     @Override
     public boolean placeBlock(Coordinates coordinates)
     {
-        // if the _scriptedEntity is close to the target coordinate then
+        // if the _robot is close to the target coordinate then
         if (this._robot.getPosition().getDistance((int)coordinates.getX(), (int)coordinates.getY(), (int)coordinates.getZ()) < 3.0)
         {
-            // TODO: if the _scriptedEntity is facing the target coordinate then, Andreas
+            // TODO: if the _robot is facing the target coordinate then, Andreas
             if (true)
             {
                 // spawn a block motherfucker <3 maybe use this._scriptedEntity.getHeldItem(this._scriptedEntity.getActiveHand())
                 this._world.setBlockState(new BlockPos(coordinates.getX(), coordinates.getY(), coordinates.getZ()), Blocks.DIAMOND_BLOCK.getDefaultState());
                 return true;
             }
-            // if the _scriptedEntity isn't close to the target coordinate then
+            // if the _robot isn't close to the target coordinate then
             else { return false; }
         }
-        // if the _scriptedEntity is not facing the target coordinate then
+        // if the _robot is not facing the target coordinate then
         else { return false;}
     }
 
@@ -218,7 +222,7 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public float dropInventoryItem(String name, final float quantity)
+    public float dropItem(String name, final float quantity)
     {
         return (float) executeOnTick(() -> _robot.dropInventoryItem(name, quantity));
     }

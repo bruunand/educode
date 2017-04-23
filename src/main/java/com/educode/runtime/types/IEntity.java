@@ -8,4 +8,7 @@ public interface IEntity extends IBase
     Coordinates getCoordinates();
     float getHealth();
     boolean isRobot();
+    float getX();
+    float getY();
+    float getZ();
 }

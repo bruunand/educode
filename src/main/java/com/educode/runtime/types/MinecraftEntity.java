@@ -49,4 +49,22 @@ public class MinecraftEntity implements IEntity
         else
             return ((EntityLivingBase) getWrappedEntity()).getHealth();
     }
+
+    @Override
+    public float getX()
+    {
+        return (float) getWrappedEntity().posX;
+    }
+
+    @Override
+    public float getY()
+    {
+        return (float) getWrappedEntity().posY;
+    }
+
+    @Override
+    public float getZ()
+    {
+        return (float) getWrappedEntity().posZ;
+    }
 }

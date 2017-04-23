@@ -21,9 +21,7 @@ public interface IRobot extends IEntity
     void walkTo(Coordinates coords);
     boolean attack(MinecraftEntity entity);
     boolean placeBlock(Coordinates coordinates);
-
-    float dropInventoryItem(String name, float quantity);
-
+    float dropItem(String name, float quantity);
     float getDistanceTo(MinecraftEntity entity);
     MinecraftEntity getOwner();
     List<MinecraftEntity> getNearbyEntities();
