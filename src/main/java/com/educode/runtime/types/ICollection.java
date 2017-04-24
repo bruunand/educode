@@ -1,4 +1,4 @@
-package com.educode.runtime;
+package com.educode.runtime.types;
 
 /**
  * Created by User on 18-Apr-17.

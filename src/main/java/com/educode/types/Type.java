@@ -1,11 +1,6 @@
 package com.educode.types;
 
-import com.educode.helper.OperatorTranslator;
-import com.educode.runtime.ICollection;
-import com.educode.runtime.ICoordinates;
 import com.educode.symboltable.SymbolTable;
-
-import java.lang.reflect.Method;
 
 /**
  * Created by zen on 3/10/17.
@@ -57,10 +52,14 @@ public class Type
         _entitySymbolTable.addDefaultMethod("getHealth", Type.NumberType);
         _entitySymbolTable.addDefaultMethod("getCoordinates", Type.CoordinatesType);
         _entitySymbolTable.addDefaultMethod("isRobot", Type.BoolType);
+        _entitySymbolTable.addDefaultMethod("getX", Type.NumberType);
+        _entitySymbolTable.addDefaultMethod("getY", Type.NumberType);
+        _entitySymbolTable.addDefaultMethod("getZ", Type.NumberType);
 
         // Add default methods for robot
         _robotSymbolTable = new SymbolTable(_entitySymbolTable);
         _robotSymbolTable.addDefaultMethod("dropItems", Type.VoidType);
+        _robotSymbolTable.addDefaultMethod("dropItem", Type.NumberType, Type.StringType, Type.NumberType);
         _robotSymbolTable.addDefaultMethod("move", Type.VoidType, Type.StringType);
         _robotSymbolTable.addDefaultMethod("mine", Type.VoidType, Type.StringType);
         _robotSymbolTable.addDefaultMethod("say", Type.VoidType, Type.StringType);
@@ -70,7 +69,8 @@ public class Type
         _robotSymbolTable.addDefaultMethod("getNearbyEntities", new Type(Type.EntityType));
         _robotSymbolTable.addDefaultMethod("walkTo", Type.VoidType, Type.CoordinatesType);
         _robotSymbolTable.addDefaultMethod("getDistanceTo", Type.NumberType, Type.EntityType);
-        _robotSymbolTable.addDefaultMethod("attack", Type.VoidType, Type.EntityType);
+        _robotSymbolTable.addDefaultMethod("attack", Type.BoolType, Type.EntityType);
+        _robotSymbolTable.addDefaultMethod("placeBlock", Type.BoolType, Type.CoordinatesType);
     }
 
     public Type(byte kind)

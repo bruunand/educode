@@ -1,8 +1,9 @@
-package com.educode.runtime;
+package com.educode.runtime.types;
 
 import com.educode.minecraft.entity.EntityRobot;
+import com.educode.runtime.types.Coordinates;
+import com.educode.runtime.types.IEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 
 /**
@@ -47,5 +48,23 @@ public class MinecraftEntity implements IEntity
             return -1;
         else
             return ((EntityLivingBase) getWrappedEntity()).getHealth();
+    }
+
+    @Override
+    public float getX()
+    {
+        return (float) getWrappedEntity().posX;
+    }
+
+    @Override
+    public float getY()
+    {
+        return (float) getWrappedEntity().posY;
+    }
+
+    @Override
+    public float getZ()
+    {
+        return (float) getWrappedEntity().posZ;
     }
 }

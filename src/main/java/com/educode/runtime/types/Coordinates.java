@@ -1,5 +1,6 @@
-package com.educode.runtime;
+package com.educode.runtime.types;
 
+import com.educode.runtime.types.ICoordinates;
 import net.minecraft.util.math.BlockPos;
 
 /**

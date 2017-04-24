@@ -1,8 +1,4 @@
-package com.educode.runtime;
-
-import com.educode.runtime.types.Coordinates;
-import com.educode.runtime.types.IEntity;
-import com.educode.runtime.types.MinecraftEntity;
+package com.educode.runtime.types;
 
 import java.util.List;
 
@@ -20,8 +16,7 @@ public interface IRobot extends IEntity
     void explode(float strength);
     void walkTo(Coordinates coords);
     boolean attack(MinecraftEntity entity);
-    boolean placeBlock(Coordinates coordinates);
-    float dropItem(String name, float quantity);
+    float dropInventoryItem(String name, float quantity);
     float getDistanceTo(MinecraftEntity entity);
     MinecraftEntity getOwner();
     List<MinecraftEntity> getNearbyEntities();

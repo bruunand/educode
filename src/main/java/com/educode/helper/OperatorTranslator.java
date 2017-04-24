@@ -1,14 +1,8 @@
 package com.educode.helper;
 
-import com.educode.runtime.ExtendedCollection;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
-
-import java.lang.reflect.ParameterizedType;
-
-import static com.educode.types.LogicalOperator.AND;
-import static com.educode.types.LogicalOperator.OR;
 
 /**
  * Created by zen on 3/24/17.

@@ -61,6 +61,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object defaultVisit(Node node)
     {
+        System.out.println("Please implement in Java CodeGen:" + node.getClass().getName());
         return "NOT IMPLEMENTED:" + node.getClass().getName();
     }
 
@@ -68,7 +69,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     {
         StringBuffer codeBuffer = new StringBuffer();
 
-        append(codeBuffer, "import java.util.*;\nimport com.educode.runtime.*;\n\n");
+        append(codeBuffer, "import java.util.*;\nimport com.educode.runtime.*;\nimport com.educode.runtime.types.*;\n\n");
 
         append(codeBuffer, "public class %s extends ScriptBase\n{\n", node.getReference());
 
