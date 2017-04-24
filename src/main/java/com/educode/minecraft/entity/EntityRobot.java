@@ -4,16 +4,15 @@ import com.educode.minecraft.Command;
 import com.educode.minecraft.CompilerMod;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -66,38 +65,35 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     @Override
     public void onLivingUpdate()
     {
-        super.onLivingUpdate();
-        this.updateArmSwingProgress();
-    }
-
-    @Override
-    public void onEntityUpdate()
-    {
-    	// Remove entity if not spawned in this server instance
-    	if (this._tickCounter++ == 0 && !this.world.isRemote && !CompilerMod.CHILD_ENTITIES.contains(this.getUniqueID()))
-    	{
-    		this.world.removeEntity(this);
-    		return;
-    	}
-
-        // Poll next command
-        // Only one command is executed at a time
-        Command nextCommand = CommandQueue.poll();
-        if (nextCommand != null)
+        if (!this.world.isRemote) // Server Logic
         {
-            nextCommand.setCanExecute(true);
-            
-            try
+            // Remove entity if not spawned in this server instance
+            if (this._tickCounter++ == 0 && !CompilerMod.CHILD_ENTITIES.contains(this.getUniqueID()))
             {
-                nextCommand.waitForHasBeenExecuted();
+                this.world.removeEntity(this);
+                return;
             }
-            catch (Exception e)
+
+            // Poll next command
+            // Only one command is executed at a time
+            Command nextCommand = CommandQueue.poll();
+            if (nextCommand != null)
             {
-                e.printStackTrace();
+                nextCommand.setCanExecute(true);
+
+                try
+                {
+                    nextCommand.waitForHasBeenExecuted();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
-        
-        super.onEntityUpdate();
+
+        super.onLivingUpdate();
+        this.updateArmSwingProgress();
     }
     
     @Override
@@ -166,23 +162,10 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(256.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.7D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-    }
-
-    public void readEntityFromNBT(NBTTagCompound compound)
-    {
-    	super.readEntityFromNBT(compound);
-    	
-    	if (compound.hasKey("name"))
-        	_name = compound.getString("name");
-    }
-
-    public void writeEntityToNBT(NBTTagCompound compound)
-    {
-    	super.writeEntityToNBT(compound);
-    	compound.setString("name", "Anders");
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
     
     @Override
@@ -252,7 +235,9 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         this.faceEntity(entity, 360.0f, 360.0f);
 
         // calculate damage
-        float damage = 1.0F + this.getHeldItemMainhand().getItemDamage();
+        float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        if (entity instanceof EntityLivingBase)
+            damage += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase) entity).getCreatureAttribute());
 
         //swing animation
         this.swingArm(EnumHand.MAIN_HAND);
@@ -266,15 +251,19 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         int i = 0;
         float droppedItems = 0;
 
-        while (i++ < getInventory().getSizeInventory() && droppedItems < quantity)
+        while (i < getInventory().getSizeInventory() && droppedItems < quantity)
         {
-            ItemStack stack = getInventory().getStackInSlot(i);
+            ItemStack stack = getInventory().getStackInSlot(i++);
             if (!stack.getDisplayName().equalsIgnoreCase(name))
                 continue;
 
             // Don't drop more than needed
             int maxCount = Math.min(stack.getCount(), (int)(quantity - droppedItems));
+
+            // Drop items on ground and reduce stack count
             dropItem(stack.getItem(), maxCount);
+            getInventory().decrStackSize(i - 1, maxCount);
+
             droppedItems += maxCount;
         }
 
@@ -286,5 +275,19 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         player.sendMessage(new TextComponentString(this.getFormatting()+ "[" + this.getName() + "]" + " " + TextFormatting.RESET + " " + message));
 
         return true;
+    }
+
+    public void readEntityFromNBT(NBTTagCompound compound)
+    {
+        super.readEntityFromNBT(compound);
+
+        if (compound.hasKey("name"))
+            _name = compound.getString("name");
+    }
+
+    public void writeEntityToNBT(NBTTagCompound compound)
+    {
+        super.writeEntityToNBT(compound);
+        compound.setString("name", this._name);
     }
 }

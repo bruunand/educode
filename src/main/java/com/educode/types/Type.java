@@ -67,7 +67,7 @@ public class Type
         _robotSymbolTable.addDefaultMethod("explode", Type.VoidType, Type.NumberType);
         _robotSymbolTable.addDefaultMethod("getOwner", Type.EntityType);
         _robotSymbolTable.addDefaultMethod("getNearbyEntities", new Type(Type.EntityType));
-        _robotSymbolTable.addDefaultMethod("walkTo", Type.VoidType, Type.CoordinatesType);
+        _robotSymbolTable.addDefaultMethod("walkTo", Type.BoolType, Type.CoordinatesType);
         _robotSymbolTable.addDefaultMethod("getDistanceTo", Type.NumberType, Type.EntityType);
         _robotSymbolTable.addDefaultMethod("attack", Type.BoolType, Type.EntityType);
         _robotSymbolTable.addDefaultMethod("placeBlock", Type.BoolType, Type.CoordinatesType);

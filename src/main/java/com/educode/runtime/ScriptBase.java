@@ -10,6 +10,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -188,11 +190,10 @@ public abstract class ScriptBase implements IRobot
         else { return false;}
     }
 
-    //TODO: should maybe be in interface aswell?, Andreas
     @Override
     public boolean attack(MinecraftEntity entity)
     {
-        if (this._robot.isDead || this.getDistanceTo(entity) > 3.0F)
+        if (this._robot.isDead || this.getDistanceTo(entity) > 3.0F || !this._robot.canEntityBeSeen(entity.getWrappedEntity()))
             return false;
 
         executeOnTick(() -> _robot.attackEntity(entity.getWrappedEntity()));
@@ -239,20 +240,24 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public void walkTo(Coordinates coords)
+    public boolean walkTo(Coordinates coords)
     {
-        navigateToBlock(coords.toBlockPos());
+        return navigateToBlock(coords.toBlockPos());
     }
     
-    private void navigateToBlock(BlockPos pos)
+    private boolean navigateToBlock(BlockPos pos)
     {
-        executeOnTick(() ->
+        boolean result = (boolean) executeOnTick(() ->
         {
             _robot.getNavigator().clearPathEntity();
-            _robot.getNavigator().setPath(_robot.getNavigator().getPathToPos(pos), 0.5D);
+            Path path = _robot.getNavigator().getPathToPos(pos);
+            if (path == null)
+                return false;
+            return _robot.getNavigator().setPath(_robot.getNavigator().getPathToPos(pos), 0.5D);
         });
 
         wait(500F);
+        return result;
     }
 
     @Override

@@ -18,7 +18,7 @@ public interface IRobot extends IEntity
     void mine(String direction);
     void setWorldTime(float time);
     void explode(float strength);
-    void walkTo(Coordinates coords);
+    boolean walkTo(Coordinates coords);
     boolean attack(MinecraftEntity entity);
     boolean placeBlock(Coordinates coordinates);
     float dropItem(String name, float quantity);
