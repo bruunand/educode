@@ -14,7 +14,9 @@ import com.educode.types.*;
 import com.educode.visitors.VisitorBase;
 import org.omg.PortableServer.POA;
 
+import java.io.File;
 import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -47,11 +49,48 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     {
         return "NOT IMPLEMENTED:" + node.getClass().getName();
     }
+
+    public void GenerateProgramExecuter(String className)
+    {
+        StringBuffer codeBuffer = new StringBuffer();
+
+        append(codeBuffer, ".class public Program\n" +
+                ".super java/lang/Object\n\n" +
+                ".method public <init>()V\n" +
+                "  aload_0\n" +
+                "  invokespecial java/lang/Object/<init>()V\n" +
+                "  return\n" +
+                ".end method\n\n");
+        append(codeBuffer, ".method public static main([Ljava/lang/String;)V\n" +
+                "  .limit stack 2\n" +
+                "  .limit locals 1\n" +
+                "  new " + className + "\n" +
+                "  dup\n" +
+                "  invokespecial " + className + "/<init>()V\n" +
+                "  invokevirtual "+ className + "/main()V\n" +
+                "  return\n" +
+                ".end method");
+
+        try
+        {
+            fw = new FileWriter("Program.j");
+            fw.append(codeBuffer);
+            fw.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return;
+    }
     
     public Object visit(ProgramNode node)
     {
         programNode = node;
         StringBuffer codeBuffer = new StringBuffer();
+
+        GenerateProgramExecuter(node.getReference().toString());
 
         append(codeBuffer, ".class public %s\n", node.getReference());
         append(codeBuffer, ".super java/lang/Object\n\n");
@@ -84,9 +123,20 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     {
         StringBuffer codeBuffer = new StringBuffer();
         int startSize = DeclaratoinOffsetTable.size();
+        Type temp;
 
         for (Node child : node.getChildren())
+        {
             append(codeBuffer, "%s",visitPop(child));
+            if (child instanceof MethodInvocationNode)
+                if ((temp = ((MethodInvocationNode) child).getType()).getKind() != Type.VOID && temp.getKind() != Type.ERROR)
+                {
+                    if (temp.getKind() == Type.NUMBER)
+                        append(codeBuffer, "  pop2\n");
+                    else
+                        append(codeBuffer, "  pop\n");
+                }
+        }
 
         while (startSize != DeclaratoinOffsetTable.size())
             offSetTableRemove();
@@ -129,7 +179,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         // Visit block
         append(codeBuffer, "%s", visit(node.getBlockNode()));
 
-        if (node.isType(Type.BoolType))
+        if (node.isType(Type.VoidType))
             append(codeBuffer, "  return\n");
         append(codeBuffer, ".end method\n\n");
 
@@ -408,13 +458,14 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     public Object visit(OrExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
+        int trueLabel = LabelCounter++;
 
         append(codeBuffer, "%s", visit(node.getLeftChild()));
         append(codeBuffer, "  dup\n");
-        append(codeBuffer, "  ifne L%s\n", LabelCounter);
+        append(codeBuffer, "  ifne L%s\n", trueLabel);
         append(codeBuffer, "  pop\n");
         append(codeBuffer, "%s", visit(node.getRightChild()));
-        append(codeBuffer, "L%s:\n", LabelCounter++);
+        append(codeBuffer, "L%s:\n", trueLabel);
         append(codeBuffer, "  nop\n");
 
         return codeBuffer;
@@ -439,6 +490,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     {
         StringBuffer codeBuffer = new StringBuffer();
         int trueLabel = LabelCounter++;
+        int endLabel = LabelCounter++;
 
         append(codeBuffer, "%s", visit(node.getLeftChild()));
         append(codeBuffer, "%s", visit(node.getRightChild()));
@@ -465,10 +517,10 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         }
 
         append(codeBuffer, "  iconst_0\n");
-        append(codeBuffer, "  goto L%s\n", LabelCounter);
+        append(codeBuffer, "  goto L%s\n", endLabel);
         append(codeBuffer, "L%s:\n", trueLabel);
         append(codeBuffer, "  iconst_1\n");
-        append(codeBuffer, "L%s:\n", LabelCounter++);
+        append(codeBuffer, "L%s:\n", endLabel);
         append(codeBuffer, "  nop\n");
 
         return codeBuffer;
