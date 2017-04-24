@@ -62,6 +62,7 @@ public class Type
         _robotSymbolTable.addDefaultMethod("dropItem", Type.NumberType, Type.StringType, Type.NumberType);
         _robotSymbolTable.addDefaultMethod("move", Type.VoidType, Type.StringType);
         _robotSymbolTable.addDefaultMethod("mine", Type.VoidType, Type.StringType);
+        _robotSymbolTable.addDefaultMethod("mineBlock", Type.VoidType, Type.CoordinatesType);
         _robotSymbolTable.addDefaultMethod("say", Type.VoidType, Type.StringType);
         _robotSymbolTable.addDefaultMethod("setWorldTime", Type.VoidType, Type.NumberType);
         _robotSymbolTable.addDefaultMethod("explode", Type.VoidType, Type.NumberType);
