@@ -174,15 +174,8 @@ public abstract class ScriptBase implements IRobot
         // if the _robot is close to the target coordinate then
         if (this._robot.getPosition().getDistance((int)coordinates.getX(), (int)coordinates.getY(), (int)coordinates.getZ()) < 3.0)
         {
-            // TODO: if the _robot is facing the target coordinate then, Andreas
-            if (true)
-            {
-                // spawn a block motherfucker <3 maybe use this._scriptedEntity.getHeldItem(this._scriptedEntity.getActiveHand())
-                this._world.setBlockState(new BlockPos(coordinates.getX(), coordinates.getY(), coordinates.getZ()), Blocks.DIAMOND_BLOCK.getDefaultState());
-                return true;
-            }
-            // if the _robot isn't close to the target coordinate then
-            else { return false; }
+            this._robot.placeTheDamnBlockNiggah(coordinates);
+            return true;
         }
         // if the _robot is not facing the target coordinate then
         else { return false;}
@@ -369,12 +362,17 @@ public abstract class ScriptBase implements IRobot
         // face(position);
         mineBlock(position);
     }
-    
+
     private void mineBlock(BlockPos position)
     {
         boolean blockDestroyed = (boolean) executeOnTick(() -> _world.destroyBlock(position, true));
         if (blockDestroyed)
             wait(500F);
+    }
+
+    public void mineBlock(Coordinates position)
+    {
+        mineBlock(position.toBlockPos());
     }
     
     public abstract void main();
