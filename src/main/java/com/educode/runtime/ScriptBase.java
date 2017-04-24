@@ -10,8 +10,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -168,11 +166,9 @@ public abstract class ScriptBase implements IRobot
         return new Coordinates(_robot.getPosition());
     }
 
-
     //TODO: should maybe be in interface as well?, Andreas
     @Override
-    public boolean placeBlock(Coordinates coordinates)
-    {
+    public boolean placeBlock(Coordinates coordinates){
         // if the _robot is close to the target coordinate then
         if (this._robot.getPosition().getDistance((int)coordinates.getX(), (int)coordinates.getY(), (int)coordinates.getZ()) < 3.0)
         {
@@ -183,10 +179,10 @@ public abstract class ScriptBase implements IRobot
         else { return false;}
     }
 
+    //TODO: should maybe be in interface aswell?, Andreas
     @Override
-    public boolean attack(MinecraftEntity entity)
-    {
-        if (this._robot.isDead || this.getDistanceTo(entity) > 3.0F || !this._robot.canEntityBeSeen(entity.getWrappedEntity()))
+    public boolean attack(MinecraftEntity entity){
+        if (this._robot.isDead || this.getDistanceTo(entity) > 3.0F)
             return false;
 
         executeOnTick(() -> _robot.attackEntity(entity.getWrappedEntity()));
@@ -195,8 +191,7 @@ public abstract class ScriptBase implements IRobot
         return true;
     }
 
-    private synchronized Object executeOnTick(IExecutableReturns executable)
-    {
+    private synchronized Object executeOnTick(IExecutableReturns executable){
         Command command = queueAndAwait();
 
         Object executionResult = executable.execute();
@@ -206,8 +201,7 @@ public abstract class ScriptBase implements IRobot
         return executionResult;
     }
 
-    private synchronized void executeOnTick(IExecutable executable)
-    {
+    private synchronized void executeOnTick(IExecutable executable){
         Command command = queueAndAwait();
 
         executable.execute();
@@ -216,8 +210,7 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public float dropItem(String name, final float quantity)
-    {
+    public float dropItem(String name, final float quantity){
         return (float) executeOnTick(() -> _robot.dropInventoryItem(name, quantity));
     }
 
@@ -233,29 +226,23 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public boolean walkTo(Coordinates coords)
+    public void walkTo(Coordinates coords)
     {
-        return navigateToBlock(coords.toBlockPos());
+        navigateToBlock(coords.toBlockPos());
     }
     
-    private boolean navigateToBlock(BlockPos pos)
-    {
-        boolean result = (boolean) executeOnTick(() ->
+    private void navigateToBlock(BlockPos pos){
+        executeOnTick(() ->
         {
             _robot.getNavigator().clearPathEntity();
-            Path path = _robot.getNavigator().getPathToPos(pos);
-            if (path == null)
-                return false;
-            return _robot.getNavigator().setPath(_robot.getNavigator().getPathToPos(pos), 0.5D);
+            _robot.getNavigator().setPath(_robot.getNavigator().getPathToPos(pos), 0.5D);
         });
 
         wait(500F);
-        return result;
     }
 
     @Override
-    public ExtendedCollection<MinecraftEntity> getNearbyEntities()
-    {
+    public ExtendedCollection<MinecraftEntity> getNearbyEntities(){
         return (ExtendedCollection<MinecraftEntity>) executeOnTick(() ->
         {
             ExtendedCollection<MinecraftEntity> returnList = new ExtendedCollection<>();
@@ -278,8 +265,7 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public void move(String direction)
-    {
+    public void move(String direction) {
         BlockPos targetPosition = _robot.getPosition();
         switch (direction.toLowerCase())
         {
@@ -315,15 +301,13 @@ public abstract class ScriptBase implements IRobot
         return this._robot.getHealth();
     }
 
-
     @Override
     public void mine(String direction)
     {
     	mine(direction, 0);
     }
     
-    private void mine(String direction, int yModifier)
-    {
+    private void mine(String direction, int yModifier){
         BlockPos targetBlockPosition = _robot.getPosition();
         if (yModifier != 0)
         	targetBlockPosition = targetBlockPosition.add(0, yModifier, 0);
@@ -359,8 +343,7 @@ public abstract class ScriptBase implements IRobot
         faceAndMine(targetBlockPosition);
     }
     
-    private void faceAndMine(BlockPos position)
-    {
+    private void faceAndMine(BlockPos position){
         if (_world.isAirBlock(position))
             return;
         
@@ -368,16 +351,17 @@ public abstract class ScriptBase implements IRobot
         mineBlock(position);
     }
 
-    private void mineBlock(BlockPos position)
-    {
+    private void mineBlock(BlockPos position){
         boolean blockDestroyed = (boolean) executeOnTick(() -> _world.destroyBlock(position, true));
         if (blockDestroyed)
             wait(500F);
     }
 
-    public void mineBlock(Coordinates position)
-    {
-        mineBlock(position.toBlockPos());
+    public void mineBlock(Coordinates position){
+        if(this.getCoordinates().toBlockPos().getDistance((int)position.getX(), (int)position.getY(), (int)position.getZ()) > 3.0F)
+        {
+            mineBlock(position.toBlockPos());
+        }
     }
     
     public abstract void main();
