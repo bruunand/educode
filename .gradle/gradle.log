@@ -9,12 +9,7 @@ This mapping 'snapshot_20161220' was designed for MC 1.11! Use at your own peril
          by: Searge, ProfMobius, Fesh0r,         
          R4wk, ZeuX, IngisKahn, bspkrs           
 #################################################
-:genIntellijRuns
 
-BUILD SUCCESSFUL
+CONFIGURE SUCCESSFUL
 
-<<<<<<< HEAD
-Total time: 6.971 secs
-=======
-Total time: 14.901 secs
->>>>>>> master
+Total time: 12.931 secs
