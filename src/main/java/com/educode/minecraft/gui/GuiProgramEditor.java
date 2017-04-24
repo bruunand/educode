@@ -44,7 +44,7 @@ public class GuiProgramEditor extends GuiScreen
     }
 
 
-    private static String[] testWord(String word, Set<String[]> keySet)
+    private static String[] testWord(String word, Set<String[]> keySet, String[] partialKeywords)
     {
         for(String[] keywords : keySet)
         {
@@ -54,6 +54,16 @@ public class GuiProgramEditor extends GuiScreen
                 {
                     return keywords;
                 }
+                else
+                {
+                    for (String partialKeyword : partialKeywords)
+                    {
+                        if (word.equals(partialKeyword))
+                        {
+                            //TODO: Partial keyword found
+                        }
+                    }
+                }
             }
         }
         return null;
@@ -62,7 +72,8 @@ public class GuiProgramEditor extends GuiScreen
 
     public static void setText(String text)
     {
-        String[] blueKeywords = new String[] {"begin", "end", "program", "if", "then", "else", "while", "repeat", "method", new Regex("(return(s)?)").toString()};
+        String[] partialKeywords = new String[] {"end", "repeat", "less", "greater"};
+        String[] blueKeywords = new String[] {"program", "end program", "method", "end method", "if", "then", "else", "end if", "repeat while", new Regex("(return(s)?)").toString()};
         String[] yellowKeywords = new String[] {"not", "equals", "less than", "greater than", "or", "and"};
 
 
@@ -70,44 +81,48 @@ public class GuiProgramEditor extends GuiScreen
         keyWordMap.put(blueKeywords, TextFormatting.BLUE);
         keyWordMap.put(yellowKeywords, TextFormatting.YELLOW);
 
-
         _text = text.replace("\r", "");
-        String[] _splitText = _text.split("( )");
-
-
-
         StringBuffer newFormattedText = new StringBuffer(_text).insert(_position, _cursorSymbol);
-        StringBuffer colorFormattedText = new StringBuffer();
+
+        String[] _lines = newFormattedText.toString().split("(\n)");
 
         Set<String[]> keySet = keyWordMap.keySet();
 
 
-        for(String word : _splitText)
+        for(String line : _lines)
         {
-            String[] key = testWord(word, keySet);
-            if (key != null)
+            for (String word : line.split("( )"))
             {
-                TextFormatting col = keyWordMap.get(key);
-                colorFormattedText.append(col + word + " " + TextFormatting.WHITE);
-            }
-            else
-            {
-                colorFormattedText.append(word + " ");
+                String[] key = testWord( word, keySet, partialKeywords);
+
+                if (key != null)
+                {
+                    TextFormatting col = keyWordMap.get(key);
+                    newFormattedText.append(col + word + " " + TextFormatting.WHITE);
+                }
+                else
+                {
+                    newFormattedText.append(word + " ");
+                }
             }
         }
 
 
 
-
         // Perform syntax highlighting using regex
-        //newFormattedText = newFormattedText.replaceAll("(begin|end|program|if|then|else|while|repeat|method|return(s)?)", TextFormatting.BLUE + "$1" + TextFormatting.WHITE);
+        //Blue keywords
+        //newFormattedText = newFormattedText.replaceAll("(program | program |\nprogram | method |\nmethod )", TextFormatting.BLUE + "$1" + TextFormatting.WHITE);
+        //newFormattedText = newFormattedText.replaceAll("( end program|\nend program| end if | end if\n|\nend if |\nend if\n| end method | end method\n|\nend method |\nend method\n| if|then|else|while|repeat|method|return(s)?)", TextFormatting.BLUE + "$1" + TextFormatting.WHITE);
+        //newFormattedText = newFormattedText.replaceAll("( begin | end program|\nend program| end if | end if\n|\nend if |\nend if\n| end method | end method\n|\nend method |\nend method\n| if|then|else|while|repeat|method|return(s)?)", TextFormatting.BLUE + "$1" + TextFormatting.WHITE);
+
         //newFormattedText = newFormattedText.replaceAll("(not|equals|less than|greater than|or|and)", TextFormatting.YELLOW + "$1" + TextFormatting.WHITE);
         //newFormattedText = newFormattedText.replaceAll("(number|Coordinates|string|bool|Collection<(.*?)>)", TextFormatting.LIGHT_PURPLE + "$1" + TextFormatting.WHITE);
         //newFormattedText = newFormattedText.replaceAll("\"(.*?)\"", TextFormatting.RED + "\"$1\"" + TextFormatting.WHITE); // Strings
         //newFormattedText = newFormattedText.replaceAll("(true|false)", TextFormatting.RED + "$1" + TextFormatting.WHITE); // Other literals
         //newFormattedText = newFormattedText.replaceAll("(//.*)", TextFormatting.GREEN + "$1" + TextFormatting.WHITE); // Comments
 
-        _formattedText = TextFormatting.WHITE + colorFormattedText.toString();
+        StringBuffer newFormattedTextWithCursor = new StringBuffer(newFormattedText).insert(_position, _cursorSymbol);
+        _formattedText = TextFormatting.WHITE + newFormattedTextWithCursor.toString();
     }
 
     private static void insert(String content)
