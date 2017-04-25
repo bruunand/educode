@@ -3,14 +3,19 @@ package com.educode.runtime;
 import com.educode.minecraft.Command;
 import com.educode.minecraft.entity.EntityRobot;
 
-import com.educode.runtime.types.Coordinates;
-import com.educode.runtime.types.ExtendedCollection;
-import com.educode.runtime.types.MinecraftEntity;
+import com.educode.runtime.types.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.Path;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -94,7 +99,7 @@ public abstract class ScriptBase implements IRobot
         }
     }
 
-    public synchronized Command queueAndAwait()
+    private synchronized Command queueAndAwait()
     {
         try
         {
@@ -169,20 +174,37 @@ public abstract class ScriptBase implements IRobot
 
     //TODO: should maybe be in interface as well?, Andreas
     @Override
-    public boolean placeBlock(Coordinates coordinates){
-        // if the _robot is close to the target coordinate then
-        if (this._robot.getPosition().getDistance((int)coordinates.getX(), (int)coordinates.getY(), (int)coordinates.getZ()) < 3.0)
+    public boolean placeBlock(Coordinates coordinates)
+    {
+        if (this._robot.getPosition().getDistance((int)coordinates.getX(), (int)coordinates.getY(), (int)coordinates.getZ()) > 3.0)
+            return false;
+
+        boolean result = (boolean) executeOnTick(() ->
         {
-            this._robot.placeTheDamnBlockNiggah(coordinates);
-            return true;
-        }
-        // if the _robot is not facing the target coordinate then
-        else { return false;}
+            ItemStack heldStack = getHeldItem().getWrappedItem();
+            if (heldStack.getItem() instanceof ItemBlock)
+            {
+                ItemBlock itemBlock = (ItemBlock) heldStack.getItem();
+                Block block = Block.getBlockFromItem(heldStack.getItem());
+
+                itemBlock.placeBlockAt(heldStack, _player, _world, coordinates.toBlockPos(), EnumFacing.DOWN, 0F, 0F, 0F, block.getDefaultState());
+            }
+            else
+                return false;
+
+            return false;
+        });
+
+        if (result)
+            wait(500.0F);
+
+        return result;
     }
 
     //TODO: should maybe be in interface aswell?, Andreas
     @Override
-    public boolean attack(MinecraftEntity entity){
+    public boolean attack(MinecraftEntity entity)
+    {
         if (this._robot.isDead || this.getDistanceTo(entity) > 3.0F)
             return false;
 
@@ -192,7 +214,8 @@ public abstract class ScriptBase implements IRobot
         return true;
     }
 
-    private synchronized Object executeOnTick(IExecutableReturns executable){
+    private synchronized Object executeOnTick(IExecutableReturns executable)
+    {
         Command command = queueAndAwait();
 
         Object executionResult = executable.execute();
@@ -202,7 +225,8 @@ public abstract class ScriptBase implements IRobot
         return executionResult;
     }
 
-    private synchronized void executeOnTick(IExecutable executable){
+    private synchronized void executeOnTick(IExecutable executable)
+    {
         Command command = queueAndAwait();
 
         executable.execute();
@@ -211,19 +235,53 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public float dropItem(String name, final float quantity){
+    public float dropItem(String name, final float quantity)
+    {
         return (float) executeOnTick(() -> _robot.dropInventoryItem(name, quantity));
+    }
+
+    @Override
+    public ExtendedCollection<MinecraftItem> getInventory()
+    {
+        ExtendedCollection<MinecraftItem> collection = new ExtendedCollection<>();
+
+        // Add non-air blocks
+        for (int i = 0; i < this._robot.getInventory().getSizeInventory(); i++)
+        {
+            ItemStack current = this._robot.getInventory().getStackInSlot(i);
+            if (current.isEmpty())
+                continue;
+            collection.add(new MinecraftItem(current));
+        }
+
+        return collection;
+    }
+
+    @Override
+    public MinecraftItem getHeldItem()
+    {
+        return new MinecraftItem(this._robot.getHeldItem(EnumHand.MAIN_HAND));
+    }
+
+    @Override
+    public void setHeldItem(MinecraftItem item)
+    {
+        executeOnTick(() -> this._robot.setHeldItem(EnumHand.MAIN_HAND, item.getWrappedItem()));
+    }
+
+    @Override
+    public MinecraftItem getItemFromSlot(float index)
+    {
+        int intIndex = (int) index;
+        if (intIndex >= this._robot.getInventory().getSizeInventory())
+            return new MinecraftItem();
+        return new MinecraftItem(this._robot.getInventory().getStackInSlot(intIndex));
     }
 
     @Override
     public float getDistanceTo(MinecraftEntity entity)
     {
     	return _robot.getDistanceToEntity(entity.getWrappedEntity());
-    }
-
-    private void walkToEntity(MinecraftEntity entity)
-    {
-        navigateToBlock(entity.getWrappedEntity().getPosition());
     }
 
     @Override
@@ -234,6 +292,7 @@ public abstract class ScriptBase implements IRobot
 
     private boolean navigateToBlock(BlockPos pos)
     {
+        EntityCow cow;
         boolean result = (boolean) executeOnTick(() ->
         {
             _robot.getNavigator().clearPathEntity();
@@ -249,7 +308,8 @@ public abstract class ScriptBase implements IRobot
 
 
     @Override
-    public ExtendedCollection<MinecraftEntity> getNearbyEntities(){
+    public ExtendedCollection<MinecraftEntity> getNearbyEntities()
+    {
         return (ExtendedCollection<MinecraftEntity>) executeOnTick(() ->
         {
             ExtendedCollection<MinecraftEntity> returnList = new ExtendedCollection<>();
@@ -358,8 +418,16 @@ public abstract class ScriptBase implements IRobot
         mineBlock(position);
     }
 
-    private void mineBlock(BlockPos position){
-        boolean blockDestroyed = (boolean) executeOnTick(() -> _world.destroyBlock(position, true));
+    private void mineBlock(BlockPos position)
+    {
+        boolean blockDestroyed = (boolean) executeOnTick(() ->
+        {
+            if (_world.getBlockState(position).getBlock() == Blocks.BEDROCK)
+                return false;
+
+            return _world.destroyBlock(position, true);
+        });
+
         if (blockDestroyed)
             wait(500F);
     }

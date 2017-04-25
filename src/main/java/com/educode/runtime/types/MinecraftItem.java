@@ -1,5 +1,6 @@
 package com.educode.runtime.types;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -9,12 +10,17 @@ public class MinecraftItem implements IItem
 {
     private final ItemStack _wrappedItem;
 
+    public MinecraftItem()
+    {
+        this._wrappedItem = new ItemStack(Blocks.AIR);
+    }
+
     public MinecraftItem(ItemStack item)
     {
         this._wrappedItem = item;
     }
 
-    private ItemStack getWrappedItem()
+    public ItemStack getWrappedItem()
     {
         return this._wrappedItem;
     }

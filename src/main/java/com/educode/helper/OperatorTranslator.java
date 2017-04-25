@@ -27,6 +27,8 @@ public class OperatorTranslator
                 return String.format("ExtendedCollection<%s>", toJava(type.getChildType()));
             case Type.ENTITY:
                 return "MinecraftEntity";
+            case Type.ITEM:
+                return "MinecraftItem";
         }
 
         System.out.println(String.format("Warning: Could not determine Java translation for type %s.", type));

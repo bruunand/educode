@@ -7,6 +7,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -15,6 +16,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -54,7 +56,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
 
         this.setSize(0.6F, 1.8F);
         this.setCanPickUpLoot(true);
-        this._inventory = new InventoryBasic("Items", false, 8);
+        this._inventory = new InventoryBasic("Items", false, 36);
     }
     
     public EntityRobot(World worldIn, EntityPlayer owner)
@@ -114,7 +116,6 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         for (int i = 0; i < getInventory().getSizeInventory(); i++)
         {
             ItemStack stack = getInventory().getStackInSlot(i);
-            System.out.println(i + "=" + stack.getDisplayName()); // todo remove
             getInventory().removeStackFromSlot(i);
             dropItem(stack.getItem(), stack.getCount());
         }
@@ -233,47 +234,16 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         return this._textFormatting;
     }
 
-    public void placeTheDamnBlockNiggah(Coordinates coordinates)
+    public void placeBlock(Coordinates coordinates)
     {
-        this.faceCoordinates(coordinates,360, 360);
-        //new BlockPos((int)coordinates.getX(), (int)coordinates.getY(), (int)coordinates.getZ()))
-        // spawn a block motherfucker <3 maybe use this._scriptedEntity.getHeldItem(this._scriptedEntity.getActiveHand())
-        this.getEntityWorld().setBlockState(new BlockPos(coordinates.getX(), coordinates.getY(), coordinates.getZ()), Blocks.DIAMOND_BLOCK.getDefaultState());
-    }
-
-    private void faceCoordinates(Coordinates coordinates, float maxYawIncrease, float maxPitchIncrease)
-    {
-        double d0 = coordinates.getX() - this.posX;
-        double d2 = coordinates.getZ() - this.posZ;
-        double d1 =  coordinates.getZ() - (this.posY + (double)this.getEyeHeight());
-        double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
-        float f = (float)(MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
-        float f1 = (float)(-(MathHelper.atan2(d1, d3) * (180D / Math.PI)));
-        this.rotationPitch = this.updateRotationAndreas(this.rotationPitch, f1, maxPitchIncrease);
-        this.rotationYaw = this.updateRotationAndreas(this.rotationYaw, f, maxYawIncrease);
-    }
-
-    private float updateRotationAndreas(float angle, float targetAngle, float maxIncrease)
-    {
-        float f = MathHelper.wrapDegrees(targetAngle - angle);
-
-        if (f > maxIncrease)
-        {
-            f = maxIncrease;
-        }
-
-        if (f < -maxIncrease)
-        {
-            f = -maxIncrease;
-        }
-
-        return angle + f;
+        // todo: moved to scriptbase because we need player
     }
 
     public void attackEntity(Entity entity)
     {
         //turn and face entity
-        this.faceEntity(entity, 360.0f, 360.0f);
+        this.getMoveHelper().strafe(0.01F, 0.01F);
+        this.faceEntity(entity, 90.0F, 90.0F);
 
         // calculate damage
         float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
