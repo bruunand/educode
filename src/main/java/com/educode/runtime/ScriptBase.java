@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -226,20 +227,26 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public void walkTo(Coordinates coords)
+    public boolean walkTo(Coordinates coords)
     {
-        navigateToBlock(coords.toBlockPos());
+        return navigateToBlock(coords.toBlockPos());
     }
-    
-    private void navigateToBlock(BlockPos pos){
-        executeOnTick(() ->
+
+    private boolean navigateToBlock(BlockPos pos)
+    {
+        boolean result = (boolean) executeOnTick(() ->
         {
             _robot.getNavigator().clearPathEntity();
-            _robot.getNavigator().setPath(_robot.getNavigator().getPathToPos(pos), 0.5D);
+            Path path = _robot.getNavigator().getPathToPos(pos);
+            if (path == null)
+                return false;
+            return _robot.getNavigator().setPath(_robot.getNavigator().getPathToPos(pos), 0.5D);
         });
 
         wait(500F);
+        return result;
     }
+
 
     @Override
     public ExtendedCollection<MinecraftEntity> getNearbyEntities(){
