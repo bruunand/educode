@@ -2,6 +2,7 @@ package com.educode.minecraft.gui;
 
 import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.networking.MessageSaveFile;
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
@@ -13,6 +14,9 @@ import org.lwjgl.input.Keyboard;
 
 import javax.xml.soap.Text;
 import java.io.IOException;
+import java.security.Key;
+import java.util.HashMap;
+import java.util.Set;
 
 import static org.lwjgl.input.Keyboard.*;
 
@@ -39,20 +43,86 @@ public class GuiProgramEditor extends GuiScreen
         _fileName = name;
     }
 
+
+    private static String[] testWord(String word, Set<String[]> keySet, String[] partialKeywords)
+    {
+        for(String[] keywords : keySet)
+        {
+            for (String keyword : keywords)
+            {
+                if(word.equals(keyword))
+                {
+                    return keywords;
+                }
+                else
+                {
+                    for (String partialKeyword : partialKeywords)
+                    {
+                        if (word.equals(partialKeyword))
+                        {
+                            //TODO: Partial keyword found
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
     public static void setText(String text)
     {
+        String[] partialKeywords = new String[] {"end", "repeat", "less", "greater"};
+        String[] blueKeywords = new String[] {"program", "end program", "method", "end method", "if", "then", "else", "end if", "repeat while", new Regex("(return(s)?)").toString()};
+        String[] yellowKeywords = new String[] {"not", "equals", "less than", "greater than", "or", "and"};
+
+
+        HashMap<String[], TextFormatting> keyWordMap = new HashMap<String[], TextFormatting>();
+        keyWordMap.put(blueKeywords, TextFormatting.BLUE);
+        keyWordMap.put(yellowKeywords, TextFormatting.YELLOW);
+
         _text = text.replace("\r", "");
-        String newFormattedText = new StringBuffer(_text).insert(_position, _cursorSymbol).toString();
+        StringBuffer newFormattedText = new StringBuffer(_text).insert(_position, _cursorSymbol);
+
+        String[] _lines = newFormattedText.toString().split("(\n)");
+
+        Set<String[]> keySet = keyWordMap.keySet();
+
+
+        for(String line : _lines)
+        {
+            for (String word : line.split("( )"))
+            {
+                String[] key = testWord( word, keySet, partialKeywords);
+
+                if (key != null)
+                {
+                    TextFormatting col = keyWordMap.get(key);
+                    newFormattedText.append(col + word + " " + TextFormatting.WHITE);
+                }
+                else
+                {
+                    newFormattedText.append(word + " ");
+                }
+            }
+        }
+
+
 
         // Perform syntax highlighting using regex
-        newFormattedText = newFormattedText.replaceAll("(begin|end|program|if|then|else|while|repeat|method|return(s)?)", TextFormatting.BLUE + "$1" + TextFormatting.WHITE);
-        newFormattedText = newFormattedText.replaceAll("(not|equals|less than|greater than|or|and)", TextFormatting.YELLOW + "$1" + TextFormatting.WHITE);
-        newFormattedText = newFormattedText.replaceAll("(number|Coordinates|string|bool|Collection<(.*?)>)", TextFormatting.LIGHT_PURPLE + "$1" + TextFormatting.WHITE);
-        newFormattedText = newFormattedText.replaceAll("\"(.*?)\"", TextFormatting.RED + "\"$1\"" + TextFormatting.WHITE); // Strings
-        newFormattedText = newFormattedText.replaceAll("(true|false)", TextFormatting.RED + "$1" + TextFormatting.WHITE); // Other literals
-        newFormattedText = newFormattedText.replaceAll("(//.*)", TextFormatting.GREEN + "$1" + TextFormatting.WHITE); // Comments
+        //Blue keywords
+        //newFormattedText = newFormattedText.replaceAll("(program | program |\nprogram | method |\nmethod )", TextFormatting.BLUE + "$1" + TextFormatting.WHITE);
+        //newFormattedText = newFormattedText.replaceAll("( end program|\nend program| end if | end if\n|\nend if |\nend if\n| end method | end method\n|\nend method |\nend method\n| if|then|else|while|repeat|method|return(s)?)", TextFormatting.BLUE + "$1" + TextFormatting.WHITE);
+        //newFormattedText = newFormattedText.replaceAll("( begin | end program|\nend program| end if | end if\n|\nend if |\nend if\n| end method | end method\n|\nend method |\nend method\n| if|then|else|while|repeat|method|return(s)?)", TextFormatting.BLUE + "$1" + TextFormatting.WHITE);
 
-        _formattedText = TextFormatting.WHITE + newFormattedText;
+        //newFormattedText = newFormattedText.replaceAll("(not|equals|less than|greater than|or|and)", TextFormatting.YELLOW + "$1" + TextFormatting.WHITE);
+        //newFormattedText = newFormattedText.replaceAll("(number|Coordinates|string|bool|Collection<(.*?)>)", TextFormatting.LIGHT_PURPLE + "$1" + TextFormatting.WHITE);
+        //newFormattedText = newFormattedText.replaceAll("\"(.*?)\"", TextFormatting.RED + "\"$1\"" + TextFormatting.WHITE); // Strings
+        //newFormattedText = newFormattedText.replaceAll("(true|false)", TextFormatting.RED + "$1" + TextFormatting.WHITE); // Other literals
+        //newFormattedText = newFormattedText.replaceAll("(//.*)", TextFormatting.GREEN + "$1" + TextFormatting.WHITE); // Comments
+
+        StringBuffer newFormattedTextWithCursor = new StringBuffer(newFormattedText).insert(_position, _cursorSymbol);
+        _formattedText = TextFormatting.WHITE + newFormattedTextWithCursor.toString();
     }
 
     private static void insert(String content)

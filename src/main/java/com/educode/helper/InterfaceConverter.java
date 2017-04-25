@@ -3,9 +3,6 @@ package com.educode.helper;
 import com.educode.runtime.types.*;
 import com.educode.symboltable.SymbolTable;
 import com.educode.types.Type;
-import scala.xml.PrettyPrinter;
-import sun.awt.X11.XTranslateCoordinates;
-import sun.reflect.generics.reflectiveObjects.TypeVariableImpl;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
