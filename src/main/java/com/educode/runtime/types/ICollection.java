@@ -6,7 +6,6 @@ package com.educode.runtime.types;
 public interface ICollection<E>
 {
     // add is not here because it is a part of the list interface
-    ExtendedCollection<ExtendedCollection<Float>> test();
     void removeItemAt(float index);
     E getItemAt(float index);
     void addItem(E item);

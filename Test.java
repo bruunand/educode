@@ -1,5 +1,6 @@
 import java.util.*;
 import com.educode.runtime.*;
+import com.educode.runtime.types.*;
 
 public class Test extends ScriptBase
 {
@@ -10,6 +11,19 @@ System.out.println(testIf());
 System.out.println(testLoop());
 System.out.println(testAssign());
 multipleTests();
+testConcat();
+return;
+}
+public void testConcat()
+{
+String s = "works";
+Float n = 2.000000F;
+boolean b = true;
+System.out.println((s + s));
+System.out.println((n + s));
+System.out.println((s + n));
+System.out.println((b + s));
+System.out.println((s + b));
 return;
 }
 public Float testAssign()

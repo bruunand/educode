@@ -1,5 +1,6 @@
 package com.educode.runtime.types;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  */
 public interface IRobot extends IEntity
 {
-    void dropItems();
+    void dropItems(ExtendedCollection<ExtendedCollection<Float>> e);
     void say(String text);
     void wait(float time);
     void move(String direction);
@@ -19,5 +20,5 @@ public interface IRobot extends IEntity
     float dropInventoryItem(String name, float quantity);
     float getDistanceTo(MinecraftEntity entity);
     MinecraftEntity getOwner();
-    List<MinecraftEntity> getNearbyEntities();
+    ExtendedCollection<MinecraftEntity> getNearbyEntities();
 }

@@ -10,7 +10,7 @@ public class Type
     private Type _childType = null;
     private final byte _kind;
 
-    public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5, ENTITY = 6, COLLECTION = 7, ROBOT = 8;
+    public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5, ENTITY = 6, COLLECTION = 7, ROBOT = 8, ITEM = 9;
 
     private static SymbolTable _primitiveSymbolTable, _baseSymbolTable, _collectionSymbolTable, _entitySymbolTable, _robotSymbolTable, _coordinatesSymbolTable;
 
@@ -24,6 +24,7 @@ public class Type
         StringType = new Type(STRING);
         EntityType = new Type(ENTITY);
         RobotType = new Type(ROBOT);
+        ItemType = new Type(ITEM);
         Error = new Type(ERROR);
 
         // Create primitive symbol table
@@ -117,7 +118,7 @@ public class Type
 
     public boolean isReferenceType()
     {
-        return this._kind == COLLECTION || this._kind == ENTITY || this._kind == ROBOT || this._kind == COORDINATES;
+        return this._kind == COLLECTION || this._kind == ENTITY || this._kind == ROBOT || this._kind == COORDINATES || this._kind == ITEM;
     }
 
     public SymbolTable getSymbolTable()
@@ -192,5 +193,6 @@ public class Type
     public static final Type StringType;
     public static final Type EntityType;
     public static final Type RobotType;
+    public static final Type ItemType;
     public static final Type Error;
 }
