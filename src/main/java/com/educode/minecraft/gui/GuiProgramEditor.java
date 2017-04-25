@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -43,8 +44,51 @@ public class GuiProgramEditor extends GuiScreen
         _fileName = name;
     }
 
+    private static Tuple<String[], String> testWords(String[] words, Set<String[]> keySet, String[] partialKeywords)
+    {
+        Tuple<Integer, String[]> keywords;
+        String partial = "";
+        for (String word : words)
+        {
 
-    private static String[] testWord(String word, Set<String[]> keySet, String[] partialKeywords)
+            if (partial.equals(""))
+            {
+                keywords = testWord(word,keySet,partialKeywords);
+                switch(keywords.getFirst())
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        return new Tuple<>(keywords.getSecond(), word);
+                    case 2:
+                        partial = word;
+                        break;
+                }
+            }
+            else
+            {
+                keywords = testWord(new StringBuffer(partial + " " + word).toString(),keySet,partialKeywords);
+                switch(keywords.getFirst())
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        //if (new StringBuffer(partial + " " + word).toString().equals("less than") ||
+                        //    new StringBuffer(partial + " " + word).toString().equals("greater than"))
+                        //{
+                        //TODO: Special cases
+                        //}
+                        return new Tuple<>(keywords.getSecond(), word);
+                    case 2:
+                        partial = new StringBuffer(partial + " " + word).toString();
+                        break;
+                }
+            }
+
+        }
+        return new Tuple<>(null, null);
+    }
+    private static Tuple<Integer, String[]> testWord(String word, Set<String[]> keySet, String[] partialKeywords)
     {
         for(String[] keywords : keySet)
         {
@@ -52,7 +96,7 @@ public class GuiProgramEditor extends GuiScreen
             {
                 if(word.equals(keyword))
                 {
-                    return keywords;
+                    return new Tuple<>(1, keywords);
                 }
                 else
                 {
@@ -60,13 +104,13 @@ public class GuiProgramEditor extends GuiScreen
                     {
                         if (word.equals(partialKeyword))
                         {
-                            //TODO: Partial keyword found
+                            return new Tuple<>(2, null);
                         }
                     }
                 }
             }
         }
-        return null;
+        return new Tuple<>(0, null);
     }
 
 
@@ -89,21 +133,14 @@ public class GuiProgramEditor extends GuiScreen
         Set<String[]> keySet = keyWordMap.keySet();
 
 
-        for(String line : _lines)
-        {
-            for (String word : line.split("( )"))
-            {
-                String[] key = testWord( word, keySet, partialKeywords);
+        for(String line : _lines) {
+            Tuple<String[], String> key = testWords(line.split("( )"), keySet, partialKeywords);
 
-                if (key != null)
-                {
-                    TextFormatting col = keyWordMap.get(key);
-                    newFormattedText.append(col + word + " " + TextFormatting.WHITE);
-                }
-                else
-                {
-                    newFormattedText.append(word + " ");
-                }
+            if (key.getFirst() != null) {
+                TextFormatting col = keyWordMap.get(key.getFirst());
+                newFormattedText.append(col + key.getSecond() + " " + TextFormatting.WHITE);
+            } else {
+                newFormattedText.append(key.getSecond() + " ");
             }
         }
 
