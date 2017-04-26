@@ -3,6 +3,7 @@ package com.educode.helper;
 import com.educode.runtime.types.*;
 import com.educode.symboltable.SymbolTable;
 import com.educode.types.Type;
+import sun.reflect.generics.reflectiveObjects.TypeVariableImpl;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -55,10 +56,8 @@ public class InterfaceConverter
         {
             // Skip if return type is TypeVariableImpl (generic type)
             if (method.getGenericReturnType() instanceof TypeVariableImpl)
-            {
-                System.out.println("skip " + method.getName());
                 continue;
-            }
+
 
             // Get EduCode type of return type
             Type returnType = getTypeFromClass(method.getGenericReturnType());
