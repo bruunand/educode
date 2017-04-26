@@ -13,21 +13,15 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Created by zen on 4/9/17.
+ * Created by User on 26-Apr-17.
  */
-public class TickHandler
+public class ClientEventHandler
 {
     private static Queue<IMessage> _commandQueue = new ConcurrentLinkedQueue<IMessage>();
 
     public static void queueMessage(IMessage message)
     {
         _commandQueue.add(message);
-    }
-
-    @SubscribeEvent
-    public void onServerTick(TickEvent.ServerTickEvent event)
-    {
-        //System.out.println("server tick");
     }
 
     @SubscribeEvent

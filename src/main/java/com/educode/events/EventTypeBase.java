@@ -37,7 +37,7 @@ public abstract class EventTypeBase
                     e.printStackTrace();
                 }
             });
-            methodInvocationThread.setName(String.format("Event Invocation - %s", methodName));
+            methodInvocationThread.setName(String.format("EVENT - %s", methodName));
             methodInvocationThread.start();
         }
         catch (NoSuchMethodException e)
