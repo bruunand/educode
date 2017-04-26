@@ -27,9 +27,9 @@ import com.educode.nodes.ungrouped.*;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
-import com.educode.types.events.EventTypeBase;
-import com.educode.types.events.MessageReceivedEvent;
-import com.educode.types.events.RobotDeathEvent;
+import com.educode.events.EventTypeBase;
+import com.educode.events.MessageReceivedEvent;
+import com.educode.events.RobotDeathEvent;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.ArrayList;

@@ -134,12 +134,6 @@ public abstract class ScriptBase implements IRobot
         executeOnTick(() -> _robot.sendMessageTo(_player, message));
     }
 
-    public void selfDestruct()
-    {
-        explode(0.0F);
-        removeEntity();
-    }
-
     public void invokeEvents(Class eventType, Object ... params)
     {
         for (EventDefinitionNode event : _eventDefinitions)

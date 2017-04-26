@@ -1,4 +1,4 @@
-package com.educode.types.events;
+package com.educode.events;
 
 import com.educode.runtime.ScriptBase;
 
@@ -24,9 +24,23 @@ public abstract class EventTypeBase
         try
         {
             Method invokeMethod = script.getClass().getMethod(methodName, classArray);
-            invokeMethod.invoke(script, params); // todo: invoke in other thread
+
+            // Invoke method from a different thread, todo: find a better way to execute this
+            Thread methodInvocationThread = new Thread(() ->
+            {
+                try
+                {
+                    invokeMethod.invoke(script, params);
+                }
+                catch (IllegalAccessException | InvocationTargetException e)
+                {
+                    e.printStackTrace();
+                }
+            });
+            methodInvocationThread.setName(String.format("Event Invocation - %s", methodName));
+            methodInvocationThread.start();
         }
-        catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e)
+        catch (NoSuchMethodException e)
         {
             e.printStackTrace();
         }

@@ -1,6 +1,5 @@
-package com.educode.types.events;
+package com.educode.events;
 
-import com.educode.runtime.ScriptBase;
 import com.educode.types.Type;
 
 import java.util.ArrayList;

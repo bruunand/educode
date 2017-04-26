@@ -1,11 +1,8 @@
-package com.educode.types.events;
+package com.educode.events;
 
 import com.educode.nodes.literal.NumberLiteralNode;
-import com.educode.runtime.ScriptBase;
 import com.educode.types.Type;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 

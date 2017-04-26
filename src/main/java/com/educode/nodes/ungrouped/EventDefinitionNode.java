@@ -3,7 +3,7 @@ package com.educode.nodes.ungrouped;
 import com.educode.IReferencing;
 import com.educode.nodes.base.LeafNode;
 import com.educode.nodes.referencing.IReference;
-import com.educode.types.events.EventTypeBase;
+import com.educode.events.EventTypeBase;
 import com.educode.visitors.VisitorBase;
 
 /**
