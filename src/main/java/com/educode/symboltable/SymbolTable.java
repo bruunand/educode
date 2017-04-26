@@ -63,7 +63,7 @@ public class SymbolTable
         return null;
     }
 
-    public Symbol retrieveMethodSymbol(IReference reference, List<Node> actualArguments)
+    public Symbol retrieveMethodSymbol(IReference reference, List<Type> actualArguments)
     {
         for (Symbol symbol : this._symbolList)
         {

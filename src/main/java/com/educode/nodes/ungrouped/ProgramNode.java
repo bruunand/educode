@@ -23,6 +23,19 @@ public class ProgramNode extends NaryNode implements IVisitable, IReferencing
         this._reference = reference;
     }
 
+    public ArrayList<EventDefinitionNode> getEventDefinitions()
+    {
+        ArrayList<EventDefinitionNode> nodes = new ArrayList<>();
+
+        for (Node child : getChildren())
+        {
+            if (child instanceof EventDefinitionNode)
+                nodes.add((EventDefinitionNode) child);
+        }
+
+        return nodes;
+    }
+
     public ArrayList<MethodDeclarationNode> getMethodDeclarations()
     {
         ArrayList<MethodDeclarationNode> nodes = new ArrayList<>();

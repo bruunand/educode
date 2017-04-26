@@ -22,10 +22,7 @@ import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
-import com.educode.nodes.ungrouped.BlockNode;
-import com.educode.nodes.ungrouped.ObjectInstantiationNode;
-import com.educode.nodes.ungrouped.ProgramNode;
-import com.educode.nodes.ungrouped.TypeCastNode;
+import com.educode.nodes.ungrouped.*;
 
 /**
  * Created by User on 15-Apr-17.
@@ -47,6 +44,11 @@ public class PrintVisitor extends VisitorBase
             content += "[" + visit(child) + "]";
 
         return String.format("[ProgramNode [%s]%s]", visit(node.getReference()), content);
+    }
+
+    public Object visit(EventDefinitionNode node)
+    {
+        return String.format("EventDefinition [%s][%s]", node.getEventType().getName(), node.getReference());
     }
 
     public Object visit(BlockNode node)
