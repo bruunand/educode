@@ -56,6 +56,41 @@ public class GuiProgramEditor extends GuiScreen
 
         for (String word : words)
         {
+            if (word.replace(Character.toString(_cursorSymbol), "").contains("Collection<"))
+            {
+                String[] collectionCollection = word.split("(<)"); //Collection | String>
+                                                                        //Collection | Collection | String>|>
+
+                if(ArrayHelper.characterCountInArray(">", collectionCollection) == collectionCollection.length - 1)
+                {
+                    StringBuffer finalCollection = new StringBuffer(TextFormatting.AQUA.toString());
+
+                    for (int i = 0; i < collectionCollection.length-1; i++)
+                    {
+                        finalCollection.append(collectionCollection[i] + "<");
+                    }
+                    String type = collectionCollection[collectionCollection.length-1].replace(">", "");
+                    keywords = testWord(type.replace(Character.toString(_cursorSymbol), ""), keyWordMap.keySet(), partialKeywords);
+                    switch(keywords.getFirst())
+                    {
+                        case 0:
+                            finalCollection.append(TextFormatting.DARK_RED + type + TextFormatting.AQUA);
+                            break;
+                        case 1:
+                            finalCollection.append(type);
+                            break;
+                        case 2:
+                            finalCollection.append(TextFormatting.DARK_RED + type + TextFormatting.AQUA);
+                            break;
+                    }
+                    String debug = collectionCollection[collectionCollection.length-1].replace(type, "");
+
+                    finalCollection.append(debug);
+                    formattedLine.append(finalCollection + TextFormatting.WHITE.toString());
+                    continue;
+                }
+            }
+
             if (buildingString)
             {
                 if (word.contains("\""))
@@ -89,16 +124,16 @@ public class GuiProgramEditor extends GuiScreen
                 }
             }
 
-            if(word.contains("//"))
+            if(word.replace(Character.toString(_cursorSymbol), "").contains("//"))
             {
                 StringBuffer commentWord = new StringBuffer(word);
                 StringBuffer lastWord = new StringBuffer(words[words.length - 1]);
-                commentWord.insert(word.indexOf("//"), TextFormatting.GRAY);
+                commentWord.insert(word.replace(Character.toString(_cursorSymbol),"").indexOf("//"), TextFormatting.GRAY);
                 lastWord.insert(lastWord.length(), TextFormatting.WHITE + " ");
 
                 formattedLine.append(commentWord + " ");
 
-                for (int j = ArrayHelper.indexOfNth(word, words, 1) + 1; j < words.length - 2; j++)
+                for (int j = ArrayHelper.indexOfNth(word, words, 1) + 1; j < words.length - 1; j++)
                 {
                      formattedLine.append(words[j] + " ");
                 }
