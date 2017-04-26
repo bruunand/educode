@@ -8,17 +8,31 @@ import java.util.List;
  */
 public interface IRobot extends IEntity
 {
-    void dropItems(ExtendedCollection<ExtendedCollection<Float>> e);
+    // General
     void say(String text);
-    void wait(float time);
-    void move(String direction);
-    void mine(String direction);
-    void setWorldTime(float time);
     void explode(float strength);
-    void walkTo(Coordinates coords);
-    boolean attack(MinecraftEntity entity);
-    float dropInventoryItem(String name, float quantity);
-    float getDistanceTo(MinecraftEntity entity);
+    void setWorldTime(float time);
     MinecraftEntity getOwner();
-    ExtendedCollection<MinecraftEntity> getNearbyEntities();
+    List<MinecraftEntity> getNearbyEntities();
+    float getDistanceTo(MinecraftEntity entity);
+    boolean placeBlock(Coordinates coordinates);
+
+    // Combat
+    boolean attack(MinecraftEntity entity);
+
+    // Movement
+    void move(String direction);
+    boolean walkTo(Coordinates coords);
+
+    // Mining
+    void mine(String direction);
+    void mineBlock(Coordinates position);
+
+    // Items
+    ExtendedCollection<MinecraftItem> getInventory();
+    void dropItems();
+    float dropItem(String name, float quantity);
+    MinecraftItem getHeldItem();
+    void setHeldItem(MinecraftItem item);
+    MinecraftItem getItemFromSlot(float index);
 }

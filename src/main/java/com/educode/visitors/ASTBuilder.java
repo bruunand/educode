@@ -110,6 +110,8 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
                     return Type.EntityType;
                 case "Coordinates":
                     return Type.CoordinatesType;
+                case "Item":
+                    return Type.ItemType;
             }
         return Type.VoidType;
     }

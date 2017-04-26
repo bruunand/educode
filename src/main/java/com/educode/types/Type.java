@@ -1,5 +1,7 @@
 package com.educode.types;
 
+import com.educode.helper.InterfaceConverter;
+import com.educode.runtime.types.*;
 import com.educode.symboltable.SymbolTable;
 
 /**
@@ -12,7 +14,7 @@ public class Type
 
     public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5, ENTITY = 6, COLLECTION = 7, ROBOT = 8, ITEM = 9;
 
-    private static SymbolTable _primitiveSymbolTable, _baseSymbolTable, _collectionSymbolTable, _entitySymbolTable, _robotSymbolTable, _coordinatesSymbolTable;
+    private static SymbolTable _primitiveSymbolTable, _baseSymbolTable, _collectionSymbolTable, _entitySymbolTable, _robotSymbolTable, _coordinatesSymbolTable, _itemSymbolTable;
 
     static
     {
@@ -30,49 +32,13 @@ public class Type
         // Create primitive symbol table
         _primitiveSymbolTable = new SymbolTable(null);
 
-        // Add base symbol table
-        _baseSymbolTable = new SymbolTable(null);
-        _baseSymbolTable.addDefaultMethod("toString", Type.StringType);
-
-        // Add default fields for coordinates
-        _coordinatesSymbolTable = new SymbolTable(_baseSymbolTable);
-        _coordinatesSymbolTable.addDefaultMethod("getX", Type.NumberType);
-        _coordinatesSymbolTable.addDefaultMethod("getY", Type.NumberType);
-        _coordinatesSymbolTable.addDefaultMethod("getZ", Type.NumberType);
-        _coordinatesSymbolTable.addDefaultMethod("setX", Type.VoidType, Type.NumberType);
-        _coordinatesSymbolTable.addDefaultMethod("setY", Type.VoidType, Type.NumberType);
-        _coordinatesSymbolTable.addDefaultMethod("setZ", Type.VoidType, Type.NumberType);
-
-        // Add default methods for collections
-        _collectionSymbolTable = new SymbolTable(_baseSymbolTable);
-        _collectionSymbolTable.addDefaultMethod("removeItemAt", Type.VoidType, Type.NumberType);
-        _collectionSymbolTable.addDefaultMethod("getSize", Type.NumberType);
-
-        // Add default methods for entities
-        _entitySymbolTable = new SymbolTable(_baseSymbolTable);
-        _entitySymbolTable.addDefaultMethod("getHealth", Type.NumberType);
-        _entitySymbolTable.addDefaultMethod("getCoordinates", Type.CoordinatesType);
-        _entitySymbolTable.addDefaultMethod("isRobot", Type.BoolType);
-        _entitySymbolTable.addDefaultMethod("getX", Type.NumberType);
-        _entitySymbolTable.addDefaultMethod("getY", Type.NumberType);
-        _entitySymbolTable.addDefaultMethod("getZ", Type.NumberType);
-
-        // Add default methods for robot
-        _robotSymbolTable = new SymbolTable(_entitySymbolTable);
-        _robotSymbolTable.addDefaultMethod("dropItems", Type.VoidType);
-        _robotSymbolTable.addDefaultMethod("dropItem", Type.NumberType, Type.StringType, Type.NumberType);
-        _robotSymbolTable.addDefaultMethod("move", Type.VoidType, Type.StringType);
-        _robotSymbolTable.addDefaultMethod("mine", Type.VoidType, Type.StringType);
-        _robotSymbolTable.addDefaultMethod("mineBlock", Type.VoidType, Type.CoordinatesType);
-        _robotSymbolTable.addDefaultMethod("say", Type.VoidType, Type.StringType);
-        _robotSymbolTable.addDefaultMethod("setWorldTime", Type.VoidType, Type.NumberType);
-        _robotSymbolTable.addDefaultMethod("explode", Type.VoidType, Type.NumberType);
-        _robotSymbolTable.addDefaultMethod("getOwner", Type.EntityType);
-        _robotSymbolTable.addDefaultMethod("getNearbyEntities", new Type(Type.EntityType));
-        _robotSymbolTable.addDefaultMethod("walkTo", Type.BoolType, Type.CoordinatesType);
-        _robotSymbolTable.addDefaultMethod("getDistanceTo", Type.NumberType, Type.EntityType);
-        _robotSymbolTable.addDefaultMethod("attack", Type.BoolType, Type.EntityType);
-        _robotSymbolTable.addDefaultMethod("placeBlock", Type.BoolType, Type.CoordinatesType);
+        // Construct symbol tables from interfaces
+        _baseSymbolTable        = InterfaceConverter.getSymbolTableFromClass(null, IBase.class);
+        _coordinatesSymbolTable = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, ICoordinates.class);
+        _collectionSymbolTable  = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, ICollection.class);
+        _entitySymbolTable      = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, IEntity.class);
+        _itemSymbolTable        = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, IItem.class);
+        _robotSymbolTable       = InterfaceConverter.getSymbolTableFromClass(_entitySymbolTable, IRobot.class);
     }
 
     public Type(byte kind)
@@ -132,6 +98,8 @@ public class Type
             return _robotSymbolTable;
         else if (this.equals(Type.CoordinatesType))
             return _coordinatesSymbolTable;
+        else if (this.equals(Type.ItemType))
+            return _itemSymbolTable;
         else if (this.isPrimitive())
             return _primitiveSymbolTable;
         else if (this.isCollection())
@@ -181,6 +149,8 @@ public class Type
                 return "COLLECTION<" + this.getChildType() + ">";
             case Type.ROBOT:
                 return "ROBOT";
+            case Type.ITEM:
+                return "ITEM";
             default:
                 return "UNDEFINED"; // Should not happen
         }

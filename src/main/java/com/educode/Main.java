@@ -5,8 +5,8 @@ import com.educode.antlr.EduCodeParser;
 import com.educode.helper.InterfaceConverter;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
-import com.educode.runtime.types.ICollection;
-import com.educode.runtime.types.IRobot;
+import com.educode.runtime.types.*;
+import com.educode.symboltable.SymbolTable;
 import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
@@ -27,8 +27,6 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-        InterfaceConverter.getSymbolTableFromClass(null, ICollection.class);
-
         // Reflective visitor test
         //new Test().visit(new ProgramNode(null, null));
 

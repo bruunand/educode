@@ -49,22 +49,41 @@ public class InterfaceConverter
         SymbolTable newTable = new SymbolTable(baseTable);
 
         // Go through each declared method and add it
+        Method[] met = source.getDeclaredMethods();
+        System.out.println(source.getName() + ":" + met.length);
         for (Method method : source.getDeclaredMethods())
         {
+            // Skip if return type is TypeVariableImpl (generic type)
+            if (method.getGenericReturnType() instanceof TypeVariableImpl)
+            {
+                System.out.println("skip " + method.getName());
+                continue;
+            }
+
+            // Get EduCode type of return type
             Type returnType = getTypeFromClass(method.getGenericReturnType());
-            System.out.println(method.getName() + " returns " + getTypeFromClass(method.getGenericReturnType()));
 
             List<Type> parameterTypes = new ArrayList<>();
+            boolean skipMethod = false;
             for (java.lang.reflect.Type parameter : method.getGenericParameterTypes())
             {
+                // Skip if parameter type is TypeVariableImpl (generic type)
+                if (parameter instanceof TypeVariableImpl)
+                {
+                    skipMethod = true;
+                    continue;
+                }
+
+                // Get EduCode type of parameter type and add it to local list
                 parameterTypes.add(getTypeFromClass(parameter));
-                System.out.println(getTypeFromClass(parameter));
             }
+
+            // Check if skipping method
+            if (skipMethod)
+                continue;
 
             // Add method definition to symbol table
             newTable.addDefaultMethod(method.getName(), returnType, parameterTypes);
-
-            System.out.println();
         }
 
         return newTable;
