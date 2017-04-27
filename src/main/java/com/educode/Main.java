@@ -2,8 +2,11 @@ package com.educode;
 
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
+import com.educode.helper.InterfaceConverter;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
+import com.educode.runtime.types.*;
+import com.educode.symboltable.SymbolTable;
 import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
@@ -15,6 +18,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 
 /**
  * Created by zen on 3/8/17.

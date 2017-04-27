@@ -1,13 +1,16 @@
 package com.educode.minecraft.entity;
 
+import com.educode.events.RobotAttackedEvent;
 import com.educode.minecraft.Command;
 import com.educode.minecraft.CompilerMod;
+import com.educode.runtime.ScriptBase;
+import com.educode.events.EventInvoker;
+import com.educode.runtime.types.Coordinates;
+import com.educode.events.RobotDeathEvent;
+import com.educode.runtime.types.MinecraftEntity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -35,8 +38,6 @@ import java.util.concurrent.BlockingQueue;
 
 public class EntityRobot extends EntityCreature implements IWorldNameable, IEntityAdditionalSpawnData
 {
-    public BlockingQueue<Command> CommandQueue = new ArrayBlockingQueue<Command>(16);
-
     private final InventoryBasic _inventory;
 
     private String _name = "Unnamed";
@@ -45,20 +46,23 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
 
     private TextFormatting _textFormatting = TextFormatting.RESET;
 
+    private ScriptBase _parent;
+
     public EntityRobot(World worldIn)
     {
         super(worldIn);
 
         this.setSize(0.6F, 1.8F);
         this.setCanPickUpLoot(true);
-        this._inventory = new InventoryBasic("Items", false, 8);
+        this._inventory = new InventoryBasic("Items", false, 36);
     }
     
-    public EntityRobot(World worldIn, EntityPlayer owner)
+    public EntityRobot(ScriptBase parent, World worldIn, EntityPlayer owner)
     {
     	this(worldIn);
 
-    	_name = CompilerMod.NAMES[this.rand.nextInt(CompilerMod.NAMES.length)] + " @ " + owner.getName();
+    	this._parent = parent;
+    	this._name = CompilerMod.NAMES[this.rand.nextInt(CompilerMod.NAMES.length)] + " @ " + owner.getName();
     	CompilerMod.CHILD_ENTITIES.add(this.getUniqueID());
         updateTextFormatting();
     }
@@ -66,44 +70,28 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     @Override
     public void onLivingUpdate()
     {
+        // Remove entity if not spawned in this server instance
+        if (!this.world.isRemote)
+        {
+            if (this._tickCounter++ == 0 && !CompilerMod.CHILD_ENTITIES.contains(this.getUniqueID()))
+                this.world.removeEntity(this);
+        }
+
         super.onLivingUpdate();
         this.updateArmSwingProgress();
-    }
-
-    @Override
-    public void onEntityUpdate()
-    {
-    	// Remove entity if not spawned in this server instance
-    	if (this._tickCounter++ == 0 && !this.world.isRemote && !CompilerMod.CHILD_ENTITIES.contains(this.getUniqueID()))
-    	{
-    		this.world.removeEntity(this);
-    		return;
-    	}
-
-        // Poll next command
-        // Only one command is executed at a time
-        Command nextCommand = CommandQueue.poll();
-        if (nextCommand != null)
-        {
-            nextCommand.setCanExecute(true);
-            
-            try
-            {
-                nextCommand.waitForHasBeenExecuted();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        
-        super.onEntityUpdate();
     }
     
     @Override
     public void onDeath(DamageSource cause)
     {
         super.onDeath(cause);
+
+        // Don't execute on client side
+        if (world.isRemote)
+            return;
+
+        // Invoke on death event
+        EventInvoker.invokeByType(this._parent, RobotDeathEvent.class);
 
         // Drop items on death
         dropItems();
@@ -114,7 +102,6 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         for (int i = 0; i < getInventory().getSizeInventory(); i++)
         {
             ItemStack stack = getInventory().getStackInSlot(i);
-            System.out.println(i + "=" + stack.getDisplayName()); // todo remove
             getInventory().removeStackFromSlot(i);
             dropItem(stack.getItem(), stack.getCount());
         }
@@ -166,23 +153,10 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(256.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.7D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-    }
-
-    public void readEntityFromNBT(NBTTagCompound compound)
-    {
-    	super.readEntityFromNBT(compound);
-    	
-    	if (compound.hasKey("name"))
-        	_name = compound.getString("name");
-    }
-
-    public void writeEntityToNBT(NBTTagCompound compound)
-    {
-    	super.writeEntityToNBT(compound);
-    	compound.setString("name", "Anders");
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
     
     @Override
@@ -246,13 +220,21 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         return this._textFormatting;
     }
 
+    public void placeBlock(Coordinates coordinates)
+    {
+        // todo: moved to scriptbase because we need player
+    }
+
     public void attackEntity(Entity entity)
     {
         //turn and face entity
-        this.faceEntity(entity, 360.0f, 360.0f);
+        this.getMoveHelper().strafe(0.01F, 0.01F);
+        this.faceEntity(entity, 90.0F, 90.0F);
 
         // calculate damage
-        float damage = 1.0F + this.getHeldItemMainhand().getItemDamage();
+        float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        if (entity instanceof EntityLivingBase)
+            damage += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase) entity).getCreatureAttribute());
 
         //swing animation
         this.swingArm(EnumHand.MAIN_HAND);
@@ -266,15 +248,19 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         int i = 0;
         float droppedItems = 0;
 
-        while (i++ < getInventory().getSizeInventory() && droppedItems < quantity)
+        while (i < getInventory().getSizeInventory() && droppedItems < quantity)
         {
-            ItemStack stack = getInventory().getStackInSlot(i);
+            ItemStack stack = getInventory().getStackInSlot(i++);
             if (!stack.getDisplayName().equalsIgnoreCase(name))
                 continue;
 
             // Don't drop more than needed
             int maxCount = Math.min(stack.getCount(), (int)(quantity - droppedItems));
+
+            // Drop items on ground and reduce stack count
             dropItem(stack.getItem(), maxCount);
+            getInventory().decrStackSize(i - 1, maxCount);
+
             droppedItems += maxCount;
         }
 
@@ -286,5 +272,33 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         player.sendMessage(new TextComponentString(this.getFormatting()+ "[" + this.getName() + "]" + " " + TextFormatting.RESET + " " + message));
 
         return true;
+    }
+
+    public void readEntityFromNBT(NBTTagCompound compound)
+    {
+        super.readEntityFromNBT(compound);
+
+        if (compound.hasKey("name"))
+            _name = compound.getString("name");
+    }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount)
+    {
+        if (!world.isRemote)
+        {
+            Entity sourceEntity = source.getEntity();
+
+            if (sourceEntity != null)
+                EventInvoker.invokeByType(this._parent, RobotAttackedEvent.class, new MinecraftEntity(sourceEntity));
+        }
+
+        return super.attackEntityFrom(source, amount);
+    }
+
+    public void writeEntityToNBT(NBTTagCompound compound)
+    {
+        super.writeEntityToNBT(compound);
+        compound.setString("name", this._name);
     }
 }

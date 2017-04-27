@@ -1,5 +1,6 @@
 package com.educode.runtime.types;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 /**
@@ -7,17 +8,34 @@ import java.util.List;
  */
 public interface IRobot extends IEntity
 {
-    void dropItems();
+    // General
     void say(String text);
-    void wait(float time);
-    void move(String direction);
-    void mine(String direction);
-    void setWorldTime(float time);
     void explode(float strength);
-    void walkTo(Coordinates coords);
-    boolean attack(MinecraftEntity entity);
-    float dropInventoryItem(String name, float quantity);
-    float getDistanceTo(MinecraftEntity entity);
+    void setWorldTime(float time);
     MinecraftEntity getOwner();
     List<MinecraftEntity> getNearbyEntities();
+    float getDistanceTo(MinecraftEntity entity);
+    boolean placeBlock(Coordinates coordinates);
+
+    // Messaging
+    void broadcast(float channel, float message);
+
+    // Combat
+    boolean attack(MinecraftEntity entity);
+
+    // Movement
+    void move(String direction);
+    boolean walkTo(Coordinates coords);
+
+    // Mining
+    void mine(String direction);
+    void mineBlock(Coordinates position);
+
+    // Items
+    ExtendedCollection<MinecraftItem> getInventory();
+    void dropItems();
+    float dropItem(String name, float quantity);
+    MinecraftItem getHeldItem();
+    void setHeldItem(MinecraftItem item);
+    MinecraftItem getItemFromSlot(float index);
 }

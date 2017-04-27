@@ -11,6 +11,7 @@ import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.types.Type;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -66,12 +67,12 @@ public class SymbolTable
 
     public void addDeclaredVariableCounter(int value)
     {
-        DeclaredVariableCounter += value;
     }
+        DeclaredVariableCounter += value;
 
     public int getDeclaredVariableCounter() { return DeclaredVariableCounter; }
 
-    public Symbol retrieveMethodSymbol(IReference reference, List<Node> actualArguments)
+    public Symbol retrieveMethodSymbol(IReference reference, List<Type> actualArguments)
     {
         for (Symbol symbol : this._symbolList)
         {
@@ -125,6 +126,11 @@ public class SymbolTable
     }
 
     public void addDefaultMethod(String name, Type returnType, Type ... parameterTypes)
+    {
+        addDefaultMethod(name, returnType, Arrays.asList(parameterTypes));
+    }
+
+    public void addDefaultMethod(String name, Type returnType, List<Type> parameterTypes)
     {
         ListNode parameterNodes = new ListNode();
         for (Type type : parameterTypes)

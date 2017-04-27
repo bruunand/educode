@@ -6,6 +6,7 @@ import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.ScriptRunner;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
+import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.runtime.ScriptBase;
 import com.educode.symboltable.SymbolTableMessage;
 import com.educode.visitors.ASTBuilder;
@@ -95,8 +96,13 @@ public class CommandRun implements ICommand
             // Compile and main Java
             Class<?> compiledClass = new CustomJavaCompiler().compile(CompilerMod.SCRIPTS_LOCATION, scriptName);
             ScriptBase script = (ScriptBase) compiledClass.newInstance();
-            script.init(server.getEntityWorld(), (EntityPlayer) sender);
+            script.init(server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions());
+
+            // Run script in separate thread
             new ScriptRunner(script).start();
+
+            // Add to running scripts
+            CompilerMod.RUNNING_SCRIPTS.add(script);
         }
         catch (Exception e)
         {

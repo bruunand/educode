@@ -24,10 +24,7 @@ import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
-import com.educode.nodes.ungrouped.BlockNode;
-import com.educode.nodes.ungrouped.ObjectInstantiationNode;
-import com.educode.nodes.ungrouped.ProgramNode;
-import com.educode.nodes.ungrouped.TypeCastNode;
+import com.educode.nodes.ungrouped.*;
 import com.educode.symboltable.Symbol;
 import com.educode.symboltable.SymbolTable;
 import com.educode.symboltable.SymbolTableHandler;
@@ -35,12 +32,16 @@ import com.educode.types.ArithmeticOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by User on 15-Apr-17.
  */
 public class SemanticVisitor extends VisitorBase
 {
     private final SymbolTableHandler _symbolTableHandler = new SymbolTableHandler();
+    private final List<EventDefinitionNode> _eventDefinitions = new ArrayList<>();
 
     public SymbolTableHandler getSymbolTableHandler()
     {
@@ -87,8 +88,19 @@ public class SemanticVisitor extends VisitorBase
         if (!hasMainMethod)
             _symbolTableHandler.error(node, "Program has no method called 'main' with no return type and parameters.");
 
-        // Visit all children, which includes method declarations
-        visitChildren(node);
+        // Visit children in correct order
+        // Variable declarations must be visited before method declarations
+        for (VariableDeclarationNode varDecl : node.getVariableDeclarations())
+            visit(varDecl);
+
+        // We can then visit event definitions
+        // These require method symbols, but they have been declared previously
+        for (EventDefinitionNode eventDef : node.getEventDefinitions())
+            visit(eventDef);
+
+        // We can also visit method declarations at this point
+        for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
+            visit(methodDecl);
 
         getSymbolTableHandler().closeScope();
     }
@@ -121,6 +133,17 @@ public class SemanticVisitor extends VisitorBase
     public void visit(IfNode node)
     {
         visitChildren(node);
+    }
+
+    public void visit(EventDefinitionNode node)
+    {
+        // Retrieve matching method symbol
+        Symbol methodSymbol = getSymbolTableHandler().getCurrent().retrieveMethodSymbol(node.getReference(), node.getEventType().getRequiredParameters());
+
+        if (methodSymbol == null)
+            getSymbolTableHandler().error(node, String.format("No method %s found matching the required parameters for event %s.", node.getReference(), node.getEventType().getName()));
+        else
+            _eventDefinitions.add(node);
     }
 
     public void visit(MethodDeclarationNode node)
@@ -208,10 +231,10 @@ public class SemanticVisitor extends VisitorBase
 
             // Retrieve symbol from object's type's symbol table
             // In a struct, the right child is the name of the method
-            methodReference = structReference.getObjectName().getType().getSymbolTable().retrieveMethodSymbol((IReference) structReference.getFieldName(), node.getActualArguments());
+            methodReference = structReference.getObjectName().getType().getSymbolTable().retrieveMethodSymbol((IReference) structReference.getFieldName(), node.getActualTypes());
         }
         else
-            methodReference = getSymbolTableHandler().getCurrent().retrieveMethodSymbol(node.getReference(), node.getActualArguments());
+            methodReference = getSymbolTableHandler().getCurrent().retrieveMethodSymbol(node.getReference(), node.getActualTypes());
 
         // Check if method was found
         if (methodReference == null)
@@ -305,7 +328,7 @@ public class SemanticVisitor extends VisitorBase
         else if (reference.getRightChild() instanceof MethodInvocationNode)
         {
             MethodInvocationNode methodInv = (MethodInvocationNode) reference.getRightChild();
-            Symbol symbol = table.retrieveMethodSymbol(methodInv.getReference(), methodInv.getActualArguments());
+            Symbol symbol = table.retrieveMethodSymbol(methodInv.getReference(), methodInv.getActualTypes());
 
             if (symbol == null)
                 getSymbolTableHandler().error(reference, "Struct of type %s does not contain method %s.", reference.getLeftChild().getType(), methodInv.getReference());
@@ -449,5 +472,10 @@ public class SemanticVisitor extends VisitorBase
             return true;
 
         return false;
+    }
+
+    public List<EventDefinitionNode> getEventDefinitions()
+    {
+        return _eventDefinitions;
     }
 }

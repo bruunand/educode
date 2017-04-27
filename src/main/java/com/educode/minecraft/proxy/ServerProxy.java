@@ -1,11 +1,9 @@
 package com.educode.minecraft.proxy;
 
 import com.educode.minecraft.CompilerMod;
-import com.educode.minecraft.handler.TickHandler;
 import com.educode.minecraft.networking.MessageOpenEditor;
 
 import com.educode.minecraft.networking.MessageSaveFile;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class ServerProxy

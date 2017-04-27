@@ -1,11 +1,14 @@
 package com.educode.minecraft.gui;
 
+import com.educode.helper.ArrayHelper;
 import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.networking.MessageSaveFile;
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -13,6 +16,10 @@ import org.lwjgl.input.Keyboard;
 
 import javax.xml.soap.Text;
 import java.io.IOException;
+import java.security.Key;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.StringJoiner;
 
 import static org.lwjgl.input.Keyboard.*;
 
@@ -27,6 +34,8 @@ public class GuiProgramEditor extends GuiScreen
     private static String _fileName;
     private static int _position = 0;
     private static int _lineNumber = 0;
+    private static int _visibleTopLine = 1;
+    private static int _visibleBottomLine = 25;
     private static final char _cursorSymbol = '|';
 
     public GuiProgramEditor()
@@ -39,20 +48,242 @@ public class GuiProgramEditor extends GuiScreen
         _fileName = name;
     }
 
+    private static String testWords(String[] words, HashMap<String[], TextFormatting> keyWordMap, String[] partialKeywords)
+    {
+        boolean buildingString = false;
+        Tuple<Integer, String[]> keywords;
+        String partial = "";
+
+        StringBuffer formattedLine = new StringBuffer();
+
+        for (String word : words)
+        {
+            if (word.replace(Character.toString(_cursorSymbol), "").contains("Collection<"))
+            {
+                String[] collectionCollection = word.split("(<)"); //Collection | String>
+                                                                        //Collection | Collection | String>|>
+
+                if(ArrayHelper.characterCountInArray(">", collectionCollection) == collectionCollection.length - 1)
+                {
+                    StringBuffer finalCollection = new StringBuffer(TextFormatting.AQUA.toString());
+
+                    for (int i = 0; i < collectionCollection.length-1; i++)
+                    {
+                        finalCollection.append(collectionCollection[i] + "<");
+                    }
+
+                    String type;
+
+                    if (collectionCollection[collectionCollection.length - 1].contains(">" + _cursorSymbol))
+                    {
+                        type = collectionCollection[collectionCollection.length-1].replace(">", "").replace(Character.toString(_cursorSymbol), "");
+                    }
+                    else
+                    {
+                        type = collectionCollection[collectionCollection.length-1].replace(">", "");
+                    }
+                    keywords = testWord(type.replace(Character.toString(_cursorSymbol), ""), keyWordMap.keySet(), partialKeywords);
+
+
+
+                    switch(keywords.getFirst())
+                    {
+                        case 0:
+                            finalCollection.append(TextFormatting.WHITE + type + TextFormatting.AQUA);
+                            break;
+                        case 1:
+                            finalCollection.append(type);
+                            break;
+                        case 2:
+                            finalCollection.append(TextFormatting.WHITE + type + TextFormatting.AQUA);
+                            break;
+                    }
+                    String debug = collectionCollection[collectionCollection.length-1].replace(type, "");
+
+                    finalCollection.append(debug);
+                    formattedLine.append(finalCollection + TextFormatting.WHITE.toString());
+                    continue;
+                }
+            }
+
+            if (buildingString)
+            {
+                if (word.contains("\""))
+                {
+                    buildingString = false;
+                    StringBuffer stringEnd = new StringBuffer(word);
+                    stringEnd.insert(word.indexOf("\"") + 1, TextFormatting.WHITE);
+                    formattedLine.append(stringEnd + " ");
+                    continue;
+                }
+                formattedLine.append(word + " ");
+                continue;
+            }
+
+            if(word.contains("\""))
+            {
+                if (!buildingString)
+                {
+                    buildingString = true;
+                    StringBuffer stringStart = new StringBuffer(word);
+                    stringStart.insert(word.indexOf("\""), TextFormatting.RED);
+
+                    if (word.lastIndexOf("\"") != word.indexOf("\""))
+                    {
+                        buildingString = false;
+                        // + 3 because color code is 2 characters and we insert colorcode after the string: 2+1=3
+                        stringStart.insert(ArrayHelper.indexOfNth('\"', word.toCharArray(), 2) + 3, TextFormatting.WHITE);
+                    }
+                    formattedLine.append(stringStart + " ");
+                    continue;
+                }
+            }
+
+            if(word.replace(Character.toString(_cursorSymbol), "").contains("//"))
+            {
+                StringBuffer commentWord = new StringBuffer(word);
+
+                if (words.length == ArrayHelper.indexOfNth(word, words, 1) + 1)
+                {
+                    commentWord.insert(word.replace(Character.toString(_cursorSymbol),"").indexOf("//"), TextFormatting.GRAY);
+                    commentWord.append(TextFormatting.WHITE + " ");
+                    formattedLine.append(commentWord);
+                    continue;
+                }
+
+                StringBuffer lastWord = new StringBuffer(words[words.length - 1]);
+                commentWord.insert(word.replace(Character.toString(_cursorSymbol),"").indexOf("//"), TextFormatting.GRAY);
+                lastWord.insert(lastWord.length(), TextFormatting.WHITE + " ");
+
+                formattedLine.append(commentWord + " ");
+
+                for (int j = ArrayHelper.indexOfNth(word, words, 1) + 1; j < words.length - 1; j++)
+                {
+                     formattedLine.append(words[j] + " ");
+                }
+
+                formattedLine.append(lastWord);
+
+                return formattedLine.toString();
+            }
+            if (partial.equals(""))
+            {
+                keywords = testWord(word.replace(Character.toString(_cursorSymbol), ""), keyWordMap.keySet(),partialKeywords);
+                switch(keywords.getFirst())
+                {
+                    case 0:
+                        formattedLine.append(word + " ");
+                        break;
+                    case 1:
+                        TextFormatting col = keyWordMap.get(keywords.getSecond());
+                        formattedLine.append(col + word + " " + TextFormatting.WHITE);
+                        break;
+                    case 2:
+                        partial = word;
+                        formattedLine.append(partial + " ");
+                        break;
+                }
+            }
+            else
+            {
+                keywords = testWord(new StringBuffer(partial + " " + word).toString().replace(Character.toString(_cursorSymbol), ""), keyWordMap.keySet(), partialKeywords);
+                switch(keywords.getFirst())
+                {
+                    case 0:
+                        formattedLine.append(word + " ");
+                        break;
+                    case 1:
+                        TextFormatting col = keyWordMap.get(keywords.getSecond());
+                        formattedLine.insert(formattedLine.length() - (partial.length() + 1), col);
+                        formattedLine.append(word + TextFormatting.WHITE + " ");
+                        partial = "";
+                        break;
+                    case 2:
+                        partial = new StringBuffer(partial + " " + word).toString();
+                        formattedLine.append(partial + " ");
+                        break;
+                }
+            }
+
+        }
+        return formattedLine.toString();
+    }
+    private static Tuple<Integer, String[]> testWord(String word, Set<String[]> keySet, String[] partialKeywords)
+    {
+        for(String[] keywords : keySet)
+        {
+            for (String keyword : keywords)
+            {
+                if(word.equals(keyword))
+                {
+                    return new Tuple<>(1, keywords);
+                }
+                else
+                {
+                    for (String partialKeyword : partialKeywords)
+                    {
+                        if (word.equals(partialKeyword))
+                        {
+                            return new Tuple<>(2, null);
+                        }
+                    }
+                }
+            }
+        }
+        return new Tuple<>(0, null);
+    }
+
+
     public static void setText(String text)
     {
+        String[] partialKeywords = new String[] {"end", "repeat", "less", "greater", "on"};
+        String[] blockKeywords = new String[] {"program", "end program", "method", "end method", "if", "then", "else", "end if", "repeat while", "end repeat", "return", "returns", "foreach", "in", "end foreach"};
+        String[] booleanKeywords = new String[] {"not", "equals", "less than", "greater than", "or", "and"};
+        String[] typeKeywords = new String[] {"number", "Coordinates", "string", "bool", "Item", "Entity"};
+        String[] tfKeywords = new String[] {"true", "false"};
+        String[] eventKeywords = new String[] {"on event", "call"};
+
+        HashMap<String[], TextFormatting> keyWordMap = new HashMap<>();
+        keyWordMap.put(blockKeywords, TextFormatting.LIGHT_PURPLE);
+        keyWordMap.put(booleanKeywords, TextFormatting.GOLD);
+        keyWordMap.put(typeKeywords, TextFormatting.AQUA);
+        keyWordMap.put(tfKeywords, TextFormatting.GREEN);
+        keyWordMap.put(eventKeywords, TextFormatting.BLUE);
+
         _text = text.replace("\r", "");
-        String newFormattedText = new StringBuffer(_text).insert(_position, _cursorSymbol).toString();
+        String textWithCursor = new StringBuffer(_text + " ").insert(_position, _cursorSymbol).toString();
+        String[] _lines = textWithCursor.split("(\n)");
 
-        // Perform syntax highlighting using regex
-        newFormattedText = newFormattedText.replaceAll("(begin|end|program|if|then|else|while|repeat|method|return(s)?)", TextFormatting.BLUE + "$1" + TextFormatting.WHITE);
-        newFormattedText = newFormattedText.replaceAll("(not|equals|less than|greater than|or|and)", TextFormatting.YELLOW + "$1" + TextFormatting.WHITE);
-        newFormattedText = newFormattedText.replaceAll("(number|Coordinates|string|bool|Collection<(.*?)>)", TextFormatting.LIGHT_PURPLE + "$1" + TextFormatting.WHITE);
-        newFormattedText = newFormattedText.replaceAll("\"(.*?)\"", TextFormatting.RED + "\"$1\"" + TextFormatting.WHITE); // Strings
-        newFormattedText = newFormattedText.replaceAll("(true|false)", TextFormatting.RED + "$1" + TextFormatting.WHITE); // Other literals
-        newFormattedText = newFormattedText.replaceAll("(//.*)", TextFormatting.GREEN + "$1" + TextFormatting.WHITE); // Comments
+        for (int i = 0; i <= _lines.length - 1; i++)
+        {
+            if (_lines[i].contains(Character.toString(_cursorSymbol)))
+            {
+                _lineNumber = i + 1;
+                break;
+            }
+        }
 
-        _formattedText = TextFormatting.WHITE + newFormattedText;
+        if (_lineNumber < _visibleTopLine)
+        {
+            _visibleTopLine--;
+            _visibleBottomLine--;
+        }
+        else if (_lineNumber > _visibleBottomLine)
+        {
+            _visibleTopLine++;
+            _visibleBottomLine++;
+        }
+
+
+        StringBuffer newFormattedText = new StringBuffer();
+
+
+        for(String line : ArrayHelper.getSubArray(_visibleTopLine - 1, _visibleBottomLine - 1, _lines))
+        {
+            newFormattedText.append(testWords(line.split("( )"), keyWordMap, partialKeywords) + "\n");
+        }
+
+        _formattedText = TextFormatting.WHITE + newFormattedText.toString();
     }
 
     private static void insert(String content)
@@ -125,7 +356,7 @@ public class GuiProgramEditor extends GuiScreen
             _position--;
             setText(_text);
         }
-        else if (keyCode == KEY_RIGHT && _position < _text.length() - 1)
+        else if (keyCode == KEY_RIGHT && _position < _text.length())
         {
             _position++;
             setText(_text);
@@ -167,5 +398,7 @@ public class GuiProgramEditor extends GuiScreen
     public static void resetPosition()
     {
         _position = 0;
+        _visibleTopLine = 1;
+        _visibleBottomLine = 25;
     }
 }

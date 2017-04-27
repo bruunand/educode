@@ -9,7 +9,8 @@ public class ScriptRunner extends Thread
 	
 	public ScriptRunner(ScriptBase script)
 	{
-		this._script = script;
+		this.setName(String.format("MAIN-%s's ROBOT", script.getOwner().getWrappedEntity().getName()));
+	    this._script = script;
 	}
 	
 	public void run()
@@ -23,11 +24,6 @@ public class ScriptRunner extends Thread
 		{
 			_script.say("Script error: " + e.getMessage());
 			e.printStackTrace();
-		}
-		finally
-		{
-			_script.say("Ending script...");
-			_script.selfDestruct();
 		}
 	}
 }

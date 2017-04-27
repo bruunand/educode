@@ -2,6 +2,7 @@ package com.educode.visitors;
 
 import com.educode.antlr.EduCodeBaseVisitor;
 import com.educode.antlr.EduCodeParser;
+import com.educode.events.*;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
@@ -23,10 +24,7 @@ import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
-import com.educode.nodes.ungrouped.BlockNode;
-import com.educode.nodes.ungrouped.ObjectInstantiationNode;
-import com.educode.nodes.ungrouped.ProgramNode;
-import com.educode.nodes.ungrouped.TypeCastNode;
+import com.educode.nodes.ungrouped.*;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
@@ -92,6 +90,22 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         }
     }
 
+    private EventTypeBase getEventType(EduCodeParser.EventTypeContext ctx)
+    {
+        switch (ctx.getChild(0).getText())
+        {
+            case "robotDeath":
+                return new RobotDeathEvent();
+            case "robotAttacked":
+                return new RobotAttackedEvent();
+            case "messageReceived":
+                return new MessageReceivedEvent((NumberLiteralNode) visit(ctx.numberLit()));
+            case "entityDeath":
+                return new EntityDeathEvent();
+        }
+
+        return null;
+    }
 
     private Type getType(EduCodeParser.DataTypeContext ctx)
     {
@@ -110,6 +124,8 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
                     return Type.EntityType;
                 case "Coordinates":
                     return Type.CoordinatesType;
+                case "Item":
+                    return Type.ItemType;
             }
         return Type.VoidType;
     }
@@ -307,22 +323,26 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         updateLineNumber(ctx);
 
         ArrayList<Node> nodes = new ArrayList<>();
-        nodes.addAll(((NaryNode)visit(ctx.methods())).getChildren());
+
+        // Add global variables
+        for (EduCodeParser.VarDclContext v : ctx.varDcl())
+            nodes.add(visit(v));
+
+        // Add event subscriptions
+        for (EduCodeParser.EventDefContext e : ctx.eventDef())
+            nodes.add(visit(e));
+
+        // Add method declarations
+        for (EduCodeParser.MethodContext m : ctx.method())
+            nodes.add(visit(m));
 
         return new ProgramNode(nodes, (IReference) visit(ctx.ident()));
     }
 
     @Override
-    public Node visitMethods(EduCodeParser.MethodsContext ctx)
+    public Node visitEventDef(EduCodeParser.EventDefContext ctx)
     {
-        updateLineNumber(ctx);
-
-        ArrayList<Node> childMethods = new ArrayList<>();
-
-        for (EduCodeParser.MethodContext m : ctx.method())
-            childMethods.add(visit(m));
-
-        return new ListNode(childMethods);
+        return new EventDefinitionNode((IReference) visit(ctx.ident()), getEventType(ctx.eventType()));
     }
 
     @Override

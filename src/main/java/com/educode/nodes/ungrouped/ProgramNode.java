@@ -2,13 +2,16 @@ package com.educode.nodes.ungrouped;
 
 import com.educode.IReferencing;
 import com.educode.nodes.IVisitable;
+import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.referencing.IReference;
+import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.visitors.VisitorBase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zen on 3/9/17.
@@ -23,7 +26,40 @@ public class ProgramNode extends NaryNode implements IVisitable, IReferencing
         this._reference = reference;
     }
 
-    public ArrayList<MethodDeclarationNode> getMethodDeclarations()
+    public ArrayList<EventDefinitionNode> getEventDefinitions()
+    {
+        ArrayList<EventDefinitionNode> nodes = new ArrayList<>();
+
+        for (Node child : getChildren())
+        {
+            if (child instanceof EventDefinitionNode)
+                nodes.add((EventDefinitionNode) child);
+        }
+
+        return nodes;
+    }
+
+    public List<VariableDeclarationNode> getVariableDeclarations()
+    {
+        ArrayList<VariableDeclarationNode> nodes = new ArrayList<>();
+
+        for (Node child : getChildren())
+        {
+            if (child instanceof ListNode)
+            {
+                ListNode childList = (ListNode) child;
+                for (Node grandchild : childList.getChildren())
+                {
+                    if (grandchild instanceof VariableDeclarationNode)
+                        nodes.add((VariableDeclarationNode) grandchild);
+                }
+            }
+        }
+
+        return nodes;
+    }
+
+    public List<MethodDeclarationNode> getMethodDeclarations()
     {
         ArrayList<MethodDeclarationNode> nodes = new ArrayList<>();
 

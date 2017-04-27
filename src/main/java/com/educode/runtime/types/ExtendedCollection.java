@@ -8,12 +8,6 @@ import java.util.ArrayList;
 public class ExtendedCollection<E> extends ArrayList<E> implements ICollection<E>
 {
     @Override
-    public ExtendedCollection<ExtendedCollection<Float>> test()
-    {
-        return null;
-    }
-
-    @Override
     public void removeItemAt(float index)
     {
         remove((int) index);

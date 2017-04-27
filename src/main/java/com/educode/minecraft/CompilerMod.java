@@ -8,14 +8,14 @@ import java.util.UUID;
 import com.educode.minecraft.command.CommandEdit;
 import com.educode.minecraft.command.CommandRun;
 import com.educode.minecraft.entity.EntityRobot;
-import com.educode.minecraft.handler.TickHandler;
+import com.educode.minecraft.handler.EventHandler;
 import com.educode.minecraft.proxy.ServerProxy;
 import com.educode.minecraft.handler.GuiHandler;
+import com.educode.runtime.*;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -39,29 +39,31 @@ public class CompilerMod
     public static final List<UUID> CHILD_ENTITIES = new ArrayList<UUID>();
     
     public static final SimpleNetworkWrapper NETWORK_INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
-    
+
+    public static final List<ScriptBase> RUNNING_SCRIPTS = new ArrayList<>();
+
     @Mod.Instance(MODID)
     public static CompilerMod Instance;
 
     @SidedProxy(clientSide = "com.educode.minecraft.proxy.ClientProxy", serverSide = "com.educode.minecraft.proxy.ServerProxy")
     public static ServerProxy Proxy;
     
-    @EventHandler
+    @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event)
     {
     	Proxy.preInit();
+        MinecraftForge.EVENT_BUS.register(new EventHandler());
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, ROBOT_TEXTURE_LOCATION), EntityRobot.class, "EntityTest", 255, Instance, 64, 1, true);
         NetworkRegistry.INSTANCE.registerGuiHandler(Instance, new GuiHandler());
-        MinecraftForge.EVENT_BUS.register(new TickHandler());
     }
     
-    @EventHandler
+    @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
         Proxy.registerModels();
     }
     
-    @EventHandler
+    @Mod.EventHandler
     public void serverStart(FMLServerStartingEvent event)
     {
         File scriptsDir = new File(SCRIPTS_LOCATION);
