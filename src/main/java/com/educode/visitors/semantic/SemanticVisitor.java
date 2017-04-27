@@ -136,6 +136,8 @@ public class SemanticVisitor extends VisitorBase
         // Visit block
         visit(node.getBlockNode());
 
+        node.setMaxDeclaredVariables(getSymbolTableHandler().getCurrent().getDeclaredVariableCounter());
+
         getSymbolTableHandler().closeScope();
     }
 
@@ -143,6 +145,11 @@ public class SemanticVisitor extends VisitorBase
     {
         getSymbolTableHandler().enterSymbol(node);
         node.getReference().setType(node.getType()); // todo better solution
+
+        if (node.getType() == Type.NumberType)
+            getSymbolTableHandler().getCurrent().addDeclaredVariableCounter(2);
+        else
+            getSymbolTableHandler().getCurrent().addDeclaredVariableCounter(1);
     }
 
     public void visit(ForEachNode node)
@@ -315,6 +322,11 @@ public class SemanticVisitor extends VisitorBase
             getSymbolTableHandler().enterSymbol(node);
 
         visitChildren(node);
+
+        if (node.getType() == Type.NumberType)
+            getSymbolTableHandler().getCurrent().addDeclaredVariableCounter(2);
+        else
+            getSymbolTableHandler().getCurrent().addDeclaredVariableCounter(1);
     }
 
     public void visit(ReturnNode node)
