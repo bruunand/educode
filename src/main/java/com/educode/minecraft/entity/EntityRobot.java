@@ -38,8 +38,6 @@ import java.util.concurrent.BlockingQueue;
 
 public class EntityRobot extends EntityCreature implements IWorldNameable, IEntityAdditionalSpawnData
 {
-    public BlockingQueue<Command> CommandQueue = new ArrayBlockingQueue<Command>(16);
-
     private final InventoryBasic _inventory;
 
     private String _name = "Unnamed";
@@ -72,6 +70,13 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     @Override
     public void onLivingUpdate()
     {
+        // Remove entity if not spawned in this server instance
+        if (!this.world.isRemote)
+        {
+            if (this._tickCounter++ == 0 && !CompilerMod.CHILD_ENTITIES.contains(this.getUniqueID()))
+                this.world.removeEntity(this);
+        }
+
         super.onLivingUpdate();
         this.updateArmSwingProgress();
     }
@@ -117,16 +122,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {
-        IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
-
-        // Remove entity if not spawned in this server instance
-        if (!this.world.isRemote)
-        {
-            if (this._tickCounter++ == 0 && !CompilerMod.CHILD_ENTITIES.contains(this.getUniqueID()))
-                this.world.removeEntity(this);
-        }
-
-        return data;
+        return super.onInitialSpawn(difficulty, livingdata);
     }
 
     public void updateTextFormatting()
