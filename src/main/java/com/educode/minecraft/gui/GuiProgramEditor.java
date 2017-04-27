@@ -237,9 +237,9 @@ public class GuiProgramEditor extends GuiScreen
     public static void setText(String text)
     {
         String[] partialKeywords = new String[] {"end", "repeat", "less", "greater", "on"};
-        String[] blockKeywords = new String[] {"program", "end program", "method", "end method", "if", "then", "else", "end if", "repeat while", "return", "returns"};
+        String[] blockKeywords = new String[] {"program", "end program", "method", "end method", "if", "then", "else", "end if", "repeat while", "end repeat", "return", "returns", "foreach", "in", "end foreach"};
         String[] booleanKeywords = new String[] {"not", "equals", "less than", "greater than", "or", "and"};
-        String[] typeKeywords = new String[] {"number", "Coordinates", "string", "bool"};
+        String[] typeKeywords = new String[] {"number", "Coordinates", "string", "bool", "Item", "Entity"};
         String[] tfKeywords = new String[] {"true", "false"};
         String[] eventKeywords = new String[] {"on event", "call"};
 
