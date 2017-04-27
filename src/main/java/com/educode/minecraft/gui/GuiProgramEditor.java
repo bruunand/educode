@@ -236,17 +236,19 @@ public class GuiProgramEditor extends GuiScreen
 
     public static void setText(String text)
     {
-        String[] partialKeywords = new String[] {"end", "repeat", "less", "greater"};
+        String[] partialKeywords = new String[] {"end", "repeat", "less", "greater", "on"};
         String[] blockKeywords = new String[] {"program", "end program", "method", "end method", "if", "then", "else", "end if", "repeat while", "return", "returns"};
         String[] booleanKeywords = new String[] {"not", "equals", "less than", "greater than", "or", "and"};
         String[] typeKeywords = new String[] {"number", "Coordinates", "string", "bool"};
         String[] tfKeywords = new String[] {"true", "false"};
+        String[] eventKeywords = new String[] {"on event", "call"};
 
         HashMap<String[], TextFormatting> keyWordMap = new HashMap<>();
         keyWordMap.put(blockKeywords, TextFormatting.LIGHT_PURPLE);
         keyWordMap.put(booleanKeywords, TextFormatting.GOLD);
         keyWordMap.put(typeKeywords, TextFormatting.AQUA);
         keyWordMap.put(tfKeywords, TextFormatting.GREEN);
+        keyWordMap.put(eventKeywords, TextFormatting.BLUE);
 
         _text = text.replace("\r", "");
         String textWithCursor = new StringBuffer(_text + " ").insert(_position, _cursorSymbol).toString();
