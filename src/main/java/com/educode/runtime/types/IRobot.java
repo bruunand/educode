@@ -17,6 +17,9 @@ public interface IRobot extends IEntity
     float getDistanceTo(MinecraftEntity entity);
     boolean placeBlock(Coordinates coordinates);
 
+    // Messaging
+    void broadcast(float channel, float message);
+
     // Combat
     boolean attack(MinecraftEntity entity);
 
