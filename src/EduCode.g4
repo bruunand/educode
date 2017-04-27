@@ -1,6 +1,12 @@
 grammar EduCode;
 
-program  : 'program' ident eol+ methods 'end program'
+program  : 'program' ident eol+ eventDefs methods 'end program'
+         ;
+
+eventDefs: (eventDef eol+)*
+         ;
+
+eventDef : 'on event' eventType 'call' ident
          ;
 
 methods  : (method eol+)*
@@ -95,6 +101,11 @@ factor   : literal
          | LPAREN logicExpr RPAREN
          | ULOP factor
          | LPAREN dataType RPAREN factor
+         ;
+
+eventType: 'robotDeath'
+         | 'messageReceived' LPAREN numberLit RPAREN
+         | 'entityDeath'
          ;
 
 dataType : 'number'//Contains both ints and floats

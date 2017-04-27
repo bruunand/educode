@@ -3,6 +3,7 @@ package com.educode.runtime;
 import com.educode.minecraft.Command;
 import com.educode.minecraft.entity.EntityRobot;
 
+import com.educode.nodes.ungrouped.EventDefinitionNode;
 import com.educode.runtime.types.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -19,24 +20,31 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Random;
 
 public abstract class ScriptBase implements IRobot
 {
+    // General
+    private final Random _rand = new Random();
+    private List<EventDefinitionNode> _eventDefinitions;
+
+    // Minecraft related
     private World _world;
     private EntityRobot _robot;
     private EntityPlayer _player;
-    private final Random _rand = new Random();
 
     // Used by implemented scripts
     protected final ScriptBase robot = this;
 
-    public void init(World world, EntityPlayer player)
+    public void init(World world, EntityPlayer player, List<EventDefinitionNode> eventDefinitions)
     {
         this._world = world;
         this._player = player;
+        this._eventDefinitions = eventDefinitions;
 
-        _robot = new EntityRobot(_world, player);
+        _robot = new EntityRobot(this, _world, player);
         BlockPos spawnPosition = this._player.getPosition();
         do
         {
@@ -126,10 +134,15 @@ public abstract class ScriptBase implements IRobot
         executeOnTick(() -> _robot.sendMessageTo(_player, message));
     }
 
-    public void selfDestruct()
+    public void invokeEvents(Class eventType, Object ... params)
     {
-        explode(0.0F);
-        removeEntity();
+        for (EventDefinitionNode event : _eventDefinitions)
+        {
+            if (event.getEventType().getClass() != eventType)
+                continue;
+
+            event.getEventType().invokeFor(this, event.getReference().toString(), params);
+        }
     }
 
     public void explode(float strength)
@@ -138,7 +151,7 @@ public abstract class ScriptBase implements IRobot
         executeOnTick(() -> _world.createExplosion(this._robot, getX(), getY(), getZ(), strength, mobGriefingEnabled));
     }
 
-    private void removeEntity()
+    public void removeEntity()
     {
         executeOnTick(() -> _world.removeEntity(_robot));
     }
@@ -292,7 +305,6 @@ public abstract class ScriptBase implements IRobot
 
     private boolean navigateToBlock(BlockPos pos)
     {
-        EntityCow cow;
         boolean result = (boolean) executeOnTick(() ->
         {
             _robot.getNavigator().clearPathEntity();

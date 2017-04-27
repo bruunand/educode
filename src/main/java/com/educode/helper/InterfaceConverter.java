@@ -50,14 +50,11 @@ public class InterfaceConverter
         SymbolTable newTable = new SymbolTable(baseTable);
 
         // Go through each declared method and add it
-        Method[] met = source.getDeclaredMethods();
-        System.out.println(source.getName() + ":" + met.length);
         for (Method method : source.getDeclaredMethods())
         {
             // Skip if return type is TypeVariableImpl (generic type)
             if (method.getGenericReturnType() instanceof TypeVariableImpl)
                 continue;
-
 
             // Get EduCode type of return type
             Type returnType = getTypeFromClass(method.getGenericReturnType());

@@ -2,29 +2,24 @@ package com.educode.minecraft.entity;
 
 import com.educode.minecraft.Command;
 import com.educode.minecraft.CompilerMod;
+import com.educode.runtime.ScriptBase;
 import com.educode.runtime.types.Coordinates;
+import com.educode.events.RobotDeathEvent;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -50,6 +45,8 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
 
     private TextFormatting _textFormatting = TextFormatting.RESET;
 
+    private ScriptBase _parent;
+
     public EntityRobot(World worldIn)
     {
         super(worldIn);
@@ -59,11 +56,12 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         this._inventory = new InventoryBasic("Items", false, 36);
     }
     
-    public EntityRobot(World worldIn, EntityPlayer owner)
+    public EntityRobot(ScriptBase parent, World worldIn, EntityPlayer owner)
     {
     	this(worldIn);
 
-    	_name = CompilerMod.NAMES[this.rand.nextInt(CompilerMod.NAMES.length)] + " @ " + owner.getName();
+    	this._parent = parent;
+    	this._name = CompilerMod.NAMES[this.rand.nextInt(CompilerMod.NAMES.length)] + " @ " + owner.getName();
     	CompilerMod.CHILD_ENTITIES.add(this.getUniqueID());
         updateTextFormatting();
     }
@@ -106,6 +104,13 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     public void onDeath(DamageSource cause)
     {
         super.onDeath(cause);
+
+        // Don't execute on client side
+        if (world.isRemote)
+            return;
+
+        // Invoke on death event
+        this._parent.invokeEvents(RobotDeathEvent.class);
 
         // Drop items on death
         dropItems();

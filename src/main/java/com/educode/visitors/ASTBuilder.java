@@ -23,13 +23,13 @@ import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
-import com.educode.nodes.ungrouped.BlockNode;
-import com.educode.nodes.ungrouped.ObjectInstantiationNode;
-import com.educode.nodes.ungrouped.ProgramNode;
-import com.educode.nodes.ungrouped.TypeCastNode;
+import com.educode.nodes.ungrouped.*;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
+import com.educode.events.EventTypeBase;
+import com.educode.events.MessageReceivedEvent;
+import com.educode.events.RobotDeathEvent;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.ArrayList;
@@ -92,6 +92,18 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         }
     }
 
+    private EventTypeBase getEventType(EduCodeParser.EventTypeContext ctx)
+    {
+        switch (ctx.getChild(0).getText())
+        {
+            case "robotDeath":
+                return new RobotDeathEvent();
+            case "messageReceived":
+                return new MessageReceivedEvent((NumberLiteralNode) visit(ctx.numberLit()));
+        }
+
+        return null;
+    }
 
     private Type getType(EduCodeParser.DataTypeContext ctx)
     {
@@ -310,8 +322,28 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
 
         ArrayList<Node> nodes = new ArrayList<>();
         nodes.addAll(((NaryNode)visit(ctx.methods())).getChildren());
+        nodes.addAll(((NaryNode)visit(ctx.eventDefs())).getChildren());
 
         return new ProgramNode(nodes, (IReference) visit(ctx.ident()));
+    }
+
+    @Override
+    public Node visitEventDefs(EduCodeParser.EventDefsContext ctx)
+    {
+        updateLineNumber(ctx);
+
+        ArrayList<Node> childMethods = new ArrayList<>();
+
+        for (EduCodeParser.EventDefContext e : ctx.eventDef())
+            childMethods.add(visit(e));
+
+        return new ListNode(childMethods);
+    }
+
+    @Override
+    public Node visitEventDef(EduCodeParser.EventDefContext ctx)
+    {
+        return new EventDefinitionNode((IReference) visit(ctx.ident()), getEventType(ctx.eventType()));
     }
 
     @Override

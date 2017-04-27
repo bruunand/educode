@@ -102,7 +102,7 @@ public class MethodDeclarationNode extends BinaryNode implements IReferencing
         }
     }
 
-    public boolean correspondsWith(IReference reference, List<Node> actualArguments)
+    public boolean correspondsWith(IReference reference, List<Type> actualTypes)
     {
         // Check if name matches
         if (!this.getReference().equals(reference))
@@ -112,14 +112,14 @@ public class MethodDeclarationNode extends BinaryNode implements IReferencing
         List<ParameterNode> formalParameters = this.getParameters();
 
         // Check if amount matches
-        if (formalParameters.size() != actualArguments.size())
+        if (formalParameters.size() != actualTypes.size())
             return false;
 
         // Check parameter one by one to match type
         for (int i = 0; i < formalParameters.size(); i++)
         {
-            Type formalType = formalParameters.get(0).getType();
-            Type actualType = actualArguments.get(0).getType();
+            Type formalType = formalParameters.get(i).getType();
+            Type actualType = actualTypes.get(i);
 
             if (!formalType.equals(actualType))
                 return false;
