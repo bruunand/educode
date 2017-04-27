@@ -2,11 +2,29 @@ package com.educode.helper;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+
 /**
  * Created by Simon on 25/04/2017.
  */
 public class ArrayHelper
 {
+
+    public static String[] getSubArray(int startIndex, int endIndex, String[] array)
+    {
+        ArrayList<String> subArray = new ArrayList<>();
+        for (int i = 0; i <= array.length - 1 ; i++ )
+        {
+            if (i >= startIndex && i <= endIndex)
+            {
+                subArray.add(array[i]);
+            }
+        }
+        String[] arr = new String[subArray.size()];
+        arr = subArray.toArray(arr);
+        return arr;
+    }
+
     public static  int characterCountInArray(String character, String[] array)
     {
         int count = 0;

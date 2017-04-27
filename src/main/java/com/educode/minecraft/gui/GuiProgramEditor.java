@@ -34,6 +34,8 @@ public class GuiProgramEditor extends GuiScreen
     private static String _fileName;
     private static int _position = 0;
     private static int _lineNumber = 0;
+    private static int _visibleTopLine = 1;
+    private static int _visibleBottomLine = 25;
     private static final char _cursorSymbol = '|';
 
     public GuiProgramEditor()
@@ -69,18 +71,31 @@ public class GuiProgramEditor extends GuiScreen
                     {
                         finalCollection.append(collectionCollection[i] + "<");
                     }
-                    String type = collectionCollection[collectionCollection.length-1].replace(">", "");
+
+                    String type;
+
+                    if (collectionCollection[collectionCollection.length - 1].contains(">" + _cursorSymbol))
+                    {
+                        type = collectionCollection[collectionCollection.length-1].replace(">", "").replace(Character.toString(_cursorSymbol), "");
+                    }
+                    else
+                    {
+                        type = collectionCollection[collectionCollection.length-1].replace(">", "");
+                    }
                     keywords = testWord(type.replace(Character.toString(_cursorSymbol), ""), keyWordMap.keySet(), partialKeywords);
+
+
+
                     switch(keywords.getFirst())
                     {
                         case 0:
-                            finalCollection.append(TextFormatting.DARK_RED + type + TextFormatting.AQUA);
+                            finalCollection.append(TextFormatting.WHITE + type + TextFormatting.AQUA);
                             break;
                         case 1:
                             finalCollection.append(type);
                             break;
                         case 2:
-                            finalCollection.append(TextFormatting.DARK_RED + type + TextFormatting.AQUA);
+                            finalCollection.append(TextFormatting.WHITE + type + TextFormatting.AQUA);
                             break;
                     }
                     String debug = collectionCollection[collectionCollection.length-1].replace(type, "");
@@ -127,6 +142,15 @@ public class GuiProgramEditor extends GuiScreen
             if(word.replace(Character.toString(_cursorSymbol), "").contains("//"))
             {
                 StringBuffer commentWord = new StringBuffer(word);
+
+                if (words.length == ArrayHelper.indexOfNth(word, words, 1) + 1)
+                {
+                    commentWord.insert(word.replace(Character.toString(_cursorSymbol),"").indexOf("//"), TextFormatting.GRAY);
+                    commentWord.append(TextFormatting.WHITE + " ");
+                    formattedLine.append(commentWord);
+                    continue;
+                }
+
                 StringBuffer lastWord = new StringBuffer(words[words.length - 1]);
                 commentWord.insert(word.replace(Character.toString(_cursorSymbol),"").indexOf("//"), TextFormatting.GRAY);
                 lastWord.insert(lastWord.length(), TextFormatting.WHITE + " ");
@@ -169,11 +193,6 @@ public class GuiProgramEditor extends GuiScreen
                         formattedLine.append(word + " ");
                         break;
                     case 1:
-                        //if (new StringBuffer(partial + " " + word).toString().equals("less than") ||
-                        //    new StringBuffer(partial + " " + word).toString().equals("greater than"))
-                        //{
-                        //TODO: Special cases
-                        //}
                         TextFormatting col = keyWordMap.get(keywords.getSecond());
                         formattedLine.insert(formattedLine.length() - (partial.length() + 1), col);
                         formattedLine.append(word + TextFormatting.WHITE + " ");
@@ -228,34 +247,39 @@ public class GuiProgramEditor extends GuiScreen
         keyWordMap.put(booleanKeywords, TextFormatting.GOLD);
         keyWordMap.put(typeKeywords, TextFormatting.AQUA);
         keyWordMap.put(tfKeywords, TextFormatting.GREEN);
-        //String = &5
-        //Comments = &7
 
         _text = text.replace("\r", "");
         String textWithCursor = new StringBuffer(_text + " ").insert(_position, _cursorSymbol).toString();
         String[] _lines = textWithCursor.split("(\n)");
 
-        StringBuffer newFormattedText = new StringBuffer();
-
-
-        for(String line : _lines)
+        for (int i = 0; i <= _lines.length - 1; i++)
         {
-            newFormattedText.append(testWords(line.split("( )"), keyWordMap, partialKeywords) + "\n");
+            if (_lines[i].contains(Character.toString(_cursorSymbol)))
+            {
+                _lineNumber = i + 1;
+                break;
+            }
+        }
+
+        if (_lineNumber < _visibleTopLine)
+        {
+            _visibleTopLine--;
+            _visibleBottomLine--;
+        }
+        else if (_lineNumber > _visibleBottomLine)
+        {
+            _visibleTopLine++;
+            _visibleBottomLine++;
         }
 
 
+        StringBuffer newFormattedText = new StringBuffer();
 
-        // Perform syntax highlighting using regex
-        //Blue keywords
-        //newFormattedText = newFormattedText.replaceAll("(program | program |\nprogram | method |\nmethod )", TextFormatting.BLUE + "$1" + TextFormatting.WHITE);
-        //newFormattedText = newFormattedText.replaceAll("( end program|\nend program| end if | end if\n|\nend if |\nend if\n| end method | end method\n|\nend method |\nend method\n| if|then|else|while|repeat|method|return(s)?)", TextFormatting.BLUE + "$1" + TextFormatting.WHITE);
-        //newFormattedText = newFormattedText.replaceAll("( begin | end program|\nend program| end if | end if\n|\nend if |\nend if\n| end method | end method\n|\nend method |\nend method\n| if|then|else|while|repeat|method|return(s)?)", TextFormatting.BLUE + "$1" + TextFormatting.WHITE);
 
-        //newFormattedText = newFormattedText.replaceAll("(not|equals|less than|greater than|or|and)", TextFormatting.YELLOW + "$1" + TextFormatting.WHITE);
-        //newFormattedText = newFormattedText.replaceAll("(number|Coordinates|string|bool|Collection<(.*?)>)", TextFormatting.LIGHT_PURPLE + "$1" + TextFormatting.WHITE);
-        //newFormattedText = newFormattedText.replaceAll("\"(.*?)\"", TextFormatting.RED + "\"$1\"" + TextFormatting.WHITE); // Strings
-        //newFormattedText = newFormattedText.replaceAll("(true|false)", TextFormatting.RED + "$1" + TextFormatting.WHITE); // Other literals
-        //newFormattedText = newFormattedText.replaceAll("(//.*)", TextFormatting.GREEN + "$1" + TextFormatting.WHITE); // Comments
+        for(String line : ArrayHelper.getSubArray(_visibleTopLine - 1, _visibleBottomLine - 1, _lines))
+        {
+            newFormattedText.append(testWords(line.split("( )"), keyWordMap, partialKeywords) + "\n");
+        }
 
         _formattedText = TextFormatting.WHITE + newFormattedText.toString();
     }
@@ -372,5 +396,7 @@ public class GuiProgramEditor extends GuiScreen
     public static void resetPosition()
     {
         _position = 0;
+        _visibleTopLine = 1;
+        _visibleBottomLine = 25;
     }
 }
