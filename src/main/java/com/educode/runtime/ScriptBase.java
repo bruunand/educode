@@ -4,13 +4,11 @@ import com.educode.minecraft.Command;
 import com.educode.minecraft.entity.EntityRobot;
 
 import com.educode.nodes.ungrouped.EventDefinitionNode;
-import com.educode.runtime.events.Broadcaster;
+import com.educode.events.Broadcaster;
 import com.educode.runtime.types.*;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -21,13 +19,16 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class ScriptBase implements IRobot
 {
+    // Queue of commands to be executed
+    private final Queue<Command> _commandQueue = new ConcurrentLinkedQueue<>();
+
     // General
     private final Random _rand = new Random();
     private List<EventDefinitionNode> _eventDefinitions;
@@ -71,6 +72,11 @@ public abstract class ScriptBase implements IRobot
         this._world.spawnEntity(_robot);
     }
 
+    public Command pollCommand()
+    {
+        return _commandQueue.poll();
+    }
+
     public List<EventDefinitionNode> getEventDefinitions()
     {
         return this._eventDefinitions;
@@ -112,22 +118,6 @@ public abstract class ScriptBase implements IRobot
         {
             e.printStackTrace();
         }
-    }
-
-    private synchronized Command queueAndAwait()
-    {
-        try
-        {
-            Command newCommand = new Command();
-            this._robot.CommandQueue.add(newCommand);
-            newCommand.waitForCanExecute();
-            return newCommand;
-        }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     @Override
@@ -229,24 +219,21 @@ public abstract class ScriptBase implements IRobot
         return true;
     }
 
-    private synchronized Object executeOnTick(IExecutableReturns executable)
+    private Object executeOnTick(IExecutableReturns executable)
     {
-        Command command = queueAndAwait();
+        Command command = new Command(executable);
+        _commandQueue.add(command);
 
-        Object executionResult = executable.execute();
-
-        command.setHasBeenExecuted(true);
-
-        return executionResult;
+        return command.getResult();
     }
 
-    private synchronized void executeOnTick(IExecutable executable)
+    private void executeOnTick(IExecutable executable)
     {
-        Command command = queueAndAwait();
-
-        executable.execute();
-
-        command.setHasBeenExecuted(true);
+        executeOnTick(() ->
+        {
+            executable.execute();
+            return null;
+        });
     }
 
     @Override
@@ -316,7 +303,7 @@ public abstract class ScriptBase implements IRobot
             return _robot.getNavigator().setPath(_robot.getNavigator().getPathToPos(pos), 0.5D);
         });
 
-        //wait(500F);
+        wait(500F);
         return result;
     }
 
@@ -456,4 +443,9 @@ public abstract class ScriptBase implements IRobot
     }
     
     public abstract void main();
+
+    public EntityRobot getRobot()
+    {
+        return this._robot;
+    }
 }

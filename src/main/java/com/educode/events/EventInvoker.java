@@ -1,4 +1,4 @@
-package com.educode.runtime.events;
+package com.educode.events;
 
 import com.educode.nodes.ungrouped.EventDefinitionNode;
 import com.educode.runtime.ScriptBase;
@@ -40,7 +40,7 @@ public class EventInvoker
             Method invokeMethod = script.getClass().getMethod(methodName, classArray);
 
             // Invoke method from a different thread
-            // TODO: Would be better if it did not run in parallel
+            // TODO: Would be better if it did not run in a new thread
             Thread methodInvocationThread = new Thread(() ->
             {
                 try

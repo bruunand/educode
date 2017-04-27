@@ -1,6 +1,5 @@
-package com.educode.runtime.events;
+package com.educode.events;
 
-import com.educode.events.MessageReceivedEvent;
 import com.educode.minecraft.CompilerMod;
 import com.educode.nodes.ungrouped.EventDefinitionNode;
 import com.educode.runtime.ScriptBase;

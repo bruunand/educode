@@ -1,15 +1,9 @@
 grammar EduCode;
 
-program  : 'program' ident eol+ eventDefs methods 'end program'
-         ;
-
-eventDefs: (eventDef eol+)*
+program  : 'program' ident eol+ ((eventDef|method|varDcl) eol+)* 'end program'
          ;
 
 eventDef : 'on event' eventType 'call' ident
-         ;
-
-methods  : (method eol+)*
          ;
 
 method   : 'method' ident LPAREN (params)? RPAREN ('returns' dataType)? eol+ stmts 'end method'

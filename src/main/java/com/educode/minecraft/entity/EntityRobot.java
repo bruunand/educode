@@ -4,7 +4,7 @@ import com.educode.events.RobotAttackedEvent;
 import com.educode.minecraft.Command;
 import com.educode.minecraft.CompilerMod;
 import com.educode.runtime.ScriptBase;
-import com.educode.runtime.events.EventInvoker;
+import com.educode.events.EventInvoker;
 import com.educode.runtime.types.Coordinates;
 import com.educode.events.RobotDeathEvent;
 import com.educode.runtime.types.MinecraftEntity;
@@ -33,7 +33,6 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -73,33 +72,6 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     @Override
     public void onLivingUpdate()
     {
-        if (!this.world.isRemote) // Server Logic
-        {
-            // Remove entity if not spawned in this server instance
-            if (this._tickCounter++ == 0 && !CompilerMod.CHILD_ENTITIES.contains(this.getUniqueID()))
-            {
-                this.world.removeEntity(this);
-                return;
-            }
-
-            // Poll next command
-            // Only one command is executed at a time
-            Command nextCommand = CommandQueue.poll();
-            if (nextCommand != null)
-            {
-                nextCommand.setCanExecute(true);
-
-                try
-                {
-                    nextCommand.waitForHasBeenExecuted();
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-
         super.onLivingUpdate();
         this.updateArmSwingProgress();
     }
@@ -145,7 +117,16 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {
-        return super.onInitialSpawn(difficulty, livingdata);
+        IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
+
+        // Remove entity if not spawned in this server instance
+        if (!this.world.isRemote)
+        {
+            if (this._tickCounter++ == 0 && !CompilerMod.CHILD_ENTITIES.contains(this.getUniqueID()))
+                this.world.removeEntity(this);
+        }
+
+        return data;
     }
 
     public void updateTextFormatting()
