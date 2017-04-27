@@ -97,7 +97,12 @@ public class CommandRun implements ICommand
             Class<?> compiledClass = new CustomJavaCompiler().compile(CompilerMod.SCRIPTS_LOCATION, scriptName);
             ScriptBase script = (ScriptBase) compiledClass.newInstance();
             script.init(server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions());
+
+            // Run script in separate thread
             new ScriptRunner(script).start();
+
+            // Add to running scripts
+            CompilerMod.RUNNING_SCRIPTS.add(script);
         }
         catch (Exception e)
         {

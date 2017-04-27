@@ -2,6 +2,7 @@ package com.educode.visitors;
 
 import com.educode.antlr.EduCodeBaseVisitor;
 import com.educode.antlr.EduCodeParser;
+import com.educode.events.*;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
@@ -27,9 +28,6 @@ import com.educode.nodes.ungrouped.*;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
-import com.educode.events.EventTypeBase;
-import com.educode.events.MessageReceivedEvent;
-import com.educode.events.RobotDeathEvent;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.ArrayList;
@@ -98,8 +96,12 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         {
             case "robotDeath":
                 return new RobotDeathEvent();
+            case "robotAttacked":
+                return new RobotAttackedEvent();
             case "messageReceived":
                 return new MessageReceivedEvent((NumberLiteralNode) visit(ctx.numberLit()));
+            case "entityDeath":
+                return new EntityDeathEvent();
         }
 
         return null;

@@ -8,7 +8,7 @@ import java.util.UUID;
 import com.educode.minecraft.command.CommandEdit;
 import com.educode.minecraft.command.CommandRun;
 import com.educode.minecraft.entity.EntityRobot;
-import com.educode.minecraft.handler.ServerEventHandler;
+import com.educode.minecraft.handler.EventHandler;
 import com.educode.minecraft.proxy.ServerProxy;
 import com.educode.minecraft.handler.GuiHandler;
 import com.educode.runtime.*;
@@ -52,9 +52,9 @@ public class CompilerMod
     public void preinit(FMLPreInitializationEvent event)
     {
     	Proxy.preInit();
+        MinecraftForge.EVENT_BUS.register(new EventHandler());
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, ROBOT_TEXTURE_LOCATION), EntityRobot.class, "EntityTest", 255, Instance, 64, 1, true);
         NetworkRegistry.INSTANCE.registerGuiHandler(Instance, new GuiHandler());
-        MinecraftForge.EVENT_BUS.register(new ServerEventHandler());
     }
     
     @Mod.EventHandler

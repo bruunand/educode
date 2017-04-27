@@ -1,10 +1,13 @@
 package com.educode.minecraft.entity;
 
+import com.educode.events.RobotAttackedEvent;
 import com.educode.minecraft.Command;
 import com.educode.minecraft.CompilerMod;
 import com.educode.runtime.ScriptBase;
+import com.educode.runtime.events.EventInvoker;
 import com.educode.runtime.types.Coordinates;
 import com.educode.events.RobotDeathEvent;
+import com.educode.runtime.types.MinecraftEntity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
@@ -30,6 +33,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -110,7 +114,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
             return;
 
         // Invoke on death event
-        this._parent.invokeEvents(RobotDeathEvent.class);
+        EventInvoker.invokeByType(this._parent, RobotDeathEvent.class);
 
         // Drop items on death
         dropItems();
@@ -299,6 +303,20 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
 
         if (compound.hasKey("name"))
             _name = compound.getString("name");
+    }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount)
+    {
+        if (!world.isRemote)
+        {
+            Entity sourceEntity = source.getEntity();
+
+            if (sourceEntity != null)
+                EventInvoker.invokeByType(this._parent, RobotAttackedEvent.class, new MinecraftEntity(sourceEntity));
+        }
+
+        return super.attackEntityFrom(source, amount);
     }
 
     public void writeEntityToNBT(NBTTagCompound compound)

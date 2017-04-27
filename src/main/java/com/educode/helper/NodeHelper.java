@@ -21,8 +21,7 @@ public class NodeHelper
             return nodes;
 
         // Add expressions
-        for (Node grandchild : ((NaryNode) node.getChild()).getChildren())
-            nodes.add(grandchild);
+        nodes.addAll(((NaryNode) node.getChild()).getChildren());
 
         return nodes;
     }

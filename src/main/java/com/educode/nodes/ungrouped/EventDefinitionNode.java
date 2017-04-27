@@ -4,6 +4,7 @@ import com.educode.IReferencing;
 import com.educode.nodes.base.LeafNode;
 import com.educode.nodes.referencing.IReference;
 import com.educode.events.EventTypeBase;
+import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.visitors.VisitorBase;
 
 /**
@@ -18,6 +19,13 @@ public class EventDefinitionNode extends LeafNode implements IReferencing
     {
         this._reference = reference;
         this._eventType = eventType;
+    }
+
+    public String getName()
+    {
+        if (getReference() instanceof IdentifierReferencingNode)
+            return ((IdentifierReferencingNode) getReference()).getText();
+        return null;
     }
 
     @Override

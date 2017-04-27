@@ -1,10 +1,14 @@
 package com.educode.minecraft.handler;
 
+import com.educode.events.EntityDeathEvent;
 import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.gui.GuiProgramEditor;
 import com.educode.minecraft.networking.MessageOpenEditor;
+import com.educode.runtime.events.Broadcaster;
+import com.educode.runtime.types.MinecraftEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -15,7 +19,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Created by User on 26-Apr-17.
  */
-public class ClientEventHandler
+public class EventHandler
 {
     private static Queue<IMessage> _commandQueue = new ConcurrentLinkedQueue<IMessage>();
 
@@ -43,5 +47,21 @@ public class ClientEventHandler
                 player.openGui(CompilerMod.MODID, 0, player.world, 0, 0, 0);
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onLivingDeathEvent(LivingDeathEvent event)
+    {
+        // Skip client side
+        if (event.getEntity().getEntityWorld().isRemote)
+            return;
+
+        Broadcaster.broadcastEvent(EntityDeathEvent.class, new MinecraftEntity(event.getEntity()));
+    }
+
+    @SubscribeEvent
+    public void onServerTick(TickEvent.ServerTickEvent event)
+    {
+        //System.out.println("server tick");
     }
 }

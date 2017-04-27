@@ -4,6 +4,7 @@ import com.educode.minecraft.Command;
 import com.educode.minecraft.entity.EntityRobot;
 
 import com.educode.nodes.ungrouped.EventDefinitionNode;
+import com.educode.runtime.events.Broadcaster;
 import com.educode.runtime.types.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -21,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -67,6 +69,11 @@ public abstract class ScriptBase implements IRobot
             }
         } while (!this._robot.getCanSpawnHere() && _robot.getPosition().equals(_player.getPosition()));
         this._world.spawnEntity(_robot);
+    }
+
+    public List<EventDefinitionNode> getEventDefinitions()
+    {
+        return this._eventDefinitions;
     }
 
     public ExtendedCollection<Float> range(float min, float max)
@@ -132,17 +139,6 @@ public abstract class ScriptBase implements IRobot
     public void say(String message)
     {
         executeOnTick(() -> _robot.sendMessageTo(_player, message));
-    }
-
-    public void invokeEvents(Class eventType, Object ... params)
-    {
-        for (EventDefinitionNode event : _eventDefinitions)
-        {
-            if (event.getEventType().getClass() != eventType)
-                continue;
-
-            event.getEventType().invokeFor(this, event.getReference().toString(), params);
-        }
     }
 
     public void explode(float strength)
@@ -212,6 +208,12 @@ public abstract class ScriptBase implements IRobot
             wait(500.0F);
 
         return result;
+    }
+
+    @Override
+    public void broadcast(float channel, float message)
+    {
+        Broadcaster.broadcastMessage(this._robot, channel, message);
     }
 
     //TODO: should maybe be in interface aswell?, Andreas
@@ -314,7 +316,7 @@ public abstract class ScriptBase implements IRobot
             return _robot.getNavigator().setPath(_robot.getNavigator().getPathToPos(pos), 0.5D);
         });
 
-        wait(500F);
+        //wait(500F);
         return result;
     }
 
@@ -386,7 +388,8 @@ public abstract class ScriptBase implements IRobot
     	mine(direction, 0);
     }
     
-    private void mine(String direction, int yModifier){
+    private void mine(String direction, int yModifier)
+    {
         BlockPos targetBlockPosition = _robot.getPosition();
         if (yModifier != 0)
         	targetBlockPosition = targetBlockPosition.add(0, yModifier, 0);
@@ -444,7 +447,8 @@ public abstract class ScriptBase implements IRobot
             wait(500F);
     }
 
-    public void mineBlock(Coordinates position){
+    public void mineBlock(Coordinates position)
+    {
         if(this.getCoordinates().toBlockPos().getDistance((int)position.getX(), (int)position.getY(), (int)position.getZ()) > 3.0F)
         {
             mineBlock(position.toBlockPos());
