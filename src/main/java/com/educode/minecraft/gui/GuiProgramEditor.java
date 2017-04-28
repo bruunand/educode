@@ -37,6 +37,7 @@ public class GuiProgramEditor extends GuiScreen
     private static int _visibleTopLine = 1;
     private static int _visibleBottomLine = 25;
     private static final char _cursorSymbol = '|';
+    private static int _positionInLine = 0;
 
     public GuiProgramEditor()
     {
@@ -236,6 +237,8 @@ public class GuiProgramEditor extends GuiScreen
 
     public static void setText(String text)
     {
+        int count = 0;
+
         String[] partialKeywords = new String[] {"end", "repeat", "less", "greater", "on"};
         String[] blockKeywords = new String[] {"program", "end program", "method", "end method", "if", "then", "else", "end if", "repeat while", "end repeat", "return", "returns", "foreach", "in", "end foreach"};
         String[] booleanKeywords = new String[] {"not", "equals", "less than", "greater than", "or", "and"};
@@ -254,6 +257,7 @@ public class GuiProgramEditor extends GuiScreen
         String textWithCursor = new StringBuffer(_text + " ").insert(_position, _cursorSymbol).toString();
         String[] _lines = textWithCursor.split("(\n)");
 
+        //setting line number
         for (int i = 0; i <= _lines.length - 1; i++)
         {
             if (_lines[i].contains(Character.toString(_cursorSymbol)))
@@ -263,6 +267,10 @@ public class GuiProgramEditor extends GuiScreen
             }
         }
 
+        // calc position in line
+        _positionInLine = ArrayHelper.indexOfNth(_cursorSymbol, _lines[_lineNumber - 1].toCharArray(), 1) + 1;
+
+        //set visible part of editor for scrolling
         if (_lineNumber < _visibleTopLine)
         {
             _visibleTopLine--;
@@ -273,7 +281,6 @@ public class GuiProgramEditor extends GuiScreen
             _visibleTopLine++;
             _visibleBottomLine++;
         }
-
 
         StringBuffer newFormattedText = new StringBuffer();
 
@@ -299,7 +306,7 @@ public class GuiProgramEditor extends GuiScreen
         this.drawDefaultBackground();
 
         // Draw position string
-        this.fontRendererObj.drawString(TextFormatting.WHITE + "Position: " + _position, this.width - 100, 10, 0);
+        this.fontRendererObj.drawString(TextFormatting.WHITE + "Position: " + _positionInLine, this.width - 100, 10, 0);
 
         // Draw line number
         this.fontRendererObj.drawString(TextFormatting.WHITE + "Line Num: " + _lineNumber, this.width - 100, 25, 0);
