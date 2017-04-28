@@ -82,3 +82,5 @@ Test\.class
 \.gradle/
 
 \.idea/
+
+*.log
