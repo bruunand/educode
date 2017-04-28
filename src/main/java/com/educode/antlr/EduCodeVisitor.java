@@ -17,23 +17,11 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgram(EduCodeParser.ProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#eventDefs}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEventDefs(EduCodeParser.EventDefsContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#eventDef}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitEventDef(EduCodeParser.EventDefContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#methods}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMethods(EduCodeParser.MethodsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#method}.
 	 * @param ctx the parse tree

@@ -1,10 +1,12 @@
 package com.educode.minecraft.handler;
 
 import com.educode.events.EntityDeathEvent;
+import com.educode.minecraft.Command;
 import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.gui.GuiProgramEditor;
 import com.educode.minecraft.networking.MessageOpenEditor;
-import com.educode.runtime.events.Broadcaster;
+import com.educode.runtime.ScriptBase;
+import com.educode.events.Broadcaster;
 import com.educode.runtime.types.MinecraftEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -13,6 +15,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
+import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -62,6 +65,19 @@ public class EventHandler
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event)
     {
-        //System.out.println("server tick");
+        for (Iterator<ScriptBase> iterator = CompilerMod.RUNNING_SCRIPTS.iterator(); iterator.hasNext();)
+        {
+            ScriptBase script = iterator.next();
+            if (script.getRobot().isDead)
+            {
+                iterator.remove();
+                continue;
+            }
+
+            // Poll command
+            Command command = script.pollCommand();
+            if (command != null)
+                command.setResult(command.getExecutable().execute());
+        }
     }
 }

@@ -1,32 +1,45 @@
 package com.educode.minecraft;
 
+import com.educode.runtime.IExecutableReturns;
+
 public class Command
 {
-    private boolean _canExecute = false;
-    private boolean _hasBeenExecuted = false;
-    
-    public synchronized void setHasBeenExecuted(boolean state)
+    private final IExecutableReturns _executable;
+    private Object _result;
+    private boolean _executed = false;
+
+    public Command(IExecutableReturns executable)
     {
-        this._hasBeenExecuted = state;
-        this.notify();
+        _executable = executable;
     }
-    
-    public synchronized void setCanExecute(boolean state)
+
+    public IExecutableReturns getExecutable()
     {
-        this._canExecute = state;
-        this.notify();
+        return _executable;
     }
-    
-    public synchronized void waitForCanExecute() throws InterruptedException
+
+    public synchronized Object getResult()
     {
-        while (!this._canExecute)
-            wait();
+        // Wait for execution
+        while (!_executed)
+        {
+            try
+            {
+                wait();
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return _result;
     }
-    
-    public synchronized void waitForHasBeenExecuted()  throws InterruptedException
+
+    public synchronized void setResult(Object result)
     {
-    	long now = System.currentTimeMillis();
-        while (!this._hasBeenExecuted && (System.currentTimeMillis() - now) < 500)
-            wait();
+        _executed = true;
+        _result = result;
+        notify();
     }
 }

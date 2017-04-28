@@ -323,42 +323,26 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         updateLineNumber(ctx);
 
         ArrayList<Node> nodes = new ArrayList<>();
-        nodes.addAll(((NaryNode)visit(ctx.methods())).getChildren());
-        nodes.addAll(((NaryNode)visit(ctx.eventDefs())).getChildren());
+
+        // Add global variables
+        for (EduCodeParser.VarDclContext v : ctx.varDcl())
+            nodes.add(visit(v));
+
+        // Add event subscriptions
+        for (EduCodeParser.EventDefContext e : ctx.eventDef())
+            nodes.add(visit(e));
+
+        // Add method declarations
+        for (EduCodeParser.MethodContext m : ctx.method())
+            nodes.add(visit(m));
 
         return new ProgramNode(nodes, (IReference) visit(ctx.ident()));
-    }
-
-    @Override
-    public Node visitEventDefs(EduCodeParser.EventDefsContext ctx)
-    {
-        updateLineNumber(ctx);
-
-        ArrayList<Node> childMethods = new ArrayList<>();
-
-        for (EduCodeParser.EventDefContext e : ctx.eventDef())
-            childMethods.add(visit(e));
-
-        return new ListNode(childMethods);
     }
 
     @Override
     public Node visitEventDef(EduCodeParser.EventDefContext ctx)
     {
         return new EventDefinitionNode((IReference) visit(ctx.ident()), getEventType(ctx.eventType()));
-    }
-
-    @Override
-    public Node visitMethods(EduCodeParser.MethodsContext ctx)
-    {
-        updateLineNumber(ctx);
-
-        ArrayList<Node> childMethods = new ArrayList<>();
-
-        for (EduCodeParser.MethodContext m : ctx.method())
-            childMethods.add(visit(m));
-
-        return new ListNode(childMethods);
     }
 
     @Override

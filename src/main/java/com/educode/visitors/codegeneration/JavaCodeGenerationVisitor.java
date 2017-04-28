@@ -73,6 +73,10 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         append(codeBuffer, "public class %s extends ScriptBase\n{\n", node.getReference());
 
+        // Visit global variable declarations
+        for (VariableDeclarationNode variableDecl : node.getVariableDeclarations())
+            append(codeBuffer, "%s;\n", visit(variableDecl));
+
         // Visit method declarations
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
             append(codeBuffer, "%s", visit(methodDecl));

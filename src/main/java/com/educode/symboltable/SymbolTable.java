@@ -20,8 +20,10 @@ import java.util.List;
 public class SymbolTable
 {
     private SymbolTable _outer;
+    private int DeclaredVariableCounter = 0;
 
     private final List<Symbol> _symbolList = new ArrayList();
+
 
     public SymbolTable(SymbolTable outer)
     {
@@ -62,6 +64,13 @@ public class SymbolTable
 
         return null;
     }
+
+    public void addDeclaredVariableCounter(int value)
+    {
+    }
+        DeclaredVariableCounter += value;
+
+    public int getDeclaredVariableCounter() { return DeclaredVariableCounter; }
 
     public Symbol retrieveMethodSymbol(IReference reference, List<Type> actualArguments)
     {

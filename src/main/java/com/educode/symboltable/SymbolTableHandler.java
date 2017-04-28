@@ -35,7 +35,11 @@ public class SymbolTableHandler
     public void closeScope()
     {
         if (_current != null)
+        {
+            if (_current.getOuter() != null)
+                _current.getOuter().addDeclaredVariableCounter(_current.getDeclaredVariableCounter());
             _current = _current.getOuter();
+        }
         else
             error("Attempted to close scope outside of a scope.");
     }

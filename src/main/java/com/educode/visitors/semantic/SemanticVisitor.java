@@ -88,8 +88,19 @@ public class SemanticVisitor extends VisitorBase
         if (!hasMainMethod)
             _symbolTableHandler.error(node, "Program has no method called 'main' with no return type and parameters.");
 
-        // Visit all children, which includes method declarations
-        visitChildren(node);
+        // Visit children in correct order
+        // Variable declarations must be visited before method declarations
+        for (VariableDeclarationNode varDecl : node.getVariableDeclarations())
+            visit(varDecl);
+
+        // We can then visit event definitions
+        // These require method symbols, but they have been declared previously
+        for (EventDefinitionNode eventDef : node.getEventDefinitions())
+            visit(eventDef);
+
+        // We can also visit method declarations at this point
+        for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
+            visit(methodDecl);
 
         getSymbolTableHandler().closeScope();
     }
@@ -148,6 +159,8 @@ public class SemanticVisitor extends VisitorBase
         // Visit block
         visit(node.getBlockNode());
 
+        node.setMaxDeclaredVariables(getSymbolTableHandler().getCurrent().getDeclaredVariableCounter());
+
         getSymbolTableHandler().closeScope();
     }
 
@@ -155,6 +168,11 @@ public class SemanticVisitor extends VisitorBase
     {
         getSymbolTableHandler().enterSymbol(node);
         node.getReference().setType(node.getType()); // todo better solution
+
+        if (node.getType() == Type.NumberType)
+            getSymbolTableHandler().getCurrent().addDeclaredVariableCounter(2);
+        else
+            getSymbolTableHandler().getCurrent().addDeclaredVariableCounter(1);
     }
 
     public void visit(ForEachNode node)
@@ -327,6 +345,11 @@ public class SemanticVisitor extends VisitorBase
             getSymbolTableHandler().enterSymbol(node);
 
         visitChildren(node);
+
+        if (node.getType() == Type.NumberType)
+            getSymbolTableHandler().getCurrent().addDeclaredVariableCounter(2);
+        else
+            getSymbolTableHandler().getCurrent().addDeclaredVariableCounter(1);
     }
 
     public void visit(ReturnNode node)

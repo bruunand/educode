@@ -9,7 +9,6 @@ import java.util.ArrayList;
  */
 public class ArrayHelper
 {
-
     public static String[] getSubArray(int startIndex, int endIndex, String[] array)
     {
         ArrayList<String> subArray = new ArrayList<>();
@@ -25,7 +24,7 @@ public class ArrayHelper
         return arr;
     }
 
-    public static  int characterCountInArray(String character, String[] array)
+    public static int characterCountInArray(String character, String[] array)
     {
         int count = 0;
 

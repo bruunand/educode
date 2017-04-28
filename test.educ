@@ -1,11 +1,18 @@
 program Test
     on event messageReceived(11) call onMessageReceived
 
+    number a = 5, b, c = 10
+
     method main()
-       onMessageReceived(robot.getOwner(), "hej")
-       return
+        setter()
+        debug("a:" + a)
+        return
     end method
 
-    method onMessageReceived(Entity sender, string message)
+    method setter()
+        a = 10
+    end method
+
+    method onMessageReceived(Entity sender, number message)
     end method
 end program
