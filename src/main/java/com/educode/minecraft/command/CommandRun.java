@@ -95,16 +95,26 @@ public class CommandRun implements ICommand
 
             // Compile and main Java
             Class<?> compiledClass = new CustomJavaCompiler().compile(CompilerMod.SCRIPTS_LOCATION, scriptName);
-            ScriptBase script = (ScriptBase) compiledClass.newInstance();
-            script.init(server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions());
+            
+            // Determine amount of instances to run
+            int instances = 1;
+            if (args.length > 1)
+                instances = Integer.parseInt(args[1]);
 
-            // Run script in separate thread
-            new ScriptRunner(script).start();
-
-            // Add to running scripts
-            synchronized (CompilerMod.RUNNING_SCRIPTS)
+            // Run all instances of scripts
+            for (int i = 0; i < instances; i++)
             {
-                CompilerMod.RUNNING_SCRIPTS.add(script);
+                ScriptBase script = (ScriptBase) compiledClass.newInstance();
+                script.init(server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions());
+
+                // Run script in separate thread
+                new ScriptRunner(script).start();
+
+                // Add to running scripts
+                synchronized (CompilerMod.RUNNING_SCRIPTS)
+                {
+                    CompilerMod.RUNNING_SCRIPTS.add(script);
+                }
             }
         }
         catch (Exception e)
