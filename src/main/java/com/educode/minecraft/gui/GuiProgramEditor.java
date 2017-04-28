@@ -317,7 +317,7 @@ public class GuiProgramEditor extends GuiScreen
         this.fontRendererObj.drawString(TextFormatting.WHITE + "Line Num: " + _lineNumber, this.width - 100, 25, 0);
 
         // Draw code
-        this.fontRendererObj.drawSplitString( _formattedText, 10, 10, 400, 0);
+        this.fontRendererObj.drawSplitString( _formattedText, 10, 10, this.width - 10, 0);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
