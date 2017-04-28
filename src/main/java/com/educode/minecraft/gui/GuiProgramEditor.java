@@ -61,8 +61,7 @@ public class GuiProgramEditor extends GuiScreen
         {
             if (word.replace(Character.toString(_cursorSymbol), "").contains("Collection<"))
             {
-                String[] collectionCollection = word.split("(<)"); //Collection | String>
-                                                                        //Collection | Collection | String>|>
+                String[] collectionCollection = word.split("(<)");
 
                 if(ArrayHelper.characterCountInArray(">", collectionCollection) == collectionCollection.length - 1)
                 {
@@ -234,7 +233,6 @@ public class GuiProgramEditor extends GuiScreen
         return new Tuple<>(0, null);
     }
 
-
     public static void setText(String text)
     {
         int count = 0;
@@ -245,6 +243,8 @@ public class GuiProgramEditor extends GuiScreen
         String[] typeKeywords = new String[] {"number", "Coordinates", "string", "bool", "Item", "Entity"};
         String[] tfKeywords = new String[] {"true", "false"};
         String[] eventKeywords = new String[] {"on event", "call"};
+        String[] events = new String[] {"robotDeath", "robotAttacked", "messageReceived", "entityDeath"};
+
 
         HashMap<String[], TextFormatting> keyWordMap = new HashMap<>();
         keyWordMap.put(blockKeywords, TextFormatting.LIGHT_PURPLE);
@@ -252,6 +252,7 @@ public class GuiProgramEditor extends GuiScreen
         keyWordMap.put(typeKeywords, TextFormatting.AQUA);
         keyWordMap.put(tfKeywords, TextFormatting.GREEN);
         keyWordMap.put(eventKeywords, TextFormatting.BLUE);
+        keyWordMap.put(events, TextFormatting.DARK_AQUA);
 
         _text = text.replace("\r", "");
         String textWithCursor = new StringBuffer(_text + " ").insert(_position, _cursorSymbol).toString();
