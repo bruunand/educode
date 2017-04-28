@@ -361,7 +361,8 @@ public class GuiProgramEditor extends GuiScreen
             this.mc.displayGuiScreen(null); // Displaying null hides the GUI screen
         else if (keyCode == KEY_RETURN) // Newline
             insert("\n");
-            //---Testing indent recognition
+
+            /* Experimental code DO NOT TOUCH! Unless you fix it :D
             String textAfterNewline = _text.substring(_position).trim();
             int newLinePositionAfterNewline = textAfterNewline.indexOf("\n");
             if (newLinePositionAfterNewline != -1)
@@ -369,7 +370,7 @@ public class GuiProgramEditor extends GuiScreen
                 setPositionSafe(_position + newLinePositionAfterNewline + 1);
                 setText(_text);
             }
-            //---End testing
+            */
         else if (keyCode == KEY_TAB) // Tab (creates two spaces)
             insert("  ");
         else if (keyCode == KEY_LEFT && _position > 0) // Change position to left
@@ -391,15 +392,15 @@ public class GuiProgramEditor extends GuiScreen
         }
         else if (keyCode ==  KEY_DOWN)
         {
-            //---String textAfter = _text.substring(_position);
-            //---int newLinePosition = textAfter.indexOf("\n");
-            //---if (newLinePosition != -1)
-            //---{
-            //---    setPositionSafe(_position + newLinePosition + 1);
-            //---    setText(_text);
-            //---}
+            String textAfter = _text.substring(_position);
+            int newLinePosition = textAfter.indexOf("\n");
+            if (newLinePosition != -1)
+            {
+                setPositionSafe(_position + newLinePosition + 1);
+                setText(_text);
+            }
 
-
+            /* Experimental code DO NOT TOUCH! Unless you fix it :D
             if (_lines.length - 1 >= _lineNumber + 1)
             {
                 if (_lines[_lineNumber + 1].length() >= _positionInLine)
@@ -411,13 +412,15 @@ public class GuiProgramEditor extends GuiScreen
                     setPositionSafe(_position + _lines[_lineNumber].length() + _lines[_lineNumber + 1].length());
                 }
             }
+            */
         }
         else if (keyCode == KEY_UP)
         {
-            //---String textBefore = _text.substring(0, _position);
-            //---setPositionSafe(textBefore.lastIndexOf("\n") - 1);
-            //---setText(_text);
+            String textBefore = _text.substring(0, _position);
+            setPositionSafe(textBefore.lastIndexOf("\n") - 1);
+            setText(_text);
 
+            /* Experimental code DO NOT TOUCH! Unless you fix it :D
             if (_lines.length - 1 <= _lineNumber - 1)
             {
                 if (_lines[_lineNumber - 1].length() >= _positionInLine)
@@ -429,6 +432,7 @@ public class GuiProgramEditor extends GuiScreen
                     setPositionSafe(_position + _lines[_lineNumber].length() + _lines[_lineNumber + 1].length());
                 }
             }
+            */
         }
         else if (isKeyDown(KEY_LCONTROL))
         {
