@@ -65,19 +65,24 @@ public class EventHandler
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event)
     {
-        for (Iterator<ScriptBase> iterator = CompilerMod.RUNNING_SCRIPTS.iterator(); iterator.hasNext();)
+        synchronized (CompilerMod.RUNNING_SCRIPTS)
         {
-            ScriptBase script = iterator.next();
-            if (script.getRobot().isDead)
-            {
-                iterator.remove();
-                continue;
-            }
+            Iterator<ScriptBase> iterator = CompilerMod.RUNNING_SCRIPTS.iterator();
 
-            // Poll command
-            Command command = script.pollCommand();
-            if (command != null)
-                command.setResult(command.getExecutable().execute());
+            while (iterator.hasNext())
+            {
+                ScriptBase script = iterator.next();
+                if (script.getRobot().isDead)
+                {
+                    iterator.remove();
+                    continue;
+                }
+
+                // Poll command
+                Command command = script.pollCommand();
+                if (command != null)
+                    command.setResult(command.getExecutable().execute());
+            }
         }
     }
 }
