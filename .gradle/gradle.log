@@ -9,7 +9,51 @@ This mapping 'snapshot_20161220' was designed for MC 1.11! Use at your own peril
          by: Searge, ProfMobius, Fesh0r,         
          R4wk, ZeuX, IngisKahn, bspkrs           
 #################################################
+:deobfCompileDummyTask
+:deobfProvidedDummyTask
+:generateApiGrammarSource UP-TO-DATE
+:sourceApiJava UP-TO-DATE
+:compileApiJava UP-TO-DATE
+:processApiResources UP-TO-DATE
+:apiClasses UP-TO-DATE
+:generateGrammarSource UP-TO-DATE
+:sourceMainJava
+:compileJava/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/helper/InterfaceConverter.java:6: warning: TypeVariableImpl is internal proprietary API and may be removed in a future release
+import sun.reflect.generics.reflectiveObjects.TypeVariableImpl;
+                                             ^
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/helper/InterfaceConverter.java:56: warning: TypeVariableImpl is internal proprietary API and may be removed in a future release
+            if (method.getGenericReturnType() instanceof TypeVariableImpl)
+                                                         ^
+/home/zen/Git/EduCode-P4/build/sources/main/java/com/educode/helper/InterfaceConverter.java:67: warning: TypeVariableImpl is internal proprietary API and may be removed in a future release
+                if (parameter instanceof TypeVariableImpl)
+                                         ^
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+3 warnings
 
-CONFIGURE SUCCESSFUL
+:processResources UP-TO-DATE
+:classes
+:jar
+:generateTestGrammarSource UP-TO-DATE
+:sourceTestJava UP-TO-DATE
+:compileTestJava UP-TO-DATE
+:processTestResources UP-TO-DATE
+:testClasses UP-TO-DATE
+:test UP-TO-DATE
+:extractMcpData SKIPPED
+:extractMcpMappings SKIPPED
+:getVersionJson
+:extractUserdev UP-TO-DATE
+:genSrgs SKIPPED
+:reobfJar
+:extractRangemapReplacedMain
+/home/zen/Git/EduCode-P4/build/sources/main/java
+:retromapReplacedMain UP-TO-DATE
+:sourceJar UP-TO-DATE
+:assemble
+:check UP-TO-DATE
+:build
 
-Total time: 7.364 secs
+BUILD SUCCESSFUL
+
+Total time: 20.96 secs
