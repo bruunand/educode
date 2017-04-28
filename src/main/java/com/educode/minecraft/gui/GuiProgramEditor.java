@@ -32,6 +32,7 @@ public class GuiProgramEditor extends GuiScreen
     private static String _text = "";
     private static String _formattedText = "";
     private static String _fileName;
+    private static String[] _lines;
     private static int _position = 0;
     private static int _lineNumber = 0;
     private static int _visibleTopLine = 1;
@@ -235,8 +236,7 @@ public class GuiProgramEditor extends GuiScreen
 
     public static void setText(String text)
     {
-        int count = 0;
-
+        //Highlight keywords
         String[] partialKeywords = new String[] {"end", "repeat", "less", "greater", "on"};
         String[] blockKeywords = new String[] {"program", "end program", "method", "end method", "if", "then", "else", "end if", "repeat while", "end repeat", "return", "returns", "foreach", "in", "end foreach"};
         String[] booleanKeywords = new String[] {"not", "equals", "less than", "greater than", "or", "and"};
@@ -245,7 +245,7 @@ public class GuiProgramEditor extends GuiScreen
         String[] eventKeywords = new String[] {"on event", "call"};
         String[] events = new String[] {"robotDeath", "robotAttacked", "messageReceived", "entityDeath"};
 
-
+        //Assign colors for above keywords
         HashMap<String[], TextFormatting> keyWordMap = new HashMap<>();
         keyWordMap.put(blockKeywords, TextFormatting.LIGHT_PURPLE);
         keyWordMap.put(booleanKeywords, TextFormatting.GOLD);
@@ -254,9 +254,12 @@ public class GuiProgramEditor extends GuiScreen
         keyWordMap.put(eventKeywords, TextFormatting.BLUE);
         keyWordMap.put(events, TextFormatting.DARK_AQUA);
 
+        //Remove \r from _text as they are unnecessary
         _text = text.replace("\r", "");
+        //Insert the cursor
         String textWithCursor = new StringBuffer(_text + " ").insert(_position, _cursorSymbol).toString();
-        String[] _lines = textWithCursor.split("(\n)");
+        //Split the text into lines in an array
+        _lines = textWithCursor.split("(\n)");
 
         //setting line number
         for (int i = 0; i <= _lines.length - 1; i++)
@@ -285,12 +288,13 @@ public class GuiProgramEditor extends GuiScreen
 
         StringBuffer newFormattedText = new StringBuffer();
 
-
+        //Format the text from _text by going through each line and then append it to newFormattedText
         for(String line : ArrayHelper.getSubArray(_visibleTopLine - 1, _visibleBottomLine - 1, _lines))
         {
             newFormattedText.append(testWords(line.split("( )"), keyWordMap, partialKeywords) + "\n");
         }
 
+        //Add the new formatted text to the text shown on screen
         _formattedText = TextFormatting.WHITE + newFormattedText.toString();
     }
 
@@ -357,6 +361,15 @@ public class GuiProgramEditor extends GuiScreen
             this.mc.displayGuiScreen(null); // Displaying null hides the GUI screen
         else if (keyCode == KEY_RETURN) // Newline
             insert("\n");
+            //---Testing indent recognition
+            String textAfterNewline = _text.substring(_position).trim();
+            int newLinePositionAfterNewline = textAfterNewline.indexOf("\n");
+            if (newLinePositionAfterNewline != -1)
+            {
+                setPositionSafe(_position + newLinePositionAfterNewline + 1);
+                setText(_text);
+            }
+            //---End testing
         else if (keyCode == KEY_TAB) // Tab (creates two spaces)
             insert("  ");
         else if (keyCode == KEY_LEFT && _position > 0) // Change position to left
@@ -378,19 +391,44 @@ public class GuiProgramEditor extends GuiScreen
         }
         else if (keyCode ==  KEY_DOWN)
         {
-            String textAfter = _text.substring(_position);
-            int newLinePosition = textAfter.indexOf("\n");
-            if (newLinePosition != -1)
+            //---String textAfter = _text.substring(_position);
+            //---int newLinePosition = textAfter.indexOf("\n");
+            //---if (newLinePosition != -1)
+            //---{
+            //---    setPositionSafe(_position + newLinePosition + 1);
+            //---    setText(_text);
+            //---}
+
+
+            if (_lines.length - 1 >= _lineNumber + 1)
             {
-                setPositionSafe(_position + newLinePosition + 1);
-                setText(_text);
+                if (_lines[_lineNumber + 1].length() >= _positionInLine)
+                {
+                    setPositionSafe(_position + _lines[_lineNumber].length() + _positionInLine);
+                }
+                else
+                {
+                    setPositionSafe(_position + _lines[_lineNumber].length() + _lines[_lineNumber + 1].length());
+                }
             }
         }
         else if (keyCode == KEY_UP)
         {
-            String textBefore = _text.substring(0, _position);
-            setPositionSafe(textBefore.lastIndexOf("\n") - 1);
-            setText(_text);
+            //---String textBefore = _text.substring(0, _position);
+            //---setPositionSafe(textBefore.lastIndexOf("\n") - 1);
+            //---setText(_text);
+
+            if (_lines.length - 1 <= _lineNumber - 1)
+            {
+                if (_lines[_lineNumber - 1].length() >= _positionInLine)
+                {
+                    setPositionSafe(_position + _lines[_lineNumber].length() + _positionInLine);
+                }
+                else
+                {
+                    setPositionSafe(_position + _lines[_lineNumber].length() + _lines[_lineNumber + 1].length());
+                }
+            }
         }
         else if (isKeyDown(KEY_LCONTROL))
         {
