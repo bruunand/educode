@@ -153,7 +153,8 @@ public class JavaCodeGenerationVisitor extends VisitorBase
             parameterJoiner.add(visit(parameterNodeDecl).toString());
 
         // Add declaration with joined parameters
-        append(codeBuffer, String.format("public %s %s(%s)\n", OperatorTranslator.toJava(node.getType()), visit(node.getReference()), parameterJoiner));
+        // All method calls can be interrupted at any time
+        append(codeBuffer, String.format("public %s %s(%s) throws InterruptedException\n", OperatorTranslator.toJava(node.getType()), visit(node.getReference()), parameterJoiner));
 
         // Append block
         append(codeBuffer, "%s", visit(node.getBlockNode()));

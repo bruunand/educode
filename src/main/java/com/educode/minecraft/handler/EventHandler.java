@@ -1,6 +1,6 @@
 package com.educode.minecraft.handler;
 
-import com.educode.events.EntityDeathEvent;
+import com.educode.events.entity.EntityDeathEvent;
 import com.educode.minecraft.Command;
 import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.gui.GuiProgramEditor;
@@ -74,6 +74,7 @@ public class EventHandler
                 ScriptBase script = iterator.next();
                 if (script.getRobot().isDead)
                 {
+                    script.getMainThread().interrupt();
                     iterator.remove();
                     continue;
                 }

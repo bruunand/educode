@@ -15,21 +15,23 @@ public interface IRobot extends IEntity
     MinecraftEntity getOwner();
     List<MinecraftEntity> getNearbyEntities();
     float getDistanceTo(MinecraftEntity entity);
-    boolean placeBlock(Coordinates coordinates);
+    boolean placeBlock(Coordinates coordinates) throws InterruptedException;
+    void stop();
 
-    // Messaging
-    void broadcast(float channel, float message);
+    // Communication
+    void broadcast(float channel, String message);
+    void broadcast(float channel, MinecraftEntity entity);
 
     // Combat
-    boolean attack(MinecraftEntity entity);
+    boolean attack(MinecraftEntity entity) throws InterruptedException;
 
     // Movement
-    void move(String direction);
-    boolean walkTo(Coordinates coords);
+    void move(String direction) throws InterruptedException;
+    boolean walkTo(Coordinates coords) throws InterruptedException;
 
     // Mining
-    void mine(String direction);
-    void mineBlock(Coordinates position);
+    void mine(String direction) throws InterruptedException;
+    void mineBlock(Coordinates position) throws InterruptedException;
 
     // Items
     ExtendedCollection<MinecraftItem> getInventory();

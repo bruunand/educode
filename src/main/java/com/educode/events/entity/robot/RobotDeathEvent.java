@@ -1,5 +1,6 @@
-package com.educode.events;
+package com.educode.events.entity.robot;
 
+import com.educode.events.EventTypeBase;
 import com.educode.types.Type;
 
 import java.util.ArrayList;

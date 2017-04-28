@@ -7,7 +7,7 @@ import java.util.List;
  */
 public abstract class EventTypeBase
 {
-    public abstract List<com.educode.types.Type> getRequiredParameters();
+    public abstract List getRequiredParameters();
     public abstract String getName();
 
     @Override

@@ -1,4 +1,4 @@
-package com.educode.minecraft;
+package com.educode.runtime;
 
 import com.educode.runtime.ScriptBase;
 
@@ -9,7 +9,6 @@ public class ScriptRunner extends Thread
 	
 	public ScriptRunner(ScriptBase script)
 	{
-		this.setName(String.format("MAIN-%s's ROBOT", script.getOwner().getWrappedEntity().getName()));
 	    this._script = script;
 	}
 	
@@ -18,12 +17,16 @@ public class ScriptRunner extends Thread
 		try
 		{
 			_script.say("Script compiled successfully!");
-			sleep(1000);
 			_script.main();
+		}
+		catch (InterruptedException e)
+		{
+			// Script interrupted - this will happen if the script is waiting and forcefully stopped
+			e.printStackTrace();
 		}
 		catch (Exception e)
 		{
-			_script.say("Script error: " + e.getMessage());
+			_script.say("Unexpected runtime error: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

@@ -5,6 +5,7 @@ import com.educode.runtime.types.Coordinates;
 import com.educode.runtime.types.IEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * Created by User on 13-Apr-17.
@@ -39,6 +40,12 @@ public class MinecraftEntity implements IEntity
     public boolean isRobot()
     {
         return getWrappedEntity() instanceof EntityRobot;
+    }
+
+    @Override
+    public boolean isPlayer()
+    {
+        return getWrappedEntity() instanceof EntityPlayer;
     }
 
     @Override

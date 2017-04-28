@@ -5,6 +5,7 @@ program Test
 
     method main()
         setter()
+        rand(5,5)
         debug("a:" + a)
         return
     end method

@@ -7,6 +7,8 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.List;
 
@@ -50,14 +52,21 @@ public class CommandStopScripts implements ICommand
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
+        int stopped = 0;
+
         synchronized (CompilerMod.RUNNING_SCRIPTS)
         {
             for (ScriptBase script : CompilerMod.RUNNING_SCRIPTS)
             {
                 if (!script.getRobot().isDead)
+                {
                     script.getRobot().setDead();
+                    stopped++;
+                }
             }
         }
+
+        sender.sendMessage(new TextComponentString(TextFormatting.GREEN + "[Success]" + TextFormatting.RESET + " " + String.format("Stopped %d scripts.", stopped)));
     }
 
     @Override

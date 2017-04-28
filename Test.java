@@ -10,6 +10,7 @@ Float c = 10.000000F;
 public void main()
 {
 setter();
+rand(5.000000F, 5.000000F);
 System.out.println(("a:" + a));
 return;
 }

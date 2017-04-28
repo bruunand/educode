@@ -1,12 +1,11 @@
 package com.educode.minecraft.entity;
 
-import com.educode.events.RobotAttackedEvent;
-import com.educode.minecraft.Command;
+import com.educode.events.entity.robot.RobotAttackedEvent;
 import com.educode.minecraft.CompilerMod;
 import com.educode.runtime.ScriptBase;
 import com.educode.events.EventInvoker;
 import com.educode.runtime.types.Coordinates;
-import com.educode.events.RobotDeathEvent;
+import com.educode.events.entity.robot.RobotDeathEvent;
 import com.educode.runtime.types.MinecraftEntity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -33,8 +32,6 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import javax.annotation.Nullable;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 public class EntityRobot extends EntityCreature implements IWorldNameable, IEntityAdditionalSpawnData
 {
@@ -47,6 +44,8 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     private TextFormatting _textFormatting = TextFormatting.RESET;
 
     private ScriptBase _parent;
+
+    private long _lastAttackAt = 0;
 
     public EntityRobot(World worldIn)
     {
@@ -225,22 +224,28 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         // todo: moved to scriptbase because we need player
     }
 
-    public void attackEntity(Entity entity)
+    public void attackEntity(Entity otherEntity)
     {
-        //turn and face entity
+        if (isDead || System.currentTimeMillis() - _lastAttackAt < 500)
+            return;
+
+        // update last attack time
+        _lastAttackAt = System.currentTimeMillis();
+
+        // turn and face entity
         this.getMoveHelper().strafe(0.01F, 0.01F);
-        this.faceEntity(entity, 90.0F, 90.0F);
+        this.faceEntity(otherEntity, 90.0F, 90.0F);
 
         // calculate damage
-        float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
-        if (entity instanceof EntityLivingBase)
-            damage += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase) entity).getCreatureAttribute());
+        float damage = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        if (otherEntity instanceof EntityLivingBase)
+            damage += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase) otherEntity).getCreatureAttribute());
 
-        //swing animation
+        // swing animation
         this.swingArm(EnumHand.MAIN_HAND);
 
-        //give damage;
-        entity.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
+        // give damage;
+        otherEntity.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
     }
 
     public float dropInventoryItem(String name, float quantity)

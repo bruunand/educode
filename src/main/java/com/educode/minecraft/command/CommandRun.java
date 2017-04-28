@@ -3,10 +3,9 @@ package com.educode.minecraft.command;
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
 import com.educode.minecraft.CompilerMod;
-import com.educode.minecraft.ScriptRunner;
+import com.educode.runtime.ScriptRunner;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.runtime.ScriptBase;
 import com.educode.symboltable.SymbolTableMessage;
 import com.educode.visitors.ASTBuilder;
@@ -95,16 +94,26 @@ public class CommandRun implements ICommand
 
             // Compile and main Java
             Class<?> compiledClass = new CustomJavaCompiler().compile(CompilerMod.SCRIPTS_LOCATION, scriptName);
-            ScriptBase script = (ScriptBase) compiledClass.newInstance();
-            script.init(server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions());
 
-            // Run script in separate thread
-            new ScriptRunner(script).start();
+            int instances = 1;
+            if (args.length > 1)
+                instances = Integer.parseInt(args[1]);
 
-            // Add to running scripts
-            synchronized (CompilerMod.RUNNING_SCRIPTS)
+            // Run designated amount of instances
+            for (int i = 0; i < instances; i++)
             {
-                CompilerMod.RUNNING_SCRIPTS.add(script);
+                ScriptBase script = (ScriptBase) compiledClass.newInstance();
+                ScriptRunner scriptThread = new ScriptRunner(script);
+                script.init(scriptThread, server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions());
+
+                // Run script in separate thread
+                scriptThread.start();
+
+                // Add to running scripts
+                synchronized (CompilerMod.RUNNING_SCRIPTS)
+                {
+                    CompilerMod.RUNNING_SCRIPTS.add(script);
+                }
             }
         }
         catch (Exception e)
