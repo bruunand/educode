@@ -17,7 +17,8 @@ public class ScriptRunner extends Thread
 	{
 		try
 		{
-			_script.say("Starting script...");
+			_script.say("Script compiled successfully!");
+			sleep(1000);
 			_script.main();
 		}
 		catch (Exception e)

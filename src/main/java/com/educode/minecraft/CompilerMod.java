@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import com.educode.minecraft.command.CommandEdit;
 import com.educode.minecraft.command.CommandRun;
+import com.educode.minecraft.command.CommandStopScripts;
 import com.educode.minecraft.entity.EntityRobot;
 import com.educode.minecraft.handler.EventHandler;
 import com.educode.minecraft.proxy.ServerProxy;
@@ -72,5 +73,6 @@ public class CompilerMod
 
         event.registerServerCommand(new CommandRun());
         event.registerServerCommand(new CommandEdit());
+        event.registerServerCommand(new CommandStopScripts());
     }
 }

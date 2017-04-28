@@ -102,7 +102,10 @@ public class CommandRun implements ICommand
             new ScriptRunner(script).start();
 
             // Add to running scripts
-            CompilerMod.RUNNING_SCRIPTS.add(script);
+            synchronized (CompilerMod.RUNNING_SCRIPTS)
+            {
+                CompilerMod.RUNNING_SCRIPTS.add(script);
+            }
         }
         catch (Exception e)
         {
