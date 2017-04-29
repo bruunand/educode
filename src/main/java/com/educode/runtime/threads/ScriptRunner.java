@@ -1,4 +1,4 @@
-package com.educode.runtime;
+package com.educode.runtime.threads;
 
 import com.educode.runtime.ScriptBase;
 
@@ -22,7 +22,7 @@ public class ScriptRunner extends Thread
 		catch (InterruptedException e)
 		{
 			// Script interrupted - this will happen if the script is waiting and forcefully stopped
-			e.printStackTrace();
+            System.out.println("Script thread interrupted.");
 		}
 		catch (Exception e)
 		{
