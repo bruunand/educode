@@ -313,7 +313,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     public Object visit(OrExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "%s %s %s", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
+        append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
 
         return codeBuffer;
     }
@@ -321,7 +321,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     public Object visit(AndExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "%s %s %s", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
+        append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
 
         return codeBuffer;
     }
@@ -329,7 +329,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     public Object visit(RelativeExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "%s %s %s", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
+        append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
 
         return codeBuffer;
     }
@@ -345,7 +345,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         // In any other case just translate the equal operator directly
         if (!stringComparison)
-            return String.format("%s %s %s", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
+            return String.format("(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
         else
         {
             String returnString = String.format("%s.equals(%s)", visit(node.getLeftChild()), visit(node.getRightChild()));
