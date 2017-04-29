@@ -133,10 +133,10 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         // This case is only used if collection is initialized with values
         if (node.getType().isCollection())
         {
-            if (node.hasChild())
+            /*if (node.hasChild())
                 return String.format("Arrays.asList(%s)", argumentJoiner);
-            else
-                return String.format("new ExtendedCollection<%s>()", OperatorTranslator.toJava(node.getType().getChildType()));
+            else*/
+                return String.format("new ExtendedCollection<%s>(%s)", OperatorTranslator.toJava(node.getType().getChildType()), argumentJoiner);
         }
         else
             return String.format("new %s(%s)", OperatorTranslator.toJava(node.getType()), argumentJoiner);
@@ -339,12 +339,11 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         Type leftType  = node.getLeftChild().getType();
         Type rightType = node.getRightChild().getType();
 
-        // In case of a string comparison, we need to use equals() it is implicit that if one type is a string,
-        // both are.
-        boolean stringComparison = leftType.equals(Type.StringType) || rightType.equals(Type.StringType);
+        // In case of a string comparison, we need to use equals()
+        // In theory we only need to check either the left or right type, because the semantic visitor only allows equal comparison of equal types
+        boolean useEqualsComparsion = leftType.equals(Type.StringType) || rightType.equals(Type.StringType) || leftType.isReferenceType() || rightType.isReferenceType();
 
-        // In any other case just translate the equal operator directly
-        if (!stringComparison)
+        if (!useEqualsComparsion)
             return String.format("(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
         else
         {

@@ -74,4 +74,17 @@ public class MinecraftEntity implements IEntity
     {
         return (float) getWrappedEntity().posZ;
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof MinecraftEntity)
+        {
+            MinecraftEntity other = (MinecraftEntity) obj;
+
+            return this.getWrappedEntity().equals(other.getWrappedEntity());
+        }
+
+        return false;
+    }
 }

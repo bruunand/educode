@@ -72,4 +72,15 @@ public class Coordinates implements ICoordinates
         return String.format("X: %f, Y: %f, Z: %f", getX(), getY(), getZ());
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof Coordinates)
+        {
+            Coordinates coords = (Coordinates) obj;
+            return this.getX() == coords.getX() && this.getY() == coords.getY() && this.getZ() == coords.getZ();
+        }
+
+        return false;
+    }
 }

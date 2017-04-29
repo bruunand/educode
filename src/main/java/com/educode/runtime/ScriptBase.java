@@ -485,4 +485,23 @@ public abstract class ScriptBase implements IRobot
     {
         return getEventQueue().offer(new EventInvocation(invokeMethod, args));
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof ScriptBase)
+        {
+            ScriptBase other = (ScriptBase) obj;
+
+            return this.getRobot().equals(other.getRobot());
+        }
+        else if (obj instanceof Entity)
+        {
+            Entity other = (Entity) obj;
+
+            return this.getRobot().equals(other);
+        }
+
+        return false;
+    }
 }

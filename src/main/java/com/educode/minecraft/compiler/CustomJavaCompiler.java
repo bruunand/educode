@@ -48,7 +48,9 @@ public class CustomJavaCompiler
         
         CompilationTask compilationTask = javaCompiler.getTask(null, null, null, options, null, fileManager.getJavaFileObjects(javaFiles));
         if (!compilationTask.call())
-        	throw new Exception("Could not compile script!"); // TODO custom exception
+		{
+			throw new Exception("Could not compile script!"); // TODO custom exception
+		}
 
         CustomClassLoader loader = new CustomClassLoader(CustomClassLoader.class.getClassLoader());
         return loader.loadClassFromFile(scriptName, new File(scriptsLocation + scriptName + ".class"));

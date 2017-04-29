@@ -441,7 +441,7 @@ public class SemanticVisitor extends VisitorBase
 
         // Only same type comparisons allowed
         // Unless either side is string, in which case any non-string will be cast to string
-        if (leftType != rightType)
+        if (!leftType.equals(rightType))
             getSymbolTableHandler().error(node, String.format("Logical operator %s can not be used for types %s and %s.", node.getOperator(), leftType, rightType));
     }
 
