@@ -14,6 +14,7 @@ public class EventInvoker extends Thread
 
     public EventInvoker(ScriptBase child)
     {
+        this.setName("EventInvoker");
         this._child = child;
     }
 

@@ -9,7 +9,8 @@ public class ScriptRunner extends Thread
 	
 	public ScriptRunner(ScriptBase script)
 	{
-	    this._script = script;
+	    this.setName("ScriptRunner");
+		this._script = script;
 	}
 	
 	public void run()
@@ -26,7 +27,8 @@ public class ScriptRunner extends Thread
 		}
 		catch (Exception e)
 		{
-			_script.say("Unexpected runtime error: " + e.getMessage());
+			// TODO: Move to robot.say
+			System.out.println("Unexpected runtime error: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

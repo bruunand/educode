@@ -9,14 +9,14 @@ import java.util.List;
 public interface IRobot extends IEntity
 {
     // General
-    void say(String text);
-    void explode(float strength);
-    void setWorldTime(float time);
+    void say(String text) throws InterruptedException;
+    void explode(float strength) throws InterruptedException;
+    void setWorldTime(float time) throws InterruptedException;
     MinecraftEntity getOwner();
-    List<MinecraftEntity> getNearbyEntities();
+    List<MinecraftEntity> getNearbyEntities() throws InterruptedException;
     float getDistanceTo(MinecraftEntity entity);
     boolean placeBlock(Coordinates coordinates) throws InterruptedException;
-    void stop();
+    void stop() throws InterruptedException;
 
     // Communication
     void broadcast(float channel, String message);
@@ -35,9 +35,9 @@ public interface IRobot extends IEntity
 
     // Items
     ExtendedCollection<MinecraftItem> getInventory();
-    void dropItems();
-    float dropItem(String name, float quantity);
+    void dropItems() throws InterruptedException;
+    float dropItem(String name, float quantity) throws InterruptedException;
     MinecraftItem getHeldItem();
-    void setHeldItem(MinecraftItem item);
+    void setHeldItem(MinecraftItem item) throws InterruptedException;
     MinecraftItem getItemFromSlot(float index);
 }

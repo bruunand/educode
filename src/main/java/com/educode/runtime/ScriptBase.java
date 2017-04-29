@@ -131,12 +131,12 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public void setWorldTime(float time)
+    public void setWorldTime(float time) throws InterruptedException
     {
         executeOnTick(() -> _world.setWorldTime((long) time % 24000));
     }
 
-    public void say(String message)
+    public void say(String message) throws InterruptedException
     {
         executeOnTick(() ->
         {
@@ -150,18 +150,18 @@ public abstract class ScriptBase implements IRobot
         });
     }
 
-    public void explode(float strength)
+    public void explode(float strength) throws InterruptedException
     {
         boolean mobGriefingEnabled = this._world.getGameRules().getBoolean("mobGriefing");
         executeOnTick(() -> _world.createExplosion(this._robot, getX(), getY(), getZ(), strength, mobGriefingEnabled));
     }
 
-    public void removeEntity()
+    public void removeEntity() throws InterruptedException
     {
         executeOnTick(() -> _world.removeEntity(_robot));
     }
 
-    public void dropItems()
+    public void dropItems() throws InterruptedException
     {
         executeOnTick(() -> _robot.dropItems());
     }
@@ -232,7 +232,7 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public void stop()
+    public void stop() throws InterruptedException
     {
         executeOnTick(() -> getRobot().setDead());
     }
@@ -249,7 +249,7 @@ public abstract class ScriptBase implements IRobot
         return true;
     }
 
-    private Object executeOnTick(IExecutableReturns executable)
+    private Object executeOnTick(IExecutableReturns executable) throws InterruptedException
     {
         TickCommand command = new TickCommand(executable);
         _commandQueue.add(command);
@@ -257,7 +257,7 @@ public abstract class ScriptBase implements IRobot
         return command.getResult();
     }
 
-    private void executeOnTick(IExecutable executable)
+    private void executeOnTick(IExecutable executable) throws InterruptedException
     {
         executeOnTick(() ->
         {
@@ -267,7 +267,7 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public float dropItem(String name, final float quantity)
+    public float dropItem(String name, final float quantity) throws InterruptedException
     {
         return (float) executeOnTick(() -> _robot.dropInventoryItem(name, quantity));
     }
@@ -296,7 +296,7 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public void setHeldItem(MinecraftItem item)
+    public void setHeldItem(MinecraftItem item) throws InterruptedException
     {
         executeOnTick(() -> this._robot.setHeldItem(EnumHand.MAIN_HAND, item.getWrappedItem()));
     }
@@ -339,7 +339,7 @@ public abstract class ScriptBase implements IRobot
 
 
     @Override
-    public ExtendedCollection<MinecraftEntity> getNearbyEntities()
+    public ExtendedCollection<MinecraftEntity> getNearbyEntities() throws InterruptedException
     {
         return (ExtendedCollection<MinecraftEntity>) executeOnTick(() ->
         {

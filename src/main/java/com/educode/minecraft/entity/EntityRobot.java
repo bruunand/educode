@@ -227,7 +227,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
 
     public void attackEntity(Entity otherEntity)
     {
-        if (isDead || System.currentTimeMillis() - _lastAttackAt < 500)
+        if (otherEntity.equals(this) || isDead || System.currentTimeMillis() - _lastAttackAt < 500)
             return;
 
         // update last attack time
