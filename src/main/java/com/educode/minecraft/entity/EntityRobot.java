@@ -22,6 +22,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -305,5 +306,30 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     {
         super.writeEntityToNBT(compound);
         compound.setString("name", this._name);
+    }
+
+    public void setSpawnPosition(EntityPlayer player)
+    {
+        BlockPos spawnPosition = player.getPosition();
+        do
+        {
+            this.setPosition(spawnPosition.getX() + world.rand.nextInt(5), spawnPosition.getY(), spawnPosition.getZ() + world.rand.nextInt(5));
+
+            switch (getEntityWorld().rand.nextInt() % 4)
+            {
+                case 0:
+                    spawnPosition = spawnPosition.west();
+                    break;
+                case 1:
+                    spawnPosition = spawnPosition.east();
+                    break;
+                case 2:
+                    spawnPosition = spawnPosition.north();
+                    break;
+                case 3:
+                    spawnPosition = spawnPosition.south();
+                    break;
+            }
+        } while (!this.getCanSpawnHere() && this.getPosition().equals(player.getPosition()));
     }
 }

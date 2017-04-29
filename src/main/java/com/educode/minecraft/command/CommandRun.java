@@ -3,7 +3,7 @@ package com.educode.minecraft.command;
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
 import com.educode.minecraft.CompilerMod;
-import com.educode.runtime.ScriptRunner;
+import com.educode.runtime.threads.ScriptRunner;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
 import com.educode.runtime.ScriptBase;

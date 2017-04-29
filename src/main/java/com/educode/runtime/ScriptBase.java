@@ -1,15 +1,12 @@
 package com.educode.runtime;
 
-import com.educode.minecraft.Command;
-import com.educode.minecraft.entity.EntityRobot;
-
-import com.educode.nodes.ungrouped.EventDefinitionNode;
 import com.educode.events.Broadcaster;
+import com.educode.minecraft.entity.EntityRobot;
+import com.educode.nodes.ungrouped.EventDefinitionNode;
+import com.educode.runtime.threads.EventInvoker;
 import com.educode.runtime.types.*;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -17,22 +14,24 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.Iterator;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class ScriptBase implements IRobot
 {
-    // Queue of commands to be executed
-    private final Queue<Command> _commandQueue = new ConcurrentLinkedQueue<>();
+    // Queues
+    private final Queue<TickCommand> _commandQueue = new ConcurrentLinkedQueue<>();
+    private final BlockingQueue<EventInvocation> _eventQueue = new ArrayBlockingQueue<>(128); // Has a maximum capacity of 128 event invocations
 
     // General
     private final Random _rand = new Random();
@@ -47,38 +46,31 @@ public abstract class ScriptBase implements IRobot
     protected final ScriptBase robot = this;
 
     // Threading
-    private Thread _mainThread;
+    private Thread _mainThread, _eventThread;
 
     public void init(Thread mainThread, World world, EntityPlayer player, List<EventDefinitionNode> eventDefinitions)
     {
         this._world = world;
         this._player = player;
         this._eventDefinitions = eventDefinitions;
-        this._mainThread = mainThread;
 
-        _robot = new EntityRobot(this, _world, player);
-        BlockPos spawnPosition = this._player.getPosition();
-        do
+        // Set threads and create thread for event invoker
+        this._mainThread = mainThread;
+        if (!eventDefinitions.isEmpty())
         {
-        	this._robot.setPosition(spawnPosition.getX() + world.rand.nextInt(3), spawnPosition.getY(), spawnPosition.getZ() + world.rand.nextInt(3));
-        	
-            switch (_world.rand.nextInt() % 4)
-            {
-                case 0:
-                    spawnPosition = spawnPosition.west();
-                    break;
-                case 1:
-                    spawnPosition = spawnPosition.east();
-                    break;
-                case 2:
-                    spawnPosition = spawnPosition.north();
-                    break;
-                case 3:
-                    spawnPosition = spawnPosition.south();
-                    break;
-            }
-        } while (!this._robot.getCanSpawnHere() && _robot.getPosition().equals(_player.getPosition()));
+            this._eventThread = new EventInvoker(this);
+            this._eventThread.start();
+        }
+
+        // Spawn robot
+        this._robot = new EntityRobot(this, _world, player);
+        this._robot.setSpawnPosition(player);
         this._world.spawnEntity(_robot);
+    }
+
+    public Thread getEventThread()
+    {
+        return this._eventThread;
     }
 
     public Thread getMainThread()
@@ -86,7 +78,12 @@ public abstract class ScriptBase implements IRobot
         return this._mainThread;
     }
 
-    public Command pollCommand()
+    public BlockingQueue<EventInvocation> getEventQueue()
+    {
+        return this._eventQueue;
+    }
+
+    public TickCommand pollCommand()
     {
         return _commandQueue.poll();
     }
@@ -254,7 +251,7 @@ public abstract class ScriptBase implements IRobot
 
     private Object executeOnTick(IExecutableReturns executable)
     {
-        Command command = new Command(executable);
+        TickCommand command = new TickCommand(executable);
         _commandQueue.add(command);
 
         return command.getResult();
@@ -482,5 +479,10 @@ public abstract class ScriptBase implements IRobot
     public EntityRobot getRobot()
     {
         return this._robot;
+    }
+
+    public boolean queueEvent(Method invokeMethod, Object[] args)
+    {
+        return getEventQueue().offer(new EventInvocation(invokeMethod, args));
     }
 }

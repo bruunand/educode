@@ -18,7 +18,7 @@ public class StringMessageReceivedEvent extends MessageReceivedEventBase
     @Override
     public List<Type> getRequiredParameters()
     {
-        return java.util.Arrays.asList(Type.NumberType, Type.StringType);
+        return java.util.Arrays.asList(Type.EntityType, Type.StringType);
     }
 
     @Override

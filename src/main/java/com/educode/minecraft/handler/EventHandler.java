@@ -1,7 +1,7 @@
 package com.educode.minecraft.handler;
 
 import com.educode.events.entity.EntityDeathEvent;
-import com.educode.minecraft.Command;
+import com.educode.runtime.TickCommand;
 import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.gui.GuiProgramEditor;
 import com.educode.minecraft.networking.MessageOpenEditor;
@@ -74,13 +74,19 @@ public class EventHandler
                 ScriptBase script = iterator.next();
                 if (script.getRobot().isDead)
                 {
+                    System.out.println("stop " + script.getRobot().getName());
+
+                    // Stop threads
                     script.getMainThread().interrupt();
+                    if (script.getEventThread() != null)
+                        script.getEventThread().interrupt();
+
                     iterator.remove();
                     continue;
                 }
 
                 // Poll command
-                Command command = script.pollCommand();
+                TickCommand command = script.pollCommand();
                 if (command != null)
                     command.setResult(command.getExecutable().execute());
             }
