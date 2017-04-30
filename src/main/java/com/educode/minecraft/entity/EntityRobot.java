@@ -11,6 +11,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -18,6 +19,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -48,6 +50,13 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
 
     private long _lastAttackAt = 0;
 
+    @Override
+    protected boolean processInteract(EntityPlayer player, EnumHand hand)
+    {
+        this.sendMessageTo(player, "REEEEEEEEEEE!");
+        return super.processInteract(player, hand);
+    }
+
     public EntityRobot(World worldIn)
     {
         super(worldIn);
@@ -55,8 +64,18 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         this.setSize(0.6F, 1.8F);
         this.setCanPickUpLoot(true);
         this._inventory = new InventoryBasic("Items", false, 36);
+
+        PathNavigateGround navigator = (PathNavigateGround) this.getNavigator();
+        navigator.setEnterDoors(true);
+        navigator.setCanSwim(true);
     }
-    
+
+    @Override
+    public void setDead()
+    {
+        super.setDead();
+    }
+
     public EntityRobot(ScriptBase parent, World worldIn, EntityPlayer owner)
     {
     	this(worldIn);
@@ -116,6 +135,13 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         ItemStack entityItem = getInventory().addItem(itemEntity.getEntityItem());
 
         this.onItemPickup(itemEntity, entityItem.getCount());
+    }
+
+    @Override
+    protected boolean canDespawn()
+    {
+        return _parent == null || _parent.getMainThread().isInterrupted();
+
     }
 
     @Nullable

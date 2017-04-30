@@ -100,6 +100,7 @@ factor   : literal
 eventType: 'robotDeath'
          | 'robotAttacked'
          | 'entityDeath'
+         | 'chatMessage'
          | ('stringMessageReceived'|'entityMessageReceived') LPAREN numberLit RPAREN
          ;
 

@@ -3,6 +3,7 @@ package com.educode.visitors;
 import com.educode.antlr.EduCodeBaseVisitor;
 import com.educode.antlr.EduCodeParser;
 import com.educode.events.*;
+import com.educode.events.communication.ChatMessageEvent;
 import com.educode.events.communication.EntityMessageReceivedEvent;
 import com.educode.events.communication.StringMessageReceivedEvent;
 import com.educode.events.entity.EntityDeathEvent;
@@ -105,6 +106,8 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
                 return new RobotAttackedEvent();
             case "entityDeath":
                 return new EntityDeathEvent();
+            case "chatMessage":
+                return new ChatMessageEvent();
             case "stringMessageReceived":
                 return new StringMessageReceivedEvent((NumberLiteralNode) visit(ctx.numberLit()));
             case "entityMessageReceived":

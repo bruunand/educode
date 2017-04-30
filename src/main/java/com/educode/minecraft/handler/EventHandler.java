@@ -1,5 +1,6 @@
 package com.educode.minecraft.handler;
 
+import com.educode.events.communication.ChatMessageEvent;
 import com.educode.events.entity.EntityDeathEvent;
 import com.educode.runtime.IExecutable;
 import com.educode.runtime.TickCommand;
@@ -11,6 +12,7 @@ import com.educode.events.Broadcaster;
 import com.educode.runtime.types.MinecraftEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -57,6 +59,12 @@ public class EventHandler
                 player.openGui(CompilerMod.MODID, 0, player.world, 0, 0, 0);
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onServerChatEvent(ServerChatEvent event)
+    {
+        Broadcaster.broadcastEvent(ChatMessageEvent.class, new MinecraftEntity(event.getPlayer()), event.getMessage());
     }
 
     @SubscribeEvent
