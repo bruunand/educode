@@ -5,6 +5,7 @@ import com.educode.runtime.ScriptBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -58,7 +59,7 @@ public class CommandStopScripts implements ICommand
         {
             for (ScriptBase script : CompilerMod.RUNNING_SCRIPTS)
             {
-                if (!script.getRobot().isDead)
+                if (!script.getRobot().isDead && script.getPlayer().equals(sender.getCommandSenderEntity()))
                 {
                     script.getRobot().setDead();
                     stopped++;

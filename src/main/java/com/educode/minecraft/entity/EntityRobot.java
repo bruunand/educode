@@ -62,7 +62,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     	this(worldIn);
 
     	this._parent = parent;
-    	this._name = CompilerMod.NAMES[this.rand.nextInt(CompilerMod.NAMES.length)] + " @ " + owner.getName();
+    	this._name = String.format("%s (%s)", parent.getScriptName(), owner.getName());
     	CompilerMod.CHILD_ENTITIES.add(this.getUniqueID());
         updateTextFormatting();
     }
@@ -220,14 +220,9 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         return this._textFormatting;
     }
 
-    public void placeBlock(Coordinates coordinates)
-    {
-        // todo: moved to scriptbase because we need player
-    }
-
     public void attackEntity(Entity otherEntity)
     {
-        if (otherEntity.equals(this) || isDead || System.currentTimeMillis() - _lastAttackAt < 500)
+        if (otherEntity.equals(this) || isDead || otherEntity.isDead || System.currentTimeMillis() - _lastAttackAt < 500)
             return;
 
         // update last attack time

@@ -36,6 +36,7 @@ public abstract class ScriptBase implements IRobot
     // General
     private final Random _rand = new Random();
     private List<EventDefinitionNode> _eventDefinitions;
+    private String _scriptName;
 
     // Minecraft related
     private World _world;
@@ -48,17 +49,21 @@ public abstract class ScriptBase implements IRobot
     // Threading
     private Thread _mainThread, _eventThread;
 
-    public void init(Thread mainThread, World world, EntityPlayer player, List<EventDefinitionNode> eventDefinitions)
+    public void init(String scriptName, Thread mainThread, World world, EntityPlayer player, List<EventDefinitionNode> eventDefinitions)
     {
         this._world = world;
         this._player = player;
         this._eventDefinitions = eventDefinitions;
+        this._scriptName = scriptName;
 
         // Set threads and create thread for event invoker
         this._mainThread = mainThread;
+        this._mainThread.setName(String.format("ScriptRunner/%s", getScriptName()));
+
         if (!eventDefinitions.isEmpty())
         {
             this._eventThread = new EventInvoker(this);
+            this._eventThread.setName(String.format("EventInvoker/%s", getScriptName()));
             this._eventThread.start();
         }
 
@@ -78,6 +83,11 @@ public abstract class ScriptBase implements IRobot
         return this._mainThread;
     }
 
+    public String getScriptName()
+    {
+        return this._scriptName;
+    }
+
     public BlockingQueue<EventInvocation> getEventQueue()
     {
         return this._eventQueue;
@@ -93,9 +103,14 @@ public abstract class ScriptBase implements IRobot
         return this._eventDefinitions;
     }
 
+    public EntityPlayer getPlayer()
+    {
+        return this._player;
+    }
+
     public ExtendedCollection<Float> range(float min, float max)
     {
-        ExtendedCollection<Float> ret = new ExtendedCollection<Float>();
+        ExtendedCollection<Float> ret = new ExtendedCollection<>();
 
         for (float c = min; c <= max; c++)
             ret.addItem(c);
@@ -359,7 +374,7 @@ public abstract class ScriptBase implements IRobot
     @Override
     public MinecraftEntity getOwner()
     {
-        return new MinecraftEntity(this._player);
+        return new MinecraftEntity(this.getPlayer());
     }
 
     @Override

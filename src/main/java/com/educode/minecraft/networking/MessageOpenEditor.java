@@ -51,7 +51,7 @@ public class MessageOpenEditor implements IMessage
 		public IMessage onMessage(MessageOpenEditor message, MessageContext ctx)
 		{
 			if (ctx.side.isClient())
-				EventHandler.queueMessage(message);
+				EventHandler.queueClientMessage(message);
 
 			return null;
 		}

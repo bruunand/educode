@@ -104,7 +104,7 @@ public class CommandRun implements ICommand
             {
                 ScriptBase script = (ScriptBase) compiledClass.newInstance();
                 ScriptRunner scriptThread = new ScriptRunner(script);
-                script.init(scriptThread, server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions());
+                script.init(scriptName, scriptThread, server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions());
 
                 // Run script in separate thread
                 scriptThread.start();

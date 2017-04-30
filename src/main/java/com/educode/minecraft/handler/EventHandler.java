@@ -1,6 +1,7 @@
 package com.educode.minecraft.handler;
 
 import com.educode.events.entity.EntityDeathEvent;
+import com.educode.runtime.IExecutable;
 import com.educode.runtime.TickCommand;
 import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.gui.GuiProgramEditor;
@@ -24,17 +25,23 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class EventHandler
 {
-    private static Queue<IMessage> _commandQueue = new ConcurrentLinkedQueue<IMessage>();
+    private static Queue<IExecutable> _serverExecutableQueue = new ConcurrentLinkedQueue<>();
+    private static Queue<IMessage> _clientMessageQueue = new ConcurrentLinkedQueue<>();
 
-    public static void queueMessage(IMessage message)
+    public static void queueServerExecutable(IExecutable executable)
     {
-        _commandQueue.add(message);
+        _serverExecutableQueue.add(executable);
+    }
+
+    public static void queueClientMessage(IMessage message)
+    {
+        _clientMessageQueue.add(message);
     }
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event)
     {
-        IMessage nextMessage = _commandQueue.poll();
+        IMessage nextMessage = _clientMessageQueue.poll();
         if (nextMessage != null)
         {
             // Ensures that GUI is only opened on client tick
@@ -65,6 +72,11 @@ public class EventHandler
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event)
     {
+        // Execute all server commands
+        while (!_serverExecutableQueue.isEmpty())
+            _serverExecutableQueue.poll().execute();
+
+        // Execute commands from all running scripts (one command per script per tick)
         synchronized (CompilerMod.RUNNING_SCRIPTS)
         {
             Iterator<ScriptBase> iterator = CompilerMod.RUNNING_SCRIPTS.iterator();
@@ -74,8 +86,6 @@ public class EventHandler
                 ScriptBase script = iterator.next();
                 if (script.getRobot().isDead)
                 {
-                    System.out.println("stop " + script.getRobot().getName());
-
                     // Stop threads
                     script.getMainThread().interrupt();
                     if (script.getEventThread() != null)

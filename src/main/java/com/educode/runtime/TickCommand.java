@@ -6,7 +6,7 @@ public class TickCommand
     private Object _result;
     private boolean _executed = false;
 
-    TickCommand(IExecutableReturns executable)
+    public TickCommand(IExecutableReturns executable)
     {
         _executable = executable;
     }

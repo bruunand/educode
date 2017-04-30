@@ -1,5 +1,6 @@
 package com.educode.runtime.threads;
 
+import com.educode.minecraft.handler.EventHandler;
 import com.educode.runtime.ScriptBase;
 
 /* This class ensures that any exceptions will be caught and that the entity is removed in the end */
@@ -9,7 +10,6 @@ public class ScriptRunner extends Thread
 	
 	public ScriptRunner(ScriptBase script)
 	{
-	    this.setName("ScriptRunner");
 		this._script = script;
 	}
 	
@@ -27,8 +27,7 @@ public class ScriptRunner extends Thread
 		}
 		catch (Exception e)
 		{
-			// TODO: Move to robot.say
-			System.out.println("Unexpected runtime error: " + e.getMessage());
+			EventHandler.queueServerExecutable(() -> _script.getRobot().sendMessageTo(_script.getPlayer(), "Unexpected runtime error: " + e.getMessage()));
 			e.printStackTrace();
 		}
 	}

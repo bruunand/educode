@@ -10,12 +10,11 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class EventInvoker extends Thread
 {
-    private final ScriptBase _child;
+    private final ScriptBase _script;
 
-    public EventInvoker(ScriptBase child)
+    public EventInvoker(ScriptBase script)
     {
-        this.setName("EventInvoker");
-        this._child = child;
+        this._script = script;
     }
 
     @Override
@@ -25,14 +24,13 @@ public class EventInvoker extends Thread
         {
             while (true)
             {
-                EventInvocation invocation = this._child.getEventQueue().take();
-                invocation.getMethod().invoke(_child, invocation.getArguments());
+                EventInvocation invocation = this._script.getEventQueue().take();
+                invocation.getMethod().invoke(_script, invocation.getArguments());
             }
         }
         catch (IllegalAccessException | InterruptedException | InvocationTargetException e)
         {
-            System.out.println("Event invoker thread interrupted.");
-            e.printStackTrace();
+            System.out.println("Event invoker thread exiting.");
         }
     }
 }
