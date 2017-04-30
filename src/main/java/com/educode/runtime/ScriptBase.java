@@ -344,9 +344,9 @@ public abstract class ScriptBase implements IRobot
         return (ExtendedCollection<MinecraftEntity>) executeOnTick(() ->
         {
             ExtendedCollection<MinecraftEntity> returnList = new ExtendedCollection<>();
-            for (Entity entity : this._world.getEntitiesWithinAABB(EntityLivingBase.class, this._robot.getEntityBoundingBox().expand(30, 5, 30)))
+            for (Entity entity : this._world.getEntitiesWithinAABB(EntityLivingBase.class, this._robot.getEntityBoundingBox().expand(45, 5, 45)))
             {
-                if (entity.equals(this._robot) || entity.equals(this._player))
+                if (entity.equals(this._robot))
                     continue;
 
                 returnList.addItem(new MinecraftEntity(entity));
