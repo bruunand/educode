@@ -401,7 +401,7 @@ public class GuiProgramEditor extends GuiScreen
             {
                 if (_lines[_lineNumber].length() <= _positionInLine - 1)
                 {
-                    setPositionSafe(_position + (_lines[_lineNumber - 1].length() - _positionInLine - 1) + _lines[_lineNumber].length());
+                    setPositionSafe(_position + (_lines[_lineNumber - 1].length() - _positionInLine) + _lines[_lineNumber].length() + 1);
                 }
                 else
                 {
@@ -414,13 +414,13 @@ public class GuiProgramEditor extends GuiScreen
         {
             if (_lineNumber != 1)
             {
-                if (_lines[_lineNumber - 2].length() >= _positionInLine - 1)
+                if (_lines[_lineNumber - 2].length() <= _positionInLine - 1)
                 {
-                    setPositionSafe(_position - _lines[_lineNumber - 2].length() - 1);
+                    setPositionSafe(_position - _positionInLine);
                 }
                 else
                 {
-                    setPositionSafe(_position - _positionInLine);
+                    setPositionSafe(_position - _lines[_lineNumber - 2].length() - 1);
                 }
                 setText(_text);
             }
