@@ -26,6 +26,7 @@ import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.TypeCastNode;
+import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
@@ -284,10 +285,12 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object visit(AdditionExpression node)
     {
-        StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
+        boolean coordinateAddition = node.getLeftChild().isType(Type.CoordinatesType) && node.getRightChild().isType(Type.CoordinatesType);
 
-        return codeBuffer;
+        if (coordinateAddition)
+            return String.format("%s.add(%s, %s)", visit(node.getLeftChild()), visit(node.getRightChild()), node.getOperator().equals(ArithmeticOperator.Subtraction));
+        else
+            return String.format("(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
     }
 
     public Object visit(NumberLiteralNode node)
@@ -352,7 +355,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
             // Return code, negate if operator is NOT EQUALS
             if (node.getOperator().equals(LogicalOperator.NotEquals))
-                return String.format("!(%s)", returnString);
+                return String.format("!%s", returnString);
             else
                 return returnString;
         }
