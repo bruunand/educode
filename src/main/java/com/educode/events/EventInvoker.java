@@ -1,6 +1,7 @@
 package com.educode.events;
 
 import com.educode.nodes.ungrouped.EventDefinitionNode;
+import com.educode.runtime.EventInvocation;
 import com.educode.runtime.ScriptBase;
 
 import java.lang.reflect.InvocationTargetException;
@@ -34,26 +35,11 @@ public class EventInvoker
         for (int i = 0; i < args.length; i++)
             classArray[i] = args[i].getClass();
 
-        // Find the appropriate event and invokeByName it
+        // Find the appropriate event and invoke it
         try
         {
             Method invokeMethod = script.getClass().getMethod(methodName, classArray);
-
-            // Invoke method from a different thread
-            // TODO: Would be better if it did not run in a new thread
-            Thread methodInvocationThread = new Thread(() ->
-            {
-                try
-                {
-                    invokeMethod.invoke(script, args);
-                }
-                catch (IllegalAccessException | InvocationTargetException e)
-                {
-                    e.printStackTrace();
-                }
-            });
-            methodInvocationThread.setName(String.format("EVENT - %s", methodName));
-            methodInvocationThread.start();
+            script.queueEvent(invokeMethod, args);
         }
         catch (NoSuchMethodException e)
         {

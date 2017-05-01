@@ -1,14 +1,12 @@
-package com.educode.minecraft;
+package com.educode.runtime;
 
-import com.educode.runtime.IExecutableReturns;
-
-public class Command
+public class TickCommand
 {
     private final IExecutableReturns _executable;
     private Object _result;
     private boolean _executed = false;
 
-    public Command(IExecutableReturns executable)
+    public TickCommand(IExecutableReturns executable)
     {
         _executable = executable;
     }
@@ -18,19 +16,12 @@ public class Command
         return _executable;
     }
 
-    public synchronized Object getResult()
+    synchronized Object getResult() throws InterruptedException
     {
         // Wait for execution
         while (!_executed)
         {
-            try
-            {
-                wait();
-            }
-            catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
+            wait();
         }
 
         return _result;

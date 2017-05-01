@@ -1,37 +1,42 @@
 package com.educode.runtime;
 
-import com.educode.minecraft.Command;
-import com.educode.minecraft.entity.EntityRobot;
-
-import com.educode.nodes.ungrouped.EventDefinitionNode;
 import com.educode.events.Broadcaster;
+import com.educode.minecraft.entity.EntityRobot;
+import com.educode.nodes.ungrouped.EventDefinitionNode;
+import com.educode.runtime.threads.EventInvoker;
 import com.educode.runtime.types.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.Path;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class ScriptBase implements IRobot
 {
-    // Queue of commands to be executed
-    private final Queue<Command> _commandQueue = new ConcurrentLinkedQueue<>();
+    // Queues
+    private final Queue<TickCommand> _commandQueue = new ConcurrentLinkedQueue<>();
+    private final BlockingQueue<EventInvocation> _eventQueue = new ArrayBlockingQueue<>(128); // Has a maximum capacity of 128 event invocations
 
     // General
     private final Random _rand = new Random();
     private List<EventDefinitionNode> _eventDefinitions;
+    private String _scriptName;
 
     // Minecraft related
     private World _world;
@@ -41,38 +46,54 @@ public abstract class ScriptBase implements IRobot
     // Used by implemented scripts
     protected final ScriptBase robot = this;
 
-    public void init(World world, EntityPlayer player, List<EventDefinitionNode> eventDefinitions)
+    // Threading
+    private Thread _mainThread, _eventThread;
+
+    public void init(String scriptName, Thread mainThread, World world, EntityPlayer player, List<EventDefinitionNode> eventDefinitions)
     {
         this._world = world;
         this._player = player;
         this._eventDefinitions = eventDefinitions;
+        this._scriptName = scriptName;
 
-        _robot = new EntityRobot(this, _world, player);
-        BlockPos spawnPosition = this._player.getPosition();
-        do
+        // Set threads and create thread for event invoker
+        this._mainThread = mainThread;
+        this._mainThread.setName(String.format("ScriptRunner/%s", getScriptName()));
+
+        if (!eventDefinitions.isEmpty())
         {
-        	this._robot.setPosition(spawnPosition.getX() + world.rand.nextInt(3), spawnPosition.getY(), spawnPosition.getZ() + world.rand.nextInt(3));
-        	
-            switch (_world.rand.nextInt() % 4)
-            {
-                case 0:
-                    spawnPosition = spawnPosition.west();
-                    break;
-                case 1:
-                    spawnPosition = spawnPosition.east();
-                    break;
-                case 2:
-                    spawnPosition = spawnPosition.north();
-                    break;
-                case 3:
-                    spawnPosition = spawnPosition.south();
-                    break;
-            }
-        } while (!this._robot.getCanSpawnHere() && _robot.getPosition().equals(_player.getPosition()));
+            this._eventThread = new EventInvoker(this);
+            this._eventThread.setName(String.format("EventInvoker/%s", getScriptName()));
+            this._eventThread.start();
+        }
+
+        // Spawn robot
+        this._robot = new EntityRobot(this, _world, player);
+        this._robot.setSpawnPosition(player);
         this._world.spawnEntity(_robot);
     }
 
-    public Command pollCommand()
+    public Thread getEventThread()
+    {
+        return this._eventThread;
+    }
+
+    public Thread getMainThread()
+    {
+        return this._mainThread;
+    }
+
+    public String getScriptName()
+    {
+        return this._scriptName;
+    }
+
+    public BlockingQueue<EventInvocation> getEventQueue()
+    {
+        return this._eventQueue;
+    }
+
+    public TickCommand pollCommand()
     {
         return _commandQueue.poll();
     }
@@ -82,9 +103,14 @@ public abstract class ScriptBase implements IRobot
         return this._eventDefinitions;
     }
 
+    public EntityPlayer getPlayer()
+    {
+        return this._player;
+    }
+
     public ExtendedCollection<Float> range(float min, float max)
     {
-        ExtendedCollection<Float> ret = new ExtendedCollection<Float>();
+        ExtendedCollection<Float> ret = new ExtendedCollection<>();
 
         for (float c = min; c <= max; c++)
             ret.addItem(c);
@@ -108,41 +134,49 @@ public abstract class ScriptBase implements IRobot
         return true;
     }
 
-    public void wait(float time)
+    @Override
+    public boolean isPlayer()
     {
-        try
-        {
-            Thread.sleep((long) time);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        return false;
+    }
+
+    public void wait(float time) throws InterruptedException
+    {
+        Thread.sleep((long) time);
     }
 
     @Override
-    public void setWorldTime(float time)
+    public void setWorldTime(float time) throws InterruptedException
     {
         executeOnTick(() -> _world.setWorldTime((long) time % 24000));
     }
 
-    public void say(String message)
+    public void say(String message) throws InterruptedException
     {
-        executeOnTick(() -> _robot.sendMessageTo(_player, message));
+        executeOnTick(() ->
+        {
+            MinecraftServer server = _world.getMinecraftServer();
+            if (server == null)
+                return; // Should never happen since this method is never executed client-side
+
+            // Using an iterator should not be necessary in this iteration because it is executed on tick
+            for (EntityPlayer player : server.getPlayerList().getPlayers())
+                _robot.sendMessageTo(player, message);
+        });
     }
 
-    public void explode(float strength)
+    public void explode(float strength) throws InterruptedException
     {
         boolean mobGriefingEnabled = this._world.getGameRules().getBoolean("mobGriefing");
         executeOnTick(() -> _world.createExplosion(this._robot, getX(), getY(), getZ(), strength, mobGriefingEnabled));
     }
 
-    public void removeEntity()
+    public void removeEntity() throws InterruptedException
     {
         executeOnTick(() -> _world.removeEntity(_robot));
     }
 
-    public void dropItems()
+    public void dropItems() throws InterruptedException
     {
         executeOnTick(() -> _robot.dropItems());
     }
@@ -173,7 +207,7 @@ public abstract class ScriptBase implements IRobot
 
     //TODO: should maybe be in interface as well?, Andreas
     @Override
-    public boolean placeBlock(Coordinates coordinates)
+    public boolean placeBlock(Coordinates coordinates) throws InterruptedException
     {
         if (this._robot.getPosition().getDistance((int)coordinates.getX(), (int)coordinates.getY(), (int)coordinates.getZ()) > 3.0)
             return false;
@@ -201,33 +235,44 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public void broadcast(float channel, float message)
+    public void broadcast(float channel, String message)
     {
         Broadcaster.broadcastMessage(this._robot, channel, message);
     }
 
-    //TODO: should maybe be in interface aswell?, Andreas
     @Override
-    public boolean attack(MinecraftEntity entity)
+    public void broadcast(float channel, MinecraftEntity entity)
+    {
+        Broadcaster.broadcastMessage(this._robot, channel, entity);
+    }
+
+    @Override
+    public void stop() throws InterruptedException
+    {
+        executeOnTick(() -> getRobot().setDead());
+    }
+
+    @Override
+    public boolean attack(MinecraftEntity entity) throws InterruptedException
     {
         if (this._robot.isDead || this.getDistanceTo(entity) > 3.0F)
             return false;
 
         executeOnTick(() -> _robot.attackEntity(entity.getWrappedEntity()));
-        wait(350F);
+        wait(500F);
 
         return true;
     }
 
-    private Object executeOnTick(IExecutableReturns executable)
+    private Object executeOnTick(IExecutableReturns executable) throws InterruptedException
     {
-        Command command = new Command(executable);
+        TickCommand command = new TickCommand(executable);
         _commandQueue.add(command);
 
         return command.getResult();
     }
 
-    private void executeOnTick(IExecutable executable)
+    private void executeOnTick(IExecutable executable) throws InterruptedException
     {
         executeOnTick(() ->
         {
@@ -237,7 +282,7 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public float dropItem(String name, final float quantity)
+    public float dropItem(String name, final float quantity) throws InterruptedException
     {
         return (float) executeOnTick(() -> _robot.dropInventoryItem(name, quantity));
     }
@@ -266,7 +311,7 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public void setHeldItem(MinecraftItem item)
+    public void setHeldItem(MinecraftItem item) throws InterruptedException
     {
         executeOnTick(() -> this._robot.setHeldItem(EnumHand.MAIN_HAND, item.getWrappedItem()));
     }
@@ -287,12 +332,12 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public boolean walkTo(Coordinates coords)
+    public boolean walkTo(Coordinates coords) throws InterruptedException
     {
         return navigateToBlock(coords.toBlockPos());
     }
 
-    private boolean navigateToBlock(BlockPos pos)
+    private boolean navigateToBlock(BlockPos pos) throws InterruptedException
     {
         boolean result = (boolean) executeOnTick(() ->
         {
@@ -309,14 +354,14 @@ public abstract class ScriptBase implements IRobot
 
 
     @Override
-    public ExtendedCollection<MinecraftEntity> getNearbyEntities()
+    public ExtendedCollection<MinecraftEntity> getNearbyEntities() throws InterruptedException
     {
         return (ExtendedCollection<MinecraftEntity>) executeOnTick(() ->
         {
             ExtendedCollection<MinecraftEntity> returnList = new ExtendedCollection<>();
-            for (Entity entity : this._world.getEntitiesWithinAABB(EntityLiving.class, this._robot.getEntityBoundingBox().expand(30, 5, 30)))
+            for (Entity entity : this._world.getEntitiesWithinAABB(EntityLivingBase.class, this._robot.getEntityBoundingBox().expand(45, 5, 45)))
             {
-                if (entity.equals(this._robot) || entity.equals(this._player))
+                if (entity.equals(this._robot))
                     continue;
 
                 returnList.addItem(new MinecraftEntity(entity));
@@ -329,11 +374,12 @@ public abstract class ScriptBase implements IRobot
     @Override
     public MinecraftEntity getOwner()
     {
-        return new MinecraftEntity(this._player);
+        return new MinecraftEntity(this.getPlayer());
     }
 
     @Override
-    public void move(String direction) {
+    public void move(String direction) throws InterruptedException
+    {
         BlockPos targetPosition = _robot.getPosition();
         switch (direction.toLowerCase())
         {
@@ -370,12 +416,12 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public void mine(String direction)
+    public void mine(String direction) throws InterruptedException
     {
     	mine(direction, 0);
     }
     
-    private void mine(String direction, int yModifier)
+    private void mine(String direction, int yModifier) throws InterruptedException
     {
         BlockPos targetBlockPosition = _robot.getPosition();
         if (yModifier != 0)
@@ -412,7 +458,8 @@ public abstract class ScriptBase implements IRobot
         faceAndMine(targetBlockPosition);
     }
     
-    private void faceAndMine(BlockPos position){
+    private void faceAndMine(BlockPos position) throws InterruptedException
+    {
         if (_world.isAirBlock(position))
             return;
         
@@ -420,7 +467,7 @@ public abstract class ScriptBase implements IRobot
         mineBlock(position);
     }
 
-    private void mineBlock(BlockPos position)
+    private void mineBlock(BlockPos position) throws InterruptedException
     {
         boolean blockDestroyed = (boolean) executeOnTick(() ->
         {
@@ -434,7 +481,7 @@ public abstract class ScriptBase implements IRobot
             wait(500F);
     }
 
-    public void mineBlock(Coordinates position)
+    public void mineBlock(Coordinates position) throws InterruptedException
     {
         if(this.getCoordinates().toBlockPos().getDistance((int)position.getX(), (int)position.getY(), (int)position.getZ()) > 3.0F)
         {
@@ -442,10 +489,34 @@ public abstract class ScriptBase implements IRobot
         }
     }
     
-    public abstract void main();
+    public abstract void main() throws InterruptedException;
 
     public EntityRobot getRobot()
     {
         return this._robot;
+    }
+
+    public boolean queueEvent(Method invokeMethod, Object[] args)
+    {
+        return getEventQueue().offer(new EventInvocation(invokeMethod, args));
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof ScriptBase)
+        {
+            ScriptBase other = (ScriptBase) obj;
+
+            return this.getRobot().equals(other.getRobot());
+        }
+        else if (obj instanceof Entity)
+        {
+            Entity other = (Entity) obj;
+
+            return this.getRobot().equals(other);
+        }
+
+        return false;
     }
 }

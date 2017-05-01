@@ -5,6 +5,7 @@ import com.educode.runtime.types.Coordinates;
 import com.educode.runtime.types.IEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * Created by User on 13-Apr-17.
@@ -42,6 +43,12 @@ public class MinecraftEntity implements IEntity
     }
 
     @Override
+    public boolean isPlayer()
+    {
+        return getWrappedEntity() instanceof EntityPlayer;
+    }
+
+    @Override
     public float getHealth()
     {
         if (!(getWrappedEntity() instanceof EntityLivingBase))
@@ -66,5 +73,18 @@ public class MinecraftEntity implements IEntity
     public float getZ()
     {
         return (float) getWrappedEntity().posZ;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof MinecraftEntity)
+        {
+            MinecraftEntity other = (MinecraftEntity) obj;
+
+            return this.getWrappedEntity().equals(other.getWrappedEntity());
+        }
+
+        return false;
     }
 }

@@ -1,17 +1,17 @@
 package com.educode.minecraft.entity;
 
-import com.educode.events.RobotAttackedEvent;
-import com.educode.minecraft.Command;
+import com.educode.events.entity.robot.RobotAttackedEvent;
 import com.educode.minecraft.CompilerMod;
 import com.educode.runtime.ScriptBase;
 import com.educode.events.EventInvoker;
 import com.educode.runtime.types.Coordinates;
-import com.educode.events.RobotDeathEvent;
+import com.educode.events.entity.robot.RobotDeathEvent;
 import com.educode.runtime.types.MinecraftEntity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -19,10 +19,12 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -33,8 +35,6 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import javax.annotation.Nullable;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 public class EntityRobot extends EntityCreature implements IWorldNameable, IEntityAdditionalSpawnData
 {
@@ -48,6 +48,15 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
 
     private ScriptBase _parent;
 
+    private long _lastAttackAt = 0;
+
+    @Override
+    protected boolean processInteract(EntityPlayer player, EnumHand hand)
+    {
+        this.sendMessageTo(player, "REEEEEEEEEEE!");
+        return super.processInteract(player, hand);
+    }
+
     public EntityRobot(World worldIn)
     {
         super(worldIn);
@@ -55,14 +64,24 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         this.setSize(0.6F, 1.8F);
         this.setCanPickUpLoot(true);
         this._inventory = new InventoryBasic("Items", false, 36);
+
+        PathNavigateGround navigator = (PathNavigateGround) this.getNavigator();
+        navigator.setEnterDoors(true);
+        navigator.setCanSwim(true);
     }
-    
+
+    @Override
+    public void setDead()
+    {
+        super.setDead();
+    }
+
     public EntityRobot(ScriptBase parent, World worldIn, EntityPlayer owner)
     {
     	this(worldIn);
 
     	this._parent = parent;
-    	this._name = CompilerMod.NAMES[this.rand.nextInt(CompilerMod.NAMES.length)] + " @ " + owner.getName();
+    	this._name = String.format("%s (%s)", parent.getScriptName(), owner.getName());
     	CompilerMod.CHILD_ENTITIES.add(this.getUniqueID());
         updateTextFormatting();
     }
@@ -116,6 +135,13 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         ItemStack entityItem = getInventory().addItem(itemEntity.getEntityItem());
 
         this.onItemPickup(itemEntity, entityItem.getCount());
+    }
+
+    @Override
+    protected boolean canDespawn()
+    {
+        return _parent == null || _parent.getMainThread().isInterrupted();
+
     }
 
     @Nullable
@@ -220,27 +246,28 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         return this._textFormatting;
     }
 
-    public void placeBlock(Coordinates coordinates)
+    public void attackEntity(Entity otherEntity)
     {
-        // todo: moved to scriptbase because we need player
-    }
+        if (otherEntity.equals(this) || isDead || otherEntity.isDead || System.currentTimeMillis() - _lastAttackAt < 500)
+            return;
 
-    public void attackEntity(Entity entity)
-    {
-        //turn and face entity
+        // update last attack time
+        _lastAttackAt = System.currentTimeMillis();
+
+        // turn and face entity
         this.getMoveHelper().strafe(0.01F, 0.01F);
-        this.faceEntity(entity, 90.0F, 90.0F);
+        this.faceEntity(otherEntity, 90.0F, 90.0F);
 
         // calculate damage
-        float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
-        if (entity instanceof EntityLivingBase)
-            damage += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase) entity).getCreatureAttribute());
+        float damage = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        if (otherEntity instanceof EntityLivingBase)
+            damage += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase) otherEntity).getCreatureAttribute());
 
-        //swing animation
+        // swing animation
         this.swingArm(EnumHand.MAIN_HAND);
 
-        //give damage;
-        entity.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
+        // give damage;
+        otherEntity.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
     }
 
     public float dropInventoryItem(String name, float quantity)
@@ -300,5 +327,30 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     {
         super.writeEntityToNBT(compound);
         compound.setString("name", this._name);
+    }
+
+    public void setSpawnPosition(EntityPlayer player)
+    {
+        BlockPos spawnPosition = player.getPosition();
+        do
+        {
+            this.setPosition(spawnPosition.getX() + world.rand.nextInt(5), spawnPosition.getY(), spawnPosition.getZ() + world.rand.nextInt(5));
+
+            switch (getEntityWorld().rand.nextInt() % 4)
+            {
+                case 0:
+                    spawnPosition = spawnPosition.west();
+                    break;
+                case 1:
+                    spawnPosition = spawnPosition.east();
+                    break;
+                case 2:
+                    spawnPosition = spawnPosition.north();
+                    break;
+                case 3:
+                    spawnPosition = spawnPosition.south();
+                    break;
+            }
+        } while (!this.getCanSpawnHere() && this.getPosition().equals(player.getPosition()));
     }
 }

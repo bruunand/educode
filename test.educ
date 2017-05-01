@@ -1,10 +1,18 @@
 program Test
-    on event messageReceived(11) call onMessageReceived
+    on event stringMessageReceived(11) call onMessageReceived
 
     number a = 5, b, c = 10
 
     method main()
+        Collection<number> test = new Collection<number>(1, 2, 3)
+        Collection<number> test2 = new Collection<number>(1, 2, 3, 4)
+        bool res = test equals test2
+
+        debug("res:" + (test equals test2))
+        debug("res:" + (test2 equals test2))
+        debug("res:" + (test equals test))
         setter()
+        random(5,5)
         debug("a:" + a)
         return
     end method
@@ -13,6 +21,6 @@ program Test
         a = 10
     end method
 
-    method onMessageReceived(Entity sender, number message)
+    method onMessageReceived(Entity sender, string message)
     end method
 end program

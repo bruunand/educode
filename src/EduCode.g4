@@ -99,8 +99,9 @@ factor   : literal
 
 eventType: 'robotDeath'
          | 'robotAttacked'
-         | 'messageReceived' LPAREN numberLit RPAREN
          | 'entityDeath'
+         | 'chatMessage'
+         | ('stringMessageReceived'|'entityMessageReceived') LPAREN numberLit RPAREN
          ;
 
 dataType : 'number'//Contains both ints and floats

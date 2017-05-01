@@ -1,5 +1,6 @@
 package com.educode.events;
 
+import com.educode.events.communication.MessageReceivedEventBase;
 import com.educode.minecraft.CompilerMod;
 import com.educode.nodes.ungrouped.EventDefinitionNode;
 import com.educode.runtime.ScriptBase;
@@ -17,31 +18,37 @@ public class Broadcaster
     {
         // Iterate over running scripts and find subscribers to the channel
         // Subscribers will have an appropriate event invoked
-        for (ScriptBase script : CompilerMod.RUNNING_SCRIPTS)
-            EventInvoker.invokeByType(script, eventType, args);
+        synchronized (CompilerMod.RUNNING_SCRIPTS)
+        {
+            for (ScriptBase script : CompilerMod.RUNNING_SCRIPTS)
+                EventInvoker.invokeByType(script, eventType, args);
+        }
     }
 
-    // There is a special method for messages because they require the subscribe to be subscribed to a specific channel
-    public static void broadcastMessage(Entity sender, float channel, float message)
+    // There is a special method for communication because they require the subscribe to be subscribed to a specific channel
+    public static void broadcastMessage(Entity sender, float channel, Object message)
     {
-        for (ScriptBase script : CompilerMod.RUNNING_SCRIPTS)
+        synchronized (CompilerMod.RUNNING_SCRIPTS)
         {
-            List<EventDefinitionNode> eventDefinitions = script.getEventDefinitions();
-            if (eventDefinitions == null)
-                continue;
-
-            for (EventDefinitionNode eventDef : eventDefinitions)
+            for (ScriptBase script : CompilerMod.RUNNING_SCRIPTS)
             {
-                // Check if event type is MessageReceivedEvent
-                if (!(eventDef.getEventType() instanceof MessageReceivedEvent))
+                List<EventDefinitionNode> eventDefinitions = script.getEventDefinitions();
+                if (eventDefinitions == null)
                     continue;
 
-                // Check if channel matches
-                MessageReceivedEvent messageReceivedEvent = (MessageReceivedEvent) eventDef.getEventType();
-                if (messageReceivedEvent.getChannel() != channel)
-                    continue;
+                for (EventDefinitionNode eventDef : eventDefinitions)
+                {
+                    // Check if event type is MessageReceivedEventBase
+                    if (!(eventDef.getEventType() instanceof MessageReceivedEventBase))
+                        continue;
 
-                EventInvoker.invokeByName(script, eventDef.getName(), new MinecraftEntity(sender), message);
+                    // Check if channel matches
+                    MessageReceivedEventBase receivedEvent = (MessageReceivedEventBase) eventDef.getEventType();
+                    if (receivedEvent.getChannel() != channel)
+                        continue;
+
+                    EventInvoker.invokeByName(script, eventDef.getName(), new MinecraftEntity(sender), message);
+                }
             }
         }
     }

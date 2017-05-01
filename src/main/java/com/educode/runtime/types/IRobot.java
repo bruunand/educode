@@ -9,33 +9,35 @@ import java.util.List;
 public interface IRobot extends IEntity
 {
     // General
-    void say(String text);
-    void explode(float strength);
-    void setWorldTime(float time);
+    void say(String text) throws InterruptedException;
+    void explode(float strength) throws InterruptedException;
+    void setWorldTime(float time) throws InterruptedException;
     MinecraftEntity getOwner();
-    List<MinecraftEntity> getNearbyEntities();
+    List<MinecraftEntity> getNearbyEntities() throws InterruptedException;
     float getDistanceTo(MinecraftEntity entity);
-    boolean placeBlock(Coordinates coordinates);
+    boolean placeBlock(Coordinates coordinates) throws InterruptedException;
+    void stop() throws InterruptedException;
 
-    // Messaging
-    void broadcast(float channel, float message);
+    // Communication
+    void broadcast(float channel, String message);
+    void broadcast(float channel, MinecraftEntity entity);
 
     // Combat
-    boolean attack(MinecraftEntity entity);
+    boolean attack(MinecraftEntity entity) throws InterruptedException;
 
     // Movement
-    void move(String direction);
-    boolean walkTo(Coordinates coords);
+    void move(String direction) throws InterruptedException;
+    boolean walkTo(Coordinates coords) throws InterruptedException;
 
     // Mining
-    void mine(String direction);
-    void mineBlock(Coordinates position);
+    void mine(String direction) throws InterruptedException;
+    void mineBlock(Coordinates position) throws InterruptedException;
 
     // Items
     ExtendedCollection<MinecraftItem> getInventory();
-    void dropItems();
-    float dropItem(String name, float quantity);
+    void dropItems() throws InterruptedException;
+    float dropItem(String name, float quantity) throws InterruptedException;
     MinecraftItem getHeldItem();
-    void setHeldItem(MinecraftItem item);
+    void setHeldItem(MinecraftItem item) throws InterruptedException;
     MinecraftItem getItemFromSlot(float index);
 }

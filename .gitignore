@@ -57,30 +57,14 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-.idea/workspace.xml
-
-\.idea/misc\.xml
-
 HelloWorld.j
 
 test.java
 
-<<<<<<< HEAD
-Test\.j
+Test.class
 
-test\.educ
-=======
-test.j
->>>>>>> master
+/.gradle/
 
-\.gradle/2\.14/taskArtifacts/cache\.properties\.lock
-
-\.gradle/gradle\.log
-
-Test\.class
-
-\.gradle/
-
-\.idea/
+/.idea/
 
 *.log

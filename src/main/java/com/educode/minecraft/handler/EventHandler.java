@@ -1,7 +1,9 @@
 package com.educode.minecraft.handler;
 
-import com.educode.events.EntityDeathEvent;
-import com.educode.minecraft.Command;
+import com.educode.events.communication.ChatMessageEvent;
+import com.educode.events.entity.EntityDeathEvent;
+import com.educode.runtime.IExecutable;
+import com.educode.runtime.TickCommand;
 import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.gui.GuiProgramEditor;
 import com.educode.minecraft.networking.MessageOpenEditor;
@@ -10,6 +12,7 @@ import com.educode.events.Broadcaster;
 import com.educode.runtime.types.MinecraftEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -24,17 +27,23 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class EventHandler
 {
-    private static Queue<IMessage> _commandQueue = new ConcurrentLinkedQueue<IMessage>();
+    private static Queue<IExecutable> _serverExecutableQueue = new ConcurrentLinkedQueue<>();
+    private static Queue<IMessage> _clientMessageQueue = new ConcurrentLinkedQueue<>();
 
-    public static void queueMessage(IMessage message)
+    public static void queueServerExecutable(IExecutable executable)
     {
-        _commandQueue.add(message);
+        _serverExecutableQueue.add(executable);
+    }
+
+    public static void queueClientMessage(IMessage message)
+    {
+        _clientMessageQueue.add(message);
     }
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event)
     {
-        IMessage nextMessage = _commandQueue.poll();
+        IMessage nextMessage = _clientMessageQueue.poll();
         if (nextMessage != null)
         {
             // Ensures that GUI is only opened on client tick
@@ -53,6 +62,12 @@ public class EventHandler
     }
 
     @SubscribeEvent
+    public void onServerChatEvent(ServerChatEvent event)
+    {
+        Broadcaster.broadcastEvent(ChatMessageEvent.class, new MinecraftEntity(event.getPlayer()), event.getMessage());
+    }
+
+    @SubscribeEvent
     public void onLivingDeathEvent(LivingDeathEvent event)
     {
         // Skip client side
@@ -65,6 +80,11 @@ public class EventHandler
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event)
     {
+        // Execute all server commands
+        while (!_serverExecutableQueue.isEmpty())
+            _serverExecutableQueue.poll().execute();
+
+        // Execute commands from all running scripts (one command per script per tick)
         synchronized (CompilerMod.RUNNING_SCRIPTS)
         {
             Iterator<ScriptBase> iterator = CompilerMod.RUNNING_SCRIPTS.iterator();
@@ -74,12 +94,17 @@ public class EventHandler
                 ScriptBase script = iterator.next();
                 if (script.getRobot().isDead)
                 {
+                    // Stop threads
+                    script.getMainThread().interrupt();
+                    if (script.getEventThread() != null)
+                        script.getEventThread().interrupt();
+
                     iterator.remove();
                     continue;
                 }
 
                 // Poll command
-                Command command = script.pollCommand();
+                TickCommand command = script.pollCommand();
                 if (command != null)
                     command.setResult(command.getExecutable().execute());
             }

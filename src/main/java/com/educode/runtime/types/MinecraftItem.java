@@ -36,4 +36,17 @@ public class MinecraftItem implements IItem
     {
         return this.getWrappedItem().getCount();
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof MinecraftItem)
+        {
+            MinecraftItem other = (MinecraftItem) obj;
+
+            return this.getWrappedItem().equals(other.getWrappedItem());
+        }
+
+        return false;
+    }
 }

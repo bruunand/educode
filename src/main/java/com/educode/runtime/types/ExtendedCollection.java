@@ -7,6 +7,16 @@ import java.util.ArrayList;
  */
 public class ExtendedCollection<E> extends ArrayList<E> implements ICollection<E>
 {
+    public ExtendedCollection()
+    {
+    }
+
+    public ExtendedCollection(E ... args)
+    {
+        for (E item : args)
+            add(item);
+    }
+
     @Override
     public void removeItemAt(float index)
     {
@@ -36,5 +46,32 @@ public class ExtendedCollection<E> extends ArrayList<E> implements ICollection<E
     public float getSize()
     {
         return size();
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof ExtendedCollection)
+        {
+            ExtendedCollection collection = (ExtendedCollection) o;
+
+            // If size is not the same, they are not equal
+            if (this.getSize() != collection.getSize())
+                return false;
+
+            // Iterate over items
+            for (int i = 0; i < this.getSize(); i++)
+            {
+                Object ownObj   = this.get(i);
+                Object otherObj = collection.get(i);
+
+                if (!ownObj.equals(otherObj))
+                    return false;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

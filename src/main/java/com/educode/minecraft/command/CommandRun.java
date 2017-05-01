@@ -3,10 +3,9 @@ package com.educode.minecraft.command;
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
 import com.educode.minecraft.CompilerMod;
-import com.educode.minecraft.ScriptRunner;
+import com.educode.runtime.threads.ScriptRunner;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.runtime.ScriptBase;
 import com.educode.symboltable.SymbolTableMessage;
 import com.educode.visitors.ASTBuilder;
@@ -95,20 +94,20 @@ public class CommandRun implements ICommand
 
             // Compile and main Java
             Class<?> compiledClass = new CustomJavaCompiler().compile(CompilerMod.SCRIPTS_LOCATION, scriptName);
-            
-            // Determine amount of instances to run
+
             int instances = 1;
             if (args.length > 1)
                 instances = Integer.parseInt(args[1]);
 
-            // Run all instances of scripts
+            // Run designated amount of instances
             for (int i = 0; i < instances; i++)
             {
                 ScriptBase script = (ScriptBase) compiledClass.newInstance();
-                script.init(server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions());
+                ScriptRunner scriptThread = new ScriptRunner(script);
+                script.init(scriptName, scriptThread, server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions());
 
                 // Run script in separate thread
-                new ScriptRunner(script).start();
+                scriptThread.start();
 
                 // Add to running scripts
                 synchronized (CompilerMod.RUNNING_SCRIPTS)
