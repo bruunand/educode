@@ -18,7 +18,7 @@ public class OperatorTranslator
             case Type.STRING:
                 return "String";
             case Type.BOOL:
-                return "boolean";
+                return "Boolean";
             case Type.COORDINATES:
                 return "Coordinates";
             case Type.VOID:

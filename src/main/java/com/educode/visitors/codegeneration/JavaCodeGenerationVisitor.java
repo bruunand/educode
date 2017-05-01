@@ -32,6 +32,7 @@ import com.educode.visitors.VisitorBase;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.StringJoiner;
 
 /**
@@ -336,14 +337,14 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object visit(EqualExpressionNode node)
     {
-        Type leftType  = node.getLeftChild().getType();
-        Type rightType = node.getRightChild().getType();
+        Node leftChild = node.getLeftChild();
+        Node rightChild = node.getRightChild();
 
         // In case of a string comparison, we need to use equals()
         // In theory we only need to check either the left or right type, because the semantic visitor only allows equal comparison of equal types
-        boolean useEqualsComparsion = leftType.equals(Type.StringType) || rightType.equals(Type.StringType) || leftType.isReferenceType() || rightType.isReferenceType();
+        boolean useEqualSymbols = (leftChild instanceof NumberLiteralNode || rightChild instanceof NumberLiteralNode) || (leftChild instanceof BoolLiteralNode || rightChild instanceof BoolLiteralNode);
 
-        if (!useEqualsComparsion)
+        if (useEqualSymbols)
             return String.format("(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
         else
         {
