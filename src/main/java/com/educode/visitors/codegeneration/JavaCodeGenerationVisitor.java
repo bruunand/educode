@@ -32,6 +32,7 @@ import com.educode.visitors.VisitorBase;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.StringJoiner;
 
 /**
@@ -336,15 +337,25 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object visit(EqualExpressionNode node)
     {
-        // In theory, float and boolean comparison should use the ==/!= operators
-        // However, we use wrappers (Float and Boolean) because lists in Java cannot contain primitive types
-        String returnString = String.format("%s.equals(%s)", visit(node.getLeftChild()), visit(node.getRightChild()));
+        Node leftChild = node.getLeftChild();
+        Node rightChild = node.getRightChild();
 
-        // Return code, negate if operator is NOT EQUALS
-        if (node.getOperator().equals(LogicalOperator.NotEquals))
-            return String.format("!%s", returnString);
+        // In case of a string comparison, we need to use equals()
+        // In theory we only need to check either the left or right type, because the semantic visitor only allows equal comparison of equal types
+        boolean useEqualSymbols = (leftChild instanceof NumberLiteralNode || rightChild instanceof NumberLiteralNode) || (leftChild instanceof BoolLiteralNode || rightChild instanceof BoolLiteralNode);
+
+        if (useEqualSymbols)
+            return String.format("(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
         else
-            return returnString;
+        {
+            String returnString = String.format("%s.equals(%s)", visit(node.getLeftChild()), visit(node.getRightChild()));
+
+            // Return code, negate if operator is NOT EQUALS
+            if (node.getOperator().equals(LogicalOperator.NotEquals))
+                return String.format("!(%s)", returnString);
+            else
+                return returnString;
+        }
     }
 
     public Object visit(NegateNode node)
