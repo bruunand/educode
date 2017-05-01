@@ -315,6 +315,8 @@ public class GuiProgramEditor extends GuiScreen
         // Draw line number
         this.fontRendererObj.drawString(TextFormatting.WHITE + "Line Num: " + _lineNumber, this.width - 100, 25, 0);
 
+        //this.fontRendererObj.drawString(TextFormatting.WHITE + "Doc Position: " + _position, this.width - 100, 40, 0);
+
         // Draw code
         this.fontRendererObj.drawSplitString( _formattedText, 10, 10, this.width - 10, 0);
 
@@ -358,6 +360,11 @@ public class GuiProgramEditor extends GuiScreen
     {
         if (keyCode == KEY_ESCAPE) // Close the GUI
             this.mc.displayGuiScreen(null); // Displaying null hides the GUI screen
+        else if (isKeyDown(KEY_LCONTROL))
+        {
+            if (keyCode == KEY_S) // Save file
+                CompilerMod.NETWORK_INSTANCE.sendToServer(new MessageSaveFile(_fileName, _text));
+        }
         else if (keyCode == KEY_RETURN) // Newline
         {
             int indexOfFirstChar = StringUtils.indexOfAnyBut(_lines[_lineNumber - 1], ' ');
@@ -392,9 +399,9 @@ public class GuiProgramEditor extends GuiScreen
         {
             if (_lineNumber != _lines.length)
             {
-                if (_lines[_lineNumber].length() <= _positionInLine)
+                if (_lines[_lineNumber].length() <= _positionInLine - 1)
                 {
-                    setPositionSafe(_position + (_lines[_lineNumber - 1].length() - _positionInLine) + _lines[_lineNumber].length());
+                    setPositionSafe(_position + (_lines[_lineNumber - 1].length() - _positionInLine - 1) + _lines[_lineNumber].length());
                 }
                 else
                 {
@@ -407,21 +414,16 @@ public class GuiProgramEditor extends GuiScreen
         {
             if (_lineNumber != 1)
             {
-                if (_lines[_lineNumber - 2].length() <= _positionInLine)
+                if (_lines[_lineNumber - 2].length() >= _positionInLine - 1)
                 {
-                    setPositionSafe(_position - (_lines[_lineNumber - 1].length() - _positionInLine) + _lines[_lineNumber - 2].length());
+                    setPositionSafe(_position - _lines[_lineNumber - 2].length() - 1);
                 }
                 else
                 {
-                    setPositionSafe(_position - _lines[_lineNumber - 1].length());
+                    setPositionSafe(_position - _positionInLine);
                 }
                 setText(_text);
             }
-        }
-        else if (isKeyDown(KEY_LCONTROL))
-        {
-            if (keyCode == KEY_S) // Save file
-                CompilerMod.NETWORK_INSTANCE.sendToServer(new MessageSaveFile(_fileName, _text));
         }
         else if (ChatAllowedCharacters.isAllowedCharacter(typedChar))
             insert(String.valueOf(typedChar));
