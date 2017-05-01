@@ -102,7 +102,7 @@ public class GuiProgramEditor extends GuiScreen
                     String debug = collectionCollection[collectionCollection.length-1].replace(type, "");
 
                     finalCollection.append(debug);
-                    formattedLine.append(finalCollection).append(TextFormatting.WHITE.toString());
+                    formattedLine.append(finalCollection).append(TextFormatting.WHITE.toString() + " ");
                     continue;
                 }
             }
