@@ -26,6 +26,18 @@ public class Coordinates implements ICoordinates
         this._z = pos.getZ();
     }
 
+    /* Not defined in interface because it should only be accessed with the additive operators */
+    public Coordinates add(Coordinates other, boolean subtract)
+    {
+        int multiplier = subtract ? -1 : 1;
+
+        float x = this.getX() + other.getX() * multiplier;
+        float y = this.getY() + other.getY() * multiplier;
+        float z = this.getZ() + other.getZ() * multiplier;
+
+        return new Coordinates(x, y, z);
+    }
+
     public BlockPos toBlockPos()
     {
         return new BlockPos(_x, _y, _z);
