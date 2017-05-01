@@ -3,7 +3,7 @@ package com.educode.minecraft.gui;
 import com.educode.helper.ArrayHelper;
 import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.networking.MessageSaveFile;
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
@@ -12,16 +12,13 @@ import net.minecraft.util.Tuple;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
 
-import javax.xml.soap.Text;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.security.Key;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.StringJoiner;
 
 import static org.lwjgl.input.Keyboard.*;
 
@@ -39,7 +36,8 @@ public class GuiProgramEditor extends GuiScreen
     private static int _lineNumber = 0;
     private static int _visibleTopLine = 1;
     private static int _visibleBottomLine = 25;
-    private static final String _cursorSymbol = "|";
+    private static final String _cursorSymbol = "\uFEFF";
+    private static final String _cursorSymbolVisible = "|";
     private static int _positionInLine = 0;
 
     public GuiProgramEditor()
@@ -257,7 +255,7 @@ public class GuiProgramEditor extends GuiScreen
         //Remove \r from _text as they are unnecessary
         _text = text.replace("\r", "");
         //Insert the cursor
-        String textWithCursor = new StringBuffer(_text + " ").insert(_position, _cursorSymbol).toString();
+        String textWithCursor = new StringBuffer(_text).insert(_position, _cursorSymbol).toString();
         //Split the text into lines in an array
         _lines = textWithCursor.split("(\n)");
 
@@ -273,7 +271,7 @@ public class GuiProgramEditor extends GuiScreen
 
         // calc position in line
         // TODO: There's no reason why cursor symbol should a char, change indexOfNth to support strings
-        _positionInLine = ArrayHelper.indexOfNth(_cursorSymbol.toCharArray()[0], _lines[_lineNumber - 1].toCharArray(), 1) + 1;
+        _positionInLine = _lines[_lineNumber - 1].indexOf(_cursorSymbol) + 1;
 
         //set visible part of editor for scrolling
         if (_lineNumber < _visibleTopLine)
@@ -296,7 +294,7 @@ public class GuiProgramEditor extends GuiScreen
         }
 
         //Add the new formatted text to the text shown on screen
-        _formattedText = TextFormatting.WHITE + newFormattedText.toString();
+        _formattedText = TextFormatting.WHITE + newFormattedText.toString().replace(_cursorSymbol, _cursorSymbolVisible);
     }
 
     private static void insert(String content)
@@ -316,6 +314,8 @@ public class GuiProgramEditor extends GuiScreen
 
         // Draw line number
         this.fontRendererObj.drawString(TextFormatting.WHITE + "Line Num: " + _lineNumber, this.width - 100, 25, 0);
+
+        //this.fontRendererObj.drawString(TextFormatting.WHITE + "Doc Position: " + _position, this.width - 100, 40, 0);
 
         // Draw code
         this.fontRendererObj.drawSplitString( _formattedText, 10, 10, this.width - 10, 0);
@@ -360,18 +360,22 @@ public class GuiProgramEditor extends GuiScreen
     {
         if (keyCode == KEY_ESCAPE) // Close the GUI
             this.mc.displayGuiScreen(null); // Displaying null hides the GUI screen
+        else if (isKeyDown(KEY_LCONTROL))
+        {
+            if (keyCode == KEY_S) // Save file
+                CompilerMod.NETWORK_INSTANCE.sendToServer(new MessageSaveFile(_fileName, _text));
+        }
         else if (keyCode == KEY_RETURN) // Newline
-            insert("\n");
+        {
+            int indexOfFirstChar = StringUtils.indexOfAnyBut(_lines[_lineNumber - 1], ' ');
 
-            /* Experimental code DO NOT TOUCH! Unless you fix it :D
-            String textAfterNewline = _text.substring(_position).trim();
-            int newLinePositionAfterNewline = textAfterNewline.indexOf("\n");
-            if (newLinePositionAfterNewline != -1)
+            StringBuffer newLine = new StringBuffer("\n");
+            for (int i = 0; i < indexOfFirstChar; i++)
             {
-                setPositionSafe(_position + newLinePositionAfterNewline + 1);
-                setText(_text);
+                newLine.append(" ");
             }
-            */
+            insert(newLine.toString());
+        }
         else if (keyCode == KEY_TAB) // Tab (creates two spaces)
             insert("  ");
         else if (keyCode == KEY_LEFT && _position > 0) // Change position to left
@@ -385,7 +389,7 @@ public class GuiProgramEditor extends GuiScreen
             setText(_text);
         }
         else if (keyCode == KEY_DELETE && !_text.isEmpty() && _position < _text.length() - 1)
-            setText(new StringBuffer(_text).deleteCharAt(_position + 1).toString());
+            setText(new StringBuffer(_text).deleteCharAt(_position).toString());
         else if (keyCode == KEY_BACK && !_text.isEmpty() && _position > 0)
         {
             _position--;
@@ -393,52 +397,33 @@ public class GuiProgramEditor extends GuiScreen
         }
         else if (keyCode ==  KEY_DOWN)
         {
-            String textAfter = _text.substring(_position);
-            int newLinePosition = textAfter.indexOf("\n");
-            if (newLinePosition != -1)
+            if (_lineNumber != _lines.length)
             {
-                setPositionSafe(_position + newLinePosition + 1);
-                setText(_text);
-            }
-
-            /* Experimental code DO NOT TOUCH! Unless you fix it :D
-            if (_lines.length - 1 >= _lineNumber + 1)
-            {
-                if (_lines[_lineNumber + 1].length() >= _positionInLine)
+                if (_lines[_lineNumber].length() <= _positionInLine - 1)
                 {
-                    setPositionSafe(_position + _lines[_lineNumber].length() + _positionInLine);
+                    setPositionSafe(_position + (_lines[_lineNumber - 1].length() - _positionInLine - 1) + _lines[_lineNumber].length());
                 }
                 else
                 {
-                    setPositionSafe(_position + _lines[_lineNumber].length() + _lines[_lineNumber + 1].length());
+                    setPositionSafe(_position + _lines[_lineNumber - 1].length());
                 }
+                setText(_text);
             }
-            */
         }
         else if (keyCode == KEY_UP)
         {
-            String textBefore = _text.substring(0, _position);
-            setPositionSafe(textBefore.lastIndexOf("\n") - 1);
-            setText(_text);
-
-            /* Experimental code DO NOT TOUCH! Unless you fix it :D
-            if (_lines.length - 1 <= _lineNumber - 1)
+            if (_lineNumber != 1)
             {
-                if (_lines[_lineNumber - 1].length() >= _positionInLine)
+                if (_lines[_lineNumber - 2].length() >= _positionInLine - 1)
                 {
-                    setPositionSafe(_position + _lines[_lineNumber].length() + _positionInLine);
+                    setPositionSafe(_position - _lines[_lineNumber - 2].length() - 1);
                 }
                 else
                 {
-                    setPositionSafe(_position + _lines[_lineNumber].length() + _lines[_lineNumber + 1].length());
+                    setPositionSafe(_position - _positionInLine);
                 }
+                setText(_text);
             }
-            */
-        }
-        else if (isKeyDown(KEY_LCONTROL))
-        {
-            if (keyCode == KEY_S) // Save file
-                CompilerMod.NETWORK_INSTANCE.sendToServer(new MessageSaveFile(_fileName, _text));
         }
         else if (ChatAllowedCharacters.isAllowedCharacter(typedChar))
             insert(String.valueOf(typedChar));
@@ -449,6 +434,8 @@ public class GuiProgramEditor extends GuiScreen
     public static void resetPosition()
     {
         _position = 0;
+        _lineNumber = 1;
+        _positionInLine = 1;
         _visibleTopLine = 1;
         _visibleBottomLine = 25;
     }
