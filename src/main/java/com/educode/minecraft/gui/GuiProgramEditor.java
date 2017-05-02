@@ -53,6 +53,7 @@ public class GuiProgramEditor extends GuiScreen
     private static String testWords(String[] words, HashMap<String[], TextFormatting> keyWordMap, String[] partialKeywords)
     {
         boolean buildingString = false;
+        boolean buildingFormalParameters = false;
         Tuple<Integer, String[]> keywords;
         String partial = "";
 
@@ -60,6 +61,109 @@ public class GuiProgramEditor extends GuiScreen
 
         for (String word : words)
         {
+            if(word.replace(_cursorSymbol, "").contains("//"))
+            {
+                StringBuilder commentWord = new StringBuilder(word);
+
+                if (words.length == ArrayHelper.indexOfNth(word, words, 1) + 1)
+                {
+                    commentWord.insert(word.replace(_cursorSymbol,"").indexOf("//"), TextFormatting.GRAY);
+                    commentWord.append(TextFormatting.WHITE).append(" ");
+                    formattedLine.append(commentWord);
+                    continue;
+                }
+
+                StringBuilder lastWord = new StringBuilder(words[words.length - 1]);
+                commentWord.insert(word.replace(_cursorSymbol,"").indexOf("//"), TextFormatting.GRAY);
+                lastWord.insert(lastWord.length(), TextFormatting.WHITE + " ");
+
+                formattedLine.append(commentWord).append(" ");
+
+                for (int j = ArrayHelper.indexOfNth(word, words, 1) + 1; j < words.length - 1; j++)
+                {
+                    formattedLine.append(words[j]).append(" ");
+                }
+
+                formattedLine.append(lastWord);
+
+                return formattedLine.toString();
+            }
+
+            if (buildingString)
+            {
+                if (word.contains("\""))
+                {
+                    buildingString = false;
+                    StringBuilder stringEnd = new StringBuilder(word);
+                    stringEnd.insert(word.indexOf("\"") + 1, TextFormatting.WHITE);
+                    formattedLine.append(stringEnd).append(" ");
+                    continue;
+                }
+                formattedLine.append(word).append(" ");
+                continue;
+            }
+
+            if(word.contains("\""))
+            {
+                buildingString = true;
+                StringBuilder stringStart = new StringBuilder(word);
+                stringStart.insert(word.indexOf("\""), TextFormatting.RED);
+
+                if (word.lastIndexOf("\"") != word.indexOf("\""))
+                {
+                    buildingString = false;
+                    // + 3 because color code is 2 characters and we insert colorcode after the string: 2+1=3
+                    stringStart.insert(ArrayHelper.indexOfNth('\"', word.toCharArray(), 2) + 3, TextFormatting.WHITE);
+                }
+                formattedLine.append(stringStart).append(" ");
+                continue;
+            }
+
+            if (buildingFormalParameters)
+            {
+                if (word.replace(_cursorSymbol, "").contains(")"))
+                {
+                    buildingFormalParameters = false;
+                }
+                keywords = testWord(word.replace(_cursorSymbol, "").replace(")", ""), keyWordMap.keySet(), partialKeywords);
+
+                switch(keywords.getFirst())
+                {
+                    case 0:
+                        formattedLine.append(word);
+                        break;
+                    case 1:
+                        formattedLine.append(TextFormatting.AQUA).append(word).append(TextFormatting.WHITE);
+                        break;
+                    case 2:
+                        formattedLine.append(word);
+                        break;
+                }
+            }
+
+            if (word.replace(_cursorSymbol, "").contains("("))
+            {
+                buildingFormalParameters = true;
+
+
+                String wordToCheck = word.substring(word.indexOf("("));
+
+                keywords = testWord(wordToCheck.replace(_cursorSymbol, ""), keyWordMap.keySet(), partialKeywords);
+
+                switch(keywords.getFirst())
+                {
+                    case 0:
+                        formattedLine.append(word);
+                        break;
+                    case 1:
+                        formattedLine.append(TextFormatting.AQUA).append(word).append(TextFormatting.WHITE);
+                        break;
+                    case 2:
+                        formattedLine.append(word);
+                        break;
+                }
+            }
+
             if (word.replace(_cursorSymbol, "").contains("Collection<"))
             {
                 String[] collectionCollection = word.split("(<)");
@@ -107,63 +211,6 @@ public class GuiProgramEditor extends GuiScreen
                 }
             }
 
-            if (buildingString)
-            {
-                if (word.contains("\""))
-                {
-                    buildingString = false;
-                    StringBuilder stringEnd = new StringBuilder(word);
-                    stringEnd.insert(word.indexOf("\"") + 1, TextFormatting.WHITE);
-                    formattedLine.append(stringEnd).append(" ");
-                    continue;
-                }
-                formattedLine.append(word).append(" ");
-                continue;
-            }
-
-            if(word.contains("\""))
-            {
-                buildingString = true;
-                StringBuilder stringStart = new StringBuilder(word);
-                stringStart.insert(word.indexOf("\""), TextFormatting.RED);
-
-                if (word.lastIndexOf("\"") != word.indexOf("\""))
-                {
-                    buildingString = false;
-                    // + 3 because color code is 2 characters and we insert colorcode after the string: 2+1=3
-                    stringStart.insert(ArrayHelper.indexOfNth('\"', word.toCharArray(), 2) + 3, TextFormatting.WHITE);
-                }
-                formattedLine.append(stringStart).append(" ");
-                continue;
-            }
-
-            if(word.replace(_cursorSymbol, "").contains("//"))
-            {
-                StringBuilder commentWord = new StringBuilder(word);
-
-                if (words.length == ArrayHelper.indexOfNth(word, words, 1) + 1)
-                {
-                    commentWord.insert(word.replace(_cursorSymbol,"").indexOf("//"), TextFormatting.GRAY);
-                    commentWord.append(TextFormatting.WHITE).append(" ");
-                    formattedLine.append(commentWord);
-                    continue;
-                }
-
-                StringBuilder lastWord = new StringBuilder(words[words.length - 1]);
-                commentWord.insert(word.replace(_cursorSymbol,"").indexOf("//"), TextFormatting.GRAY);
-                lastWord.insert(lastWord.length(), TextFormatting.WHITE + " ");
-
-                formattedLine.append(commentWord).append(" ");
-
-                for (int j = ArrayHelper.indexOfNth(word, words, 1) + 1; j < words.length - 1; j++)
-                {
-                     formattedLine.append(words[j]).append(" ");
-                }
-
-                formattedLine.append(lastWord);
-
-                return formattedLine.toString();
-            }
             if (partial.equals(""))
             {
                 keywords = testWord(word.replace(_cursorSymbol, ""), keyWordMap.keySet(),partialKeywords);
@@ -241,7 +288,7 @@ public class GuiProgramEditor extends GuiScreen
         final String[] typeKeywords = new String[] {"number", "Coordinates", "string", "bool", "Item", "Entity"};
         final String[] tfKeywords = new String[] {"true", "false"};
         final String[] eventKeywords = new String[] {"on event", "call"};
-        final String[] events = new String[] {"robotDeath", "robotAttacked", "messageReceived", "entityDeath"};
+        final String[] events = new String[] {"robotDeath", "robotAttacked", "chatMessage", "entityDeath", "stringMessageReceived", "entityMessageReceived"};
 
         //Assign colors for above keywords
         HashMap<String[], TextFormatting> keyWordMap = new HashMap<>();
