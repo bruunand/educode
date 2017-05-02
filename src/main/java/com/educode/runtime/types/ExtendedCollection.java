@@ -1,6 +1,7 @@
 package com.educode.runtime.types;
 
 import java.util.ArrayList;
+import java.util.StringJoiner;
 
 /**
  * Created by User on 18-Apr-17.
@@ -15,6 +16,17 @@ public class ExtendedCollection<E> extends ArrayList<E> implements ICollection<E
     {
         for (E item : args)
             add(item);
+    }
+
+    @Override
+    public String toString()
+    {
+        StringJoiner joiner = new StringJoiner(", ");
+
+        for (E item : this)
+            joiner.add(item.toString());
+
+        return String.format("{%s}", joiner);
     }
 
     @Override
