@@ -50,7 +50,6 @@ varDcl   : dataType (ident | assign) (',' (ident | assign))*
          ;
 
 assign   : reference '=' expr
-         | reference '=' 'new' dataType LPAREN (args)? RPAREN
          ;
 
 expr     : assign
@@ -90,11 +89,21 @@ term     : factor
          ;
 
 factor   : literal
+         | objInst
          | boolLit
-         | methodC // must return numliteral
+         | methodC
          | LPAREN logicExpr RPAREN
-         | ULOP factor
-         | LPAREN dataType RPAREN factor
+         | negation
+         | typeCast
+         ;
+
+negation : ULOP factor
+         ;
+
+typeCast : LPAREN dataType RPAREN factor
+         ;
+
+objInst  : 'new' dataType LPAREN (args)? RPAREN
          ;
 
 eventType: 'robotDeath'

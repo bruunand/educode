@@ -125,12 +125,12 @@ public class SymbolTable
         this.insert(new Symbol(reference, node));
     }
 
-    public void addDefaultMethod(String name, Type returnType, Type ... parameterTypes)
+    public Symbol addDefaultMethod(String name, Type returnType, Type ... parameterTypes)
     {
-        addDefaultMethod(name, returnType, Arrays.asList(parameterTypes));
+        return addDefaultMethod(name, returnType, Arrays.asList(parameterTypes));
     }
 
-    public void addDefaultMethod(String name, Type returnType, List<Type> parameterTypes)
+    public Symbol addDefaultMethod(String name, Type returnType, List<Type> parameterTypes)
     {
         ListNode parameterNodes = new ListNode();
         for (Type type : parameterTypes)
@@ -139,6 +139,8 @@ public class SymbolTable
         IdentifierReferencingNode reference = new IdentifierReferencingNode(name);
         MethodDeclarationNode node = new MethodDeclarationNode(parameterNodes, null, reference, returnType);
 
-        this.insert(new Symbol(reference, node));
+        Symbol toInsert = new Symbol(reference, node);
+        this.insert(toInsert);
+        return toInsert;
     }
 }

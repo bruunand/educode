@@ -26,6 +26,7 @@ import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.TypeCastNode;
+import com.educode.runtime.types.SpecialJavaTranslation;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
@@ -33,6 +34,7 @@ import com.educode.visitors.VisitorBase;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.StringJoiner;
 
@@ -71,7 +73,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     {
         StringBuffer codeBuffer = new StringBuffer();
 
-        append(codeBuffer, "import java.util.*;\nimport com.educode.runtime.*;\nimport com.educode.runtime.types.*;\n\n");
+        append(codeBuffer, "import java.util.*;\nimport com.educode.runtime.*;\nimport com.educode.runtime.types.*;\nimport com.educode.helper.*;\n\n");
 
         append(codeBuffer, "public class %s extends ScriptBase\n{\n", node.getReference());
 
@@ -98,7 +100,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
             e.printStackTrace();
         }
     }
-
 
     public Object visit(BlockNode node)
     {
@@ -134,12 +135,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         // Object instantiation is handled differently for different types
         // This case is only used if collection is initialized with values
         if (node.getType().isCollection())
-        {
-            /*if (node.hasChild())
-                return String.format("Arrays.asList(%s)", argumentJoiner);
-            else*/
-                return String.format("new ExtendedCollection<%s>(%s)", OperatorTranslator.toJava(node.getType().getChildType()), argumentJoiner);
-        }
+            return String.format("new ExtendedCollection<%s>(%s)", OperatorTranslator.toJava(node.getType().getChildType()), argumentJoiner);
         else
             return String.format("new %s(%s)", OperatorTranslator.toJava(node.getType()), argumentJoiner);
     }
@@ -174,13 +170,28 @@ public class JavaCodeGenerationVisitor extends VisitorBase
                 actualArgumentsJoiner.add(visit(parameterNodeDecl).toString());
         }
 
-        // Replace identifier if applicable
-        // TODO: Use a dictionary or a better structure for this
-        String methodIdentifier = (String) visit(node.getReference());
-        if (methodIdentifier.equals("debug"))
-            methodIdentifier = "System.out.println";
+        // If identifier has a special translation, use that instead of the method identifier
+        if (node.getReferencingDeclaration().hasSpecialJavaTranslation())
+        {
+            SpecialJavaTranslation specialJavaTranslation = node.getReferencingDeclaration().getSpecialJavaTranslation();
 
-        return String.format("%s(%s)", methodIdentifier, actualArgumentsJoiner);
+            // If method invocation references a struct, we will need to pass the left side of the struct to the special translation
+            if (node.getReference() instanceof StructReferencingNode)
+            {
+                // Create new argument joiner which contains left side of struct reference
+                StringJoiner newArgJoiner = new StringJoiner(", ");
+                newArgJoiner.add(visit(((StructReferencingNode) node.getReference()).getLeftChild()).toString());
+                newArgJoiner.merge(actualArgumentsJoiner);
+
+                // Return formatted string with new arguments
+                return String.format(specialJavaTranslation.formattedTranslation(), newArgJoiner);
+            }
+
+            // Otherwise just return formatted string with actual arguments, since it is not a struct reference
+            return String.format(specialJavaTranslation.formattedTranslation(), actualArgumentsJoiner);
+        }
+
+        return String.format("%s(%s)", visit(node.getReference()), actualArgumentsJoiner);
     }
 
 
@@ -386,6 +397,23 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object visit(StructReferencingNode node)
     {
+        if (node.getRightChild() instanceof MethodInvocationNode)
+        {
+            MethodInvocationNode methodInvocation = (MethodInvocationNode) node.getRightChild();
+            MethodDeclarationNode methodDeclaration = methodInvocation.getReferencingDeclaration();
+
+            if (methodDeclaration.hasSpecialJavaTranslation())
+            {
+                StringJoiner argumentJoiner = new StringJoiner(", ");
+                argumentJoiner.add(visit(node.getObjectName()).toString());
+
+                List<Node> actualArguments = methodInvocation.getActualArguments();
+                for (Node argument : actualArguments)
+                    argumentJoiner.add(visit(argument).toString());
+
+                return String.format(methodDeclaration.getSpecialJavaTranslation().formattedTranslation(), argumentJoiner);
+            }
+        }
         return String.format("%s.%s", visit(node.getObjectName()), visit(node.getFieldName()));
     }
 }

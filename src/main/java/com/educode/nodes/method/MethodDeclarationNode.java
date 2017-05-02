@@ -6,6 +6,7 @@ import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.ungrouped.BlockNode;
+import com.educode.runtime.types.SpecialJavaTranslation;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
@@ -17,6 +18,8 @@ import java.util.List;
  */
 public class MethodDeclarationNode extends BinaryNode implements IReferencing
 {
+    private SpecialJavaTranslation _specialJavaTranslation;
+
     private IReference _reference;
 
     private int MaxDeclaredVariables;
@@ -132,5 +135,20 @@ public class MethodDeclarationNode extends BinaryNode implements IReferencing
         }
 
         return true;
+    }
+
+    public void setSpecialJavaTranslation(SpecialJavaTranslation translation)
+    {
+        this._specialJavaTranslation = translation;
+    }
+
+    public SpecialJavaTranslation getSpecialJavaTranslation()
+    {
+        return this._specialJavaTranslation;
+    }
+
+    public boolean hasSpecialJavaTranslation()
+    {
+        return this._specialJavaTranslation != null;
     }
 }

@@ -17,6 +17,11 @@ public class SymbolTableHandler
     private SymbolTable _current;
     private MethodDeclarationNode _currentParentMethod;
 
+    public SymbolTableHandler(SymbolTable base)
+    {
+        _current = base;
+    }
+
     public MethodDeclarationNode getCurrentParentMethod()
     {
         return this._currentParentMethod;

@@ -17,6 +17,8 @@ import java.util.List;
  */
 public class MethodInvocationNode extends UnaryNode implements ISingleLineStatement, IReferencing
 {
+    private MethodDeclarationNode _referencingDeclaration;
+
     private IReference _reference;
 
     public MethodInvocationNode(IReference calleeReference, Node child)
@@ -33,6 +35,16 @@ public class MethodInvocationNode extends UnaryNode implements ISingleLineStatem
             returnList.add(node.getType());
 
         return returnList;
+    }
+
+    public void setReferencingDeclaration(MethodDeclarationNode node)
+    {
+        this._referencingDeclaration = node;
+    }
+
+    public MethodDeclarationNode getReferencingDeclaration()
+    {
+        return this._referencingDeclaration;
     }
 
     public List<Node> getActualArguments()

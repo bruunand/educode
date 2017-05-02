@@ -23,7 +23,7 @@ public class ExtendedCollection<E> extends ArrayList<E> implements ICollection<E
     {
         StringJoiner joiner = new StringJoiner(", ");
 
-        for (E item : this)
+        for (Object item : this)
             joiner.add(item.toString());
 
         return String.format("{%s}", joiner);

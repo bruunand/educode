@@ -1,4 +1,4 @@
-// Generated from C:/Users/User/Desktop/EduCode-P4/src\EduCode.g4 by ANTLR 4.6
+// Generated from /home/zen/Git/EduCode-P4/src/EduCode.g4 by ANTLR 4.6
 package com.educode.antlr;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -160,6 +160,24 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFactor(EduCodeParser.FactorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#negation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNegation(EduCodeParser.NegationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#typeCast}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypeCast(EduCodeParser.TypeCastContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#objInst}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitObjInst(EduCodeParser.ObjInstContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#eventType}.
 	 * @param ctx the parse tree

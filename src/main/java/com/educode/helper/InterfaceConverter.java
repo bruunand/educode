@@ -1,10 +1,13 @@
 package com.educode.helper;
 
+import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.runtime.types.*;
+import com.educode.symboltable.Symbol;
 import com.educode.symboltable.SymbolTable;
 import com.educode.types.Type;
 import sun.reflect.generics.reflectiveObjects.TypeVariableImpl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -78,8 +81,14 @@ public class InterfaceConverter
             if (skipMethod)
                 continue;
 
-            // Add method definition to symbol table
-            newTable.addDefaultMethod(method.getName(), returnType, parameterTypes);
+            // Insert symbol into symbol table
+            Symbol inserted = newTable.addDefaultMethod(method.getName(), returnType, parameterTypes);
+
+            // Check if method is annotated with special translation
+            // If it is, pass it to the method declaration that was inserted into the symbol table
+            Annotation annotation = method.getAnnotation(SpecialJavaTranslation.class);
+            if (annotation != null)
+                ((MethodDeclarationNode) inserted.getSourceNode()).setSpecialJavaTranslation((SpecialJavaTranslation) annotation);
         }
 
         return newTable;

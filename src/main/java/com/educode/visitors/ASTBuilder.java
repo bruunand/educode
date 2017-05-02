@@ -141,6 +141,17 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     }
 
     @Override
+    public Node visitObjInst(EduCodeParser.ObjInstContext ctx)
+    {
+        Type classType = getType(ctx.dataType());
+
+        if (ctx.args() != null)
+            return new ObjectInstantiationNode(visit(ctx.args()), classType);
+        else
+            return new ObjectInstantiationNode(null, classType);
+    }
+
+    @Override
     public Node visitParams(EduCodeParser.ParamsContext ctx)
     {
         updateLineNumber(ctx);
@@ -418,15 +429,6 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
 
         if (ctx.expr() != null) // Assign to expression
             return new AssignmentNode((IReference) visit(ctx.reference()), visit(ctx.expr()));
-        else if (ctx.dataType() != null) // Assign to instantiated object
-        {
-            Type classType = getType(ctx.dataType());
-
-            if (ctx.args() != null)
-                return new AssignmentNode((IReference) visit(ctx.reference()), new ObjectInstantiationNode(visit(ctx.args()), classType));
-            else
-                return new AssignmentNode((IReference) visit(ctx.reference()), new ObjectInstantiationNode(classType));
-        }
 
         System.out.println("Error at line " + ctx.getStart().getLine());
         System.out.println(ctx.getText());
@@ -503,16 +505,30 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
             return visit(ctx.literal());
         else if (ctx.methodC() != null)
             return visit(ctx.methodC());
-        else if (ctx.ULOP() != null)
-            return new NegateNode(visit(ctx.factor()));
+        else if (ctx.negation() != null)
+            return visit(ctx.negation());
         else if (ctx.boolLit() != null)
             return new BoolLiteralNode(Boolean.parseBoolean(ctx.getText()));
-        else if (ctx.dataType() != null)
-            return new TypeCastNode(getType(ctx.dataType()), visit(ctx.factor()));
+        else if (ctx.typeCast() != null)
+            return visit(ctx.typeCast());
+        else if (ctx.objInst() != null)
+            return visit(ctx.objInst());
 
         System.out.println("FactError at line " + ctx.getStart().getLine());
 
         return null;
+    }
+
+    @Override
+    public Node visitNegation(EduCodeParser.NegationContext ctx)
+    {
+        return new NegateNode(visit(ctx.factor()));
+    }
+
+    @Override
+    public Node visitTypeCast(EduCodeParser.TypeCastContext ctx)
+    {
+        return new TypeCastNode(getType(ctx.dataType()), visit(ctx.factor()));
     }
 
     @Override

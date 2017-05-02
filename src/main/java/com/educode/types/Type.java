@@ -14,7 +14,7 @@ public class Type
 
     public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5, ENTITY = 6, COLLECTION = 7, ROBOT = 8, ITEM = 9;
 
-    private static SymbolTable _primitiveSymbolTable, _baseSymbolTable, _collectionSymbolTable, _entitySymbolTable, _robotSymbolTable, _coordinatesSymbolTable, _itemSymbolTable;
+    private static SymbolTable _primitiveSymbolTable, _baseSymbolTable, _collectionSymbolTable, _entitySymbolTable, _robotSymbolTable, _coordinatesSymbolTable, _itemSymbolTable, _stringSymbolTable;
 
     static
     {
@@ -38,6 +38,7 @@ public class Type
         _collectionSymbolTable  = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, ICollection.class);
         _entitySymbolTable      = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, IEntity.class);
         _itemSymbolTable        = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, IItem.class);
+        _stringSymbolTable      = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, IString.class);
         _robotSymbolTable       = InterfaceConverter.getSymbolTableFromClass(_entitySymbolTable, IRobot.class);
     }
 
@@ -89,7 +90,7 @@ public class Type
 
     public SymbolTable getSymbolTable()
     {
-        // Some types have special symbol tables and the primitives have an empty symbol table
+        // Some types have special symbol tables
         // In other cases, we return the base symbol table
 
         if (this.equals(Type.EntityType))
@@ -100,8 +101,8 @@ public class Type
             return _coordinatesSymbolTable;
         else if (this.equals(Type.ItemType))
             return _itemSymbolTable;
-        else if (this.isPrimitive())
-            return _primitiveSymbolTable;
+        else if (this.equals(Type.StringType))
+            return _stringSymbolTable;
         else if (this.isCollection())
         {
             // Returns a temporary symbol table derived from collectionSymbolTable

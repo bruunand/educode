@@ -1,5 +1,6 @@
 package com.educode.visitors.semantic;
 
+import com.educode.helper.InterfaceConverter;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpression;
@@ -25,6 +26,7 @@ import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.*;
+import com.educode.runtime.types.IScriptBase;
 import com.educode.symboltable.Symbol;
 import com.educode.symboltable.SymbolTable;
 import com.educode.symboltable.SymbolTableHandler;
@@ -40,8 +42,14 @@ import java.util.List;
  */
 public class SemanticVisitor extends VisitorBase
 {
-    private final SymbolTableHandler _symbolTableHandler = new SymbolTableHandler();
+    private final SymbolTableHandler _symbolTableHandler;
     private final List<EventDefinitionNode> _eventDefinitions = new ArrayList<>();
+
+    public SemanticVisitor()
+    {
+        // Adds methods like debug to the base symbol table
+        _symbolTableHandler = new SymbolTableHandler(InterfaceConverter.getSymbolTableFromClass(null, IScriptBase.class));
+    }
 
     public SymbolTableHandler getSymbolTableHandler()
     {
@@ -63,11 +71,6 @@ public class SemanticVisitor extends VisitorBase
         getSymbolTableHandler().enterSymbol(node);
 
         // Add default methods and fields to symbol table
-        getSymbolTableHandler().getCurrent().addDefaultMethod("debug", Type.VoidType, Type.StringType);
-        getSymbolTableHandler().getCurrent().addDefaultMethod("random", Type.NumberType, Type.NumberType, Type.NumberType);
-        getSymbolTableHandler().getCurrent().addDefaultMethod("abs", Type.NumberType, Type.NumberType);
-        getSymbolTableHandler().getCurrent().addDefaultMethod("wait", Type.VoidType, Type.NumberType);
-        getSymbolTableHandler().getCurrent().addDefaultMethod("range", new Type(Type.NumberType), Type.NumberType, Type.NumberType);
         getSymbolTableHandler().getCurrent().addDefaultField("robot", Type.RobotType);
 
         // Run return check visitor
@@ -240,7 +243,11 @@ public class SemanticVisitor extends VisitorBase
         if (methodReference == null)
             getSymbolTableHandler().error(node, "No method %s found with matching parameters.", node.getReference());
         else
-            node.setType(methodReference.getSourceNode().getType());
+        {
+            MethodDeclarationNode referencingDeclaration = (MethodDeclarationNode) methodReference.getSourceNode();
+            node.setType(referencingDeclaration.getType());
+            node.setReferencingDeclaration(referencingDeclaration);
+        }
     }
 
     public void visit(AssignmentNode node)
@@ -333,7 +340,11 @@ public class SemanticVisitor extends VisitorBase
             if (symbol == null)
                 getSymbolTableHandler().error(reference, "Struct of type %s does not contain method %s.", reference.getLeftChild().getType(), methodInv.getReference());
             else
-                reference.setType(symbol.getSourceNode().getType());
+            {
+                MethodDeclarationNode referencingDeclaration = (MethodDeclarationNode) symbol.getSourceNode();
+                reference.setType(referencingDeclaration.getType());
+                methodInv.setReferencingDeclaration(referencingDeclaration);
+            }
         }
     }
 

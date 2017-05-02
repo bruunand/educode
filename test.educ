@@ -8,11 +8,22 @@ program Test
         Collection<number> test2 = new Collection<number>(1, 2, 3, 4)
         bool res = test equals test2
 
+        string str = "hej jeg hedder anders, hej hvad hedder du"
+        Collection<string> tet = str.split(" ")
+        Collection<Collection<string>> doubly = new Collection<Collection<string>>()
+        foreach string theis in tet
+            doubly.addItem(new Collection<string>(random(-5, 5).toString()))
+            doubly.addItem(theis.toUpperCase().split("E"))
+        end foreach
+        debug("doubly:" + doubly)
+        tet[0] = tet[0].toUpperCase()
+        debug("res:" + tet[0])
+        debug("res:" + tet)
         debug("res:" + (test equals test2))
         debug("res:" + (test2 equals test2))
         debug("res:" + (test equals test))
         setter()
-        random(5,5)
+        debug("rand:" + random(-5,5))
         debug("a:" + a)
         return
     end method

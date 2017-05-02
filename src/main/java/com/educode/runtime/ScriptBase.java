@@ -118,12 +118,7 @@ public abstract class ScriptBase implements IRobot
         return ret;
     }
 
-    public float abs(float value)
-    {
-        return Math.abs(value);
-    }
-
-    public float random(float min, float max)
+    public Float random(float min, float max)
     {
         return (max - min) * _rand.nextFloat() + min;
     }
