@@ -124,44 +124,49 @@ public class GuiProgramEditor extends GuiScreen
                 if (word.replace(_cursorSymbol, "").contains(")"))
                 {
                     buildingFormalParameters = false;
+                    formattedLine.append(word);
+                    continue;
                 }
                 keywords = testWord(word.replace(_cursorSymbol, "").replace(")", ""), keyWordMap.keySet(), partialKeywords);
 
                 switch(keywords.getFirst())
                 {
                     case 0:
-                        formattedLine.append(word);
+                        formattedLine.append(word + " ");
                         break;
                     case 1:
-                        formattedLine.append(TextFormatting.AQUA).append(word).append(TextFormatting.WHITE);
+                        formattedLine.append(TextFormatting.AQUA).append(word).append(TextFormatting.WHITE + " ");
                         break;
                     case 2:
-                        formattedLine.append(word);
+                        formattedLine.append(word + " ");
                         break;
                 }
+                continue;
             }
 
-            if (word.replace(_cursorSymbol, "").contains("("))
+            if (word.replace(_cursorSymbol, "").contains("(") && !word.replace(_cursorSymbol, "").contains(")"))
             {
                 buildingFormalParameters = true;
 
 
-                String wordToCheck = word.substring(word.indexOf("("));
+                String wordToCheck = word.substring(word.indexOf("(") + 1);
+                word = word.replace(wordToCheck, "");
 
                 keywords = testWord(wordToCheck.replace(_cursorSymbol, ""), keyWordMap.keySet(), partialKeywords);
 
                 switch(keywords.getFirst())
                 {
                     case 0:
-                        formattedLine.append(word);
+                        formattedLine.append(word).append(wordToCheck + " ");
                         break;
                     case 1:
-                        formattedLine.append(TextFormatting.AQUA).append(word).append(TextFormatting.WHITE);
+                        formattedLine.append(word).append(TextFormatting.AQUA).append(wordToCheck + " ").append(TextFormatting.WHITE);
                         break;
                     case 2:
-                        formattedLine.append(word);
+                        formattedLine.append(word).append(wordToCheck + " ");
                         break;
                 }
+                continue;
             }
 
             if (word.replace(_cursorSymbol, "").contains("Collection<"))
