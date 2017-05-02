@@ -4,6 +4,7 @@ import com.educode.helper.ArrayHelper;
 import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.networking.MessageSaveFile;
 
+import com.google.common.collect.HashBiMap;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
@@ -17,7 +18,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
-import java.util.HashMap;
+
+import com.google.common.collect.BiMap;
 import java.util.Set;
 
 import static org.lwjgl.input.Keyboard.*;
@@ -50,7 +52,7 @@ public class GuiProgramEditor extends GuiScreen
         _fileName = name;
     }
 
-    private static String testWords(String[] words, HashMap<String[], TextFormatting> keyWordMap, String[] partialKeywords)
+    private static String testWords(String[] words, BiMap<TextFormatting, String[]> keyWordMap, String[] partialKeywords)
     {
         boolean buildingString = false;
         boolean buildingFormalParameters = false;
@@ -127,7 +129,7 @@ public class GuiProgramEditor extends GuiScreen
                     formattedLine.append(word);
                     continue;
                 }
-                keywords = testWord(word.replace(_cursorSymbol, "").replace(")", ""), keyWordMap.keySet(), partialKeywords);
+                keywords = testWord(word.replace(_cursorSymbol, "").replace(")", ""), keyWordMap.get(TextFormatting.AQUA), partialKeywords);
 
                 switch(keywords.getFirst())
                 {
@@ -152,7 +154,7 @@ public class GuiProgramEditor extends GuiScreen
                 String wordToCheck = word.substring(word.indexOf("(") + 1);
                 word = word.replace(wordToCheck, "");
 
-                keywords = testWord(wordToCheck.replace(_cursorSymbol, ""), keyWordMap.keySet(), partialKeywords);
+                keywords = testWord(wordToCheck.replace(_cursorSymbol, ""), keyWordMap.get(TextFormatting.AQUA), partialKeywords);
 
                 switch(keywords.getFirst())
                 {
@@ -192,7 +194,7 @@ public class GuiProgramEditor extends GuiScreen
                     {
                         type = collectionCollection[collectionCollection.length-1].replace(">", "");
                     }
-                    keywords = testWord(type.replace(_cursorSymbol, ""), keyWordMap.keySet(), partialKeywords);
+                    keywords = testWord(type.replace(_cursorSymbol, ""), keyWordMap.values(), partialKeywords);
 
 
 
@@ -218,14 +220,14 @@ public class GuiProgramEditor extends GuiScreen
 
             if (partial.equals(""))
             {
-                keywords = testWord(word.replace(_cursorSymbol, ""), keyWordMap.keySet(),partialKeywords);
+                keywords = testWord(word.replace(_cursorSymbol, ""), keyWordMap.values(),partialKeywords);
                 switch(keywords.getFirst())
                 {
                     case 0:
                         formattedLine.append(word).append(" ");
                         break;
                     case 1:
-                        TextFormatting col = keyWordMap.get(keywords.getSecond());
+                        TextFormatting col = keyWordMap.inverse().get(keywords.getSecond());
                         formattedLine.append(col).append(word).append(" ").append(TextFormatting.WHITE);
                         break;
                     case 2:
@@ -236,14 +238,14 @@ public class GuiProgramEditor extends GuiScreen
             }
             else
             {
-                keywords = testWord((partial + " " + word).replace(_cursorSymbol, ""), keyWordMap.keySet(), partialKeywords);
+                keywords = testWord((partial + " " + word).replace(_cursorSymbol, ""), keyWordMap.values(), partialKeywords);
                 switch(keywords.getFirst())
                 {
                     case 0:
                         formattedLine.append(word).append(" ");
                         break;
                     case 1:
-                        TextFormatting col = keyWordMap.get(keywords.getSecond());
+                        TextFormatting col = keyWordMap.inverse().get(keywords.getSecond());
                         formattedLine.insert(formattedLine.length() - (partial.length() + 1), col);
                         formattedLine.append(word).append(TextFormatting.WHITE).append(" ");
                         partial = "";
@@ -259,22 +261,36 @@ public class GuiProgramEditor extends GuiScreen
         return formattedLine.toString();
     }
 
-    private static Tuple<Integer, String[]> testWord(String word, Set<String[]> keySet, String[] partialKeywords)
+    private static Tuple<Integer, String[]> testWord(String word, String[] keywords, String[] partialKeywords)
     {
-        for(String[] keywords : keySet)
+        for (String keyword : keywords)
         {
-            for (String keyword : keywords)
+            if(word.equals(keyword))
             {
-                if(word.equals(keyword))
+                return new Tuple<>(1, keywords);
+            }
+            else
+            {
+                for (String partialKeyword : partialKeywords)
                 {
-                    return new Tuple<>(1, keywords);
-                }
-                else
-                {
-                    for (String partialKeyword : partialKeywords)
+                    if (word.equals(partialKeyword))
                     {
-                        if (word.equals(partialKeyword))
-                        {
+                        return new Tuple<>(2, null);
+                    }
+                }
+            }
+        }
+        return new Tuple<>(0, null);
+    }
+    private static Tuple<Integer, String[]> testWord(String word, Set<String[]> keywordSet, String[] partialKeywords) {
+        for (String[] keywords : keywordSet)
+        {
+            for (String keyword : keywords) {
+                if (word.equals(keyword)) {
+                    return new Tuple<>(1, keywords);
+                } else {
+                    for (String partialKeyword : partialKeywords) {
+                        if (word.equals(partialKeyword)) {
                             return new Tuple<>(2, null);
                         }
                     }
@@ -296,13 +312,13 @@ public class GuiProgramEditor extends GuiScreen
         final String[] events = new String[] {"robotDeath", "robotAttacked", "chatMessage", "entityDeath", "stringMessageReceived", "entityMessageReceived"};
 
         //Assign colors for above keywords
-        HashMap<String[], TextFormatting> keyWordMap = new HashMap<>();
-        keyWordMap.put(blockKeywords, TextFormatting.LIGHT_PURPLE);
-        keyWordMap.put(booleanKeywords, TextFormatting.GOLD);
-        keyWordMap.put(typeKeywords, TextFormatting.AQUA);
-        keyWordMap.put(tfKeywords, TextFormatting.GREEN);
-        keyWordMap.put(eventKeywords, TextFormatting.BLUE);
-        keyWordMap.put(events, TextFormatting.DARK_AQUA);
+        BiMap<TextFormatting, String[]> keyWordMap = HashBiMap.create();
+        keyWordMap.put(TextFormatting.LIGHT_PURPLE, blockKeywords);
+        keyWordMap.put(TextFormatting.GOLD, booleanKeywords);
+        keyWordMap.put(TextFormatting.AQUA, typeKeywords);
+        keyWordMap.put(TextFormatting.GREEN, tfKeywords);
+        keyWordMap.put(TextFormatting.BLUE, eventKeywords);
+        keyWordMap.put(TextFormatting.DARK_AQUA, events);
 
         //Remove \r from _text as they are unnecessary
         _text = text.replace("\r", "");
