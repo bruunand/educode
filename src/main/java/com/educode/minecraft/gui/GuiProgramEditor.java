@@ -309,6 +309,7 @@ public class GuiProgramEditor extends GuiScreen
         final String[] typeKeywords = new String[] {"number", "Coordinates", "string", "bool", "Item", "Entity"};
         final String[] tfKeywords = new String[] {"true", "false"};
         final String[] eventKeywords = new String[] {"on event", "call"};
+        final String[] nullKeyword = new String[] {"null"};
         final String[] events = new String[] {"robotDeath", "robotAttacked", "chatMessage", "entityDeath", "stringMessageReceived", "entityMessageReceived"};
 
         //Assign colors for above keywords
@@ -318,6 +319,7 @@ public class GuiProgramEditor extends GuiScreen
         keyWordMap.put(TextFormatting.AQUA, typeKeywords);
         keyWordMap.put(TextFormatting.GREEN, tfKeywords);
         keyWordMap.put(TextFormatting.BLUE, eventKeywords);
+        keyWordMap.put(TextFormatting.DARK_PURPLE, nullKeyword);
         keyWordMap.put(TextFormatting.DARK_AQUA, events);
 
         //Remove \r from _text as they are unnecessary
