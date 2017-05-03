@@ -28,7 +28,7 @@ import java.util.Hashtable;
  */
 public class OptimizationVisitor extends VisitorBase
 {
-    private Dictionary<VariableDeclarationNode, Node> _constantDeclarations = new Hashtable<>();
+    private final Dictionary<VariableDeclarationNode, Node> _constantDeclarations = new Hashtable<>();
 
     @Override
     public Object defaultVisit(Node node)
