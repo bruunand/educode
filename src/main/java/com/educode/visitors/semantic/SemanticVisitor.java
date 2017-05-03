@@ -9,6 +9,7 @@ import com.educode.nodes.expression.logic.EqualExpressionNode;
 import com.educode.nodes.expression.logic.LogicExpressionNode;
 import com.educode.nodes.expression.logic.NegateNode;
 import com.educode.nodes.expression.logic.RelativeExpressionNode;
+import com.educode.nodes.literal.BoolLiteralNode;
 import com.educode.nodes.literal.CoordinatesLiteralNode;
 import com.educode.nodes.literal.ILiteral;
 import com.educode.nodes.literal.NumberLiteralNode;
@@ -360,6 +361,23 @@ public class SemanticVisitor extends VisitorBase
             getSymbolTableHandler().error(node, "A variable declaration cannot reference a struct or an array.");
         else
             getSymbolTableHandler().enterSymbol(node);
+
+        // Add default values if no assignment
+        if (node.getChild() == null)
+        {
+            switch (node.getType().getKind())
+            {
+                case Type.NUMBER:
+                    node.setAssignment(new NumberLiteralNode(0.0F));
+                    break;
+                case Type.COORDINATES:
+                    node.setAssignment(new CoordinatesLiteralNode(new NumberLiteralNode(0.0F), new NumberLiteralNode(0.0F), new NumberLiteralNode(0.0F)));
+                    break;
+                case Type.BOOL:
+                    node.setAssignment(new BoolLiteralNode(false));
+                    break;
+            }
+        }
 
         visitChildren(node);
 

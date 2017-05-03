@@ -36,4 +36,10 @@ public abstract class UnaryNode extends Node implements INodeWithChildren
     {
         return _child;
     }
+
+    protected void setChild(Node child)
+    {
+        this._child = child;
+        this._child.setParent(this);
+    }
 }

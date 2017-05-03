@@ -5,6 +5,7 @@ import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.ArithmeticExpression;
 import com.educode.nodes.expression.logic.LogicExpressionNode;
+import com.educode.nodes.expression.logic.NegateNode;
 import com.educode.nodes.expression.logic.RelativeExpressionNode;
 import com.educode.nodes.literal.BoolLiteralNode;
 import com.educode.nodes.literal.ILiteral;
@@ -36,6 +37,16 @@ public class OptimizationVisitor extends VisitorBase
         visitChildren(node);
 
         return null;
+    }
+
+    public Object visit(NegateNode node)
+    {
+        Object result = visit(node.getChild());
+
+        if (!(result instanceof Boolean))
+            return null;
+        else
+            return !((Boolean) result);
     }
 
     public void visit(RepeatWhileNode node)
