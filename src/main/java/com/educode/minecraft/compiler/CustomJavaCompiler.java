@@ -52,7 +52,12 @@ public class CustomJavaCompiler
 			throw new Exception("Could not compile script!"); // TODO custom exception
 		}
 
-        CustomClassLoader loader = new CustomClassLoader(CustomClassLoader.class.getClassLoader());
-        return loader.loadClassFromFile(scriptName, new File(scriptsLocation + scriptName + ".class"));
+		return loadClass(scriptName, scriptsLocation);
     }
+
+    public static Class loadClass(String scriptName, String location) throws Exception
+	{
+		CustomClassLoader loader = new CustomClassLoader(CustomClassLoader.class.getClassLoader());
+		return loader.loadClassFromFile(scriptName, new File(location + scriptName + ".class"));
+	}
 }

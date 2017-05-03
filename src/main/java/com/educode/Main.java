@@ -15,6 +15,7 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -50,10 +51,22 @@ public class Main
         root.accept(javaCodeVisitor);
 
         // Test code generation
+        System.out.println("Compiling Java code...");
         CustomJavaCompiler compiler = new CustomJavaCompiler();
-        Class compiledClass = compiler.compile(new File("").getAbsolutePath() + File.separator, "Test");
-        Object instance = compiledClass.newInstance();
-        for (Method m : compiledClass.getDeclaredMethods())
+        runMainInClass(compiler.compile(new File("").getAbsolutePath() + File.separator, "Test"));
+        System.out.println();
+
+        // Test bytecode generation
+        System.out.println("Compiling bytecode using Jasmin...");
+        jasmin.Main jasminMain = new jasmin.Main();
+        jasminMain.assemble("Test.j");
+        runMainInClass(CustomJavaCompiler.loadClass("Test", new File("").getAbsolutePath() + File.separator));
+    }
+
+    private static void runMainInClass(Class classToRun) throws InvocationTargetException, IllegalAccessException, InstantiationException
+    {
+        Object instance = classToRun.newInstance();
+        for (Method m : classToRun.getDeclaredMethods())
         {
             if (m.getName().equals("main"))
                 m.invoke(instance);

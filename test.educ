@@ -1,5 +1,9 @@
 program Test
     method main()
+        Collection<string> hej = new Collection<string>("ok")
+        foreach string s in hej
+            debug(s)
+        end foreach
         bool a = true
         bool b = false
 
