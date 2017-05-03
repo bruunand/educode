@@ -1,6 +1,8 @@
 package com.educode.nodes.referencing;
 
 import com.educode.nodes.base.LeafNode;
+import com.educode.nodes.base.Node;
+import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.visitors.VisitorBase;
 
 /**
@@ -9,6 +11,8 @@ import com.educode.visitors.VisitorBase;
 public class IdentifierReferencingNode extends LeafNode implements IReference
 {
     private String _identifier;
+
+    private VariableDeclarationNode _declaration;
 
     public IdentifierReferencingNode(String identifier)
     {
@@ -30,6 +34,16 @@ public class IdentifierReferencingNode extends LeafNode implements IReference
     public String toString()
     {
         return this.getText();
+    }
+
+    public VariableDeclarationNode getDeclaration()
+    {
+        return this._declaration;
+    }
+
+    public void setDeclaration(VariableDeclarationNode node)
+    {
+        this._declaration = node;
     }
 
     @Override

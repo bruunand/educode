@@ -19,7 +19,7 @@ public abstract class UnaryNode extends Node implements INodeWithChildren
     @Override
     public void replaceChildReference(Node fromReference, Node toReference)
     {
-        if (this._child == null || !this._child.equals(fromReference))
+        if (this._child == null || this._child != fromReference)
             return;
 
         this._child = toReference;

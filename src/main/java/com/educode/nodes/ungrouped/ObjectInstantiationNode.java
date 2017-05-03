@@ -14,11 +14,6 @@ import java.util.List;
  */
 public class ObjectInstantiationNode extends UnaryNode implements ISingleLineStatement
 {
-    public ObjectInstantiationNode(Type type)
-    {
-        this(null, type);
-    }
-
     public ObjectInstantiationNode(Node child, Type type)
     {
         super(child);

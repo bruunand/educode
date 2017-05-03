@@ -7,7 +7,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by zen on 3/23/17.
  */
-public class StringLiteralNode extends LeafNode
+public class StringLiteralNode extends LeafNode implements ILiteral<String>
 {
     private String _value;
 

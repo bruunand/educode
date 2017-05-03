@@ -2,16 +2,13 @@ package com.educode;
 
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
-import com.educode.helper.InterfaceConverter;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
-import com.educode.runtime.types.*;
-import com.educode.symboltable.SymbolTable;
 import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
-import com.educode.visitors.optimization.ConstantFoldingVisitor;
+import com.educode.visitors.optimization.OptimizationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -19,7 +16,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 
 /**
  * Created by zen on 3/8/17.
@@ -40,10 +36,15 @@ public class Main
         root.accept(sv);
         sv.getSymbolTableHandler().printMessages();
 
+        if (sv.getSymbolTableHandler().hasErrors())
+            return;
+
+        root.accept(new OptimizationVisitor());
+
         JavaBytecodeGenerationVisitor byteCodeVisitor = new JavaBytecodeGenerationVisitor();
         root.accept(byteCodeVisitor);
 
-        root.accept(new ConstantFoldingVisitor());
+        System.out.println(root.accept(new PrintVisitor()));
 
         JavaCodeGenerationVisitor javaCodeVisitor = new JavaCodeGenerationVisitor("Test.java");
         root.accept(javaCodeVisitor);

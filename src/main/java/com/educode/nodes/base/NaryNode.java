@@ -1,5 +1,7 @@
 package com.educode.nodes.base;
 
+import com.educode.nodes.statement.conditional.ConditionNode;
+
 import java.util.ArrayList;
 
 /**
@@ -7,7 +9,7 @@ import java.util.ArrayList;
  */
 public abstract class NaryNode extends Node implements INodeWithChildren
 {
-    private ArrayList<Node> _childNodes = new ArrayList<Node>();
+    private ArrayList<Node> _childNodes = new ArrayList<>();
 
     public NaryNode(ArrayList<Node> childNodes)
     {
@@ -29,10 +31,10 @@ public abstract class NaryNode extends Node implements INodeWithChildren
         for (int i = 0; i < getChildren().size(); i++)
         {
             Node current = getChildren().get(i);
-            if (current == null || !current.equals(fromReference))
+            if (current == null || current != fromReference)
                 continue;
 
-            getChildren().set(0, toReference);
+            getChildren().set(i, toReference);
             toReference.setParent(this);
         }
     }
@@ -46,5 +48,10 @@ public abstract class NaryNode extends Node implements INodeWithChildren
     public ArrayList<Node> getChildren()
     {
         return _childNodes;
+    }
+
+    public void remove(Node child)
+    {
+        this._childNodes.remove(child);
     }
 }

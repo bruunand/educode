@@ -51,7 +51,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         this._destinationFile = destinationFile;
     }
 
-    public void append(StringBuffer buffer, String format, Object... args)
+    private void append(StringBuffer buffer, String format, Object... args)
     {
         try
         {
@@ -66,6 +66,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     public Object defaultVisit(Node node)
     {
         System.out.println("Please implement in Java CodeGen:" + node.getClass().getName());
+
         return "NOT IMPLEMENTED:" + node.getClass().getName();
     }
 

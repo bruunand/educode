@@ -14,7 +14,7 @@ public class IfNode extends NaryNode
 {
     public IfNode()
     {
-        super(new ArrayList<Node>());
+        super(new ArrayList<>());
     }
 
     public BlockNode getElseBlock()

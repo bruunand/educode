@@ -7,7 +7,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by zen on 3/23/17.
  */
-public class NumberLiteralNode extends LeafNode
+public class NumberLiteralNode extends LeafNode implements ILiteral<Float>
 {
     private float _value;
 
@@ -17,7 +17,7 @@ public class NumberLiteralNode extends LeafNode
         setType(Type.NumberType);
     }
 
-    public float getValue()
+    public Float getValue()
     {
         return this._value;
     }

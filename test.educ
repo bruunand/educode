@@ -1,153 +1,28 @@
 program Test
     method main()
-        testAllBoolExpr()
-        testAllBoolLitExpr()
-        testRepeatWhile()
-        test((floor(20.5) equals 20), true)
-        test((getArea(4,3) equals 12), true)
-    end method
+        bool a = true
+        bool b = false
 
-    method test(bool val, bool expected)
-        if val equals expected then
-            debug("Expected")
+        bool c
+        c = true
+
+        if a and b then
+            debug("Should not happen")
+        else if c then
+            debug("Should happen")
         else
-            debug("Unexpected")
+            debug("else")
         end if
-    end method
 
-    method testAllBoolExpr()
-        bool True = true, False = false
-        number one = 1, zero = 0
-        //Test 'not'
-        test(not True, false)
-        test(not False, true)
+        if true and false then
+            debug("remove me")
+        else if false or false then
+            debug("remove mee")
+        end if
 
-        //Test 'and'
-        test(True and True, true)
-        test(True and False, false)
-        test(False and True, false)
-        test(False and False, false)
-
-        //Test 'or'
-        test(True or True, true)
-        test(True or False, true)
-        test(False or True, true)
-        test(False or False, false)
-
-        //Test 'equals' with bool
-        test(True equals True, true)
-        test(True equals False, false)
-        test(False equals True, false)
-        test(False equals False, true)
-
-        //Test 'equals' with number
-        test(one equals one, true)
-        test(one equals zero, false)
-        test(zero equals one, false)
-
-        //Test 'greater than'
-        test(one greater than one, false)
-        test(one greater than zero, true)
-        test(zero greater than one, false)
-
-        //Test 'less than'
-        test(one less than zero, false)
-        test(one less than zero, false)
-        test(zero less than one, true)
-
-        //Test 'greater than or equals'
-        test(one greater than or equals one, true)
-        test(one greater than or equals zero, true)
-        test(zero greater than or equals one, false)
-
-        //Test 'less than or equals'
-        test(one less than or equals one, true)
-        test(one less than or equals zero, false)
-        test(zero less than or equals one, true)
-    end method
-
-    method testAllBoolLitExpr()
-        //Test 'not'
-        test(not true, false)
-        test(not false, true)
-
-        //Test 'and'
-        test(not not true, true)
-        test(true and true, true)
-        test(true and false, false)
-        test(false and true, false)
-        test(false and false, false)
-
-        //Test 'or'
-        test(true or true, true)
-        test(true or false, true)
-        test(false or true, true)
-        test(false or false, false)
-
-        //Test 'equals' with bool
-        test(true equals true, true)
-        test(true equals false, false)
-        test(false equals true, false)
-        test(false equals false, true)
-
-        //Test 'equals' with number
-        test(1 equals 1, true)
-        test(1 equals 0, false)
-        test(0 equals 1, false)
-
-        //Test 'greater than'
-        test(1 greater than 1, false)
-        test(1 greater than 0, true)
-        test(0 greater than 1, false)
-
-        //Test 'less than'
-        test(1 less than 1, false)
-        test(1 less than 0, false)
-        test(0 less than 1, true)
-
-        //Test 'greater than or equals'
-        test(1 greater than or equals 1, true)
-        test(1 greater than or equals 0, true)
-        test(0 greater than or equals 1, false)
-
-        //Test 'less than or equals'
-        test(1 less than or equals 1, true)
-        test(1 less than or equals 0, false)
-        test(0 less than or equals 1, true)
-    end method
-
-    method testRepeatWhile()
-        number num =  10, counter = 0
-        repeat while (num greater than 0)
-            counter = counter + 1
-            num = num - 1
+        repeat while a
+            a = false
+            debug("Loop")
         end repeat
-
-        test(counter equals 10, true)
-    end method
-
-    method floor(number num) returns number
-        number result = 0
-        if num greater than 0 then
-            repeat while num greater than or equals 1
-                result = result + 1
-                num = num - 1
-            end repeat
-        else if num less than 0 then
-            repeat while num less than or equals -1
-                result = result - 1
-                num = num + 1
-            end repeat
-        end if
-
-        return result
-    end method
-
-    method getArea(number width, number length) returns number
-        if width less than or equals 0 or length less than or equals 0 then
-            return 0
-        else
-            return width * length
-        end if
     end method
 end program

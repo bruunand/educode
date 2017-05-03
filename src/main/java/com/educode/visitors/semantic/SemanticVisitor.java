@@ -10,6 +10,7 @@ import com.educode.nodes.expression.logic.LogicExpressionNode;
 import com.educode.nodes.expression.logic.NegateNode;
 import com.educode.nodes.expression.logic.RelativeExpressionNode;
 import com.educode.nodes.literal.CoordinatesLiteralNode;
+import com.educode.nodes.literal.ILiteral;
 import com.educode.nodes.literal.NumberLiteralNode;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
@@ -59,7 +60,8 @@ public class SemanticVisitor extends VisitorBase
     @Override
     public Object defaultVisit(Node node)
     {
-        System.out.printf("No visitor for node %s.\n", node.getClass().getName());
+        if (!(node instanceof ILiteral))
+            System.out.printf("No visitor for node %s.\n", node.getClass().getName());
 
         return null;
     }
@@ -274,6 +276,10 @@ public class SemanticVisitor extends VisitorBase
         {
             // Symbol was found - now set the type of the reference to the type of the symbol we just found
             reference.setType(referencingSymbol.getSourceNode().getType());
+
+            // If source node is a variable declaration, set this identifier referencing node to reference that variable declaration
+            if (referencingSymbol.getSourceNode() instanceof VariableDeclarationNode)
+                reference.setDeclaration((VariableDeclarationNode) referencingSymbol.getSourceNode());
         }
 
         return referencingSymbol;

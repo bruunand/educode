@@ -43,14 +43,14 @@ public abstract class BinaryNode extends Node implements INodeWithChildren
     public void replaceChildReference(Node fromReference, Node toReference)
     {
         // Replace left child
-        if (this._leftChild != null && this._leftChild.equals(fromReference))
+        if (this._leftChild != null && this._leftChild == fromReference)
         {
             this._leftChild = toReference;
             this._leftChild.setParent(this);
         }
 
         // Replace right child
-        if (this._rightChild != null && this._rightChild.equals(fromReference))
+        if (this._rightChild != null && this._rightChild == fromReference)
         {
             this._rightChild = toReference;
             this._rightChild.setParent(this);

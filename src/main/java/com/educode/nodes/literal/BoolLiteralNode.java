@@ -7,7 +7,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by zen on 3/24/17.
  */
-public class BoolLiteralNode extends LeafNode
+public class BoolLiteralNode extends LeafNode implements ILiteral<Boolean>
 {
     private boolean _value;
 
@@ -17,7 +17,7 @@ public class BoolLiteralNode extends LeafNode
         setType(Type.BoolType);
     }
 
-    public boolean getValue()
+    public Boolean getValue()
     {
         return _value;
     }
