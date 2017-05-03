@@ -456,8 +456,17 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         updateLineNumber(ctx);
 
-        if (ctx.methodC().size() == 2)
-            return new StructReferencingNode(visit(ctx.methodC(0)), visit(ctx.methodC(1)));
+        if (ctx.parExpr() != null)
+            return new StructReferencingNode(visit(ctx.parExpr()), visit(ctx.methodC2()));
+        else
+            return visit(ctx.methodC2());
+    }
+
+    @Override
+    public Node visitMethodC2(EduCodeParser.MethodC2Context ctx)
+    {
+        if (ctx.methodC2().size() == 2)
+            return new StructReferencingNode(visit(ctx.methodC2(0)), visit(ctx.methodC2(1)));
         else
         {
             if (ctx.args() != null)
@@ -499,8 +508,8 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         updateLineNumber(ctx);
 
-        if (ctx.logicExpr() != null)
-            return visit(ctx.logicExpr());
+        if (ctx.parExpr() != null)
+            return visit(ctx.parExpr());
         else if (ctx.literal() != null)
             return visit(ctx.literal());
         else if (ctx.methodC() != null)
@@ -517,6 +526,12 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         System.out.println("FactError at line " + ctx.getStart().getLine());
 
         return null;
+    }
+
+    @Override
+    public Node visitParExpr(EduCodeParser.ParExprContext ctx)
+    {
+        return visit(ctx.logicExpr());
     }
 
     @Override

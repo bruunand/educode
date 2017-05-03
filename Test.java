@@ -10,6 +10,12 @@ Float a = 5.000000F;
 Float c = 10.000000F;
 public void main() throws InterruptedException
 {
+Coordinates coords = new Coordinates(0.000000F, 5.000000F, 10.000000F);
+Coordinates coords2 = new Coordinates(1.000000F, 2.000000F, 3.000000F);
+System.out.println(coords.add(coords2, false).toString());
+Coordinates newCoords = coords.add(coords2, false);
+ExtendedCollection<Coordinates> andS = new ExtendedCollection<Coordinates>(coords, coords2, newCoords);
+System.out.println(StringHelper.splitString(andS.toString().toString().toString().toString(), "1").toString());
 ExtendedCollection<Float> test = new ExtendedCollection<Float>(1.000000F, 2.000000F, 3.000000F);
 ExtendedCollection<Float> test2 = new ExtendedCollection<Float>(1.000000F, 2.000000F, 3.000000F, 4.000000F);
 Boolean res = test.equals(test2);

@@ -32,11 +32,7 @@ public abstract class VisitorBase
         {
             return method.invoke(this, node);
         }
-        catch (IllegalAccessException e)
-        {
-            e.printStackTrace();
-        }
-        catch (InvocationTargetException e)
+        catch (IllegalAccessException | InvocationTargetException e)
         {
             e.printStackTrace();
         }

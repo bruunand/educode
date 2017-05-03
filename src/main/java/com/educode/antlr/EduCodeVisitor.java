@@ -29,12 +29,6 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMethod(EduCodeParser.MethodContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#methodC}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMethodC(EduCodeParser.MethodCContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#args}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -161,6 +155,12 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFactor(EduCodeParser.FactorContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#parExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParExpr(EduCodeParser.ParExprContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#negation}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -215,12 +215,6 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumberLit(EduCodeParser.NumberLitContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#eol}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEol(EduCodeParser.EolContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#reference}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -232,4 +226,22 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIdent(EduCodeParser.IdentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#methodC}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodC(EduCodeParser.MethodCContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#methodC2}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodC2(EduCodeParser.MethodC2Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#eol}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEol(EduCodeParser.EolContext ctx);
 }

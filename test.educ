@@ -4,6 +4,15 @@ program Test
     number a = 5, b, c = 10
 
     method main()
+        Coordinates coords = (0, 5, 10)
+        Coordinates coords2 = (1, 2, 3)
+        debug((coords + coords2).toString())
+
+        Coordinates newCoords = coords + coords2
+
+        Collection<Coordinates> andS = new Collection<Coordinates>(coords, coords2, newCoords)
+        debug(andS.toString().toString().toString().toString().split("1").toString())
+
         Collection<number> test = new Collection<number>(1, 2, 3)
         Collection<number> test2 = new Collection<number>(1, 2, 3, 4)
         bool res = test equals test2

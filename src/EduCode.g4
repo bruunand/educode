@@ -9,10 +9,6 @@ eventDef : 'on event' eventType 'call' ident
 method   : 'method' ident LPAREN (params)? RPAREN ('returns' dataType)? eol+ stmts 'end method'
          ;
 
-methodC  : reference LPAREN (args)? RPAREN
-         | methodC '.' methodC
-         ;
-
 args     : expr(',' expr)*
          ;
 
@@ -92,9 +88,12 @@ factor   : literal
          | objInst
          | boolLit
          | methodC
-         | LPAREN logicExpr RPAREN
+         | parExpr
          | negation
          | typeCast
+         ;
+
+parExpr  : LPAREN logicExpr RPAREN
          ;
 
 negation : ULOP factor
@@ -139,6 +138,22 @@ coordLit : LPAREN logicExpr ',' logicExpr ',' logicExpr RPAREN
 numberLit: NUMLIT
          ;
 
+reference: reference '.' reference
+         | reference '[' arithExpr ']'
+         | ident
+         ;
+
+ident    : IDENT
+         ;
+
+methodC  : parExpr '.' methodC2
+         | methodC2
+         ;
+
+methodC2 : reference LPAREN (args)? RPAREN
+         | methodC2 '.' methodC2
+         ;
+
 eol      : NEWLINE
          ;
 
@@ -178,14 +193,6 @@ EQUALOP  : 'equals'
          ;
 
 NEWLINE  : NewLine
-         ;
-
-reference: reference '.' reference
-         | reference '[' arithExpr ']'
-         | ident
-         ;
-
-ident    : IDENT
          ;
 
 /* Fragments */
