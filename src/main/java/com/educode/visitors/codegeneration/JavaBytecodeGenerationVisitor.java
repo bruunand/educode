@@ -171,13 +171,13 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
                     if (temp.getKind() == Type.NUMBER)
                     {
                         subtractStackHeight(2);
-                        append(codeBuffer, "  pop2 ; %s\n", _currentStackHeight);
+                        append(codeBuffer, "  pop2\n");
                     }
 
                     else
                     {
                         subtractStackHeight(1);
-                        append(codeBuffer, "  pop ; %s\n", _currentStackHeight);
+                        append(codeBuffer, "  pop\n");
                     }
                 }
         }
@@ -198,15 +198,15 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         StringBuffer codeBuffer = new StringBuffer();
 
         addStackHeight(1);
-        append(codeBuffer, "  new %s ; %s\n", node.getType(), _currentStackHeight);
+        append(codeBuffer, "  new %s\n", node.getType());
         addStackHeight(1);
-        append(codeBuffer, "  dup ; %s\n", _currentStackHeight);
+        append(codeBuffer, "  dup\n");
 
         for (Node child:node.getActualArguments())
             append(codeBuffer, "%s", visit(child));
 
         subtractStackHeight(1);
-        append(codeBuffer, "  invokespecial %s/<init>()V ; %s\n", node.getType(), _currentStackHeight); //TODO:get class name
+        append(codeBuffer, "  invokespecial %s/<init>()V\n", node.getType()); //TODO:get class name
 
         return codeBuffer;
     }
@@ -228,13 +228,13 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         append(tempBuffer, "%s", visit(node.getBlockNode()));
 
         if (node.isType(Type.VoidType))
-            append(tempBuffer, "  return ; %s\n", _currentStackHeight);
+            append(tempBuffer, "  return\n");
 
         append(tempBuffer, ".end method\n\n");
 
         // Set limits
         append(codeBuffer, "  .limit stack %s\n", _maxStackHeight);     //TODO: calc
-        append(codeBuffer, "  .limit locals %s\n", (node.getMaxDeclaredVariables() + (node.getParameterList() != null ? node.getParameterList().getChildren().size() : 0) + 1));    //TODO: calc
+        append(codeBuffer, "  .limit locals %s\n", (node.getMaxDeclaredVariables() + 1));    //TODO: calc
 
         // Set blocks after limit
         append(codeBuffer, "%s", tempBuffer);
@@ -251,7 +251,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         {
             Node child = ((ListNode) node.getChild()).getChildren().get(0);
             addStackHeight(1);
-            append(codeBuffer, "  getstatic java/lang/System/out Ljava/io/PrintStream; ; %s\n", _currentStackHeight);
+            append(codeBuffer, "  getstatic java/lang/System/out Ljava/io/PrintStream;\n");
 
             append(codeBuffer, "%s", visit(child));
             temp = OperatorTranslator.toBytecode(child.getType());
@@ -271,13 +271,13 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
             subtractStackHeight(child);
             subtractStackHeight(1);
 
-            append(codeBuffer,"  invokevirtual java/io/PrintStream/println(%s)V ; %s\n", temp, _currentStackHeight);
+            append(codeBuffer,"  invokevirtual java/io/PrintStream/println(%s)V\n", temp);
 
         }
         else
         {
             addStackHeight(1);
-            append(codeBuffer, "  aload_0 ; %s\n", _currentStackHeight);
+            append(codeBuffer, "  aload_0\n");
 
             for (Node child:node.getActualArguments())
                 append(codeBuffer, "%s", visit(child));
@@ -289,7 +289,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
             }
             subtractStackHeight(1);
             addStackHeight(node);
-            append(codeBuffer, "  invokevirtual Test/%s(%s)%s ; %s\n", node.getReference().toString(), temp, OperatorTranslator.toBytecode(node.getType()), _currentStackHeight); //TODO: Get namespace
+            append(codeBuffer, "  invokevirtual Test/%s(%s)%s\n", node.getReference().toString(), temp, OperatorTranslator.toBytecode(node.getType())); //TODO: Get namespace
         }
 
         return codeBuffer;
@@ -308,7 +308,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "%s", stackPush(node.getType()));
 
         subtractStackHeight(node);
-        append(codeBuffer, "  %sstore %s ; %s\n", getPrefix(node.getReference().getType()),getOffSetByNode(node.getReference()), _currentStackHeight);
+        append(codeBuffer, "  %sstore %s\n", getPrefix(node.getReference().getType()),getOffSetByNode(node.getReference()));
 
         if (node.getChild() instanceof AssignmentNode)
             _stack.pop();
@@ -340,7 +340,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         append(codeBuffer, "%s", visit(conditionNodeList.get(0).getLeftChild()));
         subtractStackHeight(1);
-        append(codeBuffer, "  ifeq L%s ; %s\n", jumpLabel, _currentStackHeight);
+        append(codeBuffer, "  ifeq L%s\n", jumpLabel);
         append(codeBuffer, "%s", visit(conditionNodeList.get(0).getRightChild()));
         append(codeBuffer, "  goto L%s\n", endIfLabel);
 
@@ -349,7 +349,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
             append(codeBuffer, "L%s:\n", jumpLabel);
             append(codeBuffer, "%s", visit(conditionNodeList.get(0).getLeftChild()));
             subtractStackHeight(1);
-            append(codeBuffer, "  ifeq L%s ; %s\n", jumpLabel = _labelCounter++, _currentStackHeight);
+            append(codeBuffer, "  ifeq L%s\n", jumpLabel = _labelCounter++);
             append(codeBuffer, "%s", visit(conditionNodeList.get(0).getRightChild()));
             append(codeBuffer, "  goto L%s\n", endIfLabel);
         }
@@ -381,7 +381,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         append(temp, "%s", visit(((ConditionNode) node.getChild()).getLeftChild())); //1
         subtractStackHeight(1);
-        append(temp, "  ifne L%s ; %s\n", loopLabel, _currentStackHeight);
+        append(temp, "  ifne L%s\n", loopLabel);
 
         append(codeBuffer, "  goto L%s\n", conditionLabel); //0
         append(codeBuffer, "L%s:\n", loopLabel);
@@ -495,7 +495,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         addStackHeight(2);
 
-        append(codeBuffer, "  ldc2_w %s ; %s\n", node.getValue(), _currentStackHeight);
+        append(codeBuffer, "  ldc2_w %s\n", node.getValue());
 
         return codeBuffer;
     }
@@ -506,7 +506,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         addStackHeight(1);
 
-        append(codeBuffer, "  ldc %s ; %s\n", node.getValue(), _currentStackHeight);
+        append(codeBuffer, "  ldc %s\n", node.getValue());
 
         return codeBuffer;
     }
@@ -517,7 +517,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
         addStackHeight(node);
 
-        append(codeBuffer, "  %sload %s ; %s\n", getPrefix(node.getType()),getOffSetByNode(node), _currentStackHeight);
+        append(codeBuffer, "  %sload %s\n", getPrefix(node.getType()),getOffSetByNode(node));
 
         return codeBuffer;
     }
@@ -569,11 +569,11 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         int label =  _labelCounter++;
         append(codeBuffer, "%s", visit(node.getLeftChild())); //0
         addStackHeight(1);
-        append(codeBuffer, "  dup ; %s\n", _currentStackHeight); // 1
+        append(codeBuffer, "  dup\n"); // 1
         subtractStackHeight(1);
         append(codeBuffer, "  ifeq L%s\n", label);
         subtractStackHeight(1);
-        append(codeBuffer, "  pop ; %s\n", _currentStackHeight); //-1
+        append(codeBuffer, "  pop\n"); //-1
         append(codeBuffer, "%s", visit(node.getRightChild()));//0
         append(codeBuffer, "L%s:\n", label);
         append(codeBuffer, "  nop\n");
@@ -594,7 +594,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "%s", visit(node.getRightChild()));
 
         subtractStackHeight(3);
-        append(codeBuffer, "  dcmpg ; %s\n", _currentStackHeight);
+        append(codeBuffer, "  dcmpg\n");
 
         subtractStackHeight(1);
         switch (node.getOperator().getKind())
@@ -622,7 +622,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "L%s:\n", trueLabel);
         append(codeBuffer, "  iconst_1\n");
         append(codeBuffer, "L%s:\n", endLabel);
-        append(codeBuffer, "  nop ; %s\n", _currentStackHeight);
+        append(codeBuffer, "  nop\n");
 
         return codeBuffer;
     }
@@ -688,13 +688,13 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         {
             _stack.push(true);
             addStackHeight(2);
-            return "  dup2 ; "+ _currentStackHeight +"\n";
+            return "  dup2\n";
         }
         else
         {
             _stack.push(false);
             addStackHeight(1);
-            return "  dup ; "+ _currentStackHeight +"\n";
+            return "  dup\n";
         }
     }
 
@@ -703,12 +703,12 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         if (_stack.pop())
         {
             _currentStackHeight -= 2;
-            return "  pop2 ; "+ _currentStackHeight +"\n";
+            return "  pop2\n";
         }
         else
         {
             _currentStackHeight--;
-            return "  pop ; "+ _currentStackHeight +"\n";
+            return "  pop\n";
         }
     }
 
