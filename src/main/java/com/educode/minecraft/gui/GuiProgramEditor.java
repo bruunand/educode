@@ -309,7 +309,7 @@ public class GuiProgramEditor extends GuiScreen
         final String[] typeKeywords = new String[] {"number", "Coordinates", "string", "bool", "Item", "Entity"};
         final String[] tfKeywords = new String[] {"true", "false"};
         final String[] eventKeywords = new String[] {"on event", "call"};
-        final String[] nullKeyword = new String[] {"null"};
+        final String[] nullKeyword = new String[] {"null", "new"};
         final String[] events = new String[] {"robotDeath", "robotAttacked", "chatMessage", "entityDeath", "stringMessageReceived", "entityMessageReceived"};
 
         //Assign colors for above keywords
