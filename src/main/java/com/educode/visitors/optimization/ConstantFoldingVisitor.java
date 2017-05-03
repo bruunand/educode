@@ -29,7 +29,7 @@ public class ConstantFoldingVisitor extends VisitorBase
     {
         return node.getValue();
     }
-
+    
     public Boolean visit(BoolLiteralNode node)
     {
         return node.getValue();
@@ -118,18 +118,29 @@ public class ConstantFoldingVisitor extends VisitorBase
 
         Float left  = (Float) leftResult;
         Float right = (Float) rightResult;
+        Boolean result;
 
         switch (node.getOperator().getKind())
         {
             case LogicalOperator.GREATER_THAN:
-                return left > right;
+                result = left > right;
+                break;
             case LogicalOperator.GREATER_THAN_OR_EQUALS:
-                return left >= right;
+                result = left >= right;
+                break;
             case LogicalOperator.LESS_THAN:
-                return left < right;
+                result = left < right;
+                break;
             case LogicalOperator.LESS_THAN_OR_EQUALS:
-                return left <= right;
+                result = left <= right;
+                break;
+            default:
+                return null;
         }
+
+        // Replace child (self) with boolean literal
+        if (node.getParent() instanceof INodeWithChildren)
+            ((INodeWithChildren) node.getParent()).replaceChildReference(node, new BoolLiteralNode(result));
 
         return null;
     }
