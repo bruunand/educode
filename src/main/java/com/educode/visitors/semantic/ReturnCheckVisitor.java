@@ -40,7 +40,7 @@ public class ReturnCheckVisitor extends VisitorBase
 
             if (!methodDecl.isType(Type.VoidType) && !methodDecl.isType(Type.Error) )
             {
-                if (!methodDecl.getBlockNode().Returns)
+                if (!methodDecl.getBlockNode().getDoesReturn())
                     _symbolTableHandler.error(methodDecl, String.format("Not all paths of method '%s' return a value.", methodDecl.getReference()));
             }
         }
@@ -69,22 +69,20 @@ public class ReturnCheckVisitor extends VisitorBase
                 boolean allPathsReturn = true;
 
                 for (ConditionNode m: ((IfNode) child).getConditionBlocks())
-                    allPathsReturn = allPathsReturn && ((BlockNode)m.getRightChild()).Returns;
+                    allPathsReturn = allPathsReturn && ((BlockNode)m.getRightChild()).getDoesReturn();
 
                 if (allPathsReturn)
                 {
                     BlockNode elseBlock = ((IfNode) child).getElseBlock();
-                    if (elseBlock == null)
-                        allPathsReturn = false; // could do check to see if a condition is always hit?
-                    else
-                        allPathsReturn = elseBlock.Returns;
+                    // could do check to see if a condition is always hit?
+                    allPathsReturn = elseBlock != null && elseBlock.getDoesReturn();
                 }
 
                 blockReturns = blockReturns || allPathsReturn;
             }
         }
 
-        node.Returns = blockReturns;
+        node.setDoesReturn(blockReturns);
     }
 
     public void visit(IfNode node)

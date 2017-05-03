@@ -22,11 +22,11 @@ public class MethodDeclarationNode extends BinaryNode implements IReferencing
 
     private IReference _reference;
 
-    private int MaxDeclaredVariables;
+    private int _maxDeclaredVariables;
 
-    public void setMaxDeclaredVariables(int value) { MaxDeclaredVariables = value; }
+    public void setMaxDeclaredVariables(int value) { _maxDeclaredVariables = value; }
 
-    public int getMaxDeclaredVariables() { return MaxDeclaredVariables; }
+    public int getMaxDeclaredVariables() { return _maxDeclaredVariables; }
 
     public MethodDeclarationNode(Node leftChild, Node rightChild, IReference reference, Type returnType)
     {

@@ -78,6 +78,16 @@ public abstract class VisitorBase
         return ans;
     }
 
+    public void visitChildren(Node node)
+    {
+        if (node instanceof UnaryNode)
+            visitChildren((UnaryNode) node);
+        else if (node instanceof BinaryNode)
+            visitChildren((BinaryNode) node);
+        else if (node instanceof NaryNode)
+            visitChildren((NaryNode) node);
+    }
+
     public void visitChildren(UnaryNode node)
     {
         if (node.getChild() != null)

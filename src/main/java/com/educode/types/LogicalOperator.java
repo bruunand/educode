@@ -16,10 +16,8 @@ public class LogicalOperator
     @Override
     public boolean equals(Object o)
     {
-        if (o instanceof LogicalOperator)
-            return ((LogicalOperator)o)._kind == this._kind;
+        return o instanceof LogicalOperator && ((LogicalOperator) o)._kind == this._kind;
 
-        return false;
     }
 
     @Override

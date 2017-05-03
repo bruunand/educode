@@ -11,6 +11,7 @@ import com.educode.visitors.ASTBuilder;
 public abstract class Node implements IVisitable, ITypeable
 {
     private int _lineNumber;
+    private Node _parent;
     private Type _type = Type.Error;
 
     protected Node()
@@ -31,6 +32,16 @@ public abstract class Node implements IVisitable, ITypeable
     public void setType(Type type)
     {
         this._type = type;
+    }
+
+    public Node getParent()
+    {
+        return this._parent;
+    }
+
+    public void setParent(Node node)
+    {
+        this._parent = node;
     }
 
     public boolean isType(Type type)
