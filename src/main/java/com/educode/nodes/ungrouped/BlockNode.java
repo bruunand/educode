@@ -15,7 +15,17 @@ public class BlockNode extends NaryNode
     {
         super(children);
     }
-    public boolean Returns = false;
+    private boolean _doesReturn = false;
+
+    public boolean getDoesReturn()
+    {
+        return this._doesReturn;
+    }
+
+    public void setDoesReturn(boolean value)
+    {
+        this._doesReturn = value;
+    }
 
     @Override
     public Object accept(VisitorBase visitor)

@@ -105,7 +105,7 @@ public class Type
             return _stringSymbolTable;
         else if (this.isCollection())
         {
-            // Returns a temporary symbol table derived from collectionSymbolTable
+            // _doesReturn a temporary symbol table derived from collectionSymbolTable
             // This method has methods that are specific to the child type of the collection
 
             SymbolTable tempTable = new SymbolTable(_collectionSymbolTable);

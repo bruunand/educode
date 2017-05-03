@@ -7,11 +7,11 @@ import java.util.ArrayList;
 /**
  * Created by zen on 3/23/17.
  */
-public class ListNode extends NaryNode
+public class ListNode extends NaryNode implements INodeWithChildren
 {
     public ListNode()
     {
-        super(new ArrayList<Node>());
+        super(new ArrayList<>());
     }
 
     public ListNode(ArrayList<Node> childNodes)

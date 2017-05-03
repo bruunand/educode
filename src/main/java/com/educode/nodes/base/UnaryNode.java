@@ -3,13 +3,27 @@ package com.educode.nodes.base;
 /**
  * Created by zen on 3/9/17.
  */
-public abstract class UnaryNode extends Node
+public abstract class UnaryNode extends Node implements INodeWithChildren
 {
     private Node _child;
 
     public UnaryNode(Node child)
     {
         this._child = child;
+
+        // Set child node to this
+        if (this._child != null)
+            this._child.setParent(this);
+    }
+
+    @Override
+    public void replaceChildReference(Node fromReference, Node toReference)
+    {
+        if (this._child == null || !this._child.equals(fromReference))
+            return;
+
+        this._child = toReference;
+        this._child.setParent(this);
     }
 
     public boolean hasChild()

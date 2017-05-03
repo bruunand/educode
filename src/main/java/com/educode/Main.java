@@ -11,6 +11,7 @@ import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
+import com.educode.visitors.optimization.ConstantFoldingVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -27,9 +28,6 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-        // Reflective visitor test
-        //new Test().visit(new ProgramNode(null, null));
-
         ANTLRInputStream stream = new ANTLRFileStream("test.educ");
         EduCodeLexer lexer = new EduCodeLexer(stream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
@@ -44,6 +42,8 @@ public class Main
 
         JavaBytecodeGenerationVisitor byteCodeVisitor = new JavaBytecodeGenerationVisitor();
         root.accept(byteCodeVisitor);
+
+        root.accept(new ConstantFoldingVisitor());
 
         JavaCodeGenerationVisitor javaCodeVisitor = new JavaCodeGenerationVisitor("Test.java");
         root.accept(javaCodeVisitor);
