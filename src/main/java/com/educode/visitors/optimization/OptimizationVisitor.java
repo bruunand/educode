@@ -44,7 +44,14 @@ public class OptimizationVisitor extends VisitorBase
         // We need to know if variables are assigned in the body, otherwise we might falsely fold the predicate for the condition node
         ConditionNode condition = (ConditionNode) node.getChild();
         visit(condition.getRightChild());
-        visit(condition.getLeftChild());
+        Object predicateResult = visit(condition.getLeftChild());
+
+        if (!(predicateResult instanceof Boolean))
+            return;
+
+        Boolean predicateBool = (Boolean) predicateResult;
+        if (!predicateBool) // Repeat While node can be deleted safely if its predicate is always false
+            ((INodeWithChildren) node.getParent()).replaceChildReference(node, null);
     }
 
     public void visit(IfNode node)
@@ -53,7 +60,7 @@ public class OptimizationVisitor extends VisitorBase
         {
             Object visitResult = visit(condition.getLeftChild());
             if (!(visitResult instanceof Boolean))
-                continue;
+                continue; // If visitResult is not a boolean, it may still evaluate to a boolean but we don't know its value as compile time
 
             Boolean booleanResult = (Boolean) visitResult;
             if (booleanResult)
@@ -73,7 +80,7 @@ public class OptimizationVisitor extends VisitorBase
             if (elseBlock != null)
                 ((INodeWithChildren) node.getParent()).replaceChildReference(node, node.getElseBlock()); // No conditions are reachable but there is an else statement, so replace if node with block of else
             else
-                ((NaryNode) node.getParent()).remove(node); // No conditions are reachable and there is no else statement, so if-node can be deleted
+                ((NaryNode) node.getParent()).replaceChildReference(node, null); // No conditions are reachable and there is no else statement, so if-node can be deleted
         }
     }
 

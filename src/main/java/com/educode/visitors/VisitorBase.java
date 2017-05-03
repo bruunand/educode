@@ -7,6 +7,8 @@ import com.educode.nodes.base.UnaryNode;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by User on 15-Apr-17.
@@ -104,7 +106,17 @@ public abstract class VisitorBase
 
     public void visitChildren(NaryNode node)
     {
-        for (Node child : node.getChildren())
-            child.accept(this);
+        List<Node> children = node.getChildren();
+
+        for (int i = 0; i < children.size();)
+        {
+            children.get(i).accept(this);
+
+            // Delete children that have been marked for deletion (set to null)
+            if (children.get(i) == null)
+                children.remove(i);
+            else
+                i++;
+        }
     }
 }

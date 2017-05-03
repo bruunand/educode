@@ -1,12 +1,13 @@
 program Test
     method main()
-        Collection<string> hej = new Collection<string>("ok")
-        foreach string s in hej
-            debug(s)
-        end foreach
+        debug("okz")
         bool a = true
         bool b = false
 
+        repeat while 1 equals 0
+            debug("should not be in compiled code")
+
+        end repeat
         bool c
         c = true
 

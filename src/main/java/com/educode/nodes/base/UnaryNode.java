@@ -23,7 +23,8 @@ public abstract class UnaryNode extends Node implements INodeWithChildren
             return;
 
         this._child = toReference;
-        this._child.setParent(this);
+        if (toReference != null)
+            toReference.setParent(this);
     }
 
     public boolean hasChild()

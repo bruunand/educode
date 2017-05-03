@@ -35,7 +35,8 @@ public abstract class NaryNode extends Node implements INodeWithChildren
                 continue;
 
             getChildren().set(i, toReference);
-            toReference.setParent(this);
+            if (toReference != null)
+                toReference.setParent(this);
         }
     }
 
