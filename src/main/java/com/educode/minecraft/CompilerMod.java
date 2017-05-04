@@ -9,13 +9,18 @@ import com.educode.minecraft.command.CommandEdit;
 import com.educode.minecraft.command.CommandRun;
 import com.educode.minecraft.command.CommandStopScripts;
 import com.educode.minecraft.entity.EntityRobot;
+import com.educode.minecraft.handler.AchievementEventHandler;
 import com.educode.minecraft.handler.EventHandler;
 import com.educode.minecraft.proxy.ServerProxy;
 import com.educode.minecraft.handler.GuiHandler;
 import com.educode.runtime.*;
 
+import net.minecraft.init.Items;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.stats.Achievement;
+import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -42,6 +47,11 @@ public class CompilerMod
     public static final SimpleNetworkWrapper NETWORK_INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
 
     public static final List<ScriptBase> RUNNING_SCRIPTS = new ArrayList<>();
+
+    //Achievement stuff
+    public static AchievementPage educodeAchievementPage;
+    public static Achievement achievementOpenEditor;
+    public static Achievement achievementSaveFirst;
 
     @Mod.Instance(MODID)
     public static CompilerMod Instance;
@@ -74,5 +84,17 @@ public class CompilerMod
         event.registerServerCommand(new CommandRun());
         event.registerServerCommand(new CommandEdit());
         event.registerServerCommand(new CommandStopScripts());
+    }
+
+    @Mod.EventHandler
+    public void load(FMLInitializationEvent event)
+    {
+        achievementOpenEditor = new Achievement("", "Opened editor", 0, 0, Items.BOOK, null);
+        achievementSaveFirst = new Achievement("", "Saved first script", 2, 0, Items.ITEM_FRAME, achievementOpenEditor);
+
+        educodeAchievementPage = new AchievementPage("EduCode Achievements", achievementOpenEditor, achievementSaveFirst);
+        AchievementPage.registerAchievementPage(educodeAchievementPage);
+
+        MinecraftForge.EVENT_BUS.register(new AchievementEventHandler());
     }
 }
