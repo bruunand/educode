@@ -1,16 +1,20 @@
 package com.educode.minecraft.gui;
 
+import com.educode.events.achievements.AchievementEvent;
 import com.educode.helper.ArrayHelper;
 import com.educode.minecraft.CompilerMod;
+import com.educode.minecraft.handler.AchievementEventHandler;
 import com.educode.minecraft.networking.MessageSaveFile;
 
 import com.google.common.collect.HashBiMap;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -45,6 +49,8 @@ public class GuiProgramEditor extends GuiScreen
     public GuiProgramEditor()
     {
         super();
+        //TEMP ACHIEVEMENT TEST
+        MinecraftForge.EVENT_BUS.post(new AchievementEvent.EditorOpenedEvent(Minecraft.getMinecraft().player));
     }
 
     public static void setFileName(String name)
@@ -434,6 +440,8 @@ public class GuiProgramEditor extends GuiScreen
         {
             if (keyCode == KEY_S) // Save file
                 CompilerMod.NETWORK_INSTANCE.sendToServer(new MessageSaveFile(_fileName, _text));
+                //TEMP ACHIEVEMENT TEST
+                MinecraftForge.EVENT_BUS.post(new AchievementEvent.EditorSavedEvent(Minecraft.getMinecraft().player));
         }
         else if (keyCode == KEY_RETURN) // Newline
         {
