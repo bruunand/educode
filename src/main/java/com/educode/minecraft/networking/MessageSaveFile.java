@@ -1,9 +1,12 @@
 package com.educode.minecraft.networking;
 
+import com.educode.events.achievements.AchievementEvent;
 import com.educode.minecraft.CompilerMod;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -68,6 +71,8 @@ public class MessageSaveFile implements IMessage
             // Write contents of file to disk
             try
             {
+                MinecraftForge.EVENT_BUS.post(new AchievementEvent.EditorSavedEvent(ctx.getServerHandler().playerEntity));
+
                 FileWriter fw = new FileWriter(new File(CompilerMod.SCRIPTS_LOCATION + message.getFileName() + ".educ"));
                 fw.write(message.getContents());
                 fw.close();

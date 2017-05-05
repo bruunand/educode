@@ -2,6 +2,12 @@ program Test
     method main()
         number foo = 5 + 5 * 10
     end method
-end program
 
-[ProgramNode [Identifier Test][MethodDeclaration [Identifier main][BlockNode [Decl/Assign [Identifier foo][Type NUMBER][Assign [Identifier foo][NumLit [55.0]]]
+    method hej()
+        number foer
+        if true then
+            number x
+        end if
+        number efter
+    end method
+end program

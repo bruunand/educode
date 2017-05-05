@@ -438,8 +438,6 @@ public class GuiProgramEditor extends GuiScreen
         {
             if (keyCode == KEY_S) // Save file
                 CompilerMod.NETWORK_INSTANCE.sendToServer(new MessageSaveFile(_fileName, _text));
-                //TEMP ACHIEVEMENT TEST
-                MinecraftForge.EVENT_BUS.post(new AchievementEvent.EditorSavedEvent(Minecraft.getMinecraft().player));
         }
         else if (keyCode == KEY_RETURN) // Newline
         {
