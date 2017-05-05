@@ -5,18 +5,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.educode.events.achievements.AchievementEvent;
 import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.Utility;
 import com.educode.minecraft.networking.MessageOpenEditor;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.MinecraftForge;
 
 public class CommandEdit implements ICommand
 {
@@ -65,6 +69,8 @@ public class CommandEdit implements ICommand
 		try
 		{
             File scriptFile = new File(CompilerMod.SCRIPTS_LOCATION + scriptName + ".educ");
+
+			MinecraftForge.EVENT_BUS.post(new AchievementEvent.EditorOpenedEvent((EntityPlayer) sender));
 
             if (scriptFile.exists())
 				CompilerMod.NETWORK_INSTANCE.sendTo(new MessageOpenEditor(scriptName, new String(Utility.readBytesFromFile(scriptFile))), (EntityPlayerMP) sender);

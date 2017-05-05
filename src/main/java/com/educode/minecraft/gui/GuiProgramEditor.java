@@ -49,8 +49,6 @@ public class GuiProgramEditor extends GuiScreen
     public GuiProgramEditor()
     {
         super();
-        //TEMP ACHIEVEMENT TEST
-        MinecraftForge.EVENT_BUS.post(new AchievementEvent.EditorOpenedEvent(Minecraft.getMinecraft().player));
     }
 
     public static void setFileName(String name)

@@ -84,9 +84,16 @@ public class CompilerMod
     public void preinit(FMLPreInitializationEvent event)
     {
     	Proxy.preInit();
+
+    	// Register event handlers
         MinecraftForge.EVENT_BUS.register(new EventHandler());
+        MinecraftForge.EVENT_BUS.register(new AchievementEventHandler());
+
+        // Register entities
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, ROBOT_TEXTURE_LOCATION), EntityRobot.class, "EntityTest", 255, Instance, 64, 1, true);
-        NetworkRegistry.INSTANCE.registerGuiHandler(Instance, new GuiHandler());
+
+		// Register GUI
+		NetworkRegistry.INSTANCE.registerGuiHandler(Instance, new GuiHandler());
     }
     
     @Mod.EventHandler
@@ -117,8 +124,6 @@ public class CompilerMod
         //Other
         achievementError = new Achievement("", "ERROR", 0,-6, Items.BOOK, achievementSaveFirst).setSpecial();
 
-
-
         educodeAchievementPage = new AchievementPage("EduCode",
                 achievementOpenEditor,
                 achievementSaveFirst,
@@ -136,8 +141,6 @@ public class CompilerMod
                 achievementBuildHouse,
                 achievementError);
         AchievementPage.registerAchievementPage(educodeAchievementPage);
-
-        MinecraftForge.EVENT_BUS.register(new AchievementEventHandler());
     }
     
     @Mod.EventHandler

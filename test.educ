@@ -1,38 +1,7 @@
 program Test
     method main()
-        debug("okz")
-        bool a = true
-        bool b = false
-
-        repeat while 1 equals 0
-            debug("should not be in compiled code")
-        end repeat
-
-        Collection<number> numbers = range(0, 200 + 5)
-        foreach number num in numbers
-            debug("result:" + 5 * 1000 * num)
-        end foreach
-
-        bool c
-        c = true
-
-        if a and b then
-            debug("Should not happen")
-        else if c then
-            debug("Should happen")
-        else
-            debug("else")
-        end if
-
-        if true and false then
-            debug("remove me")
-        else if false or false then
-            debug("remove mee")
-        end if
-
-        repeat while a
-            a = false
-            debug("Loop")
-        end repeat
+        number foo = 5 + 5 * 10
     end method
 end program
+
+[ProgramNode [Identifier Test][MethodDeclaration [Identifier main][BlockNode [Decl/Assign [Identifier foo][Type NUMBER][Assign [Identifier foo][NumLit [55.0]]]

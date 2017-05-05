@@ -92,6 +92,13 @@ public class EventHandler
             while (iterator.hasNext())
             {
                 ScriptBase script = iterator.next();
+
+                // Check if threads are running
+                boolean mainThreadRunning   = script.getMainThread() != null && script.getMainThread().isAlive();
+                boolean scriptThreadRunning = script.getEventThread() != null && script.getEventThread().isAlive();
+                if (!(mainThreadRunning || scriptThreadRunning))
+                    script.getRobot().setDead();
+
                 if (script.getRobot().isDead)
                 {
                     // Stop threads

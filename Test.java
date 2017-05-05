@@ -7,25 +7,6 @@ public class Test extends ScriptBase
 {
 public void main() throws InterruptedException
 {
-System.out.println("okz");
-Boolean a = true;
-Boolean b = false;
-Boolean c;
-c = true;
-if(c)
-{
-System.out.println("Should happen");
-}
-else
-{
-System.out.println("else");
-}
-
-while (a)
-{
-a = false;
-System.out.println("Loop");
-}
-
+Float foo = 55.000000F;
 }
 }
