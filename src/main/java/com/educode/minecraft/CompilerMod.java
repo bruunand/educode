@@ -50,14 +50,28 @@ public class CompilerMod
 
     //Achievement stuff
     public static AchievementPage educodeAchievementPage;
-    public static Achievement achievementOpenEditor;
-    public static Achievement achievementSaveFirst;
+    
+    //Robot
     public static Achievement achievementRobotChat;
     public static Achievement achievementRobotExplode;
     public static Achievement achievementRobotAttackOther;
     public static Achievement achievementBroadcastMessage;
-    public static Achievement achievementCoodination;
+    
+    //Build progression
+    public static Achievement achievementBuildLine;
+    public static Achievement achievementBuildOtherLine;
+    public static Achievement achievementBuildTriangle;
+    public static Achievement achievementBuildSquare;
+    public static Achievement achievementBuildCube;
     public static Achievement achievementBuildHouse;
+    
+    //Editor progression
+    public static Achievement achievementOpenEditor;
+    public static Achievement achievementSaveFirst;
+    public static Achievement achievementRunFirst;
+    
+    //Other
+    public static Achievement achievementCoordination;
     public static Achievement achievementError;
 
     @Mod.Instance(MODID)
@@ -80,26 +94,45 @@ public class CompilerMod
     {
         Proxy.registerModels();
 
-        achievementOpenEditor = new Achievement("", "Opened editor", 0, 0, Items.BOOK, null);
-        achievementSaveFirst = new Achievement("", "Saved first script", 2, 0, Items.ITEM_FRAME, achievementOpenEditor);
-        achievementRobotChat = new Achievement("", "First words", 2, 2, Items.GHAST_TEAR, achievementSaveFirst);
-        achievementRobotExplode = new Achievement("", "You are a horrible person", 4,4, Items.TNT_MINECART, achievementSaveFirst).setSpecial();
-        achievementRobotAttackOther = new Achievement("", "You monster", 2,4, Items.DIAMOND_SWORD, achievementSaveFirst);
-        achievementBroadcastMessage = new Achievement("", "Robot phone home", 3, 0, Items.WRITABLE_BOOK, achievementSaveFirst);
-        achievementCoodination = new Achievement("", "Hello? This is home", 3, 2, Items.WRITTEN_BOOK, achievementBroadcastMessage);
-        achievementBuildHouse = new Achievement("", "Nice house", 4,4, Items.COMMAND_BLOCK_MINECART, achievementSaveFirst);
-        achievementError = new Achievement("", "ERROR", 5,5, Items.BOOK, achievementSaveFirst).setSpecial();
+        //Start of achievement chain
+        achievementOpenEditor = new Achievement("", "Opened editor", 0, -4, Items.BOOK, null);
+        achievementSaveFirst = new Achievement("", "Saved first script", 2, -2, Items.ITEM_FRAME, achievementOpenEditor);
+        achievementRunFirst = new Achievement("", "Ran first script", 0, 0, Items.STRING, achievementSaveFirst);
+        
+        //Robot achievement chain
+        achievementRobotChat = new Achievement("", "First words", 2, -2, Items.GHAST_TEAR, achievementRunFirst);
+        achievementRobotExplode = new Achievement("", "You are a horrible person", 2,-1, Items.TNT_MINECART, achievementRunFirst).setSpecial();
+        achievementRobotAttackOther = new Achievement("", "You monster", 2,0, Items.DIAMOND_SWORD, achievementRunFirst);
+        achievementBroadcastMessage = new Achievement("", "Robot phone home", 2, 1, Items.WRITABLE_BOOK, achievementRunFirst);
+        achievementCoordination = new Achievement("", "Hello? This is home", 2, 2, Items.WRITTEN_BOOK, achievementBroadcastMessage);
+
+        //Build achievement chain
+        achievementBuildLine = new Achievement("", "Damn stright", 0, 2, Items.BONE, achievementRunFirst);
+        achievementBuildOtherLine = new Achievement("", "Does it have to be stright?", 2, 2, Items.STRING, achievementBuildLine);
+        achievementBuildSquare = new Achievement("", "The possibilities are endless", 0, 4, Items.ITEM_FRAME, achievementBuildLine);
+        achievementBuildTriangle = new Achievement("", "Now you're just showing off", 4, 2, Items.ARROW, achievementBuildOtherLine);
+        achievementBuildCube = new Achievement("","That's a cube allright", 2,3, Items.CHEST_MINECART, achievementBuildSquare);
+        achievementBuildHouse = new Achievement("", "Nice house", 0,4, Items.COMMAND_BLOCK_MINECART, achievementBuildCube);
+
+        //Other
+        achievementError = new Achievement("", "ERROR", 0,-6, Items.BOOK, achievementSaveFirst).setSpecial();
 
 
 
         educodeAchievementPage = new AchievementPage("EduCode",
                 achievementOpenEditor,
                 achievementSaveFirst,
+                achievementRunFirst,
                 achievementRobotChat,
                 achievementRobotExplode,
                 achievementRobotAttackOther,
                 achievementBroadcastMessage,
-                achievementCoodination,
+                achievementCoordination,
+                achievementBuildLine,
+                achievementBuildOtherLine,
+                achievementBuildSquare,
+                achievementBuildTriangle,
+                achievementBuildCube,
                 achievementBuildHouse,
                 achievementError);
         AchievementPage.registerAchievementPage(educodeAchievementPage);
