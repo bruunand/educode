@@ -52,6 +52,13 @@ public class CompilerMod
     public static AchievementPage educodeAchievementPage;
     public static Achievement achievementOpenEditor;
     public static Achievement achievementSaveFirst;
+    public static Achievement achievementRobotChat;
+    public static Achievement achievementRobotExplode;
+    public static Achievement achievementRobotAttackOther;
+    public static Achievement achievementBroadcastMessage;
+    public static Achievement achievementCoodination;
+    public static Achievement achievementBuildHouse;
+    public static Achievement achievementError;
 
     @Mod.Instance(MODID)
     public static CompilerMod Instance;
@@ -75,8 +82,26 @@ public class CompilerMod
 
         achievementOpenEditor = new Achievement("", "Opened editor", 0, 0, Items.BOOK, null);
         achievementSaveFirst = new Achievement("", "Saved first script", 2, 0, Items.ITEM_FRAME, achievementOpenEditor);
+        achievementRobotChat = new Achievement("", "First words", 2, 2, Items.GHAST_TEAR, achievementSaveFirst);
+        achievementRobotExplode = new Achievement("", "You are a horrible person", 4,4, Items.TNT_MINECART, achievementSaveFirst).setSpecial();
+        achievementRobotAttackOther = new Achievement("", "You monster", 2,4, Items.DIAMOND_SWORD, achievementSaveFirst);
+        achievementBroadcastMessage = new Achievement("", "Robot phone home", 3, 0, Items.WRITABLE_BOOK, achievementSaveFirst);
+        achievementCoodination = new Achievement("", "Hello? This is home", 3, 2, Items.WRITTEN_BOOK, achievementBroadcastMessage);
+        achievementBuildHouse = new Achievement("", "Nice house", 4,4, Items.COMMAND_BLOCK_MINECART, achievementSaveFirst);
+        achievementError = new Achievement("", "ERROR", 5,5, Items.BOOK, achievementSaveFirst).setSpecial();
 
-        educodeAchievementPage = new AchievementPage("EduCode Achievements", achievementOpenEditor, achievementSaveFirst);
+
+
+        educodeAchievementPage = new AchievementPage("EduCode",
+                achievementOpenEditor,
+                achievementSaveFirst,
+                achievementRobotChat,
+                achievementRobotExplode,
+                achievementRobotAttackOther,
+                achievementBroadcastMessage,
+                achievementCoodination,
+                achievementBuildHouse,
+                achievementError);
         AchievementPage.registerAchievementPage(educodeAchievementPage);
 
         MinecraftForge.EVENT_BUS.register(new AchievementEventHandler());

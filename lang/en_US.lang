@@ -3,3 +3,24 @@ achievement.achievementOpenEditor.desc=Open the editor for the first time
 
 achievement.achievementSaveFirst=This is gonna stay
 achievement.achievementSaveFirst.desc=Save your first program
+
+achievement.achievementRobotChat=It speaks
+achievement.achievementRobotChat.desc=Make a robot send a chat message
+
+achievement.achievementRobotExplode=allahu akbar
+achievement.achievementRobotExplode.desc=...
+
+achievement.achievementRobotAttackOther=Enemy of the state
+achievement.achievementRobotAttackOther.desc=Have a robot attack an entity
+
+achievement.achievementBroadcastMessage=Robot phone home
+achievement.achievementBroadcastMessage.desc=Broadcast a message
+
+achievement.achievementCoodination=Hello? This is home
+achievement.achievementCoodination.desc=Have a robot recieve a bradcast
+
+achievement.achievementBuildHouse=That's a nice house you got there
+achievement.achievementBuildHouse.desc=Would be bad if something happened to it
+
+achievement.achievementError=You dun goofed
+achievement.achievementError.desc=Now you f'ed up
