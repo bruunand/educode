@@ -1,5 +1,6 @@
 package com.educode.events.achievements;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
@@ -24,6 +25,50 @@ public class AchievementEvent extends Event
         public EditorSavedEvent(EntityPlayer player)
         {
             super(player);
+        }
+    }
+
+    public static class RobotChatEvent extends AchievementEvent
+    {
+        public String chatMessage;
+        public RobotChatEvent(EntityPlayer owner, String chatMessage)
+        {
+            super(owner);
+            this.chatMessage = chatMessage;
+        }
+    }
+
+    public static class RobotBroadcastEvent extends AchievementEvent
+    {
+        public String message;
+        public String channel;
+        public RobotBroadcastEvent(EntityPlayer owner, String message, String channel)
+        {
+            super(owner);
+            this.message = message;
+            this.channel = channel;
+        }
+    }
+
+    public static class RobotActionEvent extends AchievementEvent
+    {
+        //This could be changed to an enum
+        public String robotAction;
+        public RobotActionEvent(EntityPlayer owner, String robotAction)
+        {
+            super(owner);
+            this.robotAction = robotAction;
+        }
+    }
+
+    public static class RobotPlaceBlockEvent extends AchievementEvent
+    {
+        //This could be changed to an enum
+        public Block block;
+        public RobotPlaceBlockEvent(EntityPlayer owner, Block block)
+        {
+            super(owner);
+            this.block = block;
         }
     }
 }
