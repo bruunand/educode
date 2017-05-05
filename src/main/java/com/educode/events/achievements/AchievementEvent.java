@@ -1,7 +1,5 @@
 package com.educode.events.achievements;
 
-import com.educode.minecraft.CompilerMod;
-import net.minecraft.stats.Achievement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.eventhandler.Event;
 

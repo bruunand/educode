@@ -72,6 +72,14 @@ public class CompilerMod
     public void init(FMLInitializationEvent event)
     {
         Proxy.registerModels();
+
+        achievementOpenEditor = new Achievement("", "Opened editor", 0, 0, Items.BOOK, null);
+        achievementSaveFirst = new Achievement("", "Saved first script", 2, 0, Items.ITEM_FRAME, achievementOpenEditor);
+
+        educodeAchievementPage = new AchievementPage("EduCode Achievements", achievementOpenEditor, achievementSaveFirst);
+        AchievementPage.registerAchievementPage(educodeAchievementPage);
+
+        MinecraftForge.EVENT_BUS.register(new AchievementEventHandler());
     }
     
     @Mod.EventHandler
@@ -84,17 +92,5 @@ public class CompilerMod
         event.registerServerCommand(new CommandRun());
         event.registerServerCommand(new CommandEdit());
         event.registerServerCommand(new CommandStopScripts());
-    }
-
-    @Mod.EventHandler
-    public void load(FMLInitializationEvent event)
-    {
-        achievementOpenEditor = new Achievement("", "Opened editor", 0, 0, Items.BOOK, null);
-        achievementSaveFirst = new Achievement("", "Saved first script", 2, 0, Items.ITEM_FRAME, achievementOpenEditor);
-
-        educodeAchievementPage = new AchievementPage("EduCode Achievements", achievementOpenEditor, achievementSaveFirst);
-        AchievementPage.registerAchievementPage(educodeAchievementPage);
-
-        MinecraftForge.EVENT_BUS.register(new AchievementEventHandler());
     }
 }
