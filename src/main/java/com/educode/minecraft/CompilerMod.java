@@ -101,27 +101,27 @@ public class CompilerMod
         Proxy.registerModels();
 
         //Start of achievement chain
-        achievementOpenEditor = new Achievement("", "Opened editor", 0, -4, Items.BOOK, null);
-        achievementSaveFirst = new Achievement("", "Saved first script", 2, -2, Items.ITEM_FRAME, achievementOpenEditor);
-        achievementRunFirst = new Achievement("", "Ran first script", 0, 0, Items.STRING, achievementSaveFirst);
+        achievementOpenEditor = new Achievement("script_opened", "script_opened", 0, -4, Items.BOOK, null);//Added
+        achievementSaveFirst = new Achievement("script_saved", "script_saved", 0, -2, Items.ITEM_FRAME, achievementOpenEditor);//Added
+        achievementRunFirst = new Achievement("script_run", "script_run", 0, 0, Items.STRING, achievementSaveFirst);//Added
         
         //Robot achievement chain
-        achievementRobotChat = new Achievement("", "First words", 2, -2, Items.GHAST_TEAR, achievementRunFirst);
-        achievementRobotExplode = new Achievement("", "You are a horrible person", 2,-1, Items.TNT_MINECART, achievementRunFirst).setSpecial();
-        achievementRobotAttackOther = new Achievement("", "You monster", 2,0, Items.DIAMOND_SWORD, achievementRunFirst);
-        achievementBroadcastMessage = new Achievement("", "Robot phone home", 2, 1, Items.WRITABLE_BOOK, achievementRunFirst);
-        achievementCoordination = new Achievement("", "Hello? This is home", 2, 2, Items.WRITTEN_BOOK, achievementBroadcastMessage);
+        achievementRobotChat = new Achievement("robot_chat", "robot_chat", 2, -2, Items.GHAST_TEAR, achievementRunFirst);//Added
+        achievementRobotExplode = new Achievement("robot_attack", "robot_attack", 2,-1, Items.TNT_MINECART, achievementRunFirst).setSpecial();
+        achievementRobotAttackOther = new Achievement("robot_explode", "robot_explode", 2,0, Items.DIAMOND_SWORD, achievementRunFirst);//Added
+        achievementBroadcastMessage = new Achievement("robot_broadcast", "robot_broadcast", 2, 1, Items.WRITABLE_BOOK, achievementRunFirst);
+        achievementCoordination = new Achievement("robot_broadcast_recieved", "robot_broadcast_recieved", 2, 2, Items.WRITTEN_BOOK, achievementBroadcastMessage);
 
         //Build achievement chain
-        achievementBuildLine = new Achievement("", "Damn stright", 0, 2, Items.BONE, achievementRunFirst);
-        achievementBuildOtherLine = new Achievement("", "Does it have to be stright?", 2, 2, Items.STRING, achievementBuildLine);
-        achievementBuildSquare = new Achievement("", "The possibilities are endless", 0, 4, Items.ITEM_FRAME, achievementBuildLine);
-        achievementBuildTriangle = new Achievement("", "Now you're just showing off", 4, 2, Items.ARROW, achievementBuildOtherLine);
-        achievementBuildCube = new Achievement("","That's a cube allright", 2,3, Items.CHEST_MINECART, achievementBuildSquare);
-        achievementBuildHouse = new Achievement("", "Nice house", 0,4, Items.COMMAND_BLOCK_MINECART, achievementBuildCube);
+        achievementBuildLine = new Achievement("build_line", "build_line", 0, 2, Items.BONE, achievementRunFirst);
+        achievementBuildOtherLine = new Achievement("build_otherline", "build_otherline", 2, 2, Items.STRING, achievementBuildLine);
+        achievementBuildSquare = new Achievement("build_square", "build_square", 0, 4, Items.ITEM_FRAME, achievementBuildLine);
+        achievementBuildTriangle = new Achievement("build_triangle", "build_triangle", 4, 2, Items.ARROW, achievementBuildOtherLine);
+        achievementBuildCube = new Achievement("build_cube","build_cube", 2,3, Items.CHEST_MINECART, achievementBuildSquare);
+        achievementBuildHouse = new Achievement("build_house", "build_house", 0,4, Items.COMMAND_BLOCK_MINECART, achievementBuildCube);
 
         //Other
-        achievementError = new Achievement("", "ERROR", 0,-6, Items.BOOK, achievementSaveFirst).setSpecial();
+        achievementError = new Achievement("script_error", "script_error", 0,-6, Items.BOOK, achievementSaveFirst).setSpecial();//Added
 
         educodeAchievementPage = new AchievementPage("EduCode",
                 achievementOpenEditor,
