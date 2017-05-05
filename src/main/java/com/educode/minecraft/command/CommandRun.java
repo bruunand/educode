@@ -2,6 +2,7 @@ package com.educode.minecraft.command;
 
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
+import com.educode.events.achievements.AchievementEvent;
 import com.educode.minecraft.CompilerMod;
 import com.educode.runtime.threads.ScriptRunner;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
@@ -19,6 +20,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.MinecraftForge;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -67,6 +69,9 @@ public class CommandRun implements ICommand
 
         try
         {
+            //Give first run achievement
+            MinecraftForge.EVENT_BUS.post(new AchievementEvent.ScriptRunEvent((EntityPlayer) sender));
+
             // Generate parse tree from code
             ANTLRInputStream stream = new ANTLRFileStream(CompilerMod.SCRIPTS_LOCATION + scriptName + ".educ");
             EduCodeLexer lexer = new EduCodeLexer(stream);
@@ -118,6 +123,9 @@ public class CommandRun implements ICommand
         }
         catch (Exception e)
         {
+            //Give compiler error achievement
+            MinecraftForge.EVENT_BUS.post(new AchievementEvent.CompilerErrorEvent((EntityPlayer) sender));
+
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "[Error]" + TextFormatting.RESET + " " + e.getMessage()));
 
             e.printStackTrace();

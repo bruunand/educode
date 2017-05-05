@@ -19,8 +19,17 @@ public class AchievementEventHandler
     public  void onEditorSaved(AchievementEvent.EditorSavedEvent event)
     {
         event.player.addStat(CompilerMod.achievementSaveFirst);
+    }
 
-        //If compiler errors
+    @SubscribeEvent
+    public void onEvent(AchievementEvent.ScriptRunEvent event)
+    {
+        event.player.addStat(CompilerMod.achievementRunFirst);
+    }
+
+    @SubscribeEvent
+    public void onEvent(AchievementEvent.CompilerErrorEvent event)
+    {
         event.player.addStat(CompilerMod.achievementError);
     }
 

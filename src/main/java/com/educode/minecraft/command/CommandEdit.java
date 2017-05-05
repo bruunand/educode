@@ -70,6 +70,7 @@ public class CommandEdit implements ICommand
 		{
             File scriptFile = new File(CompilerMod.SCRIPTS_LOCATION + scriptName + ".educ");
 
+            //Give editor opened achievement
 			MinecraftForge.EVENT_BUS.post(new AchievementEvent.EditorOpenedEvent((EntityPlayer) sender));
 
             if (scriptFile.exists())

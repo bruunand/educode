@@ -28,6 +28,22 @@ public class AchievementEvent extends Event
         }
     }
 
+    public static class ScriptRunEvent extends AchievementEvent
+    {
+
+        public ScriptRunEvent(EntityPlayer player) {
+            super(player);
+        }
+    }
+
+    public static class CompilerErrorEvent extends AchievementEvent
+    {
+
+        public CompilerErrorEvent(EntityPlayer player) {
+            super(player);
+        }
+    }
+
     public static class RobotChatEvent extends AchievementEvent
     {
         public String chatMessage;
