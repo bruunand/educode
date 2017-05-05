@@ -1,5 +1,6 @@
 package com.educode.minecraft.entity;
 
+import com.educode.events.achievements.AchievementEvent;
 import com.educode.events.entity.robot.RobotAttackedEvent;
 import com.educode.minecraft.CompilerMod;
 import com.educode.runtime.ScriptBase;
@@ -31,6 +32,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
@@ -268,6 +270,11 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
 
         // give damage;
         otherEntity.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
+
+        if(!world.isRemote)
+        {
+            MinecraftForge.EVENT_BUS.post(new AchievementEvent.RobotActionEvent(_parent.getPlayer(), "attack"));
+        }
     }
 
     public float dropInventoryItem(String name, float quantity)
@@ -297,6 +304,11 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     public boolean sendMessageTo(EntityPlayer player, String message)
     {
         player.sendMessage(new TextComponentString(this.getFormatting()+ "[" + this.getName() + "]" + " " + TextFormatting.RESET + " " + message));
+
+        if(!world.isRemote)
+        {
+            MinecraftForge.EVENT_BUS.post(new AchievementEvent.RobotChatEvent(player, message));
+        }
 
         return true;
     }
