@@ -1,26 +1,26 @@
-achievement.achievementOpenEditor=Feel the power
-achievement.achievementOpenEditor.desc=Open the editor for the first time
+achievement.openEditor=Feel the power
+achievement.openEditor.desc=Open the editor for the first time
 
-achievement.achievementSaveFirst=This is gonna stay
-achievement.achievementSaveFirst.desc=Save your first program
+achievement.saveFirst=This is gonna stay
+achievement.saveFirst.desc=Save your first program
 
-achievement.achievementRobotChat=It speaks
-achievement.achievementRobotChat.desc=Make a robot send a chat message
+achievement.robotChat=It speaks
+achievement.robotChat.desc=Make a robot send a chat message
 
-achievement.achievementRobotExplode=allahu akbar
-achievement.achievementRobotExplode.desc=...
+achievement.robotExplode=inappropriate matias..
+achievement.robotExplode.desc=...
 
-achievement.achievementRobotAttackOther=Enemy of the state
-achievement.achievementRobotAttackOther.desc=Have a robot attack an entity
+achievement.robotAttackOther=Enemy of the state
+achievement.robotAttackOther.desc=Have a robot attack an entity
 
-achievement.achievementBroadcastMessage=Robot phone home
-achievement.achievementBroadcastMessage.desc=Broadcast a message
+achievement.broadcastMessage=Robot phone home
+achievement.broadcastMessage.desc=Broadcast a message
 
-achievement.achievementCoodination=Hello? This is home
-achievement.achievementCoodination.desc=Have a robot recieve a bradcast
+achievement.coordination=Hello? This is home
+achievement.coordination.desc=Have a robot recieve a bradcast
 
-achievement.achievementBuildHouse=That's a nice house you got there
-achievement.achievementBuildHouse.desc=Would be bad if something happened to it
+achievement.buildHouse=That's a nice house you got there
+achievement.buildHouse.desc=Have a robot build a house
 
-achievement.achievementError=You dun goofed
-achievement.achievementError.desc=Everyone makes mistakes
+achievement.error=You dun goofed
+achievement.error.desc=Everybody makes mistakes
