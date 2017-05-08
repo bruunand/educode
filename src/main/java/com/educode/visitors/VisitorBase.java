@@ -80,7 +80,7 @@ public abstract class VisitorBase
         return ans;
     }
 
-    public void visitChildren(Node node)
+    protected void visitChildren(Node node)
     {
         if (node instanceof UnaryNode)
             visitChildren((UnaryNode) node);
@@ -90,13 +90,13 @@ public abstract class VisitorBase
             visitChildren((NaryNode) node);
     }
 
-    public void visitChildren(UnaryNode node)
+    protected void visitChildren(UnaryNode node)
     {
         if (node.getChild() != null)
             node.getChild().accept(this);
     }
 
-    public void visitChildren(BinaryNode node)
+    protected void visitChildren(BinaryNode node)
     {
         if (node.getLeftChild() != null)
             node.getLeftChild().accept(this);
@@ -104,7 +104,7 @@ public abstract class VisitorBase
             node.getRightChild().accept(this);
     }
 
-    public void visitChildren(NaryNode node)
+    protected void visitChildren(NaryNode node)
     {
         List<Node> children = node.getChildren();
 
