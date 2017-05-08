@@ -2,6 +2,8 @@ program Test
     number simon = 5
     method main()
         number foo = 5 + 5 * 10
+        debug("calling main")
+        main("hej")
     end method
 
     method hej()
@@ -9,6 +11,11 @@ program Test
         if true then
             number x
         end if
-        number efter
+        bool efter
+        number theis
+    end method
+
+    method main(string a)
+        debug(a)
     end method
 end program

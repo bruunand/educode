@@ -63,13 +63,11 @@ public class Main
         runMainInClass(CustomJavaCompiler.loadClass("Test", new File("").getAbsolutePath() + File.separator));
     }
 
-    private static void runMainInClass(Class classToRun) throws InvocationTargetException, IllegalAccessException, InstantiationException
+    private static void runMainInClass(Class classToRun) throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException
     {
         Object instance = classToRun.newInstance();
-        for (Method m : classToRun.getDeclaredMethods())
-        {
-            if (m.getName().equals("main"))
-                m.invoke(instance);
-        }
+
+        Method mainMethod = classToRun.getMethod("main");
+        mainMethod.invoke(instance);
     }
 }
