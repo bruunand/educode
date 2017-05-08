@@ -68,3 +68,4 @@ Test.class
 /.idea/
 
 *.log
+.metadata/
