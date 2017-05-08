@@ -1,199 +1,258 @@
 grammar EduCode;
 
-program  : 'program' ident eol+ ((eventDef|method|varDcl) eol+)* 'end program'
-         ;
+program
+    : 'program' identifier end_of_line+ ((event_definition|method_declaration|variable_declaration) end_of_line+)* 'end program'
+    ;
 
-eventDef : 'on event' eventType 'call' ident
-         ;
+event_definition
+    : 'on event' event_type 'call' identifier
+    ;
 
-method   : 'method' ident LPAREN (params)? RPAREN ('returns' dataType)? eol+ stmts 'end method'
-         ;
+method_declaration
+    : 'method' identifier LPAREN (parameter_list)? RPAREN ('returns' data_type)? end_of_line+ statement_list 'end method'
+    ;
 
-args     : expr(',' expr)*
-         ;
+argument_list
+    : expression(',' expression)*
+    ;
 
-params   : param(',' param)*
-         ;
+parameter_list
+    : parameter(',' parameter)*
+    ;
 
-param    : dataType ident
-         ;
+parameter
+    : data_type identifier
+    ;
 
-stmts    : (stmt eol+)*
-         ;
+statement_list
+    : (statement end_of_line+)*
+    ;
 
-stmt     : methodC
-         | assign
-         | varDcl
-         | ifStmt
-         | loopStmt
-         | iterStmt
-         | ret
-         ;
+statement
+    : method_call
+    | assignment_expression
+    | variable_declaration
+    | if_statement
+    | iterative_statement
+    | return_statement
+    ;
 
-ret      : 'return' (expr)?
-         ;
+iterative_statement
+    : repeat_statement
+    | foreach_statement
+    ;
 
-loopStmt : 'repeat while' logicExpr eol+ stmts 'end repeat'
-         ;
+return_statement
+    : 'return' (expression)?
+    ;
 
-ifStmt   : 'if' logicExpr 'then' eol+ stmts ('else if' logicExpr 'then' eol+ stmts)* ('else' eol+ stmts)? 'end if'
-         ;
+repeat_statement
+    : 'repeat while' logic_expression end_of_line+ statement_list 'end repeat'
+    ;
 
-iterStmt : 'foreach' dataType ident 'in' expr eol+ stmts 'end foreach'
-         ;
+if_statement
+    : 'if' logic_expression 'then' end_of_line+ statement_list ('else if' logic_expression 'then' end_of_line+ statement_list)* ('else' end_of_line+ statement_list)? 'end if'
+    ;
 
-varDcl   : dataType (ident | assign) (',' (ident | assign))*
-         ;
+foreach_statement
+    : 'foreach' data_type identifier 'in' expression end_of_line+ statement_list 'end foreach'
+    ;
 
-assign   : reference '=' expr
-         ;
+variable_declaration
+    : data_type (identifier | assignment_expression) (',' (identifier | assignment_expression))*
+    ;
 
-expr     : assign
-         | logicExpr
-         ;
+expression
+    : assignment_expression
+    | logic_expression
+    ;
 
-logicExpr: orExpr
-         ;
-
-orExpr   : orExpr OROP andExpr
-         | andExpr
-         ;
-
-andExpr  : andExpr ANDOP eqlExpr
-         | eqlExpr
-         ;
-
-eqlExpr  : relExpr EQUALOP relExpr
-         | relExpr
-         ;
-
-relExpr  : arithExpr RELOP arithExpr
-         | arithExpr
-         ;
+assignment_expression
+    : factor '=' expression
+    ;
 
 
-boolLit  : TRUE
-         | FALSE
-         ;
+logic_expression
+    : or_expression
+    ;
 
-arithExpr: term
-         | arithExpr ADDOP term
-         ;
+or_expression
+    : or_expression OR_OPERATOR and_expression
+    | and_expression
+    ;
 
-term     : factor
-         | term MULTOP factor
-         ;
+and_expression
+    : and_expression AND_OPERATOR equality_expression
+    | equality_expression
+    ;
 
-factor   : literal
-         | objInst
-         | boolLit
-         | methodC
-         | parExpr
-         | negation
-         | typeCast
-         ;
+equality_expression
+    : relative_expression EQUALITY_OPERATOR relative_expression
+    | relative_expression
+    ;
 
-parExpr  : LPAREN logicExpr RPAREN
-         ;
+relative_expression
+    : arithmetic_expression RELATIVE_OPERATOR arithmetic_expression
+    | arithmetic_expression
+    ;
 
-negation : ULOP factor
-         ;
 
-typeCast : LPAREN dataType RPAREN factor
-         ;
+arithmetic_expression
+    : additive_expression
+    ;
 
-objInst  : 'new' dataType LPAREN (args)? RPAREN
-         ;
+additive_expression
+    : multiplicative_expression
+    | additive_expression ADDITIVE_OPERATOR multiplicative_expression
+    ;
 
-eventType: 'robotDeath'
-         | 'robotAttacked'
-         | 'entityDeath'
-         | 'chatMessage'
-         | ('stringMessageReceived'|'entityMessageReceived') LPAREN numberLit RPAREN
-         ;
+multiplicative_expression
+    : factor
+    | multiplicative_expression MULTIPLICATIVE_OPERATOR factor
+    ;
 
-dataType : 'number'//Contains both ints and floats
-         | 'bool'
-         | 'Coordinates'//Position data, (x, z, _y)?
-         | 'string'
-         | 'Collection' '<' dataType '>'//A collection of a type (Like a list in C#)
-         | 'Block'//Data for blocks placed in the world
-         | 'Entity'//Data for an entity like animals and monsters
-         | 'Item'//Data for an item while in inventory for example
-         | 'Texture'//The look of a block/entity??
-         ;
+factor
+    : literal
+    | object_instantiation
+    | UNARY_OPERATOR factor
+    | type_cast
+    | access
+    ;
 
-literal  : reference
-         | stringLit
-         | numberLit
-         | coordLit
-         ;
+access
+    : subfactor
+    | access field_access
+    | access element_access
+    | access method_access
+    ;
 
-stringLit: STRLIT
-         ;
+field_access
+    : '.' identifier
+    ;
 
-coordLit : LPAREN logicExpr ',' logicExpr ',' logicExpr RPAREN
-         ;
+element_access
+    : '[' expression ']'
+    ;
 
-numberLit: NUMLIT
-         ;
+method_access
+    : '.' method_call
+    ;
 
-reference: reference '.' reference
-         | reference '[' arithExpr ']'
-         | ident
-         ;
+subfactor
+    : parenthesis_expression
+    | identifier
+    | method_call
+    ;
 
-ident    : IDENT
-         ;
+parenthesis_expression
+    : LPAREN logic_expression RPAREN
+    ;
 
-methodC  : parExpr '.' methodC2
-         | methodC2
-         ;
+method_call
+    : identifier LPAREN (argument_list)? RPAREN
+    ;
 
-methodC2 : reference LPAREN (args)? RPAREN
-         | methodC2 '.' methodC2
-         ;
+type_cast
+    : LPAREN data_type RPAREN factor
+    ;
 
-eol      : NEWLINE
-         ;
+object_instantiation
+    : 'new' data_type LPAREN (argument_list)? RPAREN
+    ;
+
+event_type
+    : 'robotDeath'
+    | 'robotAttacked'
+    | 'entityDeath'
+    | 'chatMessage'
+    | ('stringMessageReceived'|'entityMessageReceived') LPAREN number_literal RPAREN
+    ;
+
+data_type
+    : 'number'//Contains both ints and floats
+    | 'bool'
+    | 'Coordinates'//Position data, (x, z, _y)?
+    | 'string'
+    | 'Collection' '<' data_type '>'//A collection of a type (Like a list in C#)
+    | 'Block'//Data for blocks placed in the world
+    | 'Entity'//Data for an entity like animals and monsters
+    | 'Item'//Data for an item while in inventory for example
+    | 'Texture'//The look of a block/entity??
+    ;
+
+literal
+    : bool_literal
+    | string_literal
+    | number_literal
+    | coordinate_literal
+    ;
+
+string_literal
+    : STRING_LITERAL
+    ;
+
+coordinate_literal
+    : LPAREN logic_expression ',' logic_expression ',' logic_expression RPAREN
+    ;
+
+number_literal
+    : NUMBER_LITERAL
+    ;
+
+bool_literal
+    : BOOL_LITERAL
+    ;
+
+identifier
+    : IDENTIFIER
+    ;
+
+end_of_line
+    : NEWLINE
+    ;
 
 /* TEMP */
-TRUE     : 'true'
-         ;
 
-FALSE    : 'false'
-         ;
+ADDITIVE_OPERATOR
+    : '+'
+    | '-'
+    ;
 
-ADDOP    : '+'
-         | '-'
-         ;
+MULTIPLICATIVE_OPERATOR
+    : '/'
+    | '*'
+    | 'modulo'
+    ;
 
-MULTOP   : '/'
-         | '*'
-         | 'modulo'
-         ;
+AND_OPERATOR
+    : 'and'
+    ;
 
-ANDOP    : 'and'
-         ;
+OR_OPERATOR
+    : 'or'
+    ;
 
-OROP     : 'or'
-         ;
+UNARY_OPERATOR
+    : 'not'
+    | '+'
+    | '-'
+    ;
 
-ULOP     : 'not'
-         ;
+RELATIVE_OPERATOR
+    : 'greater than'
+    | 'less than'
+    | 'greater than or equals'
+    | 'less than or equals'
+    ;
 
-RELOP    : 'greater than'
-         | 'less than'
-         | 'greater than or equals'
-         | 'less than or equals'
-         ;
+EQUALITY_OPERATOR
+    : 'equals'
+    | 'not equals'
+    ;
 
-EQUALOP  : 'equals'
-         | 'not equals'
-         ;
-
-NEWLINE  : NewLine
-         ;
+NEWLINE
+    : NewLine
+    ;
 
 /* Fragments */
 fragment LowerChar: [a-z]
@@ -212,28 +271,41 @@ fragment USym     : '_'
                   ;
 
 /* Literals */
-NUMLIT   : ('-')? Digit+('.' Digit*)?
-         ;
+NUMBER_LITERAL
+    : ('-')? Digit+('.' Digit*)?
+    ;
 
-STRLIT   : USTRLIT '"'
-         ;
+STRING_LITERAL
+    : UNTERMINATED_STRING_LITERAL '"'
+    ;
 
-USTRLIT  : '"' (~["\\\r\n] | '\\' (. | EOF))* // unterminated string
-         ;
+UNTERMINATED_STRING_LITERAL
+    : '"' (~["\\\r\n] | '\\' (. | EOF))*
+    ;
 
-IDENT    : (LowerChar | UpperChar | USym) (LowerChar | UpperChar | Digit | USym)*
-         ;
+BOOL_LITERAL
+    : ('true' | 'false')
+    ;
+
+
+IDENTIFIER
+    : (LowerChar | UpperChar | USym) (LowerChar | UpperChar | Digit | USym)*
+    ;
 
 /* Token specification */
-LPAREN   : '('
-         ;
+LPAREN
+    : '('
+    ;
 
-RPAREN   : ')'
-         ;
+RPAREN
+    : ')'
+    ;
 
 /* Hidden stuff */
-WHITESPACE   : [ \t\r\f]+ -> channel(HIDDEN)
-             ;
+WHITESPACE
+    : [ \t\r\f]+ -> channel(HIDDEN)
+     ;
 
-LINECOMMENT  : '//' ~[\r\n]* -> channel(HIDDEN)
-             ;
+LINECOMMENT
+    : '//' ~[\r\n]* -> channel(HIDDEN)
+     ;
