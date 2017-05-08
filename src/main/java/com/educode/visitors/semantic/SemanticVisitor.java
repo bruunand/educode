@@ -97,7 +97,10 @@ public class SemanticVisitor extends VisitorBase
         // Visit children in correct order
         // Variable declarations must be visited before method declarations
         for (VariableDeclarationNode varDecl : node.getVariableDeclarations())
+        {
+            varDecl.setDeclaredGlobally(true);
             visit(varDecl);
+        }
 
         // We can then visit event definitions
         // These require method symbols, but they have been declared previously

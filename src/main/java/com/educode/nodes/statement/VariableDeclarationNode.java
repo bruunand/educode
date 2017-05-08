@@ -15,6 +15,7 @@ import com.educode.visitors.VisitorBase;
 public class VariableDeclarationNode extends UnaryNode implements IReferencing, ISingleLineStatement
 {
     private final IReference _reference;
+    private boolean _isDeclaredGlobally = false;
 
     public VariableDeclarationNode(AssignmentNode assignmentChild, Type type)
     {
@@ -28,6 +29,16 @@ public class VariableDeclarationNode extends UnaryNode implements IReferencing, 
         super(null);
         this._reference = reference;
         setType(type);
+    }
+
+    public void setDeclaredGlobally(boolean value)
+    {
+        this._isDeclaredGlobally = value;
+    }
+
+    public boolean isDeclaredGlobally()
+    {
+        return this._isDeclaredGlobally;
     }
 
     @Override

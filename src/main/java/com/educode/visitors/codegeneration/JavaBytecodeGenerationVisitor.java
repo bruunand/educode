@@ -59,9 +59,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     {
         if (node.getType() == Type.NumberType)
             addStackHeight(2);
-        else if (node.getType() == Type.VoidType)
-            return;
-        else
+        else if (node.getType() != Type.VoidType)
             addStackHeight(1);
     }
 

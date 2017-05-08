@@ -112,12 +112,13 @@ public class OptimizationVisitor extends VisitorBase
 
     public void visit(VariableDeclarationNode node)
     {
-        if (node.hasChild())
+        // Do not optimize variable declarations that are declared globally, because we don't know if they are set in other methods
+        if (node.hasChild() && !node.isDeclaredGlobally())
         {
             AssignmentNode assignment = (AssignmentNode) node.getChild();
             visit(assignment.getChild());
 
-            _constantDeclarations.put(node, assignment.getChild());
+            this._constantDeclarations.put(node, assignment.getChild());
         }
         else
             visitChildren(node);

@@ -5,6 +5,7 @@ import com.educode.helper.*;
 
 public class Test extends ScriptBase
 {
+Float simon = 5.000000F;
 public void main() throws InterruptedException
 {
 Float foo = 55.000000F;

@@ -1,4 +1,5 @@
 program Test
+    number simon = 5
     method main()
         number foo = 5 + 5 * 10
     end method
