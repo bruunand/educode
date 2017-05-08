@@ -59,7 +59,7 @@ public class CompilerMod
     
     //Build progression
     public static Achievement achievementBuildLine;
-    public static Achievement achievementBuildOtherLine;
+    public static Achievement achievementBuildInclinedLine;
     public static Achievement achievementBuildTriangle;
     public static Achievement achievementBuildSquare;
     public static Achievement achievementBuildCube;
@@ -111,14 +111,14 @@ public class CompilerMod
         achievementRobotExplode = new Achievement("robot_attack", "robotAttackOther", 2,-1, Items.TNT_MINECART, achievementRunFirst).setSpecial();
         achievementRobotAttackOther = new Achievement("robot_explode", "robotExplode", 2,0, Items.DIAMOND_SWORD, achievementRunFirst);//Added
         achievementBroadcastMessage = new Achievement("robot_broadcast", "broadcastMessage", 2, 1, Items.WRITABLE_BOOK, achievementRunFirst);
-        achievementCoordination = new Achievement("robot_broadcast_recieved", "coordination", 2, 2, Items.WRITTEN_BOOK, achievementBroadcastMessage);
+        achievementCoordination = new Achievement("robot_broadcast_received", "coordination", 2, 2, Items.WRITTEN_BOOK, achievementBroadcastMessage);
 
         //Build achievement chain
-        achievementBuildLine = new Achievement("build_line", "build_line", 0, 2, Items.BONE, achievementRunFirst);
-        achievementBuildOtherLine = new Achievement("build_otherline", "build_otherline", 2, 2, Items.STRING, achievementBuildLine);
-        achievementBuildSquare = new Achievement("build_square", "build_square", 0, 4, Items.ITEM_FRAME, achievementBuildLine);
-        achievementBuildTriangle = new Achievement("build_triangle", "build_triangle", 4, 2, Items.ARROW, achievementBuildOtherLine);
-        achievementBuildCube = new Achievement("build_cube","build_cube", 2,3, Items.CHEST_MINECART, achievementBuildSquare);
+        achievementBuildLine = new Achievement("build_line", "buildLine", 0, 2, Items.BONE, achievementRunFirst);
+        achievementBuildInclinedLine = new Achievement("build_inclined_line", "buildInclinedLine", 2, 2, Items.STRING, achievementBuildLine);
+        achievementBuildSquare = new Achievement("build_square", "buildSquare", 0, 4, Items.ITEM_FRAME, achievementBuildLine);
+        achievementBuildTriangle = new Achievement("build_triangle", "buildTriangle", 4, 2, Items.ARROW, achievementBuildOtherLine);
+        achievementBuildCube = new Achievement("build_cube","buildCube", 2,3, Items.CHEST_MINECART, achievementBuildSquare);
         achievementBuildHouse = new Achievement("build_house", "buildHouse", 0,4, Items.COMMAND_BLOCK_MINECART, achievementBuildCube);
 
         //Other
@@ -134,7 +134,7 @@ public class CompilerMod
                 achievementBroadcastMessage,
                 achievementCoordination,
                 achievementBuildLine,
-                achievementBuildOtherLine,
+                achievementBuildInclinedLine,
                 achievementBuildSquare,
                 achievementBuildTriangle,
                 achievementBuildCube,
