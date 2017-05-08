@@ -5,14 +5,12 @@ import com.educode.events.entity.robot.RobotAttackedEvent;
 import com.educode.minecraft.CompilerMod;
 import com.educode.runtime.ScriptBase;
 import com.educode.events.EventInvoker;
-import com.educode.runtime.types.Coordinates;
 import com.educode.events.entity.robot.RobotDeathEvent;
 import com.educode.runtime.types.MinecraftEntity;
-import io.netty.buffer.ByteBuf;
+
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -32,10 +30,12 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
+
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
+import io.netty.buffer.ByteBuf;
 import javax.annotation.Nullable;
 
 public class EntityRobot extends EntityCreature implements IWorldNameable, IEntityAdditionalSpawnData

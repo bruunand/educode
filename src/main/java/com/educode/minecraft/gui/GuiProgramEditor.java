@@ -1,31 +1,26 @@
 package com.educode.minecraft.gui;
 
-import com.educode.events.achievements.AchievementEvent;
+import java.util.Set;
+import java.io.IOException;
+
 import com.educode.helper.ArrayHelper;
 import com.educode.minecraft.CompilerMod;
-import com.educode.minecraft.handler.AchievementEventHandler;
 import com.educode.minecraft.networking.MessageSaveFile;
 
-import com.google.common.collect.HashBiMap;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.common.MinecraftForge;
+
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.BiMap;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
-
-import java.io.IOException;
-
-import com.google.common.collect.BiMap;
-import java.util.Set;
-
 import static org.lwjgl.input.Keyboard.*;
 
 
@@ -313,7 +308,7 @@ public class GuiProgramEditor extends GuiScreen
         final String[] typeKeywords = new String[] {"number", "Coordinates", "string", "bool", "Item", "Entity"};
         final String[] tfKeywords = new String[] {"true", "false"};
         final String[] eventKeywords = new String[] {"on event", "call"};
-        final String[] nullKeyword = new String[] {"null", "new"};
+        final String[] referenceKeywords = new String[] {"null", "new", "using"};
         final String[] events = new String[] {"robotDeath", "robotAttacked", "chatMessage", "entityDeath", "stringMessageReceived", "entityMessageReceived"};
 
         //Assign colors for above keywords
@@ -323,7 +318,7 @@ public class GuiProgramEditor extends GuiScreen
         keyWordMap.put(TextFormatting.AQUA, typeKeywords);
         keyWordMap.put(TextFormatting.GREEN, tfKeywords);
         keyWordMap.put(TextFormatting.BLUE, eventKeywords);
-        keyWordMap.put(TextFormatting.DARK_PURPLE, nullKeyword);
+        keyWordMap.put(TextFormatting.DARK_PURPLE, referenceKeywords);
         keyWordMap.put(TextFormatting.DARK_AQUA, events);
 
         //Remove \r from _text as they are unnecessary
