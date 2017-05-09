@@ -71,8 +71,6 @@ public class SemanticVisitor extends VisitorBase
     {
         getSymbolTableHandler().openScope();
 
-        getSymbolTableHandler().enterSymbol(node);
-
         // Add default methods and fields to symbol table
         getSymbolTableHandler().getCurrent().addDefaultField("robot", Type.RobotType);
 
