@@ -1,31 +1,39 @@
 grammar EduCode;
 
-program
-    : 'program' identifier end_of_line+ ((event_definition|method_declaration|variable_declaration) end_of_line+)* 'end program'
+start
+    : ulist=usings? prog=program
+    ;
+
+usings
+    : 'using' id+=identifier end_of_line+ ('using' id+=identifier end_of_line+)*
+    ;
+
+program  
+    : 'program' id=identifier end_of_line+ ((el+=event_definition|ml+=method_declaration|vl+=variable_declaration) end_of_line+)* 'end program'
     ;
 
 event_definition
-    : 'on event' event_type 'call' identifier
+    : 'on event' event=event_type 'call' id=identifier
     ;
 
 method_declaration
-    : 'method' identifier LPAREN (parameter_list)? RPAREN ('returns' data_type)? end_of_line+ statement_list 'end method'
+    : 'method' id=identifier LPAREN (params=parameter_list)? RPAREN ('returns' type=data_type)? end_of_line+ body=statement_list 'end method'
     ;
 
 argument_list
-    : expression(',' expression)*
+    : exprs+=expression(',' exprs+=expression)*
     ;
 
 parameter_list
-    : parameter(',' parameter)*
+    : params+=parameter(',' params+=parameter)*
     ;
 
 parameter
-    : data_type identifier
+    : type=data_type id=identifier
     ;
 
 statement_list
-    : (statement end_of_line+)*
+    : (statements+=statement end_of_line+)*
     ;
 
 statement
@@ -35,6 +43,8 @@ statement
     | if_statement
     | iterative_statement
     | return_statement
+    | break_statement
+    | continue_statement
     ;
 
 iterative_statement
@@ -42,24 +52,36 @@ iterative_statement
     | foreach_statement
     ;
 
+break_statement
+    : 'break'
+    ;
+
+continue_statement
+    : 'continue'
+    ;
+
 return_statement
-    : 'return' (expression)?
+    : 'return' (expr=expression)?
     ;
 
 repeat_statement
-    : 'repeat while' logic_expression end_of_line+ statement_list 'end repeat'
+    : 'repeat while' predicate=logic_expression end_of_line+ bode=statement_list 'end repeat'
     ;
 
 if_statement
-    : 'if' logic_expression 'then' end_of_line+ statement_list ('else if' logic_expression 'then' end_of_line+ statement_list)* ('else' end_of_line+ statement_list)? 'end if'
+    : 'if' predicate+=logic_expression 'then' end_of_line+ body+=statement_list ('else if' predicate+=logic_expression 'then' end_of_line+ body+=statement_list)* ('else' end_of_line+ else=statement_list)? 'end if'
     ;
 
 foreach_statement
-    : 'foreach' data_type identifier 'in' expression end_of_line+ statement_list 'end foreach'
+    : 'foreach' type=data_type id=identifier 'in' expr=expression end_of_line+ body=statement_list 'end foreach'
     ;
 
 variable_declaration
-    : data_type (identifier | assignment_expression) (',' (identifier | assignment_expression))*
+    : type=data_type  decl+=declarator (',' decl+=declarator)
+    ;
+
+declarator
+    : id=identifier ('=' expr=expression)?
     ;
 
 expression
@@ -68,9 +90,8 @@ expression
     ;
 
 assignment_expression
-    : factor '=' expression
+    : lhs=factor op=ASSIGNMENT_OPERATOR rhs=expression
     ;
-
 
 logic_expression
     : or_expression
@@ -185,6 +206,7 @@ literal
     | string_literal
     | number_literal
     | coordinate_literal
+    | null_literal
     ;
 
 string_literal
@@ -211,7 +233,16 @@ end_of_line
     : NEWLINE
     ;
 
+
+
 /* TEMP */
+ASSIGNMENT_OPERATOR
+    : '='
+    | '+='
+    | '-='
+    | '*='
+    | '/='
+    ;
 
 ADDITIVE_OPERATOR
     : '+'
@@ -286,6 +317,9 @@ UNTERMINATED_STRING_LITERAL
 BOOL_LITERAL
     : ('true' | 'false')
     ;
+
+NULL_LITERAL
+    : 'null'
 
 
 IDENTIFIER
