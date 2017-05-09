@@ -9,10 +9,7 @@ import com.educode.nodes.expression.logic.EqualExpressionNode;
 import com.educode.nodes.expression.logic.LogicExpressionNode;
 import com.educode.nodes.expression.logic.NegateNode;
 import com.educode.nodes.expression.logic.RelativeExpressionNode;
-import com.educode.nodes.literal.BoolLiteralNode;
-import com.educode.nodes.literal.CoordinatesLiteralNode;
-import com.educode.nodes.literal.ILiteral;
-import com.educode.nodes.literal.NumberLiteralNode;
+import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
@@ -364,6 +361,7 @@ public class SemanticVisitor extends VisitorBase
             getSymbolTableHandler().enterSymbol(node);
 
         // Add default values if no assignment
+        // Only the values that are considered primitive will have a default value
         if (node.getChild() == null)
         {
             switch (node.getType().getKind())
@@ -376,6 +374,9 @@ public class SemanticVisitor extends VisitorBase
                     break;
                 case Type.BOOL:
                     node.setAssignment(new BoolLiteralNode(false));
+                    break;
+                case Type.STRING:
+                    node.setAssignment(new StringLiteralNode(""));
                     break;
             }
         }
