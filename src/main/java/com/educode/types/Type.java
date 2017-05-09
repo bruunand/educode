@@ -117,11 +117,6 @@ public class Type
         return _baseSymbolTable;
     }
 
-    public boolean isPrimitive()
-    {
-        return this._kind == NUMBER || this._kind == BOOL || this._kind == VOID || this._kind == ERROR;
-    }
-
     public boolean isCollection()
     {
         return this._kind == COLLECTION;
