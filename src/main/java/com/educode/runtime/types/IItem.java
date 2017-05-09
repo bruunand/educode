@@ -6,4 +6,5 @@ package com.educode.runtime.types;
 public interface IItem extends IBase
 {
     int getCount();
+    String getName();
 }

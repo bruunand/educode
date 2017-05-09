@@ -38,6 +38,12 @@ public class MinecraftItem implements IItem
     }
 
     @Override
+    public String getName()
+    {
+        return this.getWrappedItem().getDisplayName();
+    }
+
+    @Override
     public boolean equals(Object obj)
     {
         if (obj instanceof MinecraftItem)
