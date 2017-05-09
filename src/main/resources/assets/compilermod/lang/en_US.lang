@@ -4,11 +4,14 @@ achievement.openEditor.desc=Open the editor for the first time
 achievement.saveFirst=This is gonna stay
 achievement.saveFirst.desc=Save your first program
 
+achievement.runFirst=It's alive!
+achievement.runFirst.desc=Run your first program
+
 achievement.robotChat=It speaks
 achievement.robotChat.desc=Make a robot send a chat message
 
-achievement.robotExplode=inappropriate matias..
-achievement.robotExplode.desc=...
+achievement.robotExplode=Yep.. They do explode..
+achievement.robotExplode.desc=Who would've thought?
 
 achievement.robotAttackOther=Enemy of the state
 achievement.robotAttackOther.desc=Have a robot attack an entity
@@ -17,7 +20,19 @@ achievement.broadcastMessage=Robot phone home
 achievement.broadcastMessage.desc=Broadcast a message
 
 achievement.coordination=Hello? This is home
-achievement.coordination.desc=Have a robot recieve a bradcast
+achievement.coordination.desc=Have a robot receive a broadcast
+
+achievement.buildLine=Straight forward, isn't it?
+achievement.buildLine.desc=Build a line of blocks
+
+achievement.buildInclinedLine=That's technical
+achievement.buildInclinedLine.desc=Build an inclined line
+
+achievement.buildSquare=A matching shape of block
+achievement.buildSquare.desc=Build the shape of Minecraft
+
+achievement.buildCube=Now do it 3 dimensional!
+achievement.buildCube.desc=Onions have layers. Ogres have layers... You get it? We both have layers.
 
 achievement.buildHouse=That's a nice house you got there
 achievement.buildHouse.desc=Have a robot build a house
