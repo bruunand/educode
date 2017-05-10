@@ -11,9 +11,13 @@ import com.educode.events.entity.robot.RobotAttackedEvent;
 import com.educode.events.entity.robot.RobotDeathEvent;
 import com.educode.nodes.base.*;
 import com.educode.nodes.literal.*;
+import com.educode.nodes.method.MethodDeclarationNode;
+import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.ungrouped.*;
 import com.educode.types.*;
 import org.antlr.v4.runtime.ParserRuleContext;
+
+import java.util.ArrayList;
 
 /**
  * Created by Thomas Buhl on 10/05/2017.
@@ -94,6 +98,29 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
         return null;
     }
 
+    private Type getType(EduCodeParser.Data_typeContext ctx)
+    {
+        if (ctx.data_type() != null)
+            return new Type(getType(ctx.data_type()));
+        else
+            switch (ctx.getText())
+            {
+                case "string":
+                    return Type.StringType;
+                case "bool":
+                    return Type.BoolType;
+                case "number":
+                    return Type.NumberType;
+                case "Entity":
+                    return Type.EntityType;
+                case "Coordinates":
+                    return Type.CoordinatesType;
+                case "Item":
+                    return Type.ItemType;
+            }
+        return Type.VoidType;
+    }
+
 
     @Override
     public Node visitStart(EduCodeParser.StartContext ctx) {
@@ -104,34 +131,77 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
 
     @Override
     public Node visitUsings(EduCodeParser.UsingsContext ctx) {
+        updateLineNumber(ctx);
+        ArrayList<Node> Nodes = new ArrayList<>();
 
-        Nodes
-        return new UsingsNode();
+        for (EduCodeParser.IdentifierContext i: ctx.id) {
+            Nodes.add(visitIdentifier(i));
+        }
+        return new UsingsNode(Nodes);
     }
 
     @Override
     public Node visitProgram(EduCodeParser.ProgramContext ctx) {
-        return super.visitProgram(ctx);
+        updateLineNumber(ctx);
+
+        ArrayList<Node> nodes = new ArrayList<>();
+
+        // Add global variables
+        for (EduCodeParser.Variable_declarationContext v : ctx.vl)
+            nodes.add(visit(v));
+
+        // Add event subscriptions
+        for (EduCodeParser.Event_definitionContext e : ctx.el)
+            nodes.add(visit(e));
+
+        // Add method declarations
+        for (EduCodeParser.Method_declarationContext m : ctx.ml)
+            nodes.add(visit(m));
+
+        return new ProgramNode(nodes, (IReference) visit(ctx.id));
     }
 
     @Override
     public Node visitEvent_definition(EduCodeParser.Event_definitionContext ctx) {
-        return super.visitEvent_definition(ctx);
+        return new EventDefinitionNode((IReference) visit(ctx.id), getEventType(ctx.event));
     }
 
     @Override
     public Node visitMethod_declaration(EduCodeParser.Method_declarationContext ctx) {
-        return super.visitMethod_declaration(ctx);
+
+        updateLineNumber(ctx);
+
+        Type returnType = Type.VoidType;
+        if (ctx.type != null)
+            returnType = getType(ctx.type);
+
+        if (ctx.params != null)
+            return new MethodDeclarationNode(visit(ctx.params), visit(ctx.body), (IReference) visit(ctx.id), returnType);
+        else
+            return new MethodDeclarationNode(null, visit(ctx.body), (IReference) visit(ctx.id), returnType);
     }
 
     @Override
     public Node visitArgument_list(EduCodeParser.Argument_listContext ctx) {
-        return super.visitArgument_list(ctx);
+        updateLineNumber(ctx);
+
+        ListNode node = new ListNode();
+        for (EduCodeParser.ExpressionContext e : ctx.exprs)
+            node.addChild(visit(e));
+
+        return node;
     }
 
     @Override
     public Node visitParameter_list(EduCodeParser.Parameter_listContext ctx) {
-        return super.visitParameter_list(ctx);
+        updateLineNumber(ctx);
+
+        ListNode parameterCollection = new ListNode();
+
+        for (EduCodeParser.ParameterContext p : ctx.params)
+            parameterCollection.addChild(visit(p));
+
+        return parameterCollection;
     }
 
     @Override
