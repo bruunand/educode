@@ -1,4 +1,4 @@
-// Generated from /home/zen/Git/EduCode-P4/src/EduCode.g4 by ANTLR 4.6
+// Generated from C:/EduCode/EduCode-P4/src\EduCode.g4 by ANTLR 4.7
 package com.educode.antlr;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -11,143 +11,179 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#start}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStart(EduCodeParser.StartContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#usings}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUsings(EduCodeParser.UsingsContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#program}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitProgram(EduCodeParser.ProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#eventDef}.
+	 * Visit a parse tree produced by {@link EduCodeParser#event_definition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitEventDef(EduCodeParser.EventDefContext ctx);
+	T visitEvent_definition(EduCodeParser.Event_definitionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#method}.
+	 * Visit a parse tree produced by {@link EduCodeParser#method_declaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMethod(EduCodeParser.MethodContext ctx);
+	T visitMethod_declaration(EduCodeParser.Method_declarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#args}.
+	 * Visit a parse tree produced by {@link EduCodeParser#argument_list}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArgs(EduCodeParser.ArgsContext ctx);
+	T visitArgument_list(EduCodeParser.Argument_listContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#params}.
+	 * Visit a parse tree produced by {@link EduCodeParser#parameter_list}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParams(EduCodeParser.ParamsContext ctx);
+	T visitParameter_list(EduCodeParser.Parameter_listContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#param}.
+	 * Visit a parse tree produced by {@link EduCodeParser#parameter}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParam(EduCodeParser.ParamContext ctx);
+	T visitParameter(EduCodeParser.ParameterContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#stmts}.
+	 * Visit a parse tree produced by {@link EduCodeParser#statement_list}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStmts(EduCodeParser.StmtsContext ctx);
+	T visitStatement_list(EduCodeParser.Statement_listContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#stmt}.
+	 * Visit a parse tree produced by {@link EduCodeParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStmt(EduCodeParser.StmtContext ctx);
+	T visitStatement(EduCodeParser.StatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#ret}.
+	 * Visit a parse tree produced by {@link EduCodeParser#iterative_statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRet(EduCodeParser.RetContext ctx);
+	T visitIterative_statement(EduCodeParser.Iterative_statementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#loopStmt}.
+	 * Visit a parse tree produced by {@link EduCodeParser#break_statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLoopStmt(EduCodeParser.LoopStmtContext ctx);
+	T visitBreak_statement(EduCodeParser.Break_statementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#ifStmt}.
+	 * Visit a parse tree produced by {@link EduCodeParser#continue_statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIfStmt(EduCodeParser.IfStmtContext ctx);
+	T visitContinue_statement(EduCodeParser.Continue_statementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#iterStmt}.
+	 * Visit a parse tree produced by {@link EduCodeParser#return_statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIterStmt(EduCodeParser.IterStmtContext ctx);
+	T visitReturn_statement(EduCodeParser.Return_statementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#varDcl}.
+	 * Visit a parse tree produced by {@link EduCodeParser#repeat_statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVarDcl(EduCodeParser.VarDclContext ctx);
+	T visitRepeat_statement(EduCodeParser.Repeat_statementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#assign}.
+	 * Visit a parse tree produced by {@link EduCodeParser#if_statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssign(EduCodeParser.AssignContext ctx);
+	T visitIf_statement(EduCodeParser.If_statementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#expr}.
+	 * Visit a parse tree produced by {@link EduCodeParser#foreach_statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpr(EduCodeParser.ExprContext ctx);
+	T visitForeach_statement(EduCodeParser.Foreach_statementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#logicExpr}.
+	 * Visit a parse tree produced by {@link EduCodeParser#variable_declaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLogicExpr(EduCodeParser.LogicExprContext ctx);
+	T visitVariable_declaration(EduCodeParser.Variable_declarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#orExpr}.
+	 * Visit a parse tree produced by {@link EduCodeParser#declarator}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOrExpr(EduCodeParser.OrExprContext ctx);
+	T visitDeclarator(EduCodeParser.DeclaratorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#andExpr}.
+	 * Visit a parse tree produced by {@link EduCodeParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAndExpr(EduCodeParser.AndExprContext ctx);
+	T visitExpression(EduCodeParser.ExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#eqlExpr}.
+	 * Visit a parse tree produced by {@link EduCodeParser#assignment_expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitEqlExpr(EduCodeParser.EqlExprContext ctx);
+	T visitAssignment_expression(EduCodeParser.Assignment_expressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#relExpr}.
+	 * Visit a parse tree produced by {@link EduCodeParser#logic_expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRelExpr(EduCodeParser.RelExprContext ctx);
+	T visitLogic_expression(EduCodeParser.Logic_expressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#boolLit}.
+	 * Visit a parse tree produced by {@link EduCodeParser#or_expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBoolLit(EduCodeParser.BoolLitContext ctx);
+	T visitOr_expression(EduCodeParser.Or_expressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#arithExpr}.
+	 * Visit a parse tree produced by {@link EduCodeParser#and_expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArithExpr(EduCodeParser.ArithExprContext ctx);
+	T visitAnd_expression(EduCodeParser.And_expressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#term}.
+	 * Visit a parse tree produced by {@link EduCodeParser#equality_expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTerm(EduCodeParser.TermContext ctx);
+	T visitEquality_expression(EduCodeParser.Equality_expressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#relative_expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRelative_expression(EduCodeParser.Relative_expressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#arithmetic_expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArithmetic_expression(EduCodeParser.Arithmetic_expressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#additive_expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAdditive_expression(EduCodeParser.Additive_expressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#multiplicative_expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultiplicative_expression(EduCodeParser.Multiplicative_expressionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#factor}.
 	 * @param ctx the parse tree
@@ -155,41 +191,71 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFactor(EduCodeParser.FactorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#parExpr}.
+	 * Visit a parse tree produced by {@link EduCodeParser#access}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParExpr(EduCodeParser.ParExprContext ctx);
+	T visitAccess(EduCodeParser.AccessContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#negation}.
+	 * Visit a parse tree produced by {@link EduCodeParser#field_access}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNegation(EduCodeParser.NegationContext ctx);
+	T visitField_access(EduCodeParser.Field_accessContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#typeCast}.
+	 * Visit a parse tree produced by {@link EduCodeParser#element_access}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTypeCast(EduCodeParser.TypeCastContext ctx);
+	T visitElement_access(EduCodeParser.Element_accessContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#objInst}.
+	 * Visit a parse tree produced by {@link EduCodeParser#method_access}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitObjInst(EduCodeParser.ObjInstContext ctx);
+	T visitMethod_access(EduCodeParser.Method_accessContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#eventType}.
+	 * Visit a parse tree produced by {@link EduCodeParser#subfactor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitEventType(EduCodeParser.EventTypeContext ctx);
+	T visitSubfactor(EduCodeParser.SubfactorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#dataType}.
+	 * Visit a parse tree produced by {@link EduCodeParser#parenthesis_expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDataType(EduCodeParser.DataTypeContext ctx);
+	T visitParenthesis_expression(EduCodeParser.Parenthesis_expressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#method_call}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethod_call(EduCodeParser.Method_callContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#type_cast}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitType_cast(EduCodeParser.Type_castContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#object_instantiation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitObject_instantiation(EduCodeParser.Object_instantiationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#event_type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEvent_type(EduCodeParser.Event_typeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#data_type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitData_type(EduCodeParser.Data_typeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#literal}.
 	 * @param ctx the parse tree
@@ -197,51 +263,45 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLiteral(EduCodeParser.LiteralContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#stringLit}.
+	 * Visit a parse tree produced by {@link EduCodeParser#string_literal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStringLit(EduCodeParser.StringLitContext ctx);
+	T visitString_literal(EduCodeParser.String_literalContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#coordLit}.
+	 * Visit a parse tree produced by {@link EduCodeParser#coordinate_literal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCoordLit(EduCodeParser.CoordLitContext ctx);
+	T visitCoordinate_literal(EduCodeParser.Coordinate_literalContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#numberLit}.
+	 * Visit a parse tree produced by {@link EduCodeParser#number_literal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNumberLit(EduCodeParser.NumberLitContext ctx);
+	T visitNumber_literal(EduCodeParser.Number_literalContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#reference}.
+	 * Visit a parse tree produced by {@link EduCodeParser#bool_literal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitReference(EduCodeParser.ReferenceContext ctx);
+	T visitBool_literal(EduCodeParser.Bool_literalContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#ident}.
+	 * Visit a parse tree produced by {@link EduCodeParser#null_literal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIdent(EduCodeParser.IdentContext ctx);
+	T visitNull_literal(EduCodeParser.Null_literalContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#methodC}.
+	 * Visit a parse tree produced by {@link EduCodeParser#identifier}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMethodC(EduCodeParser.MethodCContext ctx);
+	T visitIdentifier(EduCodeParser.IdentifierContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#methodC2}.
+	 * Visit a parse tree produced by {@link EduCodeParser#end_of_line}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMethodC2(EduCodeParser.MethodC2Context ctx);
-	/**
-	 * Visit a parse tree produced by {@link EduCodeParser#eol}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEol(EduCodeParser.EolContext ctx);
+	T visitEnd_of_line(EduCodeParser.End_of_lineContext ctx);
 }

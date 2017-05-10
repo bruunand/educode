@@ -1,7 +1,15 @@
 grammar EduCode;
 
 start
-    : ulist=usings? prog=program
+    : ulist=usings? pr=program
+    ;
+
+usings
+    : 'using' id+=identifier end_of_line+ ('using' id+=identifier end_of_line+)*
+    ;
+
+program
+    : 'program' id=identifier end_of_line+ ((el+=event_definition|ml+=method_declaration|vl+=variable_declaration) end_of_line+)* 'end program'
     ;
 
 usings
@@ -69,7 +77,7 @@ repeat_statement
     ;
 
 if_statement
-    : 'if' predicate+=logic_expression 'then' end_of_line+ body+=statement_list ('else if' predicate+=logic_expression 'then' end_of_line+ body+=statement_list)* ('else' end_of_line+ else=statement_list)? 'end if'
+    : 'if' predicate+=logic_expression 'then' end_of_line+ body+=statement_list ('else if' predicate+=logic_expression 'then' end_of_line+ body+=statement_list)* ('else' end_of_line+ elseBody=statement_list)? 'end if'
     ;
 
 foreach_statement
@@ -108,7 +116,7 @@ and_expression
     ;
 
 equality_expression
-    : relative_expression EQUALITY_OPERATOR relative_expression
+    : equality_expression EQUALITY_OPERATOR relative_expression
     | relative_expression
     ;
 
@@ -225,6 +233,10 @@ bool_literal
     : BOOL_LITERAL
     ;
 
+null_literal
+    : NULL_LITERAL
+    ;
+
 identifier
     : IDENTIFIER
     ;
@@ -320,6 +332,7 @@ BOOL_LITERAL
 
 NULL_LITERAL
     : 'null'
+    ;
 
 
 IDENTIFIER
@@ -338,8 +351,8 @@ RPAREN
 /* Hidden stuff */
 WHITESPACE
     : [ \t\r\f]+ -> channel(HIDDEN)
-     ;
+    ;
 
 LINECOMMENT
     : '//' ~[\r\n]* -> channel(HIDDEN)
-     ;
+    ;
