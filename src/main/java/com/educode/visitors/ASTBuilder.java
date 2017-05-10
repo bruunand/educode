@@ -342,6 +342,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     public Node visitProgram(EduCodeParser.ProgramContext ctx)
     {
         updateLineNumber(ctx);
+
         ArrayList<Node> nodes = new ArrayList<>();
 
         // Add global variables
