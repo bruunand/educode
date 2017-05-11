@@ -1447,7 +1447,7 @@ public class EduCodeParser extends Parser {
 	public static class Variable_declarationContext extends ParserRuleContext {
 		public Data_typeContext type;
 		public DeclaratorContext declarator;
-		public List<DeclaratorContext> decl = new ArrayList<DeclaratorContext>();
+		public List<DeclaratorContext> decls = new ArrayList<DeclaratorContext>();
 		public Data_typeContext data_type() {
 			return getRuleContext(Data_typeContext.class,0);
 		}
@@ -1479,7 +1479,7 @@ public class EduCodeParser extends Parser {
 			((Variable_declarationContext)_localctx).type = data_type();
 			setState(290);
 			((Variable_declarationContext)_localctx).declarator = declarator();
-			((Variable_declarationContext)_localctx).decl.add(((Variable_declarationContext)_localctx).declarator);
+			((Variable_declarationContext)_localctx).decls.add(((Variable_declarationContext)_localctx).declarator);
 			setState(295);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -1490,7 +1490,7 @@ public class EduCodeParser extends Parser {
 				match(T__8);
 				setState(292);
 				((Variable_declarationContext)_localctx).declarator = declarator();
-				((Variable_declarationContext)_localctx).decl.add(((Variable_declarationContext)_localctx).declarator);
+				((Variable_declarationContext)_localctx).decls.add(((Variable_declarationContext)_localctx).declarator);
 				}
 				}
 				setState(297);
@@ -1673,7 +1673,6 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class Logic_expressionContext extends ParserRuleContext {
-		public Or_expressionContext or;
 		public Or_expressionContext or_expression() {
 			return getRuleContext(Or_expressionContext.class,0);
 		}
@@ -1695,7 +1694,7 @@ public class EduCodeParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(311);
-			((Logic_expressionContext)_localctx).or = or_expression(0);
+			or_expression(0);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1710,8 +1709,8 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class Or_expressionContext extends ParserRuleContext {
-		public Or_expressionContext or;
-		public And_expressionContext and;
+		public Or_expressionContext left;
+		public And_expressionContext right;
 		public Token op;
 		public And_expressionContext and_expression() {
 			return getRuleContext(And_expressionContext.class,0);
@@ -1747,7 +1746,7 @@ public class EduCodeParser extends Parser {
 			{
 			{
 			setState(314);
-			((Or_expressionContext)_localctx).and = and_expression(0);
+			((Or_expressionContext)_localctx).right = and_expression(0);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(321);
@@ -1760,15 +1759,15 @@ public class EduCodeParser extends Parser {
 					{
 					{
 					_localctx = new Or_expressionContext(_parentctx, _parentState);
-					_localctx.or = _prevctx;
-					_localctx.or = _prevctx;
+					_localctx.left = _prevctx;
+					_localctx.left = _prevctx;
 					pushNewRecursionContext(_localctx, _startState, RULE_or_expression);
 					setState(316);
 					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 					setState(317);
 					((Or_expressionContext)_localctx).op = match(T__27);
 					setState(318);
-					((Or_expressionContext)_localctx).and = and_expression(0);
+					((Or_expressionContext)_localctx).right = and_expression(0);
 					}
 					} 
 				}
@@ -1790,8 +1789,8 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class And_expressionContext extends ParserRuleContext {
-		public And_expressionContext and;
-		public Equality_expressionContext eq;
+		public And_expressionContext left;
+		public Equality_expressionContext right;
 		public Token op;
 		public Equality_expressionContext equality_expression() {
 			return getRuleContext(Equality_expressionContext.class,0);
@@ -1827,7 +1826,7 @@ public class EduCodeParser extends Parser {
 			{
 			{
 			setState(325);
-			((And_expressionContext)_localctx).eq = equality_expression(0);
+			((And_expressionContext)_localctx).right = equality_expression(0);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(332);
@@ -1840,15 +1839,15 @@ public class EduCodeParser extends Parser {
 					{
 					{
 					_localctx = new And_expressionContext(_parentctx, _parentState);
-					_localctx.and = _prevctx;
-					_localctx.and = _prevctx;
+					_localctx.left = _prevctx;
+					_localctx.left = _prevctx;
 					pushNewRecursionContext(_localctx, _startState, RULE_and_expression);
 					setState(327);
 					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 					setState(328);
 					((And_expressionContext)_localctx).op = match(T__28);
 					setState(329);
-					((And_expressionContext)_localctx).eq = equality_expression(0);
+					((And_expressionContext)_localctx).right = equality_expression(0);
 					}
 					} 
 				}
@@ -1870,8 +1869,8 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class Equality_expressionContext extends ParserRuleContext {
-		public Equality_expressionContext eq;
-		public Relative_expressionContext rel;
+		public Equality_expressionContext left;
+		public Relative_expressionContext right;
 		public Token op;
 		public Relative_expressionContext relative_expression() {
 			return getRuleContext(Relative_expressionContext.class,0);
@@ -1908,7 +1907,7 @@ public class EduCodeParser extends Parser {
 			{
 			{
 			setState(336);
-			((Equality_expressionContext)_localctx).rel = relative_expression();
+			((Equality_expressionContext)_localctx).right = relative_expression();
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(343);
@@ -1921,8 +1920,8 @@ public class EduCodeParser extends Parser {
 					{
 					{
 					_localctx = new Equality_expressionContext(_parentctx, _parentState);
-					_localctx.eq = _prevctx;
-					_localctx.eq = _prevctx;
+					_localctx.left = _prevctx;
+					_localctx.left = _prevctx;
 					pushNewRecursionContext(_localctx, _startState, RULE_equality_expression);
 					setState(338);
 					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
@@ -1938,7 +1937,7 @@ public class EduCodeParser extends Parser {
 						consume();
 					}
 					setState(340);
-					((Equality_expressionContext)_localctx).rel = relative_expression();
+					((Equality_expressionContext)_localctx).right = relative_expression();
 					}
 					} 
 				}
@@ -1960,9 +1959,9 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class Relative_expressionContext extends ParserRuleContext {
-		public Arithmetic_expressionContext arithmetic_expression;
-		public List<Arithmetic_expressionContext> ae = new ArrayList<Arithmetic_expressionContext>();
+		public Arithmetic_expressionContext left;
 		public Token op;
+		public Arithmetic_expressionContext right;
 		public List<Arithmetic_expressionContext> arithmetic_expression() {
 			return getRuleContexts(Arithmetic_expressionContext.class);
 		}
@@ -1992,8 +1991,7 @@ public class EduCodeParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(346);
-				((Relative_expressionContext)_localctx).arithmetic_expression = arithmetic_expression();
-				((Relative_expressionContext)_localctx).ae.add(((Relative_expressionContext)_localctx).arithmetic_expression);
+				((Relative_expressionContext)_localctx).left = arithmetic_expression();
 				setState(347);
 				((Relative_expressionContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
@@ -2006,16 +2004,14 @@ public class EduCodeParser extends Parser {
 					consume();
 				}
 				setState(348);
-				((Relative_expressionContext)_localctx).arithmetic_expression = arithmetic_expression();
-				((Relative_expressionContext)_localctx).ae.add(((Relative_expressionContext)_localctx).arithmetic_expression);
+				((Relative_expressionContext)_localctx).right = arithmetic_expression();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(350);
-				((Relative_expressionContext)_localctx).arithmetic_expression = arithmetic_expression();
-				((Relative_expressionContext)_localctx).ae.add(((Relative_expressionContext)_localctx).arithmetic_expression);
+				((Relative_expressionContext)_localctx).right = arithmetic_expression();
 				}
 				break;
 			}
@@ -2032,7 +2028,6 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class Arithmetic_expressionContext extends ParserRuleContext {
-		public Additive_expressionContext add;
 		public Additive_expressionContext additive_expression() {
 			return getRuleContext(Additive_expressionContext.class,0);
 		}
@@ -2054,7 +2049,7 @@ public class EduCodeParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(353);
-			((Arithmetic_expressionContext)_localctx).add = additive_expression(0);
+			additive_expression(0);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2069,8 +2064,8 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class Additive_expressionContext extends ParserRuleContext {
-		public Additive_expressionContext add;
-		public Multiplicative_expressionContext mult;
+		public Additive_expressionContext left;
+		public Multiplicative_expressionContext right;
 		public Token op;
 		public Multiplicative_expressionContext multiplicative_expression() {
 			return getRuleContext(Multiplicative_expressionContext.class,0);
@@ -2107,7 +2102,7 @@ public class EduCodeParser extends Parser {
 			{
 			{
 			setState(356);
-			((Additive_expressionContext)_localctx).mult = multiplicative_expression(0);
+			((Additive_expressionContext)_localctx).right = multiplicative_expression(0);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(363);
@@ -2120,8 +2115,8 @@ public class EduCodeParser extends Parser {
 					{
 					{
 					_localctx = new Additive_expressionContext(_parentctx, _parentState);
-					_localctx.add = _prevctx;
-					_localctx.add = _prevctx;
+					_localctx.left = _prevctx;
+					_localctx.left = _prevctx;
 					pushNewRecursionContext(_localctx, _startState, RULE_additive_expression);
 					setState(358);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
@@ -2137,7 +2132,7 @@ public class EduCodeParser extends Parser {
 						consume();
 					}
 					setState(360);
-					((Additive_expressionContext)_localctx).mult = multiplicative_expression(0);
+					((Additive_expressionContext)_localctx).right = multiplicative_expression(0);
 					}
 					} 
 				}
@@ -2159,8 +2154,8 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class Multiplicative_expressionContext extends ParserRuleContext {
-		public Multiplicative_expressionContext mult;
-		public FactorContext fac;
+		public Multiplicative_expressionContext left;
+		public FactorContext right;
 		public Token op;
 		public FactorContext factor() {
 			return getRuleContext(FactorContext.class,0);
@@ -2197,7 +2192,7 @@ public class EduCodeParser extends Parser {
 			{
 			{
 			setState(367);
-			((Multiplicative_expressionContext)_localctx).fac = factor();
+			((Multiplicative_expressionContext)_localctx).right = factor();
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(374);
@@ -2210,8 +2205,8 @@ public class EduCodeParser extends Parser {
 					{
 					{
 					_localctx = new Multiplicative_expressionContext(_parentctx, _parentState);
-					_localctx.mult = _prevctx;
-					_localctx.mult = _prevctx;
+					_localctx.left = _prevctx;
+					_localctx.left = _prevctx;
 					pushNewRecursionContext(_localctx, _startState, RULE_multiplicative_expression);
 					setState(369);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
@@ -2227,7 +2222,7 @@ public class EduCodeParser extends Parser {
 						consume();
 					}
 					setState(371);
-					((Multiplicative_expressionContext)_localctx).fac = factor();
+					((Multiplicative_expressionContext)_localctx).right = factor();
 					}
 					} 
 				}
@@ -2249,6 +2244,7 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class FactorContext extends ParserRuleContext {
+		public Token op;
 		public LiteralContext literal() {
 			return getRuleContext(LiteralContext.class,0);
 		}
@@ -2301,9 +2297,10 @@ public class EduCodeParser extends Parser {
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(379);
+				((FactorContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==T__36 || _la==T__40) ) {
-				_errHandler.recoverInline(this);
+					((FactorContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 				}
 				else {
 					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -3444,11 +3441,7 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-<<<<<<< Updated upstream
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3I\u01ec\4\2\t\2\4"+
-=======
 		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3I\u01ec\4\2\t\2\4"+
->>>>>>> Stashed changes
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+

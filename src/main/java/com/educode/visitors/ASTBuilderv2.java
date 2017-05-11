@@ -12,10 +12,8 @@ import com.educode.events.entity.robot.RobotDeathEvent;
 import com.educode.nodes.base.*;
 import com.educode.nodes.expression.AdditionExpression;
 import com.educode.nodes.expression.MultiplicationExpression;
-import com.educode.nodes.expression.logic.AndExpressionNode;
-import com.educode.nodes.expression.logic.EqualExpressionNode;
-import com.educode.nodes.expression.logic.OrExpressionNode;
-import com.educode.nodes.expression.logic.RelativeExpressionNode;
+import com.educode.nodes.expression.UnaryMinusNode;
+import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
@@ -91,6 +89,24 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
                 return ArithmeticOperator.Modulo;
             default:
                 return ArithmeticOperator.Error;
+        }
+    }
+    private AssignmentOperator getAssignmentOperator(String operator)
+    {
+        switch (operator)
+        {
+            case "=":
+                return AssignmentOperator.None;
+            case "+=":
+                return AssignmentOperator.Addition;
+            case "-=":
+                return AssignmentOperator.Subtraction;
+            case "/=":
+                return AssignmentOperator.Division;
+            case "*=":
+                return AssignmentOperator.Multiplication;
+            default:
+                return AssignmentOperator.Error;
         }
     }
 
@@ -254,22 +270,24 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     @Override
     public Node visitStatement(EduCodeParser.StatementContext ctx) {
         updateLineNumber(ctx);
-
-        return super.visitStmt(ctx); // Will pass to an appropriate statement.
+        return visit(ctx.getChild(0));
     }
 
     @Override
     public Node visitIterative_statement(EduCodeParser.Iterative_statementContext ctx) {
+        //todo
         return super.visitIterative_statement(ctx);
     }
 
     @Override
     public Node visitBreak_statement(EduCodeParser.Break_statementContext ctx) {
+        //todo
         return super.visitBreak_statement(ctx);
     }
 
     @Override
     public Node visitContinue_statement(EduCodeParser.Continue_statementContext ctx) {
+        //todo
         return super.visitContinue_statement(ctx);
     }
 
@@ -277,8 +295,8 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     public Node visitReturn_statement(EduCodeParser.Return_statementContext ctx) {
         updateLineNumber(ctx);
 
-        if (ctx.expr() != null)
-            return new ReturnNode(visit(ctx.expr()));
+        if (ctx.expr != null)
+            return new ReturnNode(visit(ctx.expr));
         else
             return new ReturnNode();
     }
@@ -320,6 +338,12 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
 
         ArrayList nodes = new ArrayList<>();
 
+        for (EduCodeParser.DeclaratorContext decl: ctx.decl)
+        {
+            nodes.add(visit(decl))
+        }
+        //todo
+        /*
         // Add nodes without assignments.
         for (EduCodeParser.IdentContext i : ctx.ident())
             nodes.add(new VariableDeclarationNode((IReference) visit(i), getType(ctx.dataType())));
@@ -327,12 +351,17 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
         // Add nodes with assignments
         for (EduCodeParser.AssignContext a : ctx.assign())
             nodes.add(new VariableDeclarationNode((AssignmentNode) visit(a), getType(ctx.dataType())));
-
+        */
         return new ListNode(nodes);
     }
 
     @Override
     public Node visitDeclarator(EduCodeParser.DeclaratorContext ctx) {
+        if (ctx.expr != null)
+            return new VariableDeclarationNode((AssignmentNode) visit(a), getType(ctx.));
+        else
+            return new VariableDeclarationNode((AssignmentNode) visit(a), getType(ctx.dataType()));
+
         return super.visitDeclarator(ctx);
     }
 
@@ -340,17 +369,17 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     public Node visitExpression(EduCodeParser.ExpressionContext ctx) {
         updateLineNumber(ctx);
 
-        return super.visitExpr(ctx);//visit(ctx.getChild(0));
+        return super.visit(ctx.getChild(0));//visit(ctx.getChild(0));
     }
 
     @Override
     public Node visitAssignment_expression(EduCodeParser.Assignment_expressionContext ctx) {
         updateLineNumber(ctx);
 
-        if (ctx.expr() != null) // Assign to expression
-            return new AssignmentNode((IReference) visit(ctx.reference()), visit(ctx.expr()));
+        if (ctx.rhs != null) // Assign to expression
+            return new AssignmentNode(getAssignmentOperator(ctx.op.getText()), (IReference) visit(ctx.lhs), visit(ctx.rhs));
 
-        System.out.println("Error at line " + ctx.getStart().getLine());
+        System.out.println("AssignError at line " + ctx.getStart().getLine());
         System.out.println(ctx.getText());
 
         return null;
@@ -360,7 +389,7 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     public Node visitLogic_expression(EduCodeParser.Logic_expressionContext ctx) {
         updateLineNumber(ctx);
 
-        return super.visitExpr(ctx);//visit(ctx.getChild(0));
+        return visit(ctx.getChild(0));//visit(ctx.getChild(0));
     }
 
     @Override
@@ -368,12 +397,11 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
         updateLineNumber(ctx);
 
         if (ctx.getChildCount() == 1)
-            return visit(ctx.getChild(0));
+            return visit(ctx.right);
         else if (ctx.getChildCount() == 3)
-            return new OrExpressionNode(visit(ctx.getChild(0)), visit(ctx.getChild(2)));
+            return new OrExpressionNode(visit(ctx.left), visit(ctx.right));
 
-        System.out.println("Unexpected child count in or-expression");
-
+        System.out.println("Unexpected child count in or-expression " + ctx.getStart().getLine());
         return null;
     }
 
@@ -382,23 +410,23 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
         updateLineNumber(ctx);
 
         if (ctx.getChildCount() == 1)
-            return visit(ctx.getChild(0));
+            return visit(ctx.right);
         else if (ctx.getChildCount() == 3)
-            return new AndExpressionNode(visit(ctx.getChild(0)), visit(ctx.getChild(2)));
+            return new AndExpressionNode(visit(ctx.left), visit(ctx.right));
 
-        System.out.println("Unexpected child count in and-expression");
-
+        System.out.println("Unexpected child count in and-expression " + ctx.getStart().getLine());
         return null;
     }
 
     @Override
     public Node visitEquality_expression(EduCodeParser.Equality_expressionContext ctx) {
-        if (ctx.getChildCount() == 1)
-            return visit(ctx.getChild(0));
-        else if (ctx.getChildCount() == 3)
-            return new EqualExpressionNode(getLogicalOperator(ctx.EQUALOP().getText()), visit(ctx.getChild(0)), visit(ctx.getChild(2)));
 
-        System.out.println("Unexpected child count in equals-expression");
+        if (ctx.getChildCount() == 1)
+            return visit(ctx.right);
+        else if (ctx.getChildCount() == 3)
+            return new EqualExpressionNode(getLogicalOperator(ctx.op.getText()), visit(ctx.left), visit(ctx.right));
+
+        System.out.println("Unexpected child count in equals-expression " + ctx.getStart().getLine());
 
         return null;
     }
@@ -408,11 +436,11 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
         updateLineNumber(ctx);
 
         if (ctx.getChildCount() == 1)
-            return visit(ctx.getChild(0));
+            return visit(ctx.right);
         else if (ctx.getChildCount() == 3)
-            return new RelativeExpressionNode(getLogicalOperator(ctx.RELOP().getText()), visit(ctx.getChild(0)), visit(ctx.getChild(2)));
+            return new RelativeExpressionNode(getLogicalOperator(ctx.op.getText()), visit(ctx.left), visit(ctx.right));
 
-        System.out.println("Unexpected child count in relative-expression");
+        System.out.println("Unexpected child count in relative-expression " + ctx.getStart().getLine());
 
         return null;
     }
@@ -421,19 +449,21 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     public Node visitArithmetic_expression(EduCodeParser.Arithmetic_expressionContext ctx) {
         updateLineNumber(ctx);
 
-        if (ctx.getChildCount() == 1)
-            return visit(ctx.term());
-        else if (ctx.getChildCount() == 3)
-            return new AdditionExpression(getArithmeticOperator(ctx.ADDOP().getText()), visit(ctx.arithExpr()), visit(ctx.term()));
-
-        System.out.println("ArithError at line " + ctx.getStart().getLine());
-
-        return null;
+        return visit(ctx.getChild(0));
     }
 
     @Override
     public Node visitAdditive_expression(EduCodeParser.Additive_expressionContext ctx) {
-        return super.visitAdditive_expression(ctx);
+        updateLineNumber(ctx);
+
+        if (ctx.getChildCount() == 1)
+            return visit(ctx.right);
+        else if (ctx.getChildCount() == 3)
+            return new AdditionExpression(getArithmeticOperator(ctx.op.getText()), visit(ctx.left), visit(ctx.right));
+
+        System.out.println("AddError at line " + ctx.getStart().getLine());
+
+        return null;
     }
 
     @Override
@@ -441,11 +471,11 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
         updateLineNumber(ctx);
 
         if (ctx.getChildCount() == 1)
-            return visit(ctx.factor());
+            return visit(ctx.right);
         else if (ctx.getChildCount() == 3)
-            return new MultiplicationExpression(getArithmeticOperator(ctx.MULTOP().getText()), visit(ctx.term()), visit(ctx.factor()));
+            return new MultiplicationExpression(getArithmeticOperator(ctx.op.getText()), visit(ctx.left), visit(ctx.right));
 
-        System.out.println("TermError at line " + ctx.getStart().getLine());
+        System.out.println("MultError at line " + ctx.getStart().getLine());
 
         return null;
     }
@@ -454,20 +484,20 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     public Node visitFactor(EduCodeParser.FactorContext ctx) {
         updateLineNumber(ctx);
 
-        if (ctx.parExpr() != null)
-            return visit(ctx.parExpr());
-        else if (ctx.literal() != null)
+        if (ctx.literal() != null)
             return visit(ctx.literal());
-        else if (ctx.methodC() != null)
-            return visit(ctx.methodC());
-        else if (ctx.negation() != null)
-            return visit(ctx.negation());
-        else if (ctx.boolLit() != null)
-            return new BoolLiteralNode(Boolean.parseBoolean(ctx.getText()));
-        else if (ctx.typeCast() != null)
-            return visit(ctx.typeCast());
-        else if (ctx.objInst() != null)
-            return visit(ctx.objInst());
+        else if (ctx.access() != null)
+            return visit(ctx.access());
+        else if (ctx.factor() != null){
+            if (ctx.op.getText().equals("not"))
+                return new NegateNode(visit(ctx.factor()));
+            else if (ctx.op.getText().equals("-"))
+                return  new UnaryMinusNode(visit(ctx.factor()));
+        }
+        else if (ctx.type_cast() != null)
+            return visit(ctx.type_cast());
+        else if (ctx.object_instantiation() != null)
+            return visit(ctx.object_instantiation());
 
         System.out.println("FactError at line " + ctx.getStart().getLine());
 
@@ -478,16 +508,17 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     public Node visitAccess(EduCodeParser.AccessContext ctx) {
         updateLineNumber(ctx);
 
-            if (ctx.field_access() != null)
-                return new StructReferencingNode(visit(ctx.rec), visit(ctx.field_access()));
-            else if (ctx.element_access() != null)
-                return new ArrayReferencingNode(visit(ctx.rec), visit(ctx.element_access()));
-            else if (ctx.method_access() != null)
-                return new StructReferencingNode(visit(ctx.rec), visit(ctx.method_access()))
-            else
-                return visit(ctx.sub);
+        if (ctx.field_access() != null)
+            return new StructReferencingNode(visit(ctx.rec), visit(ctx.field_access()));
+        else if (ctx.element_access() != null)
+            return new ArrayReferencingNode(visit(ctx.rec), visit(ctx.element_access()));
+        else if (ctx.method_access() != null)
+            return new StructReferencingNode(visit(ctx.rec), visit(ctx.method_access()));
+        else if (ctx.sub != null)
+            return visit(ctx.sub);
 
-        return super.visitAccess(ctx);
+        System.out.println("AccessError at line " + ctx.getStart().getLine());
+        return null;
     }
 
     @Override

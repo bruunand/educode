@@ -83,7 +83,7 @@ foreach_statement
     ;
 
 variable_declaration
-    : type=data_type  decl+=declarator (',' decl+=declarator)*
+    : type=data_type  decls+=declarator (',' decls+=declarator)*
     ;
 
 declarator
@@ -100,47 +100,47 @@ assignment_expression
     ;
 
 logic_expression
-    : or=or_expression
+    : or_expression
     ;
 
 or_expression
-    : or=or_expression op='or' and=and_expression
-    | and=and_expression
+    : left=or_expression op='or' right=and_expression
+    | right=and_expression
     ;
 
 and_expression
-    : and=and_expression op='and' eq=equality_expression
-    | eq=equality_expression
+    : left=and_expression op='and' right=equality_expression
+    | right=equality_expression
     ;
 
 equality_expression
-    : eq=equality_expression op=('equals'|'not equals') rel=relative_expression
-    | rel=relative_expression
+    : left=equality_expression op=('equals'|'not equals') right=relative_expression
+    | right=relative_expression
     ;
 
 relative_expression
-    : ae+=arithmetic_expression op=('greater than'|'less than'|'greater than or equals'|'less than or equals') ae+=arithmetic_expression
-    | ae+=arithmetic_expression
+    : left=arithmetic_expression op=('greater than'|'less than'|'greater than or equals'|'less than or equals') right=arithmetic_expression
+    | right=arithmetic_expression
     ;
 
 arithmetic_expression
-    : add=additive_expression
+    : additive_expression
     ;
 
 additive_expression
-    : mult=multiplicative_expression
-    | add=additive_expression op=('+'|'-') mult=multiplicative_expression
+    : right=multiplicative_expression
+    | left=additive_expression op=('+'|'-') right=multiplicative_expression
     ;
 
 multiplicative_expression
-    : fac=factor
-    | mult=multiplicative_expression op=('/'|'*'|'modulo') fac=factor
+    : right=factor
+    | left=multiplicative_expression op=('/'|'*'|'modulo') right=factor
     ;
 
 factor
     : literal
     | object_instantiation
-    | ('not'|'-') factor
+    | op=('not'|'-') factor
     | type_cast
     | access
     ;
