@@ -157,7 +157,7 @@ field_access
     ;
 
 element_access
-    : '[' expr=logic_expression ']'
+    : '[' index=logic_expression ']'
     ;
 
 method_access

@@ -18,9 +18,12 @@ import com.educode.nodes.expression.logic.OrExpressionNode;
 import com.educode.nodes.expression.logic.RelativeExpressionNode;
 import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
+import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
+import com.educode.nodes.referencing.ArrayReferencingNode;
 import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
+import com.educode.nodes.referencing.StructReferencingNode;
 import com.educode.nodes.statement.AssignmentNode;
 import com.educode.nodes.statement.ForEachNode;
 import com.educode.nodes.statement.ReturnNode;
@@ -473,22 +476,39 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
 
     @Override
     public Node visitAccess(EduCodeParser.AccessContext ctx) {
+        updateLineNumber(ctx);
+
+            if (ctx.field_access() != null)
+                return new StructReferencingNode(visit(ctx.rec), visit(ctx.field_access()));
+            else if (ctx.element_access() != null)
+                return new ArrayReferencingNode(visit(ctx.rec), visit(ctx.element_access()));
+            else if (ctx.method_access() != null)
+                return new StructReferencingNode(visit(ctx.rec), visit(ctx.method_access()))
+            else
+                return visit(ctx.sub);
+
         return super.visitAccess(ctx);
     }
 
     @Override
     public Node visitField_access(EduCodeParser.Field_accessContext ctx) {
-        return super.visitField_access(ctx);
+        updateLineNumber(ctx);
+
+        return visit(ctx.id);
     }
 
     @Override
     public Node visitElement_access(EduCodeParser.Element_accessContext ctx) {
-        return super.visitElement_access(ctx);
+        updateLineNumber(ctx);
+
+        return visit(ctx.index);
     }
 
     @Override
     public Node visitMethod_access(EduCodeParser.Method_accessContext ctx) {
-        return super.visitMethod_access(ctx);
+        updateLineNumber(ctx);
+
+        return visit(ctx.method);
     }
 
     @Override
@@ -506,8 +526,11 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     @Override
     public Node visitMethod_call(EduCodeParser.Method_callContext ctx) {
         updateLineNumber(ctx);
-        //todo
-        return super.visitMethod_call(ctx);
+
+        if (ctx.args != null)
+            return new MethodInvocationNode((IReference) visit(ctx.id), visit(ctx.args));
+        else
+            return new MethodInvocationNode((IReference) visit(ctx.id), null);
     }
 
     @Override
