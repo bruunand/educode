@@ -4287,6 +4287,7 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class IdentifierContext extends ParserRuleContext {
+		public Token id;
 		public TerminalNode IDENTIFIER() { return getToken(EduCodeParser.IDENTIFIER, 0); }
 		public IdentifierContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -4307,10 +4308,14 @@ public class EduCodeParser extends Parser {
 			{
 <<<<<<< Updated upstream
 			setState(485);
+<<<<<<< HEAD
 =======
 			setState(489);
 >>>>>>> Stashed changes
 			match(IDENTIFIER);
+=======
+			((IdentifierContext)_localctx).id = match(IDENTIFIER);
+>>>>>>> CFGupdate
 			}
 		}
 		catch (RecognitionException re) {
