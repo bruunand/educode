@@ -10,9 +10,24 @@ import com.educode.events.entity.EntityDeathEvent;
 import com.educode.events.entity.robot.RobotAttackedEvent;
 import com.educode.events.entity.robot.RobotDeathEvent;
 import com.educode.nodes.base.*;
+import com.educode.nodes.expression.AdditionExpression;
+import com.educode.nodes.expression.MultiplicationExpression;
+import com.educode.nodes.expression.logic.AndExpressionNode;
+import com.educode.nodes.expression.logic.EqualExpressionNode;
+import com.educode.nodes.expression.logic.OrExpressionNode;
+import com.educode.nodes.expression.logic.RelativeExpressionNode;
 import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
+import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.IReference;
+import com.educode.nodes.referencing.IdentifierReferencingNode;
+import com.educode.nodes.statement.AssignmentNode;
+import com.educode.nodes.statement.ForEachNode;
+import com.educode.nodes.statement.ReturnNode;
+import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.statement.conditional.ConditionNode;
+import com.educode.nodes.statement.conditional.IfNode;
+import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.*;
 import com.educode.types.*;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -206,17 +221,38 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
 
     @Override
     public Node visitParameter(EduCodeParser.ParameterContext ctx) {
-        return super.visitParameter(ctx);
+        updateLineNumber(ctx);
+
+        return new ParameterNode((IReference) visit(ctx.id), getType(ctx.type));
     }
 
     @Override
     public Node visitStatement_list(EduCodeParser.Statement_listContext ctx) {
-        return super.visitStatement_list(ctx);
+        updateLineNumber(ctx);
+
+        ArrayList<Node> childStatements = new ArrayList<>();
+
+        for (EduCodeParser.StatementContext statement : ctx.statements)
+        {
+            Node visitResult = visit(statement);
+
+            // Some nodes (like variable declaration) will return a collection of nodes
+            // Instead of adding the ListNode, we will add the contained nodes
+            // We don't do this for NaryNode because some nodes (If-Node) can't be split up
+            if (visitResult instanceof ListNode)
+                childStatements.addAll(((NaryNode)visitResult).getChildren());
+            else
+                childStatements.add(visitResult);
+        }
+
+        return new BlockNode(childStatements);
     }
 
     @Override
     public Node visitStatement(EduCodeParser.StatementContext ctx) {
-        return super.visitStatement(ctx);
+        updateLineNumber(ctx);
+
+        return super.visitStmt(ctx); // Will pass to an appropriate statement.
     }
 
     @Override
@@ -236,27 +272,60 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
 
     @Override
     public Node visitReturn_statement(EduCodeParser.Return_statementContext ctx) {
-        return super.visitReturn_statement(ctx);
+        updateLineNumber(ctx);
+
+        if (ctx.expr() != null)
+            return new ReturnNode(visit(ctx.expr()));
+        else
+            return new ReturnNode();
     }
 
     @Override
     public Node visitRepeat_statement(EduCodeParser.Repeat_statementContext ctx) {
-        return super.visitRepeat_statement(ctx);
+        updateLineNumber(ctx);
+
+        return new RepeatWhileNode(new ConditionNode(visit(ctx.logicExpr()), visit(ctx.stmts())));
     }
 
     @Override
     public Node visitIf_statement(EduCodeParser.If_statementContext ctx) {
-        return super.visitIf_statement(ctx);
+        updateLineNumber(ctx);
+
+        IfNode ifNode = new IfNode();
+
+        // If there is an else block, skip the last block
+        // There is an else block if there are fewer logical expressions than statements
+        boolean hasElseBlock = ctx.logicExpr().size() < ctx.stmts().size();
+        for (int i = 0; i < (hasElseBlock ? ctx.stmts().size() - 1 : ctx.stmts().size()); i++)
+            ifNode.addChild(new ConditionNode(visit(ctx.logicExpr(i)), visit(ctx.stmts(i))));
+
+        // If there is an else block, add it finally without a ConditionNode
+        if (hasElseBlock)
+            ifNode.addChild(visit(ctx.stmts(ctx.stmts().size() - 1)));
+
+        return ifNode;
     }
 
     @Override
     public Node visitForeach_statement(EduCodeParser.Foreach_statementContext ctx) {
-        return super.visitForeach_statement(ctx);
+        return new ForEachNode((IReference) visit(ctx.ident()), getType(ctx.dataType()), visit(ctx.expr()), visit(ctx.stmts()));
     }
 
     @Override
     public Node visitVariable_declaration(EduCodeParser.Variable_declarationContext ctx) {
-        return super.visitVariable_declaration(ctx);
+        updateLineNumber(ctx);
+
+        ArrayList nodes = new ArrayList<>();
+
+        // Add nodes without assignments.
+        for (EduCodeParser.IdentContext i : ctx.ident())
+            nodes.add(new VariableDeclarationNode((IReference) visit(i), getType(ctx.dataType())));
+
+        // Add nodes with assignments
+        for (EduCodeParser.AssignContext a : ctx.assign())
+            nodes.add(new VariableDeclarationNode((AssignmentNode) visit(a), getType(ctx.dataType())));
+
+        return new ListNode(nodes);
     }
 
     @Override
@@ -266,42 +335,97 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
 
     @Override
     public Node visitExpression(EduCodeParser.ExpressionContext ctx) {
-        return super.visitExpression(ctx);
+        updateLineNumber(ctx);
+
+        return super.visitExpr(ctx);//visit(ctx.getChild(0));
     }
 
     @Override
     public Node visitAssignment_expression(EduCodeParser.Assignment_expressionContext ctx) {
-        return super.visitAssignment_expression(ctx);
+        updateLineNumber(ctx);
+
+        if (ctx.expr() != null) // Assign to expression
+            return new AssignmentNode((IReference) visit(ctx.reference()), visit(ctx.expr()));
+
+        System.out.println("Error at line " + ctx.getStart().getLine());
+        System.out.println(ctx.getText());
+
+        return null;
     }
 
     @Override
     public Node visitLogic_expression(EduCodeParser.Logic_expressionContext ctx) {
-        return super.visitLogic_expression(ctx);
+        updateLineNumber(ctx);
+
+        return super.visitExpr(ctx);//visit(ctx.getChild(0));
     }
 
     @Override
     public Node visitOr_expression(EduCodeParser.Or_expressionContext ctx) {
-        return super.visitOr_expression(ctx);
+        updateLineNumber(ctx);
+
+        if (ctx.getChildCount() == 1)
+            return visit(ctx.getChild(0));
+        else if (ctx.getChildCount() == 3)
+            return new OrExpressionNode(visit(ctx.getChild(0)), visit(ctx.getChild(2)));
+
+        System.out.println("Unexpected child count in or-expression");
+
+        return null;
     }
 
     @Override
     public Node visitAnd_expression(EduCodeParser.And_expressionContext ctx) {
-        return super.visitAnd_expression(ctx);
+        updateLineNumber(ctx);
+
+        if (ctx.getChildCount() == 1)
+            return visit(ctx.getChild(0));
+        else if (ctx.getChildCount() == 3)
+            return new AndExpressionNode(visit(ctx.getChild(0)), visit(ctx.getChild(2)));
+
+        System.out.println("Unexpected child count in and-expression");
+
+        return null;
     }
 
     @Override
     public Node visitEquality_expression(EduCodeParser.Equality_expressionContext ctx) {
-        return super.visitEquality_expression(ctx);
+        if (ctx.getChildCount() == 1)
+            return visit(ctx.getChild(0));
+        else if (ctx.getChildCount() == 3)
+            return new EqualExpressionNode(getLogicalOperator(ctx.EQUALOP().getText()), visit(ctx.getChild(0)), visit(ctx.getChild(2)));
+
+        System.out.println("Unexpected child count in equals-expression");
+
+        return null;
     }
 
     @Override
     public Node visitRelative_expression(EduCodeParser.Relative_expressionContext ctx) {
-        return super.visitRelative_expression(ctx);
+        updateLineNumber(ctx);
+
+        if (ctx.getChildCount() == 1)
+            return visit(ctx.getChild(0));
+        else if (ctx.getChildCount() == 3)
+            return new RelativeExpressionNode(getLogicalOperator(ctx.RELOP().getText()), visit(ctx.getChild(0)), visit(ctx.getChild(2)));
+
+        System.out.println("Unexpected child count in relative-expression");
+
+        return null;
     }
 
     @Override
     public Node visitArithmetic_expression(EduCodeParser.Arithmetic_expressionContext ctx) {
-        return super.visitArithmetic_expression(ctx);
+        updateLineNumber(ctx);
+
+        if (ctx.getChildCount() == 1)
+            return visit(ctx.term());
+        else if (ctx.getChildCount() == 3)
+            return new AdditionExpression(getArithmeticOperator(ctx.ADDOP().getText()), visit(ctx.arithExpr()), visit(ctx.term()));
+
+        System.out.println("ArithError at line " + ctx.getStart().getLine());
+
+        return null;
     }
 
     @Override
@@ -311,12 +435,40 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
 
     @Override
     public Node visitMultiplicative_expression(EduCodeParser.Multiplicative_expressionContext ctx) {
-        return super.visitMultiplicative_expression(ctx);
+        updateLineNumber(ctx);
+
+        if (ctx.getChildCount() == 1)
+            return visit(ctx.factor());
+        else if (ctx.getChildCount() == 3)
+            return new MultiplicationExpression(getArithmeticOperator(ctx.MULTOP().getText()), visit(ctx.term()), visit(ctx.factor()));
+
+        System.out.println("TermError at line " + ctx.getStart().getLine());
+
+        return null;
     }
 
     @Override
     public Node visitFactor(EduCodeParser.FactorContext ctx) {
-        return super.visitFactor(ctx);
+        updateLineNumber(ctx);
+
+        if (ctx.parExpr() != null)
+            return visit(ctx.parExpr());
+        else if (ctx.literal() != null)
+            return visit(ctx.literal());
+        else if (ctx.methodC() != null)
+            return visit(ctx.methodC());
+        else if (ctx.negation() != null)
+            return visit(ctx.negation());
+        else if (ctx.boolLit() != null)
+            return new BoolLiteralNode(Boolean.parseBoolean(ctx.getText()));
+        else if (ctx.typeCast() != null)
+            return visit(ctx.typeCast());
+        else if (ctx.objInst() != null)
+            return visit(ctx.objInst());
+
+        System.out.println("FactError at line " + ctx.getStart().getLine());
+
+        return null;
     }
 
     @Override
@@ -346,7 +498,7 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
 
     @Override
     public Node visitParenthesis_expression(EduCodeParser.Parenthesis_expressionContext ctx) {
-        return super.visitParenthesis_expression(ctx);
+        return visit(ctx.logicExpr());
     }
 
     @Override
@@ -356,12 +508,17 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
 
     @Override
     public Node visitType_cast(EduCodeParser.Type_castContext ctx) {
-        return super.visitType_cast(ctx);
+        return new TypeCastNode(getType(ctx.dataType()), visit(ctx.factor()));
     }
 
     @Override
     public Node visitObject_instantiation(EduCodeParser.Object_instantiationContext ctx) {
-        return super.visitObject_instantiation(ctx);
+        Type classType = getType(ctx.dataType());
+
+        if (ctx.args() != null)
+            return new ObjectInstantiationNode(visit(ctx.args()), classType);
+        else
+            return new ObjectInstantiationNode(null, classType);
     }
 
     @Override
@@ -371,32 +528,36 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
 
     @Override
     public Node visitData_type(EduCodeParser.Data_typeContext ctx) {
-        return super.visitData_type(ctx);
+        return null;
     }
 
     @Override
     public Node visitLiteral(EduCodeParser.LiteralContext ctx) {
-        return super.visitLiteral(ctx);
+        updateLineNumber(ctx);
+
+        return visit(ctx.getChild(0));
     }
 
     @Override
     public Node visitString_literal(EduCodeParser.String_literalContext ctx) {
-        return super.visitString_literal(ctx);
+        return new StringLiteralNode(ctx.STRLIT().getText());
     }
 
     @Override
     public Node visitCoordinate_literal(EduCodeParser.Coordinate_literalContext ctx) {
-        return super.visitCoordinate_literal(ctx);
+        return new CoordinatesLiteralNode(visit(ctx.logicExpr(0)), visit(ctx.logicExpr(1)), visit(ctx.logicExpr(2)));
     }
 
     @Override
     public Node visitNumber_literal(EduCodeParser.Number_literalContext ctx) {
-        return super.visitNumber_literal(ctx);
+        return new NumberLiteralNode(Float.parseFloat(ctx.getText()));
     }
 
     @Override
     public Node visitBool_literal(EduCodeParser.Bool_literalContext ctx) {
-        return super.visitBool_literal(ctx);
+        updateLineNumber(ctx);
+
+        return new BoolLiteralNode(ctx.TRUE() != null);
     }
 
     @Override
@@ -406,11 +567,13 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
 
     @Override
     public Node visitIdentifier(EduCodeParser.IdentifierContext ctx) {
-        return super.visitIdentifier(ctx);
+        updateLineNumber(ctx);
+
+        return new IdentifierReferencingNode(ctx.IDENT().getText());
     }
 
     @Override
     public Node visitEnd_of_line(EduCodeParser.End_of_lineContext ctx) {
-        return super.visitEnd_of_line(ctx);
+        return null;
     }
 }

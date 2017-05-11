@@ -8,14 +8,6 @@ usings
     : 'using' id+=identifier end_of_line+ ('using' id+=identifier end_of_line+)*
     ;
 
-program
-    : 'program' id=identifier end_of_line+ ((el+=event_definition|ml+=method_declaration|vl+=variable_declaration) end_of_line+)* 'end program'
-    ;
-
-usings
-    : 'using' id+=identifier end_of_line+ ('using' id+=identifier end_of_line+)*
-    ;
-
 program  
     : 'program' id=identifier end_of_line+ ((el+=event_definition|ml+=method_declaration|vl+=variable_declaration) end_of_line+)* 'end program'
     ;
