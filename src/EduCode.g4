@@ -37,7 +37,7 @@ statement_list
     ;
 
 statement
-    : method_call
+    : call_statement
     | assignment_expression
     | variable_declaration
     | if_statement
@@ -45,6 +45,11 @@ statement
     | return_statement
     | break_statement
     | continue_statement
+    ;
+
+call_statement
+    : method_call
+    | access method_access
     ;
 
 iterative_statement
@@ -77,7 +82,7 @@ foreach_statement
     ;
 
 variable_declaration
-    : type=data_type  decl+=declarator (',' decl+=declarator)
+    : type=data_type  decl+=declarator (',' decl+=declarator)*
     ;
 
 declarator
