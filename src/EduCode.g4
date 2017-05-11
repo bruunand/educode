@@ -274,7 +274,6 @@ OR_OPERATOR
 
 UNARY_OPERATOR
     : 'not'
-    | '+'
     | '-'
     ;
 
