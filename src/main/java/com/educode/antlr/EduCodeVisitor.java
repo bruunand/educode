@@ -1,4 +1,4 @@
-// Generated from C:/EduCode/EduCode-P4/src\EduCode.g4 by ANTLR 4.7
+// Generated from /home/zen/Git/EduCode-P4/src/EduCode.g4 by ANTLR 4.6
 package com.educode.antlr;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -70,6 +70,12 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStatement(EduCodeParser.StatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#call_statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCall_statement(EduCodeParser.Call_statementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#iterative_statement}.
 	 * @param ctx the parse tree

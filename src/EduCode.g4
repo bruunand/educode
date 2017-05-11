@@ -8,7 +8,7 @@ usings
     : 'using' id+=identifier end_of_line+ ('using' id+=identifier end_of_line+)*
     ;
 
-program  
+program
     : 'program' id=identifier end_of_line+ ((el+=event_definition|ml+=method_declaration|vl+=variable_declaration) end_of_line+)* 'end program'
     ;
 
@@ -70,11 +70,11 @@ return_statement
     ;
 
 repeat_statement
-    : 'repeat while' predicate=logic_expression end_of_line+ bode=statement_list 'end repeat'
+    : 'repeat while' predicate=logic_expression end_of_line+ body=statement_list 'end repeat'
     ;
 
 if_statement
-    : 'if' predicate+=logic_expression 'then' end_of_line+ body+=statement_list ('else if' predicate+=logic_expression 'then' end_of_line+ body+=statement_list)* ('else' end_of_line+ elseBody=statement_list)? 'end if'
+    : 'if' predicates+=logic_expression 'then' end_of_line+ bodies+=statement_list ('else if' predicates+=logic_expression 'then' end_of_line+ bodies+=statement_list)* ('else' end_of_line+ elseBody=statement_list)? 'end if'
     ;
 
 foreach_statement
@@ -146,9 +146,9 @@ factor
 
 access
     : sub=subfactor
-    | rec=access acc=field_access
-    | rec=access acc=element_access
-    | rec=access acc=method_access
+    | rec=access field_access
+    | rec=access element_access
+    | rec=access method_access
     ;
 
 field_access
@@ -186,23 +186,21 @@ object_instantiation
     ;
 
 event_type
-    : 'robotDeath'
-    | 'robotAttacked'
-    | 'entityDeath'
-    | 'chatMessage'
-    | ('stringMessageReceived'|'entityMessageReceived') LPAREN number_literal RPAREN
+    : type='robotDeath'
+    | type='robotAttacked'
+    | type='entityDeath'
+    | type='chatMessage'
+    | type=('stringMessageReceived'|'entityMessageReceived') LPAREN param=number_literal RPAREN
     ;
 
 data_type
-    : 'number'//Contains both ints and floats
+    : 'number'
     | 'bool'
-    | 'coordinates'//Position data, (x, z, _y)?
+    | 'coordinates'
     | 'string'
-    | 'Collection' '<' data_type '>'//A collection of a type (Like a list in C#)
-    | 'Block'//Data for blocks placed in the world
-    | 'Entity'//Data for an entity like animals and monsters
-    | 'Item'//Data for an item while in inventory for example
-    | 'Texture'//The look of a block/entity??
+    | 'Collection' '<' childType=data_type '>'
+    | 'Entity'
+    | 'Item'
     ;
 
 literal

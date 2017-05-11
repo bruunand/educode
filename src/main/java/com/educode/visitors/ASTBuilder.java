@@ -96,9 +96,9 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         }
     }
 
-    private EventTypeBase getEventType(EduCodeParser.EventTypeContext ctx)
+    private EventTypeBase getEventType(EduCodeParser.Event_typeContext ctx)
     {
-        switch (ctx.getChild(0).getText())
+        switch (ctx.type.getText())
         {
             case "robotDeath":
                 return new RobotDeathEvent();
@@ -109,18 +109,18 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
             case "chatMessage":
                 return new ChatMessageEvent();
             case "stringMessageReceived":
-                return new StringMessageReceivedEvent((NumberLiteralNode) visit(ctx.numberLit()));
+                return new StringMessageReceivedEvent((NumberLiteralNode) visit(ctx.param));
             case "entityMessageReceived":
-                return new EntityMessageReceivedEvent((NumberLiteralNode) visit(ctx.numberLit()));
+                return new EntityMessageReceivedEvent((NumberLiteralNode) visit(ctx.param));
         }
 
         return null;
     }
 
-    private Type getType(EduCodeParser.DataTypeContext ctx)
+    private Type getType(EduCodeParser.Data_typeContext ctx)
     {
-        if (ctx.dataType() != null)
-            return new Type(getType(ctx.dataType()));
+        if (ctx.childType != null)
+            return new Type(getType(ctx.childType));
         else
             switch (ctx.getText())
             {
@@ -141,66 +141,66 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     }
 
     @Override
-    public Node visitObjInst(EduCodeParser.ObjInstContext ctx)
+    public Node visitObject_instantiation(EduCodeParser.Object_instantiationContext ctx)
     {
-        Type classType = getType(ctx.dataType());
+        Type classType = getType(ctx.data_type());
 
-        if (ctx.args() != null)
-            return new ObjectInstantiationNode(visit(ctx.args()), classType);
+        if (ctx.args != null)
+            return new ObjectInstantiationNode(visit(ctx.args), classType);
         else
             return new ObjectInstantiationNode(null, classType);
     }
 
     @Override
-    public Node visitParams(EduCodeParser.ParamsContext ctx)
+    public Node visitParameter_list(EduCodeParser.Parameter_listContext ctx)
     {
         updateLineNumber(ctx);
 
         ListNode parameterCollection = new ListNode();
 
-        for (EduCodeParser.ParamContext p : ctx.param())
+        for (EduCodeParser.ParameterContext p : ctx.params)
             parameterCollection.addChild(visit(p));
 
         return parameterCollection;
     }
 
     @Override
-    public Node visitParam(EduCodeParser.ParamContext ctx)
+    public Node visitParameter(EduCodeParser.ParameterContext ctx)
     {
         updateLineNumber(ctx);
 
-        return new ParameterNode((IReference) visit(ctx.ident()), getType(ctx.dataType()));
+        return new ParameterNode((IReference) visit(ctx.id), getType(ctx.type));
     }
 
     @Override
-    public Node visitStmt(EduCodeParser.StmtContext ctx)
+    public Node visitStatement(EduCodeParser.StatementContext ctx)
     {
         updateLineNumber(ctx);
 
-        return super.visitStmt(ctx); // Will pass to an appropriate statement.
+        return super.visitStatement(ctx); // Will pass to an appropriate statement.
     }
 
     @Override
-    public Node visitRet(EduCodeParser.RetContext ctx)
+    public Node visitReturn_statement(EduCodeParser.Return_statementContext ctx)
     {
         updateLineNumber(ctx);
 
-        if (ctx.expr() != null)
-            return new ReturnNode(visit(ctx.expr()));
+        if (ctx.expr != null)
+            return new ReturnNode(visit(ctx.expr));
         else
             return new ReturnNode();
     }
 
     @Override
-    public Node visitLoopStmt(EduCodeParser.LoopStmtContext ctx)
+    public Node visitRepeat_statement(EduCodeParser.Repeat_statementContext ctx)
     {
         updateLineNumber(ctx);
 
-        return new RepeatWhileNode(new ConditionNode(visit(ctx.logicExpr()), visit(ctx.stmts())));
+        return new RepeatWhileNode(new ConditionNode(visit(ctx.predicate), visit(ctx.body)));
     }
 
     @Override
-    public Node visitIfStmt(EduCodeParser.IfStmtContext ctx)
+    public Node visitIf_statement(EduCodeParser.If_statementContext ctx)
     {
         updateLineNumber(ctx);
 
@@ -208,19 +208,19 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
 
         // If there is an else block, skip the last block
         // There is an else block if there are fewer logical expressions than statements
-        boolean hasElseBlock = ctx.logicExpr().size() < ctx.stmts().size();
-        for (int i = 0; i < (hasElseBlock ? ctx.stmts().size() - 1 : ctx.stmts().size()); i++)
-            ifNode.addChild(new ConditionNode(visit(ctx.logicExpr(i)), visit(ctx.stmts(i))));
+        boolean hasElseBlock = ctx.elseBody != null;
+        for (int i = 0; i < (hasElseBlock ? ctx.bodies.size() - 1 : ctx.bodies.size()); i++)
+            ifNode.addChild(new ConditionNode(visit(ctx.predicates.get(i)), visit(ctx.bodies.get(i))));
 
         // If there is an else block, add it finally without a ConditionNode
         if (hasElseBlock)
-            ifNode.addChild(visit(ctx.stmts(ctx.stmts().size() - 1)));
+            ifNode.addChild(visit(ctx.elseBody));
 
         return ifNode;
     }
 
     @Override
-    public Node visitIterStmt(EduCodeParser.IterStmtContext ctx)
+    public Node visitForeach_statement(EduCodeParser.Foreach_statementContext ctx)
     {
         return new ForEachNode((IReference) visit(ctx.ident()), getType(ctx.dataType()), visit(ctx.expr()), visit(ctx.stmts()));
     }
