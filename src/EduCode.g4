@@ -95,7 +95,7 @@ expression
     ;
 
 assignment_expression
-    : lhs=factor op=ASSIGNMENT_OPERATOR rhs=expression
+    : lhs=factor op=assignment_operator rhs=expression
     ;
 
 logic_expression
@@ -197,7 +197,7 @@ event_type
 data_type
     : 'number'//Contains both ints and floats
     | 'bool'
-    | 'Coordinates'//Position data, (x, z, _y)?
+    | 'coordinates'//Position data, (x, z, _y)?
     | 'string'
     | 'Collection' '<' data_type '>'//A collection of a type (Like a list in C#)
     | 'Block'//Data for blocks placed in the world
@@ -243,9 +243,8 @@ end_of_line
     ;
 
 
-
 /* TEMP */
-ASSIGNMENT_OPERATOR
+assignment_operator
     : '='
     | '+='
     | '-='
