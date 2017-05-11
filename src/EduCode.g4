@@ -95,73 +95,72 @@ expression
     ;
 
 assignment_expression
-    : lhs=factor op=assignment_operator rhs=expression
+    : lhs=factor op=('='|'+='|'-='|'*='|'/=') rhs=expression
     ;
 
 logic_expression
-    : or_expression
+    : or=or_expression
     ;
 
 or_expression
-    : or_expression OR_OPERATOR and_expression
-    | and_expression
+    : or=or_expression op='or' and=and_expression
+    | and=and_expression
     ;
 
 and_expression
-    : and_expression AND_OPERATOR equality_expression
-    | equality_expression
+    : and=and_expression op='and' eq=equality_expression
+    | eq=equality_expression
     ;
 
 equality_expression
-    : equality_expression EQUALITY_OPERATOR relative_expression
-    | relative_expression
+    : eq=equality_expression op=('equals'|'not equals') rel=relative_expression
+    | rel=relative_expression
     ;
 
 relative_expression
-    : arithmetic_expression RELATIVE_OPERATOR arithmetic_expression
-    | arithmetic_expression
+    : ae+=arithmetic_expression op=('greater than'|'less than'|'greater than or equals'|'less than or equals') ae+=arithmetic_expression
+    | ae+=arithmetic_expression
     ;
 
-
 arithmetic_expression
-    : additive_expression
+    : add=additive_expression
     ;
 
 additive_expression
-    : multiplicative_expression
-    | additive_expression ADDITIVE_OPERATOR multiplicative_expression
+    : mult=multiplicative_expression
+    | add=additive_expression op=('+'|'-') mult=multiplicative_expression
     ;
 
 multiplicative_expression
-    : factor
-    | multiplicative_expression MULTIPLICATIVE_OPERATOR factor
+    : fac=factor
+    | mult=multiplicative_expression op=('/'|'*'|'modulo') fac=factor
     ;
 
 factor
     : literal
     | object_instantiation
-    | UNARY_OPERATOR factor
+    | ('not'|'-') factor
     | type_cast
     | access
     ;
 
 access
-    : subfactor
-    | access field_access
-    | access element_access
-    | access method_access
+    : sub=subfactor
+    | rec=access acc=field_access
+    | rec=access acc=element_access
+    | rec=access acc=method_access
     ;
 
 field_access
-    : '.' identifier
+    : '.' id=identifier
     ;
 
 element_access
-    : '[' expression ']'
+    : '[' expr=logic_expression ']'
     ;
 
 method_access
-    : '.' method_call
+    : '.' method=method_call
     ;
 
 subfactor
@@ -171,19 +170,19 @@ subfactor
     ;
 
 parenthesis_expression
-    : LPAREN logic_expression RPAREN
+    : LPAREN expr=logic_expression RPAREN
     ;
 
 method_call
-    : identifier LPAREN (argument_list)? RPAREN
+    : id=identifier LPAREN (args=argument_list)? RPAREN
     ;
 
 type_cast
-    : LPAREN data_type RPAREN factor
+    : LPAREN type=data_type RPAREN fac=factor
     ;
 
 object_instantiation
-    : 'new' data_type LPAREN (argument_list)? RPAREN
+    : 'new' type=data_type LPAREN (args=argument_list)? RPAREN
     ;
 
 event_type
@@ -219,7 +218,7 @@ string_literal
     ;
 
 coordinate_literal
-    : LPAREN logic_expression ',' logic_expression ',' logic_expression RPAREN
+    : LPAREN x=logic_expression ',' y=logic_expression ',' z=logic_expression RPAREN
     ;
 
 number_literal
@@ -244,49 +243,7 @@ end_of_line
 
 
 /* TEMP */
-assignment_operator
-    : '='
-    | '+='
-    | '-='
-    | '*='
-    | '/='
-    ;
 
-ADDITIVE_OPERATOR
-    : '+'
-    | '-'
-    ;
-
-MULTIPLICATIVE_OPERATOR
-    : '/'
-    | '*'
-    | 'modulo'
-    ;
-
-AND_OPERATOR
-    : 'and'
-    ;
-
-OR_OPERATOR
-    : 'or'
-    ;
-
-UNARY_OPERATOR
-    : 'not'
-    | '-'
-    ;
-
-RELATIVE_OPERATOR
-    : 'greater than'
-    | 'less than'
-    | 'greater than or equals'
-    | 'less than or equals'
-    ;
-
-EQUALITY_OPERATOR
-    : 'equals'
-    | 'not equals'
-    ;
 
 NEWLINE
     : NewLine
