@@ -46,6 +46,7 @@ T__44=45
 T__45=46
 T__46=47
 T__47=48
+<<<<<<< Updated upstream
 T__48=49
 T__49=50
 T__50=51
@@ -69,6 +70,26 @@ LPAREN=68
 RPAREN=69
 WHITESPACE=70
 LINECOMMENT=71
+=======
+ADDITIVE_OPERATOR=49
+MULTIPLICATIVE_OPERATOR=50
+AND_OPERATOR=51
+OR_OPERATOR=52
+UNARY_OPERATOR=53
+RELATIVE_OPERATOR=54
+EQUALITY_OPERATOR=55
+NEWLINE=56
+NUMBER_LITERAL=57
+STRING_LITERAL=58
+UNTERMINATED_STRING_LITERAL=59
+BOOL_LITERAL=60
+NULL_LITERAL=61
+IDENTIFIER=62
+LPAREN=63
+RPAREN=64
+WHITESPACE=65
+LINECOMMENT=66
+>>>>>>> Stashed changes
 'using'=1
 'program'=2
 'end program'=3
@@ -92,6 +113,7 @@ LINECOMMENT=71
 'in'=21
 'end foreach'=22
 '='=23
+<<<<<<< Updated upstream
 '+='=24
 '-='=25
 '*='=26
@@ -132,3 +154,35 @@ LINECOMMENT=71
 'null'=66
 '('=68
 ')'=69
+=======
+'.'=24
+'['=25
+']'=26
+'new'=27
+'robotDeath'=28
+'robotAttacked'=29
+'entityDeath'=30
+'chatMessage'=31
+'stringMessageReceived'=32
+'entityMessageReceived'=33
+'number'=34
+'bool'=35
+'coordinates'=36
+'string'=37
+'Collection'=38
+'<'=39
+'>'=40
+'Block'=41
+'Entity'=42
+'Item'=43
+'Texture'=44
+'+='=45
+'-='=46
+'*='=47
+'/='=48
+'and'=51
+'or'=52
+'null'=61
+'('=63
+')'=64
+>>>>>>> Stashed changes

@@ -58,6 +58,7 @@ T__56=57
 T__57=58
 T__58=59
 T__59=60
+<<<<<<< Updated upstream
 NEWLINE=61
 NUMBER_LITERAL=62
 STRING_LITERAL=63
@@ -69,6 +70,21 @@ LPAREN=68
 RPAREN=69
 WHITESPACE=70
 LINECOMMENT=71
+=======
+T__60=61
+T__61=62
+NEWLINE=63
+NUMBER_LITERAL=64
+STRING_LITERAL=65
+UNTERMINATED_STRING_LITERAL=66
+BOOL_LITERAL=67
+NULL_LITERAL=68
+IDENTIFIER=69
+LPAREN=70
+RPAREN=71
+WHITESPACE=72
+LINECOMMENT=73
+>>>>>>> Stashed changes
 'using'=1
 'program'=2
 'end program'=3
@@ -127,8 +143,18 @@ LINECOMMENT=71
 'Collection'=56
 '<'=57
 '>'=58
+<<<<<<< Updated upstream
 'Entity'=59
 'Item'=60
 'null'=66
 '('=68
 ')'=69
+=======
+'Block'=59
+'Entity'=60
+'Item'=61
+'Texture'=62
+'null'=68
+'('=70
+')'=71
+>>>>>>> Stashed changes

@@ -310,4 +310,10 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitEnd_of_line(EduCodeParser.End_of_lineContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#assignment_operator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignment_operator(EduCodeParser.Assignment_operatorContext ctx);
 }
