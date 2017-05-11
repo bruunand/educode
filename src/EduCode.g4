@@ -36,6 +36,7 @@ statement_list
     : (statements+=statement end_of_line+)*
     ;
 
+
 statement
     : call_statement
     | assignment_expression
@@ -170,7 +171,7 @@ subfactor
     ;
 
 parenthesis_expression
-    : LPAREN expr=logic_expression RPAREN
+    : LPAREN content=logic_expression RPAREN
     ;
 
 method_call

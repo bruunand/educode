@@ -493,37 +493,43 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
 
     @Override
     public Node visitSubfactor(EduCodeParser.SubfactorContext ctx) {
-        return super.visitSubfactor(ctx);
+        updateLineNumber(ctx);
+        return visit(ctx.getChild(0));
     }
 
     @Override
     public Node visitParenthesis_expression(EduCodeParser.Parenthesis_expressionContext ctx) {
-        return visit(ctx.logicExpr());
+        updateLineNumber(ctx);
+        return visit(ctx.content);
     }
 
     @Override
     public Node visitMethod_call(EduCodeParser.Method_callContext ctx) {
+        updateLineNumber(ctx);
+        //todo
         return super.visitMethod_call(ctx);
     }
 
     @Override
     public Node visitType_cast(EduCodeParser.Type_castContext ctx) {
-        return new TypeCastNode(getType(ctx.dataType()), visit(ctx.factor()));
+        updateLineNumber(ctx);
+        return new TypeCastNode(getType(ctx.type), visit(ctx.fac));
     }
 
     @Override
     public Node visitObject_instantiation(EduCodeParser.Object_instantiationContext ctx) {
-        Type classType = getType(ctx.dataType());
+        updateLineNumber(ctx);
+        Type classType = getType(ctx.type);
 
-        if (ctx.args() != null)
-            return new ObjectInstantiationNode(visit(ctx.args()), classType);
+        if (ctx.args != null)
+            return new ObjectInstantiationNode(visit(ctx.args), classType);
         else
             return new ObjectInstantiationNode(null, classType);
     }
 
     @Override
     public Node visitEvent_type(EduCodeParser.Event_typeContext ctx) {
-        return super.visitEvent_type(ctx);
+        return null;
     }
 
     @Override
@@ -540,40 +546,50 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
 
     @Override
     public Node visitString_literal(EduCodeParser.String_literalContext ctx) {
-        return new StringLiteralNode(ctx.STRLIT().getText());
+        updateLineNumber(ctx);
+
+        return new StringLiteralNode(ctx.STRING_LITERAL().getText());
     }
 
     @Override
     public Node visitCoordinate_literal(EduCodeParser.Coordinate_literalContext ctx) {
-        return new CoordinatesLiteralNode(visit(ctx.logicExpr(0)), visit(ctx.logicExpr(1)), visit(ctx.logicExpr(2)));
+        updateLineNumber(ctx);
+
+        return new CoordinatesLiteralNode(visit(ctx.x), visit(ctx.y), visit(ctx.z));
     }
 
     @Override
     public Node visitNumber_literal(EduCodeParser.Number_literalContext ctx) {
-        return new NumberLiteralNode(Float.parseFloat(ctx.getText()));
+        updateLineNumber(ctx);
+
+        return new NumberLiteralNode(Float.parseFloat(ctx.NUMBER_LITERAL().getText()));
     }
 
     @Override
     public Node visitBool_literal(EduCodeParser.Bool_literalContext ctx) {
         updateLineNumber(ctx);
 
-        return new BoolLiteralNode(ctx.TRUE() != null);
+        return new BoolLiteralNode(ctx.BOOL_LITERAL().getText().equals("true"));
     }
 
     @Override
     public Node visitNull_literal(EduCodeParser.Null_literalContext ctx) {
-        return super.visitNull_literal(ctx);
+        updateLineNumber(ctx);
+
+        return new NullLiteralNode();
     }
 
     @Override
     public Node visitIdentifier(EduCodeParser.IdentifierContext ctx) {
         updateLineNumber(ctx);
 
-        return new IdentifierReferencingNode(ctx.IDENT().getText());
+        return new IdentifierReferencingNode(ctx.IDENTIFIER().getText());
     }
 
     @Override
     public Node visitEnd_of_line(EduCodeParser.End_of_lineContext ctx) {
+        updateLineNumber(ctx);
+
         return null;
     }
 }
