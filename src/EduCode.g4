@@ -232,7 +232,7 @@ null_literal
     ;
 
 identifier
-    : IDENTIFIER
+    : id=IDENTIFIER
     ;
 
 end_of_line

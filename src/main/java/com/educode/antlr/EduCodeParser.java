@@ -3311,6 +3311,7 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class IdentifierContext extends ParserRuleContext {
+		public Token id;
 		public TerminalNode IDENTIFIER() { return getToken(EduCodeParser.IDENTIFIER, 0); }
 		public IdentifierContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -3330,7 +3331,7 @@ public class EduCodeParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(485);
-			match(IDENTIFIER);
+			((IdentifierContext)_localctx).id = match(IDENTIFIER);
 			}
 		}
 		catch (RecognitionException re) {
