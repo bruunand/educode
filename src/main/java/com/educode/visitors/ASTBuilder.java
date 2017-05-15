@@ -35,18 +35,17 @@ import java.util.ArrayList;
 /**
  * Created by Thomas Buhl on 10/05/2017.
  */
-public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
-    private static int _currentLineNumber = 0;
+public class ASTBuilder extends EduCodeBaseVisitor<Node>
+{    private static int _currentLineNumber = 0;
 
     private static void updateLineNumber(ParserRuleContext fromCtx)
     {
-        ASTBuilderv2._currentLineNumber = fromCtx.getStart().getLine();
-        // ASTBuilderv2._currentCharPosition = fromCtx.getStart().getCharPositionInLine();
+        ASTBuilder._currentLineNumber = fromCtx.getStart().getLine();
     }
 
     public static int getLineNumber()
     {
-        return ASTBuilderv2._currentLineNumber;
+        return ASTBuilder._currentLineNumber;
     }
 
     private LogicalOperator getLogicalOperator(String operator)
@@ -88,6 +87,7 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
                 return ArithmeticOperator.Error;
         }
     }
+
     private AssignmentOperator getAssignmentOperator(String operator)
     {
         switch (operator)
@@ -134,6 +134,7 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
         if (ctx.data_type() != null)
             return new Type(getType(ctx.data_type()));
         else
+        {
             switch (ctx.getText())
             {
                 case "string":
@@ -149,30 +150,35 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
                 case "Item":
                     return Type.ItemType;
             }
+        }
+
         return Type.VoidType;
     }
 
 
     @Override
-    public Node visitStart(EduCodeParser.StartContext ctx) {
+    public Node visitStart(EduCodeParser.StartContext ctx)
+    {
         updateLineNumber(ctx);
 
         return new StartNode(visit(ctx.ulist), visit(ctx.pr));
     }
 
     @Override
-    public Node visitUsings(EduCodeParser.UsingsContext ctx) {
+    public Node visitUsings(EduCodeParser.UsingsContext ctx)
+    {
         updateLineNumber(ctx);
         ArrayList<Node> Nodes = new ArrayList<>();
 
-        for (EduCodeParser.IdentifierContext i: ctx.id) {
+        for (EduCodeParser.IdentifierContext i: ctx.id)
             Nodes.add(visitIdentifier(i));
-        }
+
         return new UsingsNode(Nodes);
     }
 
     @Override
-    public Node visitProgram(EduCodeParser.ProgramContext ctx) {
+    public Node visitProgram(EduCodeParser.ProgramContext ctx)
+    {
         updateLineNumber(ctx);
 
         ArrayList<Node> nodes = new ArrayList<>();
@@ -193,13 +199,14 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitEvent_definition(EduCodeParser.Event_definitionContext ctx) {
+    public Node visitEvent_definition(EduCodeParser.Event_definitionContext ctx)
+    {
         return new EventDefinitionNode((IReference) visit(ctx.id), getEventType(ctx.event));
     }
 
     @Override
-    public Node visitMethod_declaration(EduCodeParser.Method_declarationContext ctx) {
-
+    public Node visitMethod_declaration(EduCodeParser.Method_declarationContext ctx)
+    {
         updateLineNumber(ctx);
 
         Type returnType = Type.VoidType;
@@ -213,7 +220,8 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitArgument_list(EduCodeParser.Argument_listContext ctx) {
+    public Node visitArgument_list(EduCodeParser.Argument_listContext ctx)
+    {
         updateLineNumber(ctx);
 
         ListNode node = new ListNode();
@@ -224,7 +232,8 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitParameter_list(EduCodeParser.Parameter_listContext ctx) {
+    public Node visitParameter_list(EduCodeParser.Parameter_listContext ctx)
+    {
         updateLineNumber(ctx);
 
         ListNode parameterCollection = new ListNode();
@@ -236,14 +245,16 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitParameter(EduCodeParser.ParameterContext ctx) {
+    public Node visitParameter(EduCodeParser.ParameterContext ctx)
+    {
         updateLineNumber(ctx);
 
         return new ParameterNode((IReference) visit(ctx.id), getType(ctx.type));
     }
 
     @Override
-    public Node visitStatement_list(EduCodeParser.Statement_listContext ctx) {
+    public Node visitStatement_list(EduCodeParser.Statement_listContext ctx)
+    {
         updateLineNumber(ctx);
 
         ArrayList<Node> childStatements = new ArrayList<>();
@@ -265,34 +276,40 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitStatement(EduCodeParser.StatementContext ctx) {
-        updateLineNumber(ctx);
-        return visit(ctx.getChild(0));
-    }
-
-    @Override
-    public Node visitIterative_statement(EduCodeParser.Iterative_statementContext ctx) {
+    public Node visitStatement(EduCodeParser.StatementContext ctx)
+    {
         updateLineNumber(ctx);
 
         return visit(ctx.getChild(0));
     }
 
     @Override
-    public Node visitBreak_statement(EduCodeParser.Break_statementContext ctx) {
+    public Node visitIterative_statement(EduCodeParser.Iterative_statementContext ctx)
+    {
+        updateLineNumber(ctx);
+
+        return visit(ctx.getChild(0));
+    }
+
+    @Override
+    public Node visitBreak_statement(EduCodeParser.Break_statementContext ctx)
+    {
         updateLineNumber(ctx);
 
         return new BreakNode();
     }
 
     @Override
-    public Node visitContinue_statement(EduCodeParser.Continue_statementContext ctx) {
+    public Node visitContinue_statement(EduCodeParser.Continue_statementContext ctx)
+    {
         updateLineNumber(ctx);
 
         return new ContinueNode();
     }
 
     @Override
-    public Node visitReturn_statement(EduCodeParser.Return_statementContext ctx) {
+    public Node visitReturn_statement(EduCodeParser.Return_statementContext ctx)
+    {
         updateLineNumber(ctx);
 
         if (ctx.expr != null)
@@ -302,14 +319,16 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitRepeat_statement(EduCodeParser.Repeat_statementContext ctx) {
+    public Node visitRepeat_statement(EduCodeParser.Repeat_statementContext ctx)
+    {
         updateLineNumber(ctx);
 
         return new RepeatWhileNode(new ConditionNode(visit(ctx.predicate), visit(ctx.body)));
     }
 
     @Override
-    public Node visitIf_statement(EduCodeParser.If_statementContext ctx) {
+    public Node visitIf_statement(EduCodeParser.If_statementContext ctx)
+    {
         updateLineNumber(ctx);
 
         IfNode ifNode = new IfNode();
@@ -325,12 +344,13 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitForeach_statement(EduCodeParser.Foreach_statementContext ctx) {
-        return new ForEachNode((IReference) visit(ctx.id), getType(ctx.type), visit(ctx.expr), visit(ctx.body));
+    public Node visitForeach_statement(EduCodeParser.Foreach_statementContext ctx)
+    {        return new ForEachNode((IReference) visit(ctx.id), getType(ctx.type), visit(ctx.expr), visit(ctx.body));
     }
 
     @Override
-    public Node visitVariable_declaration(EduCodeParser.Variable_declarationContext ctx) {
+    public Node visitVariable_declaration(EduCodeParser.Variable_declarationContext ctx)
+    {
         updateLineNumber(ctx);
 
         ArrayList<Node> nodes = new ArrayList<>();
@@ -348,11 +368,13 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
             else
                 System.out.println("VarDeclError at line " + ctx.getStart().getLine());
         }
+
         return new ListNode(nodes);
     }
 
     @Override
-    public Node visitDeclarator(EduCodeParser.DeclaratorContext ctx) {
+    public Node visitDeclarator(EduCodeParser.DeclaratorContext ctx)
+    {
         if (ctx.expr != null)
             return new AssignmentNode(AssignmentOperator.None, (IReference) visit(ctx.id), visit(ctx.expr));
         else
@@ -360,14 +382,16 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitExpression(EduCodeParser.ExpressionContext ctx) {
+    public Node visitExpression(EduCodeParser.ExpressionContext ctx)
+    {
         updateLineNumber(ctx);
 
         return super.visit(ctx.getChild(0));//visit(ctx.getChild(0));
     }
 
     @Override
-    public Node visitAssignment_expression(EduCodeParser.Assignment_expressionContext ctx) {
+    public Node visitAssignment_expression(EduCodeParser.Assignment_expressionContext ctx)
+    {
         updateLineNumber(ctx);
 
         if (ctx.rhs != null) // Assign to expression
@@ -380,14 +404,16 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitLogic_expression(EduCodeParser.Logic_expressionContext ctx) {
+    public Node visitLogic_expression(EduCodeParser.Logic_expressionContext ctx)
+    {
         updateLineNumber(ctx);
 
         return visit(ctx.getChild(0));//visit(ctx.getChild(0));
     }
 
     @Override
-    public Node visitOr_expression(EduCodeParser.Or_expressionContext ctx) {
+    public Node visitOr_expression(EduCodeParser.Or_expressionContext ctx)
+    {
         updateLineNumber(ctx);
 
         if (ctx.getChildCount() == 1)
@@ -400,7 +426,8 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitAnd_expression(EduCodeParser.And_expressionContext ctx) {
+    public Node visitAnd_expression(EduCodeParser.And_expressionContext ctx)
+    {
         updateLineNumber(ctx);
 
         if (ctx.getChildCount() == 1)
@@ -409,12 +436,13 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
             return new AndExpressionNode(visit(ctx.left), visit(ctx.right));
 
         System.out.println("Unexpected child count in and-expression " + ctx.getStart().getLine());
+
         return null;
     }
 
     @Override
-    public Node visitEquality_expression(EduCodeParser.Equality_expressionContext ctx) {
-
+    public Node visitEquality_expression(EduCodeParser.Equality_expressionContext ctx)
+    {
         if (ctx.getChildCount() == 1)
             return visit(ctx.right);
         else if (ctx.getChildCount() == 3)
@@ -426,7 +454,8 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitRelative_expression(EduCodeParser.Relative_expressionContext ctx) {
+    public Node visitRelative_expression(EduCodeParser.Relative_expressionContext ctx)
+    {
         updateLineNumber(ctx);
 
         if (ctx.getChildCount() == 1)
@@ -440,14 +469,16 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitArithmetic_expression(EduCodeParser.Arithmetic_expressionContext ctx) {
+    public Node visitArithmetic_expression(EduCodeParser.Arithmetic_expressionContext ctx)
+    {
         updateLineNumber(ctx);
 
         return visit(ctx.getChild(0));
     }
 
     @Override
-    public Node visitAdditive_expression(EduCodeParser.Additive_expressionContext ctx) {
+    public Node visitAdditive_expression(EduCodeParser.Additive_expressionContext ctx)
+    {
         updateLineNumber(ctx);
 
         if (ctx.getChildCount() == 1)
@@ -461,7 +492,8 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitMultiplicative_expression(EduCodeParser.Multiplicative_expressionContext ctx) {
+    public Node visitMultiplicative_expression(EduCodeParser.Multiplicative_expressionContext ctx)
+    {
         updateLineNumber(ctx);
 
         if (ctx.getChildCount() == 1)
@@ -475,14 +507,16 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitFactor(EduCodeParser.FactorContext ctx) {
+    public Node visitFactor(EduCodeParser.FactorContext ctx)
+    {
         updateLineNumber(ctx);
 
         if (ctx.literal() != null)
             return visit(ctx.literal());
         else if (ctx.access() != null)
             return visit(ctx.access());
-        else if (ctx.factor() != null){
+        else if (ctx.factor() != null)
+        {
             if (ctx.op.getText().equals("not"))
                 return new NegateNode(visit(ctx.factor()));
             else if (ctx.op.getText().equals("-"))
@@ -499,7 +533,8 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitAccess(EduCodeParser.AccessContext ctx) {
+    public Node visitAccess(EduCodeParser.AccessContext ctx)
+    {
         updateLineNumber(ctx);
 
         if (ctx.field_access() != null)
@@ -516,40 +551,48 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitField_access(EduCodeParser.Field_accessContext ctx) {
+    public Node visitField_access(EduCodeParser.Field_accessContext ctx)
+    {
         updateLineNumber(ctx);
 
         return visit(ctx.id);
     }
 
     @Override
-    public Node visitElement_access(EduCodeParser.Element_accessContext ctx) {
+    public Node visitElement_access(EduCodeParser.Element_accessContext ctx)
+    {
         updateLineNumber(ctx);
 
         return visit(ctx.index);
     }
 
     @Override
-    public Node visitMethod_access(EduCodeParser.Method_accessContext ctx) {
+    public Node visitMethod_access(EduCodeParser.Method_accessContext ctx)
+    {
         updateLineNumber(ctx);
 
         return visit(ctx.method);
     }
 
     @Override
-    public Node visitSubfactor(EduCodeParser.SubfactorContext ctx) {
+    public Node visitSubfactor(EduCodeParser.SubfactorContext ctx)
+    {
         updateLineNumber(ctx);
+
         return visit(ctx.getChild(0));
     }
 
     @Override
-    public Node visitParenthesis_expression(EduCodeParser.Parenthesis_expressionContext ctx) {
+    public Node visitParenthesis_expression(EduCodeParser.Parenthesis_expressionContext ctx)
+    {
         updateLineNumber(ctx);
+
         return visit(ctx.content);
     }
 
     @Override
-    public Node visitMethod_call(EduCodeParser.Method_callContext ctx) {
+    public Node visitMethod_call(EduCodeParser.Method_callContext ctx)
+    {
         updateLineNumber(ctx);
 
         if (ctx.args != null)
@@ -559,13 +602,16 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitType_cast(EduCodeParser.Type_castContext ctx) {
+    public Node visitType_cast(EduCodeParser.Type_castContext ctx)
+    {
         updateLineNumber(ctx);
+
         return new TypeCastNode(getType(ctx.type), visit(ctx.fac));
     }
 
     @Override
-    public Node visitObject_instantiation(EduCodeParser.Object_instantiationContext ctx) {
+    public Node visitObject_instantiation(EduCodeParser.Object_instantiationContext ctx)
+    {
         updateLineNumber(ctx);
         Type classType = getType(ctx.type);
 
@@ -576,68 +622,76 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitEvent_type(EduCodeParser.Event_typeContext ctx) {
+    public Node visitEvent_type(EduCodeParser.Event_typeContext ctx)
+    {
         return null;
     }
 
     @Override
-    public Node visitData_type(EduCodeParser.Data_typeContext ctx) {
+    public Node visitData_type(EduCodeParser.Data_typeContext ctx)
+    {
         return null;
     }
 
     @Override
-    public Node visitLiteral(EduCodeParser.LiteralContext ctx) {
+    public Node visitLiteral(EduCodeParser.LiteralContext ctx)
+    {
         updateLineNumber(ctx);
 
         return visit(ctx.getChild(0));
     }
 
     @Override
-    public Node visitString_literal(EduCodeParser.String_literalContext ctx) {
+    public Node visitString_literal(EduCodeParser.String_literalContext ctx)
+    {
         updateLineNumber(ctx);
 
         return new StringLiteralNode(ctx.STRING_LITERAL().getText());
     }
 
     @Override
-    public Node visitCoordinate_literal(EduCodeParser.Coordinate_literalContext ctx) {
+    public Node visitCoordinate_literal(EduCodeParser.Coordinate_literalContext ctx)
+    {
         updateLineNumber(ctx);
 
         return new CoordinatesLiteralNode(visit(ctx.x), visit(ctx.y), visit(ctx.z));
     }
 
     @Override
-    public Node visitNumber_literal(EduCodeParser.Number_literalContext ctx) {
+    public Node visitNumber_literal(EduCodeParser.Number_literalContext ctx)
+    {
         updateLineNumber(ctx);
 
         return new NumberLiteralNode(Float.parseFloat(ctx.NUMBER_LITERAL().getText()));
     }
 
     @Override
-    public Node visitBool_literal(EduCodeParser.Bool_literalContext ctx) {
+    public Node visitBool_literal(EduCodeParser.Bool_literalContext ctx)
+    {
         updateLineNumber(ctx);
 
         return new BoolLiteralNode(ctx.BOOL_LITERAL().getText().equals("true"));
     }
 
     @Override
-    public Node visitNull_literal(EduCodeParser.Null_literalContext ctx) {
+    public Node visitNull_literal(EduCodeParser.Null_literalContext ctx)
+    {
         updateLineNumber(ctx);
 
         return new NullLiteralNode();
     }
 
     @Override
-    public Node visitIdentifier(EduCodeParser.IdentifierContext ctx) {
+    public Node visitIdentifier(EduCodeParser.IdentifierContext ctx)
+    {
         updateLineNumber(ctx);
 
         return new IdentifierReferencingNode(ctx.IDENTIFIER().getText());
     }
 
     @Override
-    public Node visitEnd_of_line(EduCodeParser.End_of_lineContext ctx) {
-        updateLineNumber(ctx);
-
+    public Node visitEnd_of_line(EduCodeParser.End_of_lineContext ctx)
+    {
         return null;
     }
 }
