@@ -11,7 +11,8 @@ import java.util.ArrayList;
  */
 public class UsingsNode extends NaryNode{
 
-    public UsingsNode(ArrayList<Node> childNodes) {
+    public UsingsNode(ArrayList<Node> childNodes)
+    {
         super(childNodes);
     }
 

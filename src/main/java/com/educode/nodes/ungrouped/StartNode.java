@@ -10,12 +10,10 @@ import java.util.ArrayList;
  */
 public class StartNode extends BinaryNode{
 
-    public StartNode(Node leftChild, Node rightChild) {
+    public StartNode(Node leftChild, Node rightChild)
+    {
         super(leftChild, rightChild);
     }
-
-
-
 
     @Override
     public Object accept(VisitorBase visitor)
