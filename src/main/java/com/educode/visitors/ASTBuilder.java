@@ -284,6 +284,17 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     }
 
     @Override
+    public Node visitCall_statement(EduCodeParser.Call_statementContext ctx)
+    {
+        updateLineNumber(ctx);
+
+        if (ctx.method_call() != null)
+            return visit(ctx.method_call());
+        else
+            return new StructReferencingNode(visit(ctx.access()), visit(ctx.method_access()));
+    }
+
+    @Override
     public Node visitIterative_statement(EduCodeParser.Iterative_statementContext ctx)
     {
         updateLineNumber(ctx);
