@@ -336,17 +336,22 @@ public class SemanticVisitor extends VisitorBase
             Symbol symbol = table.retrieveSymbol(reference.getRightChild());
 
             if (symbol == null)
-                getSymbolTableHandler().error(reference, "Struct of type %s does not contain field %s.", reference.getLeftChild().getType(), reference.getRightChild());
+                getSymbolTableHandler().error(reference, "Type %s does not contain field %s.", reference.getLeftChild().getType(), reference.getRightChild());
             else
                 reference.setType(symbol.getSourceNode().getType());
         }
         else if (reference.getRightChild() instanceof MethodInvocationNode)
         {
+            // We need to visit arguments to evaluate their actual type
             MethodInvocationNode methodInv = (MethodInvocationNode) reference.getRightChild();
+            for (Node argument : methodInv.getActualArguments())
+                visit(argument);
+
+            // Retrieve symbol from this struct type
             Symbol symbol = table.retrieveMethodSymbol(methodInv.getReference(), methodInv.getActualTypes());
 
             if (symbol == null)
-                getSymbolTableHandler().error(reference, "Struct of type %s does not contain method %s.", reference.getLeftChild().getType(), methodInv.getReference());
+                getSymbolTableHandler().error(reference, "Type %s does not contain method %s.", reference.getLeftChild().getType(), methodInv.getReference());
             else
             {
                 MethodDeclarationNode referencingDeclaration = (MethodDeclarationNode) symbol.getSourceNode();
