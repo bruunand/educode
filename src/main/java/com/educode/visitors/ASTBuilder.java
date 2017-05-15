@@ -36,7 +36,8 @@ import java.util.ArrayList;
  * Created by Thomas Buhl on 10/05/2017.
  */
 public class ASTBuilder extends EduCodeBaseVisitor<Node>
-{    private static int _currentLineNumber = 0;
+{
+    private static int _currentLineNumber = 0;
 
     private static void updateLineNumber(ParserRuleContext fromCtx)
     {
@@ -107,7 +108,6 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         }
     }
 
-
     private EventTypeBase getEventType(EduCodeParser.Event_typeContext ctx)
     {
         switch (ctx.getChild(0).getText())
@@ -145,7 +145,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
                     return Type.NumberType;
                 case "Entity":
                     return Type.EntityType;
-                case "Coordinates":
+                case "coordinates":
                     return Type.CoordinatesType;
                 case "Item":
                     return Type.ItemType;
