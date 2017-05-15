@@ -97,8 +97,6 @@ public class OptimizationVisitor extends VisitorBase
 
     public void visit(AssignmentNode node)
     {
-        visitChildren(node);
-
         if (!(node.getReference() instanceof IdentifierReferencingNode))
             return;
 
@@ -108,6 +106,10 @@ public class OptimizationVisitor extends VisitorBase
             return;
 
         this._constantDeclarations.remove(reference.getDeclaration());
+
+        // We need to wait with visiting the children in case the child uses the assigned variable
+        // E.g. num = num - 1 could be optimized falsely.
+        visitChildren(node);
     }
 
     public void visit(VariableDeclarationNode node)
