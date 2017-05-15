@@ -31,6 +31,7 @@ import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
+import com.typesafe.config.ConfigException;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -316,6 +317,11 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     }
 
     public Object visit(BoolLiteralNode node)
+    {
+        return node.getValue();
+    }
+
+    public Object visit(NullLiteralNode node)
     {
         return node.getValue();
     }

@@ -226,22 +226,7 @@ public class SemanticVisitor extends VisitorBase
     {
         visitChildren(node);
 
-        Symbol methodReference;
-
-        // If node references a struct, there is a special case
-        if (node.getReference() instanceof StructReferencingNode)
-        {
-            StructReferencingNode structReference = (StructReferencingNode) node.getReference();
-
-            // Visit object name to gets it type
-            visit(structReference.getObjectName());
-
-            // Retrieve symbol from object's type's symbol table
-            // In a struct, the right child is the name of the method
-            methodReference = structReference.getObjectName().getType().getSymbolTable().retrieveMethodSymbol((IReference) structReference.getFieldName(), node.getActualTypes());
-        }
-        else
-            methodReference = getSymbolTableHandler().getCurrent().retrieveMethodSymbol(node.getReference(), node.getActualTypes());
+        Symbol methodReference = getSymbolTableHandler().getCurrent().retrieveMethodSymbol(node.getReference(), node.getActualTypes());
 
         // Check if method was found
         if (methodReference == null)
