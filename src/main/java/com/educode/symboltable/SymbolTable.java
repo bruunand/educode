@@ -72,6 +72,8 @@ public class SymbolTable
 
     public int getDeclaredVariableCounter() { return _declaredVariableCounter; }
 
+    public void setDeclaredVariableCounter(int value) { _declaredVariableCounter = value; }
+
     public Symbol retrieveMethodSymbol(IReference reference, List<Type> actualArguments)
     {
         for (Symbol symbol : this._symbolList)

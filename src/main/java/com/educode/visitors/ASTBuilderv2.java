@@ -22,10 +22,7 @@ import com.educode.nodes.referencing.ArrayReferencingNode;
 import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.referencing.StructReferencingNode;
-import com.educode.nodes.statement.AssignmentNode;
-import com.educode.nodes.statement.ForEachNode;
-import com.educode.nodes.statement.ReturnNode;
-import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.statement.*;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
@@ -275,20 +272,23 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
 
     @Override
     public Node visitIterative_statement(EduCodeParser.Iterative_statementContext ctx) {
-        //todo
-        return super.visitIterative_statement(ctx);
+        updateLineNumber(ctx);
+
+        return visit(ctx.getChild(0));
     }
 
     @Override
     public Node visitBreak_statement(EduCodeParser.Break_statementContext ctx) {
-        //todo
-        return super.visitBreak_statement(ctx);
+        updateLineNumber(ctx);
+
+        return new BreakNode();
     }
 
     @Override
     public Node visitContinue_statement(EduCodeParser.Continue_statementContext ctx) {
-        //todo
-        return super.visitContinue_statement(ctx);
+        updateLineNumber(ctx);
+
+        return new ContinueNode();
     }
 
     @Override
@@ -305,7 +305,7 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
     public Node visitRepeat_statement(EduCodeParser.Repeat_statementContext ctx) {
         updateLineNumber(ctx);
 
-        return new RepeatWhileNode(new ConditionNode(visit(ctx.logicExpr()), visit(ctx.stmts())));
+        return new RepeatWhileNode(new ConditionNode(visit(ctx.predicate), visit(ctx.body)));
     }
 
     @Override
@@ -313,56 +313,50 @@ public class ASTBuilderv2 extends EduCodeBaseVisitor<Node> {
         updateLineNumber(ctx);
 
         IfNode ifNode = new IfNode();
-
-        // If there is an else block, skip the last block
-        // There is an else block if there are fewer logical expressions than statements
-        boolean hasElseBlock = ctx.logicExpr().size() < ctx.stmts().size();
-        for (int i = 0; i < (hasElseBlock ? ctx.stmts().size() - 1 : ctx.stmts().size()); i++)
-            ifNode.addChild(new ConditionNode(visit(ctx.logicExpr(i)), visit(ctx.stmts(i))));
+        // Add a condition node for each predicate-body pair
+        for (int i = 0; i < ctx.bodies.size(); i++)
+            ifNode.addChild(new ConditionNode(visit(ctx.predicates.get(i)), visit(ctx.bodies.get(i))));
 
         // If there is an else block, add it finally without a ConditionNode
-        if (hasElseBlock)
-            ifNode.addChild(visit(ctx.stmts(ctx.stmts().size() - 1)));
+        if (ctx.elseBody != null)
+            ifNode.addChild(visit(ctx.elseBody));
 
         return ifNode;
     }
 
     @Override
     public Node visitForeach_statement(EduCodeParser.Foreach_statementContext ctx) {
-        return new ForEachNode((IReference) visit(ctx.ident()), getType(ctx.dataType()), visit(ctx.expr()), visit(ctx.stmts()));
+        return new ForEachNode((IReference) visit(ctx.id), getType(ctx.type), visit(ctx.expr), visit(ctx.body));
     }
 
     @Override
     public Node visitVariable_declaration(EduCodeParser.Variable_declarationContext ctx) {
         updateLineNumber(ctx);
 
-        ArrayList nodes = new ArrayList<>();
+        ArrayList<Node> nodes = new ArrayList<>();
 
-        for (EduCodeParser.DeclaratorContext decl: ctx.decl)
+        Node current;
+
+        for (EduCodeParser.DeclaratorContext decl: ctx.decls)
         {
-            nodes.add(visit(decl))
-        }
-        //todo
-        /*
-        // Add nodes without assignments.
-        for (EduCodeParser.IdentContext i : ctx.ident())
-            nodes.add(new VariableDeclarationNode((IReference) visit(i), getType(ctx.dataType())));
+            current = visit(decl);
 
-        // Add nodes with assignments
-        for (EduCodeParser.AssignContext a : ctx.assign())
-            nodes.add(new VariableDeclarationNode((AssignmentNode) visit(a), getType(ctx.dataType())));
-        */
+            if (current instanceof AssignmentNode)
+                nodes.add( new VariableDeclarationNode((AssignmentNode)current, getType(ctx.type)));
+            else if (current instanceof IReference)
+                nodes.add( new VariableDeclarationNode((IReference)current, getType(ctx.type)));
+            else
+                System.out.println("VarDeclError at line " + ctx.getStart().getLine());
+        }
         return new ListNode(nodes);
     }
 
     @Override
     public Node visitDeclarator(EduCodeParser.DeclaratorContext ctx) {
         if (ctx.expr != null)
-            return new VariableDeclarationNode((AssignmentNode) visit(a), getType(ctx.));
+            return new AssignmentNode(AssignmentOperator.None, (IReference) visit(ctx.id), visit(ctx.expr));
         else
-            return new VariableDeclarationNode((AssignmentNode) visit(a), getType(ctx.dataType()));
-
-        return super.visitDeclarator(ctx);
+            return visit(ctx.id);
     }
 
     @Override

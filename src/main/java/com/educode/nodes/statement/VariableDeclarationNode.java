@@ -6,6 +6,7 @@ import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
 import com.educode.nodes.literal.NumberLiteralNode;
 import com.educode.nodes.referencing.IReference;
+import com.educode.types.AssignmentOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
@@ -55,6 +56,6 @@ public class VariableDeclarationNode extends UnaryNode implements IReferencing, 
 
     public void setAssignment(Node node)
     {
-        this.setChild(new AssignmentNode(this.getReference(), node));
+        this.setChild(new AssignmentNode(AssignmentOperator.None, this.getReference(), node));
     }
 }

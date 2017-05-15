@@ -201,11 +201,14 @@ public class SemanticVisitor extends VisitorBase
 
     public void visit(BlockNode node)
     {
+        int locals;
+        locals = getSymbolTableHandler().getCurrent().getDeclaredVariableCounter();
         getSymbolTableHandler().openScope();
 
         visitChildren(node);
 
         getSymbolTableHandler().closeScope();
+        getSymbolTableHandler().getCurrent().setDeclaredVariableCounter(locals);
     }
 
 
