@@ -5,10 +5,7 @@ import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.ArithmeticExpression;
 import com.educode.nodes.expression.logic.*;
-import com.educode.nodes.literal.BoolLiteralNode;
-import com.educode.nodes.literal.CoordinatesLiteralNode;
-import com.educode.nodes.literal.NumberLiteralNode;
-import com.educode.nodes.literal.StringLiteralNode;
+import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
@@ -158,6 +155,11 @@ public class PrintVisitor extends VisitorBase
     public Object visit(StringLiteralNode node)
     {
         return "StringLit";
+    }
+
+    public Object visit(NullLiteralNode node)
+    {
+        return "null";
     }
 
     public Object visit(BoolLiteralNode node)

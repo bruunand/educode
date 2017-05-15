@@ -85,7 +85,13 @@ public class Type
 
     public boolean isReferenceType()
     {
-        return this._kind == COLLECTION || this._kind == ENTITY || this._kind == ROBOT || this._kind == COORDINATES || this._kind == ITEM;
+        return this._kind == COLLECTION || this._kind == ENTITY || this._kind == ROBOT || this._kind == ITEM;
+    }
+
+    // Special types are ones that cannot be instantiated or assigned to
+    public boolean isSpecialType()
+    {
+        return this._kind == ROBOT;
     }
 
     public SymbolTable getSymbolTable()

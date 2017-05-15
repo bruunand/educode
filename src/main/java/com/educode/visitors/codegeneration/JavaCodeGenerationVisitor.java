@@ -142,7 +142,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
             return String.format("new %s(%s)", OperatorTranslator.toJava(node.getType()), argumentJoiner);
     }
 
-
     public Object visit(MethodDeclarationNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
@@ -161,7 +160,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
 
     public Object visit(MethodInvocationNode node)
     {
@@ -196,7 +194,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return String.format("%s(%s)", visit(node.getReference()), actualArgumentsJoiner);
     }
 
-
     public Object visit(ParameterNode node)
     {
         //formal parameter node
@@ -205,7 +202,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
 
     public Object visit(AssignmentNode node)
     {
@@ -218,7 +214,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         return String.format("%s = %s",  visit(node.getReference()), visit(node.getChild()));
     }
-
 
     public Object visit(VariableDeclarationNode node)
     {
@@ -255,9 +250,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
             append(codeBuffer, "else\n%s", visit(elseBlock));
 
         return codeBuffer;
-
     }
-
 
     public Object visit(ConditionNode node)
     {
@@ -265,7 +258,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "(%s)\n%s", visit(node.getLeftChild()), visit(node.getRightChild()));
         return codeBuffer;
     }
-
 
     public Object visit(RepeatWhileNode node)
     {
@@ -358,14 +350,11 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object visit(EqualExpressionNode node)
     {
-        Node leftChild = node.getLeftChild();
-        Node rightChild = node.getRightChild();
-
         // In case of a string comparison, we need to use equals()
         // In theory we only need to check either the left or right type, because the semantic visitor only allows equal comparison of equal types
-        boolean useEqualSymbols = (leftChild instanceof NumberLiteralNode || rightChild instanceof NumberLiteralNode) || (leftChild instanceof BoolLiteralNode || rightChild instanceof BoolLiteralNode);
+        boolean useEqualSymbol = node.isBoolComparison() || node.isNullComparison() || node.isNullComparison();
 
-        if (useEqualSymbols)
+        if (useEqualSymbol)
             return String.format("(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
         else
         {

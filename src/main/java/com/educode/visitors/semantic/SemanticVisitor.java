@@ -245,7 +245,19 @@ public class SemanticVisitor extends VisitorBase
         visitChildren(node);
 
         // Check if left side types matches right side type
-        if (!node.getReference().isType(node.getChild().getType()))
+        // Reference types can be assigned to null
+        if (node.getReference().isType(Type.RobotType))
+            getSymbolTableHandler().error(node, "Cannot assign the special %s type to anything.");
+        else if (node.getChild() instanceof NullLiteralNode)
+        {
+            // If we assign something to null, we set the type of the null literal to the type of the assigned node
+            // This is necessary in cases such as x = y = null, where x and y are the same type
+            if (!node.getReference().getType().isReferenceType())
+                getSymbolTableHandler().error(node, "Cannot assign %s, which is not a reference type, to null.", node.getReference());
+            else
+                node.getChild().setType(node.getReference().getType());
+        }
+        else if (!node.getReference().isType(node.getChild().getType()))
             getSymbolTableHandler().error(node, "Cannot assign %s, which is of type %s, to an expression of type %s.", node.getReference(), node.getReference().getType(), node.getChild().getType());
 
         // Set the type of the assignment to have the same type as its right side
@@ -354,7 +366,7 @@ public class SemanticVisitor extends VisitorBase
             getSymbolTableHandler().enterSymbol(node);
 
         // Add default values if no assignment
-        // Only the values that are considered primitive will have a default value
+
         if (node.getChild() == null)
         {
             switch (node.getType().getKind())
@@ -371,6 +383,9 @@ public class SemanticVisitor extends VisitorBase
                 case Type.STRING:
                     node.setAssignment(new StringLiteralNode(""));
                     break;
+                default:
+                    if (node.getType().isReferenceType())
+                        node.setAssignment(new NullLiteralNode());
             }
         }
 
@@ -466,13 +481,25 @@ public class SemanticVisitor extends VisitorBase
     {
         visitChildren(node);
 
+        // Get the types of the children for conveniences
         Type leftType  = node.getLeftChild().getType();
         Type rightType = node.getRightChild().getType();
 
-        // Only same type comparisons allowed
-        // Unless either side is string, in which case any non-string will be cast to string
-        if (!leftType.equals(rightType))
-            getSymbolTableHandler().error(node, String.format("Logical operator %s can not be used for types %s and %s.", node.getOperator(), leftType, rightType));
+        // Check whether either of the children are null literals
+        boolean isLeftNull  = node.getLeftChild() instanceof NullLiteralNode;
+        boolean isRightNull = node.getRightChild() instanceof NullLiteralNode;
+
+        // Check for null comparisons
+        // In all other cases, check if the types of the sides are equal
+        if (isLeftNull || isRightNull)
+        {
+            if (isLeftNull && isRightNull)
+                getSymbolTableHandler().error(node, "Cannot compare two null literals.");
+            else if ((isLeftNull && !node.getRightChild().getType().isReferenceType()) || (isRightNull && !node.getLeftChild().getType().isReferenceType()))
+                getSymbolTableHandler().error(node, "Cannot compare non-references types to the null literal.");
+        }
+        else if (!leftType.equals(rightType))
+            getSymbolTableHandler().error(node, String.format("Logical operator %s cannot be used for types %s and %s.", node.getOperator(), leftType, rightType));
     }
 
     public void visit(NegateNode node)

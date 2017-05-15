@@ -11,7 +11,7 @@ public class NullLiteralNode extends LeafNode implements ILiteral<String>
     @Override
     public String getValue()
     {
-        return "NULL";
+        return "null";
     }
 
     @Override
