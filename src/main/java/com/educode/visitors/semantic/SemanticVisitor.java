@@ -17,10 +17,7 @@ import com.educode.nodes.referencing.ArrayReferencingNode;
 import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.referencing.StructReferencingNode;
-import com.educode.nodes.statement.AssignmentNode;
-import com.educode.nodes.statement.ForEachNode;
-import com.educode.nodes.statement.ReturnNode;
-import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.statement.*;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
@@ -33,8 +30,7 @@ import com.educode.types.ArithmeticOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by User on 15-Apr-17.
@@ -43,6 +39,7 @@ public class SemanticVisitor extends VisitorBase
 {
     private final SymbolTableHandler _symbolTableHandler;
     private final List<EventDefinitionNode> _eventDefinitions = new ArrayList<>();
+    private final Deque<Node> _iterativeNodes = new ArrayDeque<Node>();
 
     public SemanticVisitor()
     {
@@ -131,7 +128,10 @@ public class SemanticVisitor extends VisitorBase
 
     public void visit(RepeatWhileNode node)
     {
+        _iterativeNodes.push(node);
         visitChildren(node);
+        _iterativeNodes.pop();
+
     }
 
     public void visit(IfNode node)
@@ -181,6 +181,7 @@ public class SemanticVisitor extends VisitorBase
 
     public void visit(ForEachNode node)
     {
+        _iterativeNodes.push(node);
         _symbolTableHandler.openScope();
 
         _symbolTableHandler.enterSymbol(node);
@@ -197,6 +198,7 @@ public class SemanticVisitor extends VisitorBase
             getSymbolTableHandler().error(node, String.format("Expression to iterate in for-each statement must be a collection of %s.", node.getType()));
 
         _symbolTableHandler.closeScope();
+        _iterativeNodes.pop();
     }
 
     public void visit(BlockNode node)
@@ -521,6 +523,20 @@ public class SemanticVisitor extends VisitorBase
             _symbolTableHandler.warning(node, String.format("Redundant cast from %s to %s", fromType, toType));
         else if (!isExplicitCastAllowed(fromType, toType))
             getSymbolTableHandler().error(node, String.format("Type %s cannot be cast to type %s.", fromType, toType));
+    }
+
+    public void visit(ContinueNode node){
+        if(_iterativeNodes.isEmpty())
+            getSymbolTableHandler().error(node, "No enclosing loop to continue.");
+        else
+            node.setAffectingLoop(_iterativeNodes.peek());
+    }
+
+    public void visit(BreakNode node){
+        if(_iterativeNodes.isEmpty())
+            getSymbolTableHandler().error(node, "No enclosing loop to break.");
+        else
+            node.setAffectingLoop(_iterativeNodes.peek());
     }
 
     private boolean isExplicitCastAllowed(Type fromType, Type toType)
