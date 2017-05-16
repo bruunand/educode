@@ -6,6 +6,7 @@ import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
 import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.PrintVisitor;
+import com.educode.visitors.UsingVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
@@ -32,11 +33,12 @@ public class Main
         ASTBuilder builder = new ASTBuilder();
         Node root = builder.visit(parser.program());
         System.out.println(root.accept(new PrintVisitor()));
-        SemanticVisitor sv = new SemanticVisitor();
-        root.accept(sv);
-        sv.getSymbolTableHandler().printMessages();
 
-        if (sv.getSymbolTableHandler().hasErrors())
+        UsingVisitor uv = new UsingVisitor("test");
+        root.accept(uv);
+        uv.getSymbolTableHandler().printMessages();
+
+        if (uv.getSymbolTableHandler().hasErrors())
             return;
 
         //root.accept(new OptimizationVisitor());
