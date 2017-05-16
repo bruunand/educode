@@ -300,7 +300,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object visit(NumberLiteralNode node)
     {
-        return String.format("%fF", node.getValue());
+        return String.format("%f", node.getValue());
     }
 
     public Object visit(StringLiteralNode node)
@@ -352,7 +352,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     {
         // In case of a string comparison, we need to use equals()
         // In theory we only need to check either the left or right type, because the semantic visitor only allows equal comparison of equal types
-        boolean useEqualSymbol = node.isBoolComparison() || node.isNullComparison() || node.isNullComparison();
+        boolean useEqualSymbol = node.isBoolComparison() || node.isNumberComparison() || node.isNullComparison();
 
         if (useEqualSymbol)
             return String.format("(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));

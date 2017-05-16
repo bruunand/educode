@@ -91,7 +91,7 @@ public class Type
     // Special types are ones that cannot be instantiated or assigned to
     public boolean isSpecialType()
     {
-        return this._kind == ROBOT;
+        return this._kind == ROBOT || this._kind == VOID || this._kind == ERROR;
     }
 
     public SymbolTable getSymbolTable()

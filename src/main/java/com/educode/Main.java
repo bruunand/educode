@@ -8,7 +8,6 @@ import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
-import com.educode.visitors.optimization.OptimizationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -40,7 +39,7 @@ public class Main
         if (sv.getSymbolTableHandler().hasErrors())
             return;
 
-        root.accept(new OptimizationVisitor());
+        //root.accept(new OptimizationVisitor());
 
         JavaBytecodeGenerationVisitor byteCodeVisitor = new JavaBytecodeGenerationVisitor();
         root.accept(byteCodeVisitor);
@@ -53,17 +52,17 @@ public class Main
         // Test code generation
         System.out.println("Compiling Java code...");
         CustomJavaCompiler compiler = new CustomJavaCompiler();
-        runMainInClass(compiler.compile(new File("").getAbsolutePath() + File.separator, "Test"));
+        invokeMainInClass(compiler.compile(new File("").getAbsolutePath() + File.separator, "Test"));
         System.out.println();
 
         // Test bytecode generation
         System.out.println("Compiling bytecode using Jasmin...");
         jasmin.Main jasminMain = new jasmin.Main();
         jasminMain.assemble("Test.j");
-        runMainInClass(CustomJavaCompiler.loadClass("Test", new File("").getAbsolutePath() + File.separator));
+        invokeMainInClass(CustomJavaCompiler.loadClass("Test", new File("").getAbsolutePath() + File.separator));
     }
 
-    private static void runMainInClass(Class classToRun) throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException
+    private static void invokeMainInClass(Class classToRun) throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException
     {
         Object instance = classToRun.newInstance();
 
