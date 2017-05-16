@@ -20,6 +20,7 @@ import java.util.List;
 public class SymbolTable
 {
     private SymbolTable _outer;
+    private int _maxDeclaredVariables = 0;
     private int _declaredVariableCounter = 0;
 
     private final List<Symbol> _symbolList = new ArrayList();
@@ -65,14 +66,17 @@ public class SymbolTable
         return null;
     }
 
+    public int getMaxDeclaredVariableCounter() { return _maxDeclaredVariables; }
+    public void setMaxDeclaredVariables(int value) { _maxDeclaredVariables = value; }
+
     public void addDeclaredVariableCounter(int value)
     {
         _declaredVariableCounter += value;
+        if (_declaredVariableCounter > _maxDeclaredVariables)
+            _maxDeclaredVariables = _declaredVariableCounter;
     }
 
     public int getDeclaredVariableCounter() { return _declaredVariableCounter; }
-
-    public void setDeclaredVariableCounter(int value) { _declaredVariableCounter = value; }
 
     public Symbol retrieveMethodSymbol(IReference reference, List<Type> actualArguments)
     {

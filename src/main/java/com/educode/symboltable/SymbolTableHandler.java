@@ -39,14 +39,14 @@ public class SymbolTableHandler
     public void openScope()
     {
         _current = new SymbolTable(_current);
+        _current.addDeclaredVariableCounter(_current.getOuter().getDeclaredVariableCounter());
     }
 
     public void closeScope()
     {
         if (_current != null)
         {
-            if (_current.getOuter() != null)
-                _current.getOuter().addDeclaredVariableCounter(_current.getDeclaredVariableCounter());
+            _current.getOuter().setMaxDeclaredVariables(_current.getMaxDeclaredVariableCounter());
             _current = _current.getOuter();
         }
         else
