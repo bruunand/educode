@@ -163,7 +163,7 @@ public class SemanticVisitor extends VisitorBase
         // Visit block
         visit(node.getBlockNode());
 
-        node.setMaxDeclaredVariables(getSymbolTableHandler().getCurrent().getDeclaredVariableCounter());
+        node.setMaxDeclaredVariables(getSymbolTableHandler().getCurrent().getMaxDeclaredVariableCounter());
 
         getSymbolTableHandler().closeScope();
     }
@@ -203,14 +203,11 @@ public class SemanticVisitor extends VisitorBase
 
     public void visit(BlockNode node)
     {
-        int locals;
-        locals = getSymbolTableHandler().getCurrent().getDeclaredVariableCounter();
         getSymbolTableHandler().openScope();
 
         visitChildren(node);
 
         getSymbolTableHandler().closeScope();
-        getSymbolTableHandler().getCurrent().setDeclaredVariableCounter(locals);
     }
 
 
