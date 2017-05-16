@@ -22,10 +22,7 @@ import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
-import com.educode.nodes.ungrouped.BlockNode;
-import com.educode.nodes.ungrouped.ObjectInstantiationNode;
-import com.educode.nodes.ungrouped.ProgramNode;
-import com.educode.nodes.ungrouped.TypeCastNode;
+import com.educode.nodes.ungrouped.*;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
@@ -121,6 +118,11 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         {
             e.printStackTrace();
         }
+    }
+
+    public void visit(StartNode node)
+    {
+        visit(node.getRightChild());
     }
     
     public void visit(ProgramNode node)

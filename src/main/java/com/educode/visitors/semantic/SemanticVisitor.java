@@ -61,6 +61,11 @@ public class SemanticVisitor extends VisitorBase
         return null;
     }
 
+    public void visit(StartNode node)
+    {
+        visit(node.getRightChild());
+    }
+
     public void visit(ProgramNode node)
     {
         getSymbolTableHandler().openScope();

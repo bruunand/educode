@@ -10,6 +10,7 @@ import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ProgramNode;
+import com.educode.nodes.ungrouped.StartNode;
 import com.educode.symboltable.SymbolTableHandler;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
@@ -29,6 +30,11 @@ public class ReturnCheckVisitor extends VisitorBase
     public ReturnCheckVisitor(SymbolTableHandler symbolTableHandler)
     {
         this._symbolTableHandler = symbolTableHandler;
+    }
+
+    public void visit(StartNode node)
+    {
+        visit(node.getRightChild());
     }
 
     public void visit(ProgramNode node)
