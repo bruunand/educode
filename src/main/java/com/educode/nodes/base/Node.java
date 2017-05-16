@@ -8,7 +8,7 @@ import com.educode.visitors.ASTBuilder;
 /**
  * Created by zen on 3/8/17.
  */
-public abstract class Node implements IVisitable, ITypeable
+public abstract class Node implements IVisitable
 {
     private int _lineNumber;
     private Node _parent;
