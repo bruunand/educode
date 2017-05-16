@@ -6,9 +6,9 @@ import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
 import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.PrintVisitor;
+import com.educode.visitors.UsingVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
-import com.educode.visitors.optimization.OptimizationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -31,16 +31,18 @@ public class Main
         EduCodeParser parser = new EduCodeParser(tokenStream);
 
         ASTBuilder builder = new ASTBuilder();
-        Node root = builder.visit(parser.program());
+        Node root = builder.visit(parser.start());
         System.out.println(root.accept(new PrintVisitor()));
-        SemanticVisitor sv = new SemanticVisitor();
-        root.accept(sv);
-        sv.getSymbolTableHandler().printMessages();
 
-        if (sv.getSymbolTableHandler().hasErrors())
+        UsingVisitor uv = new UsingVisitor("test");
+        root.accept(uv);
+
+        uv.getSymbolTableHandler().printMessages();
+
+        if (uv.getSymbolTableHandler().hasErrors())
             return;
 
-        root.accept(new OptimizationVisitor());
+        //root.accept(new OptimizationVisitor());
 
         JavaBytecodeGenerationVisitor byteCodeVisitor = new JavaBytecodeGenerationVisitor();
         root.accept(byteCodeVisitor);
@@ -53,17 +55,17 @@ public class Main
         // Test code generation
         System.out.println("Compiling Java code...");
         CustomJavaCompiler compiler = new CustomJavaCompiler();
-        runMainInClass(compiler.compile(new File("").getAbsolutePath() + File.separator, "Test"));
+        invokeMainInClass(compiler.compile(new File("").getAbsolutePath() + File.separator, "Test"));
         System.out.println();
 
         // Test bytecode generation
         System.out.println("Compiling bytecode using Jasmin...");
         jasmin.Main jasminMain = new jasmin.Main();
         jasminMain.assemble("Test.j");
-        runMainInClass(CustomJavaCompiler.loadClass("Test", new File("").getAbsolutePath() + File.separator));
+        invokeMainInClass(CustomJavaCompiler.loadClass("Test", new File("").getAbsolutePath() + File.separator));
     }
 
-    private static void runMainInClass(Class classToRun) throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException
+    private static void invokeMainInClass(Class classToRun) throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException
     {
         Object instance = classToRun.newInstance();
 

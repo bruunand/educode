@@ -14,7 +14,7 @@ public class OperatorTranslator
         switch (type.getKind())
         {
             case Type.NUMBER:
-                return "Float";
+                return "Double";
             case Type.STRING:
                 return "String";
             case Type.BOOL:
