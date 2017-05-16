@@ -10,8 +10,8 @@ public void main() throws InterruptedException
 testAllBoolExpr();
 testAllBoolLitExpr();
 testRepeatWhile();
-test((floor(20.500000F) == 20.000000F), true);
-test((getArea(4.000000F, 3.000000F) == 12.000000F), true);
+test(floor(20.500000F).equals(20.000000F), true);
+test(getArea(4.000000F, 3.000000F).equals(12.000000F), true);
 }
 public void test(Boolean val,Boolean expected) throws InterruptedException
 {
@@ -103,7 +103,7 @@ counter = (counter + 1.000000F);
 num = (num - 1.000000F);
 }
 
-test((counter == 10.000000F), true);
+test(counter.equals(10.000000F), true);
 }
 public Float floor(Float num) throws InterruptedException
 {

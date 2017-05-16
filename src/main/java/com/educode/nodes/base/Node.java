@@ -1,6 +1,5 @@
 package com.educode.nodes.base;
 
-import com.educode.ITypeable;
 import com.educode.nodes.IVisitable;
 import com.educode.types.Type;
 import com.educode.visitors.ASTBuilder;
