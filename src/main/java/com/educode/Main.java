@@ -31,11 +31,12 @@ public class Main
         EduCodeParser parser = new EduCodeParser(tokenStream);
 
         ASTBuilder builder = new ASTBuilder();
-        Node root = builder.visit(parser.program());
+        Node root = builder.visit(parser.start());
         System.out.println(root.accept(new PrintVisitor()));
 
         UsingVisitor uv = new UsingVisitor("test");
         root.accept(uv);
+
         uv.getSymbolTableHandler().printMessages();
 
         if (uv.getSymbolTableHandler().hasErrors())

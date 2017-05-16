@@ -7,21 +7,29 @@ public class Test extends ScriptBase
 {
 public void main() throws InterruptedException
 {
+<<<<<<< Updated upstream
 testAllBoolExpr();
 testAllBoolLitExpr();
 testRepeatWhile();
 test((floor(20.500000) == 20.000000), true);
 test((getArea(4.000000, 3.000000) == 12.000000), true);
+=======
+null;
+null;
+null;
+null;
+null;
+>>>>>>> Stashed changes
 }
 public void test(Boolean val,Boolean expected) throws InterruptedException
 {
 if(val.equals(expected))
 {
-System.out.println("Expected");
+null;
 }
 else
 {
-System.out.println("Unexpected");
+null;
 }
 
 }
@@ -29,6 +37,7 @@ public void testAllBoolExpr() throws InterruptedException
 {
 Boolean True = true;
 Boolean False = false;
+<<<<<<< Updated upstream
 Double one = 1.000000;
 Double zero = 0.000000;
 test(!(True), false);
@@ -92,6 +101,71 @@ test((0.000000 >= 1.000000), false);
 test((1.000000 <= 1.000000), true);
 test((1.000000 <= 0.000000), false);
 test((0.000000 <= 1.000000), true);
+=======
+Float one = 1.000000F;
+Float zero = 0.000000F;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+}
+public void testAllBoolLitExpr() throws InterruptedException
+{
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+null;
+>>>>>>> Stashed changes
 }
 public void testRepeatWhile() throws InterruptedException
 {
@@ -103,7 +177,11 @@ counter = (counter + 1.000000);
 num = (num - 1.000000);
 }
 
+<<<<<<< Updated upstream
 test((counter == 10.000000), true);
+=======
+null;
+>>>>>>> Stashed changes
 }
 public Double floor(Double num) throws InterruptedException
 {

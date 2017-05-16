@@ -34,6 +34,12 @@ public class PrintVisitor extends VisitorBase
         return null;
     }
 
+    public Object visit(StartNode node)
+    {
+        //todo
+        return visit(node.getRightChild());
+    }
+
     public Object visit(ProgramNode node)
     {
         String content = "";

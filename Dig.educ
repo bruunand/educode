@@ -1,25 +1,4 @@
 program Dig
-  method main()
-    repeat while robot.getCoordinates().getX() greater than 12
-        robot.mine("south")
-        robot.mine("south")
-        
-        robot.mine("down");
-
-        robot.mine("east");
-        robot.move("east");
-        
-        robot.mine("down");
-
-        robot.mine("north");
-        robot.move("north");
-        
-        robot.mine("down");
-
-        robot.mine("west");
-        robot.move("west");
-        
-        robot.mine("down");
-    end repeat
-  end method
+    method test()
+    end method
 end program

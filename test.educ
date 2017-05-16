@@ -1,3 +1,5 @@
+using Dig
+
 program Test
     method main()
         testAllBoolExpr()
