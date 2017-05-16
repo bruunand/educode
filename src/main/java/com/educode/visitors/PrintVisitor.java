@@ -36,9 +36,17 @@ public class PrintVisitor extends VisitorBase
 
     public Object visit(StartNode node)
     {
-        //todo
-        return visit(node.getRightChild());
+        return String.format("[StartNode [%s]%s]", visit(node.getLeftChild()), visit(node.getRightChild()));
     }
+    
+    public Object visit(UsingsNode node)
+    {
+        String content = "";
+        for (Node child : node.getChildren())
+            content += "[" + visit(child) + "]";
+        return String.format("UsingsNode %s", content);
+    }
+
 
     public Object visit(ProgramNode node)
     {
