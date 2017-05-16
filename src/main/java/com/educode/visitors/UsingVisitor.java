@@ -53,11 +53,12 @@ public class UsingVisitor extends VisitorBase{
         if (main == null)
         {
             main = node;
+            node.setInputSource(subprograms.get(0));
         }
 
         visit(node.getLeftChild());
 
-
+        getSymbolTableHandler().setInputSource(node);
         node.getRightChild().accept(sv);
 
         if (node.equals(main))
@@ -84,6 +85,13 @@ public class UsingVisitor extends VisitorBase{
             {
                 subprograms.add(name);
                 Node sub = tempFunc(name);
+
+                if (sub instanceof StartNode)
+                    ((StartNode) sub).setInputSource(name+".educ");
+                else
+                    getSymbolTableHandler().error(sub,"AST root not StartNode.");
+
+
                 visit(sub);
                 subs.add((ProgramNode)((StartNode)sub).getRightChild());
             }

@@ -38,7 +38,7 @@ public class PrintVisitor extends VisitorBase
     {
         return String.format("[StartNode [%s]%s]", visit(node.getLeftChild()), visit(node.getRightChild()));
     }
-    
+
     public Object visit(UsingsNode node)
     {
         String content = "";

@@ -4,6 +4,7 @@ import com.educode.IReferencing;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.referencing.IReference;
+import com.educode.nodes.ungrouped.StartNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class SymbolTableHandler
     private final List<SymbolTableMessage> _messageList = new ArrayList<>();
     private SymbolTable _current;
     private MethodDeclarationNode _currentParentMethod;
+    private StartNode _inputSource;
 
     public SymbolTableHandler(SymbolTable base)
     {
@@ -27,6 +29,8 @@ public class SymbolTableHandler
         return this._currentParentMethod;
     }
 
+    public void setInputSource(StartNode source){this._inputSource = source;}
+    public StartNode getInputSource(){return this._inputSource;}
     public void setCurrentParentMethod(MethodDeclarationNode newParentMethod)
     {
         this._currentParentMethod = newParentMethod;
@@ -108,12 +112,12 @@ public class SymbolTableHandler
 
     public void error(Node relatedNode, String description, Object ... args)
     {
-        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.ERROR, relatedNode, String.format(description, args)));
+        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.ERROR, relatedNode, String.format(description, args), getInputSource()));
     }
 
     public void warning(Node relatedNode, String description, Object ... args)
     {
-        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.WARNING, relatedNode, String.format(description, args)));
+        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.WARNING, relatedNode, String.format(description, args), getInputSource()));
     }
 
     public List<SymbolTableMessage> getMessages()

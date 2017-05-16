@@ -345,10 +345,10 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         for (int i = 1; i < conditionNodeList.size(); i++)
         {
             append(codeBuffer, "L%s:\n", jumpLabel);
-            append(codeBuffer, "%s", visit(conditionNodeList.get(0).getLeftChild()));
+            append(codeBuffer, "%s", visit(conditionNodeList.get(i).getLeftChild()));
             subtractStackHeight(1);
             append(codeBuffer, "  ifeq L%s\n", jumpLabel = _labelCounter++);
-            append(codeBuffer, "%s", visit(conditionNodeList.get(0).getRightChild()));
+            append(codeBuffer, "%s", visit(conditionNodeList.get(i).getRightChild()));
             append(codeBuffer, "  goto L%s\n", endIfLabel);
         }
 
