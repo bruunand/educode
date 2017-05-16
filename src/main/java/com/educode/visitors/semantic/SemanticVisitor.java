@@ -63,6 +63,7 @@ public class SemanticVisitor extends VisitorBase
 
     public void visit(StartNode node)
     {
+        getSymbolTableHandler().setInputSource(node);
         visit(node.getRightChild());
     }
 

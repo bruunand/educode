@@ -31,7 +31,7 @@ public class SymbolTableMessage
     public String toString()
     {
         if (this._relatedNode != null)
-            return String.format("%s at line %d of %s: %s", this.getTypeString(), this._relatedStart.getInputSource(),this._relatedNode.getLineNumber(), this._errorDescription);
+            return String.format("%s at line %d %s: %s", this.getTypeString(), (this._relatedStart.getInputSource() != null)?(" of " + this._relatedStart.getInputSource()):"",this._relatedNode.getLineNumber(), this._errorDescription);
         else
             return String.format("%s: %s", this.getTypeString(), this._errorDescription);
     }

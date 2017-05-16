@@ -87,13 +87,14 @@ public class UsingVisitor extends VisitorBase{
                 Node sub = tempFunc(name);
 
                 if (sub instanceof StartNode)
-                    ((StartNode) sub).setInputSource(name+".educ");
-                else
+                {
+                    ((StartNode) sub).setInputSource(name + ".educ");
+                    visit(sub);
+                    subs.add((ProgramNode) ((StartNode) sub).getRightChild());
+                } else
                     getSymbolTableHandler().error(sub,"AST root not StartNode.");
 
 
-                visit(sub);
-                subs.add((ProgramNode)((StartNode)sub).getRightChild());
             }
         }
     }
@@ -106,7 +107,7 @@ public class UsingVisitor extends VisitorBase{
         EduCodeParser parser = new EduCodeParser(tokenStream);
 
         ASTBuilder builder = new ASTBuilder();
-        Node root = builder.visit(parser.program());
+        Node root = builder.visit(parser.start());
         System.out.println(root.accept(new PrintVisitor()));
         return root;
 
