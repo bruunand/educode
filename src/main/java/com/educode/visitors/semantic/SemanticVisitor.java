@@ -16,7 +16,6 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.ArrayReferencingNode;
-import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.referencing.StructReferencingNode;
 import com.educode.nodes.statement.*;
@@ -31,8 +30,6 @@ import com.educode.symboltable.SymbolTableHandler;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.Type;
 import com.educode.visitors.ASTBuilder;
-import com.educode.visitors.PrintVisitor;
-import com.educode.visitors.UsingVisitor;
 import com.educode.visitors.VisitorBase;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -45,6 +42,9 @@ import java.util.*;
  */
 public class SemanticVisitor extends VisitorBase
 {
+    private StartNode _mainStartNode;
+    private List<ImportNode> _imports = new LinkedList<>();
+
     private final SymbolTableHandler _symbolTableHandler;
     private final List<EventDefinitionNode> _eventDefinitions = new ArrayList<>();
     private final Deque<Node> _iterativeNodes = new ArrayDeque<Node>();
@@ -69,12 +69,11 @@ public class SemanticVisitor extends VisitorBase
         return null;
     }
 
-    private StartNode Main;
+
     public void visit(StartNode node)
     {
         if (node.getIsMain())
-            Main = node;
-
+            _mainStartNode = node;
 
         visit(node.getLeftChild());
         getSymbolTableHandler().setInputSource(node);
@@ -85,84 +84,82 @@ public class SemanticVisitor extends VisitorBase
 
     private void gatherImports(ProgramNode target)
     {
-        for (ImportNode i:imports)
+        for (ImportNode i : _imports)
         {
             if (i.getImportedNode().hasRightChild() && i.getImportedNode().getRightChild() instanceof ProgramNode)
             {
-                ProgramNode pnode = (ProgramNode)i.getImportedNode().getRightChild();
-                for (Node child: pnode.getChildren())
-                {
+                ProgramNode programNode = (ProgramNode) i.getImportedNode().getRightChild();
+
+                for (Node child: programNode.getChildren())
                     target.addChild(child);
-                }
             }
         }
     }
+<<<<<<< HEAD
     private Hashtable<String, ImportNode> imports2 = new Hashtable<String, ImportNode>();
     private List<ImportNode> imports = new LinkedList<>();
+=======
+
+>>>>>>> CFGupdate
     public void visit(UsingsNode node)
     {
-        for (Node n:node.getChildren())
-        {
-            visit(n);
-        }
+        visitChildren(node);
     }
+
     public void visit(ImportNode node)
     {
-        String name = String.format("%s.educ",node.getText());
+        String name = String.format("%s.educ", node.getText());
 
+<<<<<<< HEAD
         if (imports2.containsKey(name) || name.equals(Main.getInputSource()) )
             return;
         else
+=======
+        if (!_imports.contains(node) && !name.equals(_mainStartNode.getInputSource()))
+>>>>>>> CFGupdate
         {
             try
             {
-                Node sub = tempFunc(name);
+                Node sub = getImportedStartNode(name);
                 if (sub instanceof StartNode)
                 {
                     ((StartNode) sub).setInputSource(name);
                     visit(sub);
                     node.setImportedNode(((StartNode) sub));
+<<<<<<< HEAD
                     imports2.put(name, node);
+=======
+                    _imports.add(node);
+>>>>>>> CFGupdate
                 }
                 else
                     getSymbolTableHandler().error(sub, String.format("%s: AST root not StartNode", name));
             }
             catch (Exception e)
             {
+<<<<<<< HEAD
                 getSymbolTableHandler().error(node, String.format("Could not import %s: %s", name,  e.getMessage()));
+=======
+                getSymbolTableHandler().error(node, String.format("Could not import %s: %s", name, e.getMessage()));
+>>>>>>> CFGupdate
             }
         }
     }
 
-    public Node tempFunc(String name) throws Exception
+    private Node getImportedStartNode(String name) throws Exception
     {
+        // Parse subprogram with ANTLR
         ANTLRInputStream stream = new ANTLRFileStream(name);
         EduCodeLexer lexer = new EduCodeLexer(stream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         EduCodeParser parser = new EduCodeParser(tokenStream);
 
-        ASTBuilder builder = new ASTBuilder();
-        Node root = builder.visit(parser.start());
-        System.out.println(root.accept(new PrintVisitor()));
-        return root;
-
-        /*
-        SemanticVisitor sv = new SemanticVisitor();
-        root.accept(sv);
-        sv.getSymbolTableHandler().printMessages();
-
-        if (sv.getSymbolTableHandler().hasErrors())
-            return;
-        */
+        // Run ASTBuilder on the parse tree and return its start node
+        return new ASTBuilder().visit(parser.start());
     }
-
 
     public void visit(ProgramNode node)
     {
-        //getSymbolTableHandler().getInputSource().setInputSource(node.getReference().toString());
-
-        //getSymbolTableHandler().openScope();
-
         // Add default methods and fields to symbol table
         getSymbolTableHandler().getCurrent().addDefaultField("robot", Type.RobotType);
 
@@ -180,8 +177,8 @@ public class SemanticVisitor extends VisitorBase
                 hasMainMethod = true;
         }
 
-        // If no main method, log error
-        if ((!hasMainMethod)&&((StartNode)node.getParent()).getIsMain())
+        // If no main method and StartNode is main StartNode, log error
+        if (!hasMainMethod && ((StartNode)node.getParent()).getIsMain())
             _symbolTableHandler.error(node, "Program has no method called 'main' with no return type and parameters.");
 
         // Visit children in correct order
@@ -200,8 +197,6 @@ public class SemanticVisitor extends VisitorBase
         // We can also visit method declarations at this point
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
             visit(methodDecl);
-
-        //getSymbolTableHandler().closeScope();
     }
 
     public void visit(NaryNode node)
@@ -229,7 +224,6 @@ public class SemanticVisitor extends VisitorBase
         _iterativeNodes.push(node);
         visitChildren(node);
         _iterativeNodes.pop();
-
     }
 
     public void visit(IfNode node)
