@@ -183,7 +183,7 @@ public class SemanticVisitor extends VisitorBase
         }
 
         // If no main method, log error
-        if (!hasMainMethod)
+        if ((!hasMainMethod)&&((StartNode)node.getParent()).getIsMain())
             _symbolTableHandler.error(node, "Program has no method called 'main' with no return type and parameters.");
 
         // Visit children in correct order
