@@ -4,6 +4,7 @@ import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
+import com.educode.nodes.ungrouped.StartNode;
 import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.UsingVisitor;
@@ -34,12 +35,22 @@ public class Main
         Node root = builder.visit(parser.start());
         System.out.println(root.accept(new PrintVisitor()));
 
-        UsingVisitor uv = new UsingVisitor("test");
-        root.accept(uv);
 
-        uv.getSymbolTableHandler().printMessages();
+        SemanticVisitor sv = new SemanticVisitor();
+        if (root instanceof StartNode)
+        {
+            sv.getSymbolTableHandler().setInputSource((StartNode)root);
+            ((StartNode) root).setInputSource("test.educ");
+            ((StartNode) root).setIsMain(true);
+        }
 
-        if (uv.getSymbolTableHandler().hasErrors())
+        sv.getSymbolTableHandler().openScope();
+        root.accept(sv);
+        sv.getSymbolTableHandler().closeScope();
+
+        sv.getSymbolTableHandler().printMessages();
+
+        if (sv.getSymbolTableHandler().hasErrors())
             return;
 
         //root.accept(new OptimizationVisitor());

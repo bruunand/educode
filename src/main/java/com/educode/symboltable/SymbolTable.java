@@ -8,6 +8,7 @@ import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.ungrouped.StartNode;
 import com.educode.types.Type;
 
 import java.util.ArrayList;
@@ -127,8 +128,8 @@ public class SymbolTable
     {
         IdentifierReferencingNode reference = new IdentifierReferencingNode(name);
         VariableDeclarationNode node = new VariableDeclarationNode(reference, type);
-
-        this.insert(new Symbol(reference, node));
+        StartNode start = new StartNode("@Default");
+        this.insert(new Symbol(reference, node, start));
     }
 
     public Symbol addDefaultMethod(String name, Type returnType, Type ... parameterTypes)
@@ -144,8 +145,9 @@ public class SymbolTable
 
         IdentifierReferencingNode reference = new IdentifierReferencingNode(name);
         MethodDeclarationNode node = new MethodDeclarationNode(parameterNodes, null, reference, returnType);
+        StartNode start = new StartNode("@Default");
 
-        Symbol toInsert = new Symbol(reference, node);
+        Symbol toInsert = new Symbol(reference, node, start);
         this.insert(toInsert);
         return toInsert;
     }

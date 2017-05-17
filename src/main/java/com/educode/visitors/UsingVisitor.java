@@ -50,16 +50,19 @@ public class UsingVisitor extends VisitorBase{
 
     public void visit(StartNode node) throws Exception
     {
+        /*
         if (main == null)
         {
             main = node;
             node.setInputSource(subprograms.get(0));
         }
-
         visit(node.getLeftChild());
+
 
         getSymbolTableHandler().setInputSource(node);
         node.getRightChild().accept(sv);
+
+        */
 
         if (node.equals(main))
         {

@@ -15,6 +15,10 @@ public class UsingsNode extends NaryNode{
     {
         super(childNodes);
     }
+    public UsingsNode()
+    {
+        super(new ArrayList<Node>());
+    }
 
     @Override
     public Object accept(VisitorBase visitor)

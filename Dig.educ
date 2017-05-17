@@ -1,4 +1,8 @@
 program Dig
+    number global = 3
+
     method test()
+        number a
+        number a
     end method
 end program

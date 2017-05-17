@@ -17,7 +17,7 @@ public class SymbolTableHandler
     private final List<SymbolTableMessage> _messageList = new ArrayList<>();
     private SymbolTable _current;
     private MethodDeclarationNode _currentParentMethod;
-    private StartNode _inputSource;
+    private StartNode _inputSource = null;
 
     public SymbolTableHandler(SymbolTable base)
     {
@@ -29,8 +29,15 @@ public class SymbolTableHandler
         return this._currentParentMethod;
     }
 
-    public void setInputSource(StartNode source){this._inputSource = source;}
-    public StartNode getInputSource(){return this._inputSource;}
+    public void setInputSource(StartNode source)
+    {
+        this._inputSource = source;
+    }
+    public StartNode getInputSource()
+    {
+        return this._inputSource;
+    }
+
     public void setCurrentParentMethod(MethodDeclarationNode newParentMethod)
     {
         this._currentParentMethod = newParentMethod;
@@ -83,9 +90,15 @@ public class SymbolTableHandler
         Symbol existing = retrieveSymbol(node);
 
         if (existing == null)
-            _current.insert(new Symbol(reference, node));
+            _current.insert(new Symbol(reference, node, _inputSource));
         else
-            error(node, "Symbol %s previously declared at line %d.", reference, existing.getSourceNode().getLineNumber());
+        {
+            if (getInputSource()==existing.getInputSource())
+                error(node, "Symbol %s previously declared at line %d.", reference, existing.getSourceNode().getLineNumber());
+            else
+                error(existing.getInputSource(), node, "Symbol %s previously declared at line %d", reference, existing.getSourceNode().getLineNumber());
+        }
+
     }
 
     public boolean hasErrors()
@@ -113,6 +126,11 @@ public class SymbolTableHandler
     public void error(Node relatedNode, String description, Object ... args)
     {
         this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.ERROR, relatedNode, String.format(description, args), getInputSource()));
+    }
+
+    public void error(StartNode conflictSource, Node relatedNode, String description, Object ... args)
+    {
+        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.ERROR, relatedNode, String.format(description, args), getInputSource(), conflictSource));
     }
 
     public void warning(Node relatedNode, String description, Object ... args)
