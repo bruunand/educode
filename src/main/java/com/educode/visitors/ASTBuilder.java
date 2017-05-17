@@ -161,7 +161,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         updateLineNumber(ctx);
 
-        return new StartNode(visit(ctx.ulist), visit(ctx.pr));
+        return new StartNode(ctx.ulist!=null ? visit(ctx.ulist) : new UsingsNode(), visit(ctx.pr));
     }
 
     @Override
@@ -171,7 +171,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         ArrayList<Node> Nodes = new ArrayList<>();
 
         for (EduCodeParser.IdentifierContext i: ctx.id)
-            Nodes.add(visitIdentifier(i));
+            Nodes.add(new ImportNode(visitIdentifier(i).toString()));
 
         return new UsingsNode(Nodes);
     }

@@ -1,3 +1,5 @@
+using Dig
+
 program Test
     method main()
         testAllBoolExpr()
@@ -7,6 +9,7 @@ program Test
         test((getArea(4,3) equals 12), true)
     end method
 
+    number global = 1
     method test(bool val, bool expected)
         if val equals expected then
             debug("Expected")
@@ -17,6 +20,7 @@ program Test
 
     method testAllBoolExpr()
         bool True = true, False = false
+        number one = 2
         number one = 1, zero = 0
         //Test 'not'
         test(not True, false)

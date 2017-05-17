@@ -26,9 +26,10 @@ public class UsingVisitor extends VisitorBase{
     private final SemanticVisitor sv;
     private List<ProgramNode> subs = new LinkedList<ProgramNode>();
     private StartNode main = null;
-    public UsingVisitor(String mainName){
 
-         sv = new SemanticVisitor();
+    public UsingVisitor(String mainName)
+    {
+        sv = new SemanticVisitor();
         _symbolTableHandler = sv.getSymbolTableHandler();
         subprograms = new LinkedList<String>();
         subprograms.add(mainName);
@@ -41,59 +42,75 @@ public class UsingVisitor extends VisitorBase{
     }
 
     @Override
-    public Object defaultVisit(Node node) {
+    public Object defaultVisit(Node node)
+    {
         visitChildren(node);
         return null;
     }
 
-
-    public void visit(StartNode node)throws Exception{
-        if (main == null){
+    public void visit(StartNode node) throws Exception
+    {
+        /*
+        if (main == null)
+        {
             main = node;
+            node.setInputSource(subprograms.get(0));
         }
-
         visit(node.getLeftChild());
 
 
+        getSymbolTableHandler().setInputSource(node);
         node.getRightChild().accept(sv);
 
-        if (node.equals(main)){
-            ProgramNode mainProgram = (ProgramNode)main.getRightChild();
-            for (ProgramNode n: subs) {
-                for (Node decl: n.getChildren()){
+        */
+
+        if (node.equals(main))
+        {
+            ProgramNode mainProgram = (ProgramNode) main.getRightChild();
+            for (ProgramNode n: subs)
+            {
+                for (Node decl: n.getChildren())
+                {
                     mainProgram.addChild(decl);
                 }
             }
         }
     }
 
-    public void visit(UsingsNode node)throws Exception{
-
-        for (Node i: node.getChildren()) {
+    public void visit(UsingsNode node) throws Exception
+    {
+        for (Node i: node.getChildren())
+        {
             String name = ((IdentifierReferencingNode)i).getText();
             if (subprograms.contains(name))
                 continue;
-            else {
+            else
+            {
                 subprograms.add(name);
                 Node sub = tempFunc(name);
-                visit(sub);
-                subs.add((ProgramNode)((StartNode)sub).getRightChild());
+
+                if (sub instanceof StartNode)
+                {
+                    ((StartNode) sub).setInputSource(name + ".educ");
+                    visit(sub);
+                    subs.add((ProgramNode) ((StartNode) sub).getRightChild());
+                } else
+                    getSymbolTableHandler().error(sub,"AST root not StartNode.");
+
+
             }
-
-
         }
-
-
     }
 
-    public Node tempFunc(String name) throws Exception {
+    public Node tempFunc(String name) throws Exception
+    {
         ANTLRInputStream stream = new ANTLRFileStream(name+".educ");
         EduCodeLexer lexer = new EduCodeLexer(stream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         EduCodeParser parser = new EduCodeParser(tokenStream);
 
         ASTBuilder builder = new ASTBuilder();
-        Node root = builder.visit(parser.program());
+        Node root = builder.visit(parser.start());
         System.out.println(root.accept(new PrintVisitor()));
         return root;
 

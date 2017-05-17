@@ -8,6 +8,7 @@ import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.ungrouped.StartNode;
 import com.educode.types.Type;
 
 import java.util.ArrayList;
@@ -19,7 +20,8 @@ import java.util.List;
  */
 public class SymbolTable
 {
-    private final SymbolTable _outer;
+    private SymbolTable _outer;
+    private int _maxDeclaredVariables = 0;
     private int _declaredVariableCounter = 0;
 
     private final List<Symbol> _symbolList = new ArrayList();
@@ -65,14 +67,17 @@ public class SymbolTable
         return null;
     }
 
+    public int getMaxDeclaredVariableCounter() { return _maxDeclaredVariables; }
+    public void setMaxDeclaredVariables(int value) { _maxDeclaredVariables = value; }
+
     public void addDeclaredVariableCounter(int value)
     {
         _declaredVariableCounter += value;
+        if (_declaredVariableCounter > _maxDeclaredVariables)
+            _maxDeclaredVariables = _declaredVariableCounter;
     }
 
     public int getDeclaredVariableCounter() { return _declaredVariableCounter; }
-
-    public void setDeclaredVariableCounter(int value) { _declaredVariableCounter = value; }
 
     public Symbol retrieveMethodSymbol(IReference reference, List<Type> actualArguments)
     {
@@ -123,8 +128,8 @@ public class SymbolTable
     {
         IdentifierReferencingNode reference = new IdentifierReferencingNode(name);
         VariableDeclarationNode node = new VariableDeclarationNode(reference, type);
-
-        this.insert(new Symbol(reference, node));
+        StartNode start = new StartNode("@Default");
+        this.insert(new Symbol(reference, node, start));
     }
 
     public Symbol addDefaultMethod(String name, Type returnType, Type ... parameterTypes)
@@ -140,8 +145,9 @@ public class SymbolTable
 
         IdentifierReferencingNode reference = new IdentifierReferencingNode(name);
         MethodDeclarationNode node = new MethodDeclarationNode(parameterNodes, null, reference, returnType);
+        StartNode start = new StartNode("@Default");
 
-        Symbol toInsert = new Symbol(reference, node);
+        Symbol toInsert = new Symbol(reference, node, start);
         this.insert(toInsert);
         return toInsert;
     }
