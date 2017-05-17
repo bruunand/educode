@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class SymbolTable
 {
-    private SymbolTable _outer;
+    private final SymbolTable _outer;
     private int _declaredVariableCounter = 0;
 
     private final List<Symbol> _symbolList = new ArrayList();

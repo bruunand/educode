@@ -14,7 +14,7 @@ public class Type
 
     public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5, ENTITY = 6, COLLECTION = 7, ROBOT = 8, ITEM = 9;
 
-    private static SymbolTable _primitiveSymbolTable, _baseSymbolTable, _collectionSymbolTable, _entitySymbolTable, _robotSymbolTable, _coordinatesSymbolTable, _itemSymbolTable, _stringSymbolTable;
+    private static SymbolTable _emptySymbolTable, _baseSymbolTable, _collectionSymbolTable, _entitySymbolTable, _robotSymbolTable, _coordinatesSymbolTable, _itemSymbolTable, _stringSymbolTable;
 
     static
     {
@@ -29,11 +29,11 @@ public class Type
         ItemType = new Type(ITEM);
         Error = new Type(ERROR);
 
-        // Create primitive symbol table
-        _primitiveSymbolTable = new SymbolTable(null);
+        // Create empty symbol table
+        _emptySymbolTable = new SymbolTable(null);
 
         // Construct symbol tables from interfaces
-        _baseSymbolTable        = InterfaceConverter.getSymbolTableFromClass(null, IBase.class);
+        _baseSymbolTable        = InterfaceConverter.getSymbolTableFromClass(_emptySymbolTable, IBase.class);
         _coordinatesSymbolTable = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, ICoordinates.class);
         _collectionSymbolTable  = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, ICollection.class);
         _entitySymbolTable      = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, IEntity.class);
@@ -120,7 +120,7 @@ public class Type
             return tempTable;
         }
 
-        return _baseSymbolTable;
+        return _emptySymbolTable;
     }
 
     public boolean isCollection()

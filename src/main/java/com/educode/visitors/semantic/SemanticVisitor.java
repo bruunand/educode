@@ -328,6 +328,11 @@ public class SemanticVisitor extends VisitorBase
 
         // Use type of left side as symbol table
         SymbolTable table = reference.getLeftChild().getType().getSymbolTable();
+        if (table == null)
+        {
+            getSymbolTableHandler().error(reference, "Type %s does not have a symbol table.", reference.getLeftChild().getType());
+            return;
+        }
 
         // Fields and methods have different approaches for retrieval
         if (reference.getRightChild() instanceof IdentifierReferencingNode)

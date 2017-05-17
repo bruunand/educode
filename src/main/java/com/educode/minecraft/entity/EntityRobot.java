@@ -277,7 +277,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         }
     }
 
-    public float dropInventoryItem(String name, float quantity)
+    public float dropInventoryItem(String name, double quantity)
     {
         int i = 0;
         float droppedItems = 0;

@@ -5,11 +5,11 @@ package com.educode.runtime.types;
  */
 public interface ICoordinates extends IBase
 {
-    float getX();
-    float getY();
-    float getZ();
+    double getX();
+    double getY();
+    double getZ();
 
-    void setX(float value);
-    void setY(float value);
-    void setZ(float value);
+    void setX(double value);
+    void setY(double value);
+    void setZ(double value);
 }

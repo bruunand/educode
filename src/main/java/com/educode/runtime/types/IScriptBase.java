@@ -8,12 +8,12 @@ public interface IScriptBase
     @SpecialJavaTranslation(formattedTranslation = "System.out.println(%s)")
     void debug(String string);
 
-    Float random(Float a, Float b);
+    double random(double a, double b);
 
     @SpecialJavaTranslation(formattedTranslation =  "java.lang.Math.abs(%s)")
-    Float abs(Float input);
+    double abs(double input);
 
-    void wait(Float time);
+    void wait(double time);
 
-    ExtendedCollection<Float> range(Float start, Float end);
+    ExtendedCollection<Double> range(double start, double end);
 }

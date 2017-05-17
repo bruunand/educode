@@ -6,10 +6,10 @@ package com.educode.runtime.types;
 public interface IEntity extends IBase
 {
     Coordinates getCoordinates();
-    float getHealth();
+    double getHealth();
     boolean isRobot();
     boolean isPlayer();
-    float getX();
-    float getY();
-    float getZ();
+    double getX();
+    double getY();
+    double getZ();
 }

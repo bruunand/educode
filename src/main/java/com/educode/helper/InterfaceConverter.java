@@ -33,7 +33,7 @@ public class InterfaceConverter
 
             if (sourceClass.equals(String.class))
                 return Type.StringType;
-            else if (sourceClass.equals(float.class) || sourceClass.equals(Float.class))
+            else if (sourceClass.equals(double.class) || sourceClass.equals(Double.class))
                 return Type.NumberType;
             else if (sourceClass.equals(MinecraftEntity.class))
                 return Type.EntityType;
