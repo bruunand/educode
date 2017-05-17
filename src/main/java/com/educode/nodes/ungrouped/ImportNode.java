@@ -27,8 +27,15 @@ public class ImportNode extends LeafNode
         return this._identifier;
     }
 
-    public StartNode getImportedNode(){return _importedNode;}
-    public void setImportedNode(StartNode node){ _importedNode = node;}
+    public StartNode getImportedNode()
+    {
+        return _importedNode;
+    }
+
+    public void setImportedNode(StartNode node)
+    {
+        _importedNode = node;
+    }
 
     @Override
     public String toString()
@@ -41,10 +48,7 @@ public class ImportNode extends LeafNode
     {
         if (other instanceof ImportNode)
             return ((ImportNode) other).getText().equals(this.getText());
-        else if (other instanceof String)
-            return ((String) other).equals(this.getText());
         else
-            return false;
-
+            return other instanceof String && other.equals(this.getText());
     }
 }
