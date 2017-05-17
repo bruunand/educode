@@ -95,7 +95,12 @@ public class SemanticVisitor extends VisitorBase
             }
         }
     }
+<<<<<<< HEAD
+    private Hashtable<String, ImportNode> imports2 = new Hashtable<String, ImportNode>();
+    private List<ImportNode> imports = new LinkedList<>();
+=======
 
+>>>>>>> CFGupdate
     public void visit(UsingsNode node)
     {
         visitChildren(node);
@@ -105,7 +110,13 @@ public class SemanticVisitor extends VisitorBase
     {
         String name = String.format("%s.educ", node.getText());
 
+<<<<<<< HEAD
+        if (imports2.containsKey(name) || name.equals(Main.getInputSource()) )
+            return;
+        else
+=======
         if (!_imports.contains(node) && !name.equals(_mainStartNode.getInputSource()))
+>>>>>>> CFGupdate
         {
             try
             {
@@ -115,14 +126,22 @@ public class SemanticVisitor extends VisitorBase
                     ((StartNode) sub).setInputSource(name);
                     visit(sub);
                     node.setImportedNode(((StartNode) sub));
+<<<<<<< HEAD
+                    imports2.put(name, node);
+=======
                     _imports.add(node);
+>>>>>>> CFGupdate
                 }
                 else
                     getSymbolTableHandler().error(sub, String.format("%s: AST root not StartNode", name));
             }
             catch (Exception e)
             {
+<<<<<<< HEAD
+                getSymbolTableHandler().error(node, String.format("Could not import %s: %s", name,  e.getMessage()));
+=======
                 getSymbolTableHandler().error(node, String.format("Could not import %s: %s", name, e.getMessage()));
+>>>>>>> CFGupdate
             }
         }
     }
