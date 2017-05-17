@@ -6,8 +6,8 @@ import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.visitors.ASTBuilder;
+import com.educode.visitors.ParserErrorListener;
 import com.educode.visitors.PrintVisitor;
-import com.educode.visitors.UsingVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
@@ -28,13 +28,13 @@ public class Main
     {
         ANTLRInputStream stream = new ANTLRFileStream("test.educ");
         EduCodeLexer lexer = new EduCodeLexer(stream);
+        lexer.addErrorListener(new ParserErrorListener());
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         EduCodeParser parser = new EduCodeParser(tokenStream);
+        parser.addErrorListener(new ParserErrorListener());
 
         ASTBuilder builder = new ASTBuilder();
         Node root = builder.visit(parser.start());
-        System.out.println(root.accept(new PrintVisitor()));
-
 
         SemanticVisitor sv = new SemanticVisitor();
         if (root instanceof StartNode)

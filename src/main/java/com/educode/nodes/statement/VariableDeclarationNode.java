@@ -56,6 +56,6 @@ public class VariableDeclarationNode extends UnaryNode implements IReferencing, 
 
     public void setAssignment(Node node)
     {
-        this.setChild(new AssignmentNode(AssignmentOperator.None, this.getReference(), node));
+        this.setChild(new AssignmentNode(this.getReference(), node));
     }
 }
