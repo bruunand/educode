@@ -26,6 +26,8 @@ import com.educode.nodes.ungrouped.*;
  */
 public class PrintVisitor extends VisitorBase
 {
+    private boolean _hasVisitedStartNode = false;
+
     @Override
     public Object defaultVisit(Node node)
     {
@@ -36,25 +38,30 @@ public class PrintVisitor extends VisitorBase
 
     public Object visit(StartNode node)
     {
-        return String.format("[StartNode [%s]%s]", visit(node.getLeftChild()), visit(node.getRightChild()));
+        return String.format("[StartNode [%s][%s]]", visit(node.getLeftChild()), visit(node.getRightChild()));
+    }
+
+    public Object visit(ImportNode node)
+    {
+        return String.format("ImportNode %s", visit(node.getImportedNode()));
     }
 
     public Object visit(UsingsNode node)
     {
-        String content = "";
+        StringBuilder content = new StringBuilder();
         for (Node child : node.getChildren())
-            content += "[" + visit(child) + "]";
-        return String.format("UsingsNode %s", content);
-    }
+            content.append(String.format("[%s]", visit(child)));
 
+        return String.format("UsingsNode %s", content.toString());
+    }
 
     public Object visit(ProgramNode node)
     {
-        String content = "";
+        StringBuilder content = new StringBuilder();
         for (Node child : node.getChildren())
-            content += "[" + visit(child) + "]";
+            content.append(String.format("[%s]", visit(child)));
 
-        return String.format("[ProgramNode [%s]%s]", visit(node.getReference()), content);
+        return String.format("ProgramNode [%s]%s", visit(node.getReference()), content.toString());
     }
 
     public Object visit(EventDefinitionNode node)

@@ -1,6 +1,7 @@
 package com.educode.helper;
 
 import com.educode.types.ArithmeticOperator;
+import com.educode.types.AssignmentOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
 
@@ -80,6 +81,27 @@ public class OperatorTranslator
         }
 
         System.out.println(String.format("Warning: Could not determine Java translation for arithmetic operator %s.", operator));
+
+        return null;
+    }
+
+    public static String toJava(AssignmentOperator operator)
+    {
+        switch (operator.getKind())
+        {
+            case AssignmentOperator.NONE:
+                return "=";
+            case AssignmentOperator.ADDITION:
+                return "+=";
+            case AssignmentOperator.SUBTRACTION:
+                return "-=";
+            case AssignmentOperator.MULTIPLICATION:
+                return "*=";
+            case AssignmentOperator.DIVISION:
+                return "/=";
+        }
+
+        System.out.println(String.format("Warning: Could not determine Java translation for assignment operator %s.", operator));
 
         return null;
     }
