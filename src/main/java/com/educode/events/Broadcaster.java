@@ -26,7 +26,7 @@ public class Broadcaster
     }
 
     // There is a special method for communication because they require the subscribe to be subscribed to a specific channel
-    public static void broadcastMessage(Entity sender, float channel, Object message)
+    public static void broadcastMessage(Entity sender, double channel, Object message)
     {
         synchronized (CompilerMod.RUNNING_SCRIPTS)
         {

@@ -49,7 +49,7 @@ public class MinecraftEntity implements IEntity
     }
 
     @Override
-    public float getHealth()
+    public double getHealth()
     {
         if (!(getWrappedEntity() instanceof EntityLivingBase))
             return -1;
@@ -58,19 +58,19 @@ public class MinecraftEntity implements IEntity
     }
 
     @Override
-    public float getX()
+    public double getX()
     {
         return (float) getWrappedEntity().posX;
     }
 
     @Override
-    public float getY()
+    public double getY()
     {
         return (float) getWrappedEntity().posY;
     }
 
     @Override
-    public float getZ()
+    public double getZ()
     {
         return (float) getWrappedEntity().posZ;
     }

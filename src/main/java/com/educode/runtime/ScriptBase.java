@@ -108,17 +108,17 @@ public abstract class ScriptBase implements IRobot
         return this._player;
     }
 
-    public ExtendedCollection<Float> range(float min, float max)
+    public ExtendedCollection<Double> range(double min, double max)
     {
-        ExtendedCollection<Float> ret = new ExtendedCollection<>();
+        ExtendedCollection<Double> ret = new ExtendedCollection<>();
 
-        for (float c = min; c <= max; c++)
+        for (double c = min; c <= max; c++)
             ret.addItem(c);
 
         return ret;
     }
 
-    public Float random(float min, float max)
+    public double random(double min, double max)
     {
         return (max - min) * _rand.nextFloat() + min;
     }
@@ -135,13 +135,13 @@ public abstract class ScriptBase implements IRobot
         return false;
     }
 
-    public void wait(float time) throws InterruptedException
+    public void wait(double time) throws InterruptedException
     {
         Thread.sleep((long) time);
     }
 
     @Override
-    public void setWorldTime(float time) throws InterruptedException
+    public void setWorldTime(double time) throws InterruptedException
     {
         executeOnTick(() -> _world.setWorldTime((long) time % 24000));
     }
@@ -160,10 +160,10 @@ public abstract class ScriptBase implements IRobot
         });
     }
 
-    public void explode(float strength) throws InterruptedException
+    public void explode(double strength) throws InterruptedException
     {
         boolean mobGriefingEnabled = this._world.getGameRules().getBoolean("mobGriefing");
-        executeOnTick(() -> _world.createExplosion(this._robot, getX(), getY(), getZ(), strength, mobGriefingEnabled));
+        executeOnTick(() -> _world.createExplosion(this._robot, getX(), getY(), getZ(), (float) strength, mobGriefingEnabled));
     }
 
     public void removeEntity() throws InterruptedException
@@ -177,21 +177,21 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public float getX()
+    public double getX()
     {
-        return (float) _robot.posX;
+        return (double) _robot.posX;
     }
 
     @Override
-    public float getY()
+    public double getY()
     {
-        return (float) _robot.posY;
+        return (double) _robot.posY;
     }
 
     @Override
-    public float getZ()
+    public double getZ()
     {
-        return (float) _robot.posZ;
+        return (double) _robot.posZ;
     }
 
     @Override
@@ -230,13 +230,13 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public void broadcast(float channel, String message)
+    public void broadcast(double channel, String message)
     {
         Broadcaster.broadcastMessage(this._robot, channel, message);
     }
 
     @Override
-    public void broadcast(float channel, MinecraftEntity entity)
+    public void broadcast(double channel, MinecraftEntity entity)
     {
         Broadcaster.broadcastMessage(this._robot, channel, entity);
     }
@@ -277,9 +277,9 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public float dropItem(String name, final float quantity) throws InterruptedException
+    public double dropItem(String name, final double quantity) throws InterruptedException
     {
-        return (float) executeOnTick(() -> _robot.dropInventoryItem(name, quantity));
+        return (double) executeOnTick(() -> _robot.dropInventoryItem(name, quantity));
     }
 
     @Override
@@ -312,7 +312,7 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public MinecraftItem getItemFromSlot(float index)
+    public MinecraftItem getItemFromSlot(double index)
     {
         int intIndex = (int) index;
         if (intIndex >= this._robot.getInventory().getSizeInventory())
@@ -321,7 +321,7 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public float getDistanceTo(MinecraftEntity entity)
+    public double getDistanceTo(MinecraftEntity entity)
     {
     	return _robot.getDistanceToEntity(entity.getWrappedEntity());
     }
@@ -405,7 +405,7 @@ public abstract class ScriptBase implements IRobot
     }
 
     @Override
-    public float getHealth()
+    public double getHealth()
     {
         return this._robot.getHealth();
     }
