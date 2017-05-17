@@ -1,3 +1,5 @@
+using Dig
+
 program Dig
     number global = 3
 

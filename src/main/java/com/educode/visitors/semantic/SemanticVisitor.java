@@ -44,6 +44,7 @@ public class SemanticVisitor extends VisitorBase
 {
     private StartNode _mainStartNode;
     private List<ImportNode> _imports = new LinkedList<>();
+    private Hashtable<String, ImportNode> _imports2 = new Hashtable<String, ImportNode>();
 
     private final SymbolTableHandler _symbolTableHandler;
     private final List<EventDefinitionNode> _eventDefinitions = new ArrayList<>();
@@ -84,23 +85,21 @@ public class SemanticVisitor extends VisitorBase
 
     private void gatherImports(ProgramNode target)
     {
-        for (ImportNode i : _imports)
+        Enumeration<ImportNode> nodes = _imports2.elements();
+        while (nodes.hasMoreElements())
         {
-            if (i.getImportedNode().hasRightChild() && i.getImportedNode().getRightChild() instanceof ProgramNode)
+            ImportNode i = nodes.nextElement();
+            StartNode s = i.getImportedNode();
+
+            if (s != null && s.hasRightChild() && s.getRightChild() instanceof ProgramNode)
             {
                 ProgramNode programNode = (ProgramNode) i.getImportedNode().getRightChild();
-
                 for (Node child: programNode.getChildren())
                     target.addChild(child);
             }
         }
     }
-<<<<<<< HEAD
-    private Hashtable<String, ImportNode> imports2 = new Hashtable<String, ImportNode>();
-    private List<ImportNode> imports = new LinkedList<>();
-=======
 
->>>>>>> CFGupdate
     public void visit(UsingsNode node)
     {
         visitChildren(node);
@@ -110,13 +109,7 @@ public class SemanticVisitor extends VisitorBase
     {
         String name = String.format("%s.educ", node.getText());
 
-<<<<<<< HEAD
-        if (imports2.containsKey(name) || name.equals(Main.getInputSource()) )
-            return;
-        else
-=======
-        if (!_imports.contains(node) && !name.equals(_mainStartNode.getInputSource()))
->>>>>>> CFGupdate
+        if (!_imports2.containsKey(name) && !name.equals(_mainStartNode.getInputSource()))
         {
             try
             {
@@ -124,24 +117,17 @@ public class SemanticVisitor extends VisitorBase
                 if (sub instanceof StartNode)
                 {
                     ((StartNode) sub).setInputSource(name);
+                    _imports2.put(name, node);
                     visit(sub);
                     node.setImportedNode(((StartNode) sub));
-<<<<<<< HEAD
-                    imports2.put(name, node);
-=======
-                    _imports.add(node);
->>>>>>> CFGupdate
+                    //_imports.add(node);
                 }
                 else
                     getSymbolTableHandler().error(sub, String.format("%s: AST root not StartNode", name));
             }
             catch (Exception e)
             {
-<<<<<<< HEAD
-                getSymbolTableHandler().error(node, String.format("Could not import %s: %s", name,  e.getMessage()));
-=======
                 getSymbolTableHandler().error(node, String.format("Could not import %s: %s", name, e.getMessage()));
->>>>>>> CFGupdate
             }
         }
     }
