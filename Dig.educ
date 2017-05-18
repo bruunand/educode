@@ -5,6 +5,5 @@ program Dig
 
     method test()
         number a
-        number a
     end method
 end program

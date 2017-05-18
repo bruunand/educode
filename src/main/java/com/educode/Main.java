@@ -5,11 +5,13 @@ import com.educode.antlr.EduCodeParser;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.ungrouped.StartNode;
+import com.educode.parsing.ParserHelper;
+import com.educode.parsing.ParserResult;
 import com.educode.visitors.ASTBuilder;
-import com.educode.visitors.ParserErrorListener;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
+import com.educode.visitors.optimization.OptimizationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -26,26 +28,23 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-        ANTLRInputStream stream = new ANTLRFileStream("test.educ");
-        EduCodeLexer lexer = new EduCodeLexer(stream);
-        lexer.addErrorListener(new ParserErrorListener());
-        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        EduCodeParser parser = new EduCodeParser(tokenStream);
-        parser.addErrorListener(new ParserErrorListener());
-
-        ASTBuilder builder = new ASTBuilder();
-        Node root = builder.visit(parser.start());
-
-        SemanticVisitor sv = new SemanticVisitor();
-        if (root instanceof StartNode)
+        ParserResult result = ParserHelper.parse("test");
+        if (result.getErrorHandler().hasErrors())
         {
-            sv.getSymbolTableHandler().setInputSource((StartNode)root);
-            ((StartNode) root).setInputSource("test.educ");
-            ((StartNode) root).setIsMain(true);
+            result.getErrorHandler().printMessages();
+            return;
         }
 
+        // No syntax errors - setup semantic visitor
+        StartNode startNode = result.getStartNode();
+        SemanticVisitor sv = new SemanticVisitor();
+        sv.getSymbolTableHandler().setInputSource(startNode);
+        startNode.setInputSource("test.educ");
+        startNode.setIsMain(true);
+
+        // Perform semantic analysis
         sv.getSymbolTableHandler().openScope();
-        root.accept(sv);
+        startNode.accept(sv);
         sv.getSymbolTableHandler().closeScope();
 
         sv.getSymbolTableHandler().printMessages();
@@ -53,15 +52,15 @@ public class Main
         if (sv.getSymbolTableHandler().hasErrors())
             return;
 
-        //root.accept(new OptimizationVisitor());
+        startNode.accept(new OptimizationVisitor());
+
+        System.out.println(startNode.accept(new PrintVisitor()));
 
         JavaBytecodeGenerationVisitor byteCodeVisitor = new JavaBytecodeGenerationVisitor();
-        root.accept(byteCodeVisitor);
-
-        System.out.println(root.accept(new PrintVisitor()));
+        startNode.accept(byteCodeVisitor);
 
         JavaCodeGenerationVisitor javaCodeVisitor = new JavaCodeGenerationVisitor("Test.java");
-        root.accept(javaCodeVisitor);
+        startNode.accept(javaCodeVisitor);
 
         // Test code generation
         System.out.println("Compiling Java code...");

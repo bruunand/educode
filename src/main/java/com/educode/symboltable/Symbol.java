@@ -1,7 +1,7 @@
 package com.educode.symboltable;
 
-import com.educode.IReferencing;
-import com.educode.ITypeable;
+import com.educode.nodes.IReferencing;
+import com.educode.nodes.ITypeable;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.ungrouped.StartNode;

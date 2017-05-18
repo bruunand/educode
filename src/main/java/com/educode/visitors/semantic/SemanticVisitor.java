@@ -2,6 +2,7 @@ package com.educode.visitors.semantic;
 
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
+import com.educode.errorhandling.ErrorHandler;
 import com.educode.helper.InterfaceConverter;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
@@ -141,7 +142,7 @@ public class SemanticVisitor extends VisitorBase
         EduCodeParser parser = new EduCodeParser(tokenStream);
 
         // Run ASTBuilder on the parse tree and return its start node
-        return new ASTBuilder().visit(parser.start());
+        return new ASTBuilder(new ErrorHandler()).visit(parser.start());
     }
 
     public void visit(ProgramNode node)

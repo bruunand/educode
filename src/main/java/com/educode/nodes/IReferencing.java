@@ -1,4 +1,4 @@
-package com.educode;
+package com.educode.nodes;
 
 import com.educode.nodes.referencing.IReference;
 

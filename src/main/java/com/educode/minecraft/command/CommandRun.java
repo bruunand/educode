@@ -2,13 +2,14 @@ package com.educode.minecraft.command;
 
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
+import com.educode.errorhandling.ErrorHandler;
 import com.educode.events.achievements.AchievementEvent;
 import com.educode.minecraft.CompilerMod;
 import com.educode.runtime.threads.ScriptRunner;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
 import com.educode.runtime.ScriptBase;
-import com.educode.symboltable.SymbolTableMessage;
+import com.educode.errorhandling.ErrorMessage;
 import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
@@ -79,7 +80,7 @@ public class CommandRun implements ICommand
             EduCodeParser parser = new EduCodeParser(tokenStream);
 
             // Generate AST from parse tree
-            ASTBuilder builder = new ASTBuilder();
+            ASTBuilder builder = new ASTBuilder(new ErrorHandler());
             Node astRoot = builder.visit(parser.program());
 
             // Perform semantic checks
@@ -87,7 +88,7 @@ public class CommandRun implements ICommand
             astRoot.accept(semanticVisitor);
             if (semanticVisitor.getSymbolTableHandler().hasErrors())
             {
-                for (SymbolTableMessage message : semanticVisitor.getSymbolTableHandler().getMessages())
+                for (ErrorMessage message : semanticVisitor.getSymbolTableHandler().getMessages())
                     sender.sendMessage(new TextComponentString(message.toString()));
 
                 return;

@@ -1,12 +1,15 @@
-using Dig
-
 program Test
     number glob2
-    method main()
+    method main(
         number a = 10
         a += 2
         coordinates c
         c -= (0, 1, 2)
+        c /= 2
         debug("Out:" + c.toString())
+    end method
+
+    method hej(number a)
+        a = 10
     end method
 end program
