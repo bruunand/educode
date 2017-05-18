@@ -41,18 +41,6 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
 {
     private static int _currentLineNumber = 0;
 
-    private final ErrorHandler _errorHandler;
-
-    public ASTBuilder(ErrorHandler errorHandler)
-    {
-        this._errorHandler = errorHandler;
-    }
-
-    public ErrorHandler getErrorHandler()
-    {
-        return this._errorHandler;
-    }
-
     private static void updateLineNumber(ParserRuleContext fromCtx)
     {
         ASTBuilder._currentLineNumber = fromCtx.getStart().getLine();

@@ -41,7 +41,7 @@ public class ParserHelper
         parser.addErrorListener(errorListener);
 
         // Use ASTBuilder to visit the parser's start
-        ASTBuilder astBuilder = new ASTBuilder(errorListener.getErrorHandler());
+        ASTBuilder astBuilder = new ASTBuilder();
         Node rootNode = astBuilder.visit(parser.start());
 
         return new ParserResult((StartNode) rootNode, errorListener.getErrorHandler());
