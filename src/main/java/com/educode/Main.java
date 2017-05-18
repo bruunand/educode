@@ -28,7 +28,7 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-        ParserResult result = ParserHelper.parse("test");
+        ParserResult result = ParserHelper.parse("test.educ");
         if (result.getErrorHandler().hasErrors())
         {
             result.getErrorHandler().printMessages();
@@ -43,9 +43,7 @@ public class Main
         startNode.setIsMain(true);
 
         // Perform semantic analysis
-        sv.getSymbolTableHandler().openScope();
         startNode.accept(sv);
-        sv.getSymbolTableHandler().closeScope();
 
         sv.getSymbolTableHandler().printMessages();
 

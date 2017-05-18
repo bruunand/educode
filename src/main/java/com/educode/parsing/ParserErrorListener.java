@@ -15,9 +15,12 @@ public class ParserErrorListener implements ANTLRErrorListener
 {
     private final ErrorHandler _errorHandler;
 
-    public ParserErrorListener()
+    public ParserErrorListener(ErrorHandler existingErrorHandler)
     {
-        this._errorHandler = new ErrorHandler();
+        if (existingErrorHandler == null)
+            this._errorHandler = new ErrorHandler();
+        else
+            this._errorHandler = existingErrorHandler;
     }
 
     public ErrorHandler getErrorHandler()

@@ -1,11 +1,13 @@
+using Dig
+
 program Test
     number glob2
-    method main(
+    method main()
         number a = 10
         a += 2
         coordinates c
         c -= (0, 1, 2)
-        c /= 2
+        debug("Test:" + round(5.23231))
         debug("Out:" + c.toString())
     end method
 

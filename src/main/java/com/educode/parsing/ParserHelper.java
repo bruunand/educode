@@ -19,13 +19,18 @@ public class ParserHelper
 {
     public static ParserResult parse(String fileName) throws IOException
     {
-        ParserErrorListener errorListener = new ParserErrorListener();
-        ANTLRInputStream stream = new ANTLRFileStream(fileName + ".educ");
+        return parse(fileName, null);
+    }
+
+    public static ParserResult parse(String fileName, ErrorHandler existingErrorHandler) throws IOException
+    {
+        ParserErrorListener errorListener = new ParserErrorListener(existingErrorHandler);
+        ANTLRInputStream stream = new ANTLRFileStream(fileName);
 
         // Create lexer from input file stream
         EduCodeLexer lexer = new EduCodeLexer(stream);
         lexer.removeErrorListeners();
-        lexer.addErrorListener(new ParserErrorListener());
+        lexer.addErrorListener(errorListener);
 
         // Create token stream from lexer to be used by parser
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);

@@ -5,6 +5,8 @@ import com.educode.antlr.EduCodeParser;
 import com.educode.errorhandling.ErrorHandler;
 import com.educode.events.achievements.AchievementEvent;
 import com.educode.minecraft.CompilerMod;
+import com.educode.parsing.ParserHelper;
+import com.educode.parsing.ParserResult;
 import com.educode.runtime.threads.ScriptRunner;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
@@ -62,6 +64,12 @@ public class CommandRun implements ICommand
         return _aliases;
     }
 
+    private void printMessagesToChat(ICommandSender sender, List<ErrorMessage> errorMessages)
+    {
+        for (ErrorMessage message : errorMessages)
+            sender.sendMessage(new TextComponentString(message.toString()));
+    }
+
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
@@ -70,33 +78,22 @@ public class CommandRun implements ICommand
 
         try
         {
-            //Give first run achievement
-            MinecraftForge.EVENT_BUS.post(new AchievementEvent.ScriptRunEvent((EntityPlayer) sender));
-
-            // Generate parse tree from code
-            ANTLRInputStream stream = new ANTLRFileStream(CompilerMod.SCRIPTS_LOCATION + scriptName + ".educ");
-            EduCodeLexer lexer = new EduCodeLexer(stream);
-            CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-            EduCodeParser parser = new EduCodeParser(tokenStream);
-
-            // Generate AST from parse tree
-            ASTBuilder builder = new ASTBuilder(new ErrorHandler());
-            Node astRoot = builder.visit(parser.program());
+            // Parse source program and print syntax errors
+            ParserResult result = ParserHelper.parse(CompilerMod.SCRIPTS_LOCATION + scriptName + ".educ");
+            printMessagesToChat(sender, result.getErrorHandler().getMessages());
+            if (result.getErrorHandler().hasErrors())
+                throw new Exception("Could not compile source program due to syntax errors.");
 
             // Perform semantic checks
             SemanticVisitor semanticVisitor = new SemanticVisitor();
-            astRoot.accept(semanticVisitor);
+            result.getStartNode().accept(semanticVisitor);
+            printMessagesToChat(sender, semanticVisitor.getSymbolTableHandler().getMessages());
             if (semanticVisitor.getSymbolTableHandler().hasErrors())
-            {
-                for (ErrorMessage message : semanticVisitor.getSymbolTableHandler().getMessages())
-                    sender.sendMessage(new TextComponentString(message.toString()));
-
-                return;
-            }
+                throw new Exception("Could not compile source program due to contextual constraint error.");
 
             // Generate Java code
             JavaCodeGenerationVisitor javaVisitor = new JavaCodeGenerationVisitor(CompilerMod.SCRIPTS_LOCATION + scriptName + ".java");
-            astRoot.accept(javaVisitor);
+            result.getStartNode().accept(javaVisitor);
 
             // Compile and main Java
             Class<?> compiledClass = new CustomJavaCompiler().compile(CompilerMod.SCRIPTS_LOCATION, scriptName);
@@ -121,6 +118,9 @@ public class CommandRun implements ICommand
                     CompilerMod.RUNNING_SCRIPTS.add(script);
                 }
             }
+
+            //Give first run achievement
+            MinecraftForge.EVENT_BUS.post(new AchievementEvent.ScriptRunEvent((EntityPlayer) sender));
         }
         catch (Exception e)
         {
