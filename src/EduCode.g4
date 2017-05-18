@@ -21,7 +21,7 @@ method_declaration
     ;
 
 argument_list
-    : exprs+=expression(',' exprs+=expression)*
+    : exprs+=logic_expression(',' exprs+=logic_expression)*
     ;
 
 parameter_list

@@ -8,5 +8,7 @@ program Test
         coordinates c
         c -= (0, 1, 2)
         debug("Out:" + c.toString())
+        string str = "to er " + 2
+        string str1 = "coord:" + c
     end method
 end program
