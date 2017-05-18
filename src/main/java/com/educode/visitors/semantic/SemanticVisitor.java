@@ -2,6 +2,7 @@ package com.educode.visitors.semantic;
 
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
+import com.educode.errorhandling.ErrorHandler;
 import com.educode.helper.InterfaceConverter;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
@@ -23,6 +24,8 @@ import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.*;
+import com.educode.parsing.ParserHelper;
+import com.educode.parsing.ParserResult;
 import com.educode.runtime.types.IScriptBase;
 import com.educode.symboltable.Symbol;
 import com.educode.symboltable.SymbolTable;
@@ -69,12 +72,14 @@ public class SemanticVisitor extends VisitorBase
         return null;
     }
 
-
     public void visit(StartNode node)
     {
         //sets the main StartNode
         if (node.getIsMain())
+        {
+            getSymbolTableHandler().openScope();
             _mainStartNode = node;
+        }
 
         //visits UsingsNode child to handle imports
         visit(node.getLeftChild());
@@ -85,7 +90,10 @@ public class SemanticVisitor extends VisitorBase
 
         // When the main ProgramNode has finished semantic chacking, merge it with all import ProgramNodes
         if (node.getIsMain())
+        {
+            getSymbolTableHandler().closeScope();
             gatherImports((ProgramNode)node.getRightChild());
+        }
     }
 
     //Adds all children of ProgramNodes contained in _imports to the given ProgramNode
@@ -122,22 +130,25 @@ public class SemanticVisitor extends VisitorBase
             try
             {
                 // Gets the AST root of the imported program
-                Node importedRoot = getImportedStartNode(fileName);
+                StartNode importedRoot = getImportedStartNode(fileName);
 
                 // Checks that the imported root is a StartNode
-                if (importedRoot instanceof StartNode)
+                if (importedRoot != null)
                 {
                     // Sets the input source of the StartNode root
-                    ((StartNode) importedRoot).setInputSource(fileName);
+                    importedRoot.setInputSource(fileName);
+
                     // Links the imported StartNode to the ImportNode
-                    node.setImportedNode(((StartNode) importedRoot));
+                    node.setImportedNode(importedRoot);
+
                     // ImportNode added to _imports to prevent identical imports
                     _imports.add(node);
+
                     // Visits the imported StartNode to handle nested imports and semantic analysis
                     visit(importedRoot);
                 }
                 else
-                    getSymbolTableHandler().error(importedRoot, String.format("%s: AST root not StartNode", fileName));
+                    getSymbolTableHandler().error(importedRoot, String.format("%s: Could not parse subprogram.", fileName));
             }
             catch (Exception e)
             {
@@ -146,16 +157,15 @@ public class SemanticVisitor extends VisitorBase
         }
     }
 
-    private Node getImportedStartNode(String name) throws Exception
+    private StartNode getImportedStartNode(String name) throws Exception
     {
-        // Parse subprogram with ANTLR
-        ANTLRInputStream stream = new ANTLRFileStream(name);
-        EduCodeLexer lexer = new EduCodeLexer(stream);
-        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        EduCodeParser parser = new EduCodeParser(tokenStream);
+        // Parse subprogram
+        // The semantic visitor's symbol table handler is used as the error handler
+        ParserResult result = ParserHelper.parse(name, this.getSymbolTableHandler());
+        if (result.getErrorHandler().hasErrors())
+            return null;
 
-        // Run ASTBuilder on the parse tree and return its start node
-        return new ASTBuilder().visit(parser.start());
+        return result.getStartNode();
     }
 
     public void visit(ProgramNode node)

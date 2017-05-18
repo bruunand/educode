@@ -1,6 +1,8 @@
 package com.educode.symboltable;
 
-import com.educode.IReferencing;
+import com.educode.errorhandling.ErrorHandler;
+import com.educode.errorhandling.ErrorMessage;
+import com.educode.nodes.IReferencing;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.referencing.IReference;
@@ -12,12 +14,10 @@ import java.util.List;
 /**
  * Created by User on 15-Apr-17.
  */
-public class SymbolTableHandler
+public class SymbolTableHandler extends ErrorHandler
 {
-    private final List<SymbolTableMessage> _messageList = new ArrayList<>();
     private SymbolTable _current;
     private MethodDeclarationNode _currentParentMethod;
-    private StartNode _inputSource = null;
 
     public SymbolTableHandler(SymbolTable base)
     {
@@ -27,15 +27,6 @@ public class SymbolTableHandler
     public MethodDeclarationNode getCurrentParentMethod()
     {
         return this._currentParentMethod;
-    }
-
-    public void setInputSource(StartNode source)
-    {
-        this._inputSource = source;
-    }
-    public StartNode getInputSource()
-    {
-        return this._inputSource;
     }
 
     public void setCurrentParentMethod(MethodDeclarationNode newParentMethod)
@@ -90,7 +81,7 @@ public class SymbolTableHandler
         Symbol existing = retrieveSymbol(node);
 
         if (existing == null)
-            _current.insert(new Symbol(reference, node, _inputSource));
+            _current.insert(new Symbol(reference, node, getInputSource()));
         else
         {
             if (getInputSource()==existing.getInputSource())
@@ -99,47 +90,5 @@ public class SymbolTableHandler
                 error(existing.getInputSource(), node, "Symbol %s previously declared at line %d", reference, existing.getSourceNode().getLineNumber());
         }
 
-    }
-
-    public boolean hasErrors()
-    {
-        for (SymbolTableMessage message : _messageList)
-        {
-            if (message.getType() == SymbolTableMessage.MessageType.ERROR)
-                return true;
-        }
-
-        return false;
-    }
-
-    public void printMessages()
-    {
-        for (SymbolTableMessage message : _messageList)
-            System.out.println(message);
-    }
-
-    private void error(String description, Object ... args)
-    {
-        error(null, description, args);
-    }
-
-    public void error(Node relatedNode, String description, Object ... args)
-    {
-        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.ERROR, relatedNode, String.format(description, args), getInputSource()));
-    }
-
-    public void error(StartNode conflictSource, Node relatedNode, String description, Object ... args)
-    {
-        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.ERROR, relatedNode, String.format(description, args), getInputSource(), conflictSource));
-    }
-
-    public void warning(Node relatedNode, String description, Object ... args)
-    {
-        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.WARNING, relatedNode, String.format(description, args), getInputSource()));
-    }
-
-    public List<SymbolTableMessage> getMessages()
-    {
-        return this._messageList;
     }
 }

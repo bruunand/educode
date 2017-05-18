@@ -7,8 +7,13 @@ program Test
         a += 2
         coordinates c
         c -= (0, 1, 2)
+        debug("Test:" + round(5.23231))
         debug("Out:" + c.toString())
         string str = "to er " + 2
         string str1 = "coord:" + c
+    end method
+
+    method hej(number a)
+        a = 10
     end method
 end program

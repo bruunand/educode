@@ -2,6 +2,7 @@ package com.educode.visitors;
 
 import com.educode.antlr.EduCodeBaseVisitor;
 import com.educode.antlr.EduCodeParser;
+import com.educode.errorhandling.ErrorHandler;
 import com.educode.events.EventTypeBase;
 import com.educode.events.communication.ChatMessageEvent;
 import com.educode.events.communication.EntityMessageReceivedEvent;

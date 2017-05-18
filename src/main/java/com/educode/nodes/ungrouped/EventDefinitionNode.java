@@ -1,6 +1,6 @@
 package com.educode.nodes.ungrouped;
 
-import com.educode.IReferencing;
+import com.educode.nodes.IReferencing;
 import com.educode.nodes.base.LeafNode;
 import com.educode.nodes.referencing.IReference;
 import com.educode.events.EventTypeBase;

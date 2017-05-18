@@ -1,12 +1,10 @@
 package com.educode.nodes.statement;
 
-import com.educode.IReferencing;
+import com.educode.nodes.IReferencing;
 import com.educode.nodes.ISingleLineStatement;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
-import com.educode.nodes.literal.NumberLiteralNode;
 import com.educode.nodes.referencing.IReference;
-import com.educode.types.AssignmentOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
