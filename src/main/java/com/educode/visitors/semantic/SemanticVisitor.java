@@ -44,7 +44,6 @@ public class SemanticVisitor extends VisitorBase
 {
     private StartNode _mainStartNode;
     private List<ImportNode> _imports = new LinkedList<>();
-    private Hashtable<String, ImportNode> _imports2 = new Hashtable<String, ImportNode>();
 
     private final SymbolTableHandler _symbolTableHandler;
     private final List<EventDefinitionNode> _eventDefinitions = new ArrayList<>();
@@ -73,29 +72,35 @@ public class SemanticVisitor extends VisitorBase
 
     public void visit(StartNode node)
     {
+        //sets the main StartNode
         if (node.getIsMain())
             _mainStartNode = node;
 
+        //visits UsingsNode child to handle imports
         visit(node.getLeftChild());
+
+        //sets the current input source before processing the ProgramNode child
         getSymbolTableHandler().setInputSource(node);
         visit(node.getRightChild());
 
-        gatherImports((ProgramNode)node.getRightChild());
+        // When the main ProgramNode has finished semantic chacking, merge it with all import ProgramNodes
+        if (node.getIsMain())
+            gatherImports((ProgramNode)node.getRightChild());
     }
 
-    private void gatherImports(ProgramNode target)
+    //Adds all children of ProgramNodes contained in _imports to the given ProgramNode
+    private void gatherImports(ProgramNode mainProgramNode)
     {
-        Enumeration<ImportNode> nodes = _imports2.elements();
-        while (nodes.hasMoreElements())
+        for (ImportNode i: _imports)
         {
-            ImportNode i = nodes.nextElement();
+            // For each ImportNode get corresponding StartNode, check for validity, and move all children of the
+            // imported ProgramNode to the main ProgramNode
             StartNode s = i.getImportedNode();
-
             if (s != null && s.hasRightChild() && s.getRightChild() instanceof ProgramNode)
             {
-                ProgramNode programNode = (ProgramNode) i.getImportedNode().getRightChild();
-                for (Node child: programNode.getChildren())
-                    target.addChild(child);
+                ProgramNode importedProgramNode = (ProgramNode) i.getImportedNode().getRightChild();
+                for (Node child: importedProgramNode.getChildren())
+                    mainProgramNode.addChild(child);
             }
         }
     }
@@ -107,27 +112,36 @@ public class SemanticVisitor extends VisitorBase
 
     public void visit(ImportNode node)
     {
-        String name = String.format("%s.educ", node.getText());
+        // Appends .educ to the given identifier to get the corresponding filename
+        String fileName = String.format("%s.educ", node.getText());
 
-        if (!_imports2.containsKey(name) && !name.equals(_mainStartNode.getInputSource()))
+        // Checks that no similar ImportNode has been handled previously handled and that the requested import is not
+        // the main program.
+        if (!_imports.contains(node) && !fileName.equals(_mainStartNode.getInputSource()))
         {
             try
             {
-                Node sub = getImportedStartNode(name);
-                if (sub instanceof StartNode)
+                // Gets the AST root of the imported program
+                Node importedRoot = getImportedStartNode(fileName);
+
+                // Checks that the imported root is a StartNode
+                if (importedRoot instanceof StartNode)
                 {
-                    ((StartNode) sub).setInputSource(name);
-                    _imports2.put(name, node);
-                    visit(sub);
-                    node.setImportedNode(((StartNode) sub));
-                    //_imports.add(node);
+                    // Sets the input source of the StartNode root
+                    ((StartNode) importedRoot).setInputSource(fileName);
+                    // Links the imported StartNode to the ImportNode
+                    node.setImportedNode(((StartNode) importedRoot));
+                    // ImportNode added to _imports to prevent identical imports
+                    _imports.add(node);
+                    // Visits the imported StartNode to handle nested imports and semantic analysis
+                    visit(importedRoot);
                 }
                 else
-                    getSymbolTableHandler().error(sub, String.format("%s: AST root not StartNode", name));
+                    getSymbolTableHandler().error(importedRoot, String.format("%s: AST root not StartNode", fileName));
             }
             catch (Exception e)
             {
-                getSymbolTableHandler().error(node, String.format("Could not import %s: %s", name, e.getMessage()));
+                getSymbolTableHandler().error(node, String.format("Could not import %s: %s", fileName, e.getMessage()));
             }
         }
     }
