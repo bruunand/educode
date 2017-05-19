@@ -1,6 +1,9 @@
 using Math
 
 program Test
+    method test()
+    end method
+
     method main()
         bool jd = true and false
         number a = 10

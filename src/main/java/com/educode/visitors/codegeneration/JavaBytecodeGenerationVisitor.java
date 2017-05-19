@@ -750,7 +750,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
             case Type.STRING:
                 prefix = "a";
             default:
-                //TODO: Some error
+                //TODO: Some parserError
                 break;
         }
 

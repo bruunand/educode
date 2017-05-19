@@ -27,7 +27,7 @@ public class ProgramRunner extends Thread
 		}
 		catch (Exception e)
 		{
-			EventHandler.queueServerExecutable(() -> _program.getRobot().sendMessageTo(_program.getPlayer(), "Unexpected runtime error: " + e.getMessage()));
+			EventHandler.queueServerExecutable(() -> _program.getRobot().sendMessageTo(_program.getPlayer(), "Unexpected runtime parserError: " + e.getMessage()));
 			e.printStackTrace();
 		}
 	}

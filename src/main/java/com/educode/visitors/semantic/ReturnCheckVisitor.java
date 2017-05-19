@@ -47,7 +47,7 @@ public class ReturnCheckVisitor extends VisitorBase
             if (!methodDecl.isType(Type.VoidType) && !methodDecl.isType(Type.Error) )
             {
                 if (!methodDecl.getBlockNode().getDoesReturn())
-                    _symbolTableHandler.error(methodDecl, String.format("Not all paths of method '%s' return a value.", methodDecl.getReference()));
+                    _symbolTableHandler.parserError(methodDecl, String.format("Not all paths of method '%s' return a value.", methodDecl.getReference()));
             }
         }
     }
@@ -66,7 +66,7 @@ public class ReturnCheckVisitor extends VisitorBase
         for (Node child : node.getChildren())
         {
             if (blockReturns)
-                _symbolTableHandler.error(child, String.format("Line %d is unreacheable due to prior return.", child.getLineNumber()));
+                _symbolTableHandler.parserError(child, String.format("Line %d is unreacheable due to prior return.", child.getLineNumber()));
 
             if (child instanceof ReturnNode)
                 blockReturns = true;

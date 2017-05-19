@@ -81,7 +81,7 @@ public class CommandRun implements ICommand
             result.getStartNode().accept(semanticVisitor);
             printMessagesToChat(sender, semanticVisitor.getSymbolTableHandler().getMessages());
             if (semanticVisitor.getSymbolTableHandler().hasErrors())
-                throw new Exception("Could not compile source program due to contextual constraint error.");
+                throw new Exception("Could not compile source program due to contextual constraint parserError.");
 
             // Generate Java code
             JavaCodeGenerationVisitor javaVisitor = new JavaCodeGenerationVisitor(CompilerMod.PROGRAM_FILES_LOCATION + programName + ".java");
@@ -116,7 +116,7 @@ public class CommandRun implements ICommand
         }
         catch (Exception e)
         {
-            //Give compiler error achievement
+            //Give compiler parserError achievement
             MinecraftForge.EVENT_BUS.post(new AchievementEvent.CompilerErrorEvent((EntityPlayer) sender));
 
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "[Error]" + TextFormatting.RESET + " " + e.getMessage()));

@@ -1,7 +1,10 @@
 using Dig
 
 program Math
-    method round(number num) returns number
+    method test()
+    end method
+
+    methosd round(number num) returns number
         return num - (num modulo 1)
     end method
 

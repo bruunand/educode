@@ -24,7 +24,7 @@ public class ParserHelper
 
     public static ParserResult parse(String fileName, ErrorHandler existingErrorHandler) throws IOException
     {
-        ParserErrorListener errorListener = new ParserErrorListener(existingErrorHandler);
+        ParserErrorListener errorListener = new ParserErrorListener(fileName, existingErrorHandler);
         ANTLRInputStream stream = new ANTLRFileStream(fileName);
 
         // Create lexer from input file stream

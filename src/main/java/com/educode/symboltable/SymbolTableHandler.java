@@ -1,15 +1,10 @@
 package com.educode.symboltable;
 
 import com.educode.errorhandling.ErrorHandler;
-import com.educode.errorhandling.ErrorMessage;
 import com.educode.nodes.IReferencing;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.referencing.IReference;
-import com.educode.nodes.ungrouped.StartNode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by User on 15-Apr-17.
@@ -48,7 +43,7 @@ public class SymbolTableHandler extends ErrorHandler
             _current = _current.getOuter();
         }
         else
-            error("Attempted to close scope outside of a scope.");
+            parserError("Attempted to close scope outside of a scope.");
     }
 
     public SymbolTable getCurrent()
@@ -65,14 +60,14 @@ public class SymbolTableHandler extends ErrorHandler
     {
         if (_current == null)
         {
-            error("Attempted to enter symbol outside of a scope.");
+            parserError("Attempted to enter symbol outside of a scope.");
             return;
         }
 
         // Check if node is referencing
         if (!(node instanceof IReferencing))
         {
-            error(node, "Class %s is not a referencing instance.", node.getClass().getName());
+            parserError(node, "Class %s is not a referencing instance.", node.getClass().getName());
             return;
         }
 
@@ -85,9 +80,9 @@ public class SymbolTableHandler extends ErrorHandler
         else
         {
             if (getInputSource()==existing.getInputSource())
-                error(node, "Symbol %s previously declared at line %d.", reference, existing.getSourceNode().getLineNumber());
+                parserError(node, "Symbol %s previously declared at line %d.", reference, existing.getSourceNode().getLineNumber());
             else
-                error(existing.getInputSource(), node, "Symbol %s previously declared at line %d", reference, existing.getSourceNode().getLineNumber());
+                parserError(existing.getInputSource(), node, "Symbol %s previously declared at line %d", reference, existing.getSourceNode().getLineNumber());
         }
 
     }
