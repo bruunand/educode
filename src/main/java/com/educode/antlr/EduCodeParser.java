@@ -1365,7 +1365,7 @@ public class EduCodeParser extends Parser {
 	public static class Foreach_statementContext extends ParserRuleContext {
 		public Data_typeContext type;
 		public IdentifierContext id;
-		public ExpressionContext expr;
+		public Logic_expressionContext expr;
 		public Statement_listContext body;
 		public Data_typeContext data_type() {
 			return getRuleContext(Data_typeContext.class,0);
@@ -1373,8 +1373,8 @@ public class EduCodeParser extends Parser {
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
 		}
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
+		public Logic_expressionContext logic_expression() {
+			return getRuleContext(Logic_expressionContext.class,0);
 		}
 		public Statement_listContext statement_list() {
 			return getRuleContext(Statement_listContext.class,0);
@@ -1412,7 +1412,7 @@ public class EduCodeParser extends Parser {
 			setState(279);
 			match(T__20);
 			setState(280);
-			((Foreach_statementContext)_localctx).expr = expression();
+			((Foreach_statementContext)_localctx).expr = logic_expression();
 			setState(282); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -3545,7 +3545,7 @@ public class EduCodeParser extends Parser {
 		"\u010f\3\2\2\2\u010f\u0110\3\2\2\2\u0110\u0111\5\22\n\2\u0111\u0113\3"+
 		"\2\2\2\u0112\u010a\3\2\2\2\u0112\u0113\3\2\2\2\u0113\u0114\3\2\2\2\u0114"+
 		"\u0115\7\25\2\2\u0115#\3\2\2\2\u0116\u0117\7\26\2\2\u0117\u0118\5T+\2"+
-		"\u0118\u0119\5b\62\2\u0119\u011a\7\27\2\2\u011a\u011c\5*\26\2\u011b\u011d"+
+		"\u0118\u0119\5b\62\2\u0119\u011a\7\27\2\2\u011a\u011c\5.\30\2\u011b\u011d"+
 		"\5d\63\2\u011c\u011b\3\2\2\2\u011d\u011e\3\2\2\2\u011e\u011c\3\2\2\2\u011e"+
 		"\u011f\3\2\2\2\u011f\u0120\3\2\2\2\u0120\u0121\5\22\n\2\u0121\u0122\7"+
 		"\30\2\2\u0122%\3\2\2\2\u0123\u0124\5T+\2\u0124\u0129\5(\25\2\u0125\u0126"+
