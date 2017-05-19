@@ -1,40 +1,56 @@
 grammar EduCode;
 
+start
+    : (ulist=usings)? pr=program
+    ;
+
+usings
+    : 'using' id+=identifier end_of_line+ ('using' id+=identifier end_of_line+)*
+    ;
+
 program
-    : 'program' identifier end_of_line+ ((event_definition|method_declaration|variable_declaration) end_of_line+)* 'end program'
+    : 'program' id=identifier end_of_line+ ((el+=event_definition|ml+=method_declaration|vl+=variable_declaration) end_of_line+)* 'end program'
     ;
 
 event_definition
-    : 'on event' event_type 'call' identifier
+    : 'on event' event=event_type 'call' id=identifier
     ;
 
 method_declaration
-    : 'method' identifier LPAREN (parameter_list)? RPAREN ('returns' data_type)? end_of_line+ statement_list 'end method'
+    : 'method' id=identifier LPAREN (params=parameter_list)? RPAREN ('returns' type=data_type)? end_of_line+ body=statement_list 'end method'
     ;
 
 argument_list
-    : expression(',' expression)*
+    : exprs+=logic_expression(',' exprs+=logic_expression)*
     ;
 
 parameter_list
-    : parameter(',' parameter)*
+    : params+=parameter(',' params+=parameter)*
     ;
 
 parameter
-    : data_type identifier
+    : type=data_type id=identifier
     ;
 
 statement_list
-    : (statement end_of_line+)*
+    : (statements+=statement end_of_line+)*
     ;
 
+
 statement
-    : method_call
+    : call_statement
     | assignment_expression
     | variable_declaration
     | if_statement
     | iterative_statement
     | return_statement
+    | break_statement
+    | continue_statement
+    ;
+
+call_statement
+    : method_call
+    | access method_access
     ;
 
 iterative_statement
@@ -42,24 +58,36 @@ iterative_statement
     | foreach_statement
     ;
 
+break_statement
+    : 'break'
+    ;
+
+continue_statement
+    : 'continue'
+    ;
+
 return_statement
-    : 'return' (expression)?
+    : 'return' (expr=expression)?
     ;
 
 repeat_statement
-    : 'repeat while' logic_expression end_of_line+ statement_list 'end repeat'
+    : 'repeat while' predicate=logic_expression end_of_line+ body=statement_list 'end repeat'
     ;
 
 if_statement
-    : 'if' logic_expression 'then' end_of_line+ statement_list ('else if' logic_expression 'then' end_of_line+ statement_list)* ('else' end_of_line+ statement_list)? 'end if'
+    : 'if' predicates+=logic_expression 'then' end_of_line+ bodies+=statement_list ('else if' predicates+=logic_expression 'then' end_of_line+ bodies+=statement_list)* ('else' end_of_line+ elseBody=statement_list)? 'end if'
     ;
 
 foreach_statement
-    : 'foreach' data_type identifier 'in' expression end_of_line+ statement_list 'end foreach'
+    : 'foreach' type=data_type id=identifier 'in' expr=expression end_of_line+ body=statement_list 'end foreach'
     ;
 
 variable_declaration
-    : data_type (identifier | assignment_expression) (',' (identifier | assignment_expression))*
+    : type=data_type  decls+=declarator (',' decls+=declarator)*
+    ;
+
+declarator
+    : id=identifier ('=' expr=expression)?
     ;
 
 expression
@@ -68,74 +96,72 @@ expression
     ;
 
 assignment_expression
-    : factor '=' expression
+    : lhs=factor op=('='|'+='|'-='|'*='|'/=') rhs=expression
     ;
-
 
 logic_expression
     : or_expression
     ;
 
 or_expression
-    : or_expression OR_OPERATOR and_expression
-    | and_expression
+    : left=or_expression op='or' right=and_expression
+    | right=and_expression
     ;
 
 and_expression
-    : and_expression AND_OPERATOR equality_expression
-    | equality_expression
+    : left=and_expression op='and' right=equality_expression
+    | right=equality_expression
     ;
 
 equality_expression
-    : relative_expression EQUALITY_OPERATOR relative_expression
-    | relative_expression
+    : left=equality_expression op=('equals'|'not equals') right=relative_expression
+    | right=relative_expression
     ;
 
 relative_expression
-    : arithmetic_expression RELATIVE_OPERATOR arithmetic_expression
-    | arithmetic_expression
+    : left=arithmetic_expression op=('greater than'|'less than'|'greater than or equals'|'less than or equals') right=arithmetic_expression
+    | right=arithmetic_expression
     ;
-
 
 arithmetic_expression
     : additive_expression
     ;
 
 additive_expression
-    : multiplicative_expression
-    | additive_expression ADDITIVE_OPERATOR multiplicative_expression
+    : right=multiplicative_expression
+    | left=additive_expression op=('+'|'-') right=multiplicative_expression
     ;
 
 multiplicative_expression
-    : factor
-    | multiplicative_expression MULTIPLICATIVE_OPERATOR factor
+    : right=factor
+    | left=multiplicative_expression op=('/'|'*'|'modulo') right=factor
     ;
 
 factor
     : literal
     | object_instantiation
-    | UNARY_OPERATOR factor
+    | op=('not'|'-') factor
     | type_cast
     | access
     ;
 
 access
-    : subfactor
-    | access field_access
-    | access element_access
-    | access method_access
+    : sub=subfactor
+    | rec=access field_access
+    | rec=access element_access
+    | rec=access method_access
     ;
 
 field_access
-    : '.' identifier
+    : '.' id=identifier
     ;
 
 element_access
-    : '[' expression ']'
+    : '[' index=logic_expression ']'
     ;
 
 method_access
-    : '.' method_call
+    : '.' method=method_call
     ;
 
 subfactor
@@ -145,39 +171,37 @@ subfactor
     ;
 
 parenthesis_expression
-    : LPAREN logic_expression RPAREN
+    : LPAREN content=logic_expression RPAREN
     ;
 
 method_call
-    : identifier LPAREN (argument_list)? RPAREN
+    : id=identifier LPAREN (args=argument_list)? RPAREN
     ;
 
 type_cast
-    : LPAREN data_type RPAREN factor
+    : LPAREN type=data_type RPAREN fac=factor
     ;
 
 object_instantiation
-    : 'new' data_type LPAREN (argument_list)? RPAREN
+    : 'new' type=data_type LPAREN (args=argument_list)? RPAREN
     ;
 
 event_type
-    : 'robotDeath'
-    | 'robotAttacked'
-    | 'entityDeath'
-    | 'chatMessage'
-    | ('stringMessageReceived'|'entityMessageReceived') LPAREN number_literal RPAREN
+    : type='robotDeath'
+    | type='robotAttacked'
+    | type='entityDeath'
+    | type='chatMessage'
+    | type=('stringMessageReceived'|'entityMessageReceived') LPAREN param=number_literal RPAREN
     ;
 
 data_type
-    : 'number'//Contains both ints and floats
+    : 'number'
     | 'bool'
-    | 'Coordinates'//Position data, (x, z, _y)?
+    | 'coordinates'
     | 'string'
-    | 'Collection' '<' data_type '>'//A collection of a type (Like a list in C#)
-    | 'Block'//Data for blocks placed in the world
-    | 'Entity'//Data for an entity like animals and monsters
-    | 'Item'//Data for an item while in inventory for example
-    | 'Texture'//The look of a block/entity??
+    | 'Collection' '<' childType=data_type '>'
+    | 'Entity'
+    | 'Item'
     ;
 
 literal
@@ -185,6 +209,7 @@ literal
     | string_literal
     | number_literal
     | coordinate_literal
+    | null_literal
     ;
 
 string_literal
@@ -192,7 +217,7 @@ string_literal
     ;
 
 coordinate_literal
-    : LPAREN logic_expression ',' logic_expression ',' logic_expression RPAREN
+    : LPAREN x=logic_expression ',' y=logic_expression ',' z=logic_expression RPAREN
     ;
 
 number_literal
@@ -203,52 +228,21 @@ bool_literal
     : BOOL_LITERAL
     ;
 
+null_literal
+    : NULL_LITERAL
+    ;
+
 identifier
-    : IDENTIFIER
+    : id=IDENTIFIER
     ;
 
 end_of_line
     : NEWLINE
     ;
 
+
 /* TEMP */
 
-ADDITIVE_OPERATOR
-    : '+'
-    | '-'
-    ;
-
-MULTIPLICATIVE_OPERATOR
-    : '/'
-    | '*'
-    | 'modulo'
-    ;
-
-AND_OPERATOR
-    : 'and'
-    ;
-
-OR_OPERATOR
-    : 'or'
-    ;
-
-UNARY_OPERATOR
-    : 'not'
-    | '+'
-    | '-'
-    ;
-
-RELATIVE_OPERATOR
-    : 'greater than'
-    | 'less than'
-    | 'greater than or equals'
-    | 'less than or equals'
-    ;
-
-EQUALITY_OPERATOR
-    : 'equals'
-    | 'not equals'
-    ;
 
 NEWLINE
     : NewLine
@@ -287,6 +281,10 @@ BOOL_LITERAL
     : ('true' | 'false')
     ;
 
+NULL_LITERAL
+    : 'null'
+    ;
+
 
 IDENTIFIER
     : (LowerChar | UpperChar | USym) (LowerChar | UpperChar | Digit | USym)*
@@ -304,8 +302,8 @@ RPAREN
 /* Hidden stuff */
 WHITESPACE
     : [ \t\r\f]+ -> channel(HIDDEN)
-     ;
+    ;
 
 LINECOMMENT
     : '//' ~[\r\n]* -> channel(HIDDEN)
-     ;
+    ;

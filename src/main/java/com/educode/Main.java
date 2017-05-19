@@ -4,6 +4,9 @@ import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.base.Node;
+import com.educode.nodes.ungrouped.StartNode;
+import com.educode.parsing.ParserHelper;
+import com.educode.parsing.ParserResult;
 import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
@@ -25,45 +28,52 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-        ANTLRInputStream stream = new ANTLRFileStream("test.educ");
-        EduCodeLexer lexer = new EduCodeLexer(stream);
-        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        EduCodeParser parser = new EduCodeParser(tokenStream);
+        ParserResult result = ParserHelper.parse("test.educ");
+        if (result.getErrorHandler().hasErrors())
+        {
+            result.getErrorHandler().printMessages();
+            return;
+        }
 
-        ASTBuilder builder = new ASTBuilder();
-        Node root = builder.visit(parser.program());
-        System.out.println(root.accept(new PrintVisitor()));
+        // No syntax errors - setup semantic visitor
+        StartNode startNode = result.getStartNode();
         SemanticVisitor sv = new SemanticVisitor();
-        root.accept(sv);
+        sv.getSymbolTableHandler().setInputSource(startNode);
+        startNode.setInputSource("test.educ");
+        startNode.setIsMain(true);
+
+        // Perform semantic analysis
+        startNode.accept(sv);
+
         sv.getSymbolTableHandler().printMessages();
 
         if (sv.getSymbolTableHandler().hasErrors())
             return;
 
-        root.accept(new OptimizationVisitor());
+        startNode.accept(new OptimizationVisitor());
+
+        System.out.println(startNode.accept(new PrintVisitor()));
 
         JavaBytecodeGenerationVisitor byteCodeVisitor = new JavaBytecodeGenerationVisitor();
-        root.accept(byteCodeVisitor);
-
-        System.out.println(root.accept(new PrintVisitor()));
+        startNode.accept(byteCodeVisitor);
 
         JavaCodeGenerationVisitor javaCodeVisitor = new JavaCodeGenerationVisitor("Test.java");
-        root.accept(javaCodeVisitor);
+        startNode.accept(javaCodeVisitor);
 
         // Test code generation
         System.out.println("Compiling Java code...");
         CustomJavaCompiler compiler = new CustomJavaCompiler();
-        runMainInClass(compiler.compile(new File("").getAbsolutePath() + File.separator, "Test"));
+        invokeMainInClass(compiler.compile(new File("").getAbsolutePath() + File.separator, "Test"));
         System.out.println();
 
         // Test bytecode generation
         System.out.println("Compiling bytecode using Jasmin...");
         jasmin.Main jasminMain = new jasmin.Main();
         jasminMain.assemble("Test.j");
-        runMainInClass(CustomJavaCompiler.loadClass("Test", new File("").getAbsolutePath() + File.separator));
+        invokeMainInClass(CustomJavaCompiler.loadClass("Test", new File("").getAbsolutePath() + File.separator));
     }
 
-    private static void runMainInClass(Class classToRun) throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException
+    private static void invokeMainInClass(Class classToRun) throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException
     {
         Object instance = classToRun.newInstance();
 

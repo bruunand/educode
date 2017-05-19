@@ -1,21 +1,15 @@
+using Math
+
 program Test
-    number simon = 5
     method main()
-        number foo = 5 + 5 * 10
-        debug("calling main")
-        main("hej")
-    end method
-
-    method hej()
-        number foer
-        if true then
-            number x
-        end if
-        bool efter
-        number theis
-    end method
-
-    method main(string a)
-        debug(a)
+        number a = 10
+        a += 2
+        coordinates c
+        c -= (0, 1, 2)
+        debug("Test:" + round(5.23231))
+        debug("Out:" + c.toString())
+        string str = "to er " + 2
+        string str1 = "coord:" + c
+        str += str1
     end method
 end program

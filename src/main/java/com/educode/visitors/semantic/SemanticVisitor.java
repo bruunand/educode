@@ -14,18 +14,16 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.ArrayReferencingNode;
-import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.referencing.StructReferencingNode;
-import com.educode.nodes.statement.AssignmentNode;
-import com.educode.nodes.statement.ForEachNode;
-import com.educode.nodes.statement.ReturnNode;
-import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.statement.*;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.*;
-import com.educode.runtime.types.IScriptBase;
+import com.educode.parsing.ParserHelper;
+import com.educode.parsing.ParserResult;
+import com.educode.runtime.types.IProgramBase;
 import com.educode.symboltable.Symbol;
 import com.educode.symboltable.SymbolTable;
 import com.educode.symboltable.SymbolTableHandler;
@@ -33,21 +31,24 @@ import com.educode.types.ArithmeticOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by User on 15-Apr-17.
  */
 public class SemanticVisitor extends VisitorBase
 {
+    private StartNode _mainStartNode;
+    private List<ImportNode> _imports = new LinkedList<>();
+
     private final SymbolTableHandler _symbolTableHandler;
     private final List<EventDefinitionNode> _eventDefinitions = new ArrayList<>();
+    private final Deque<Node> _iterativeNodes = new ArrayDeque<Node>();
 
     public SemanticVisitor()
     {
         // Adds methods like debug to the base symbol table
-        _symbolTableHandler = new SymbolTableHandler(InterfaceConverter.getSymbolTableFromClass(null, IScriptBase.class));
+        _symbolTableHandler = new SymbolTableHandler(InterfaceConverter.getSymbolTableFromClass(null, IProgramBase.class));
     }
 
     public SymbolTableHandler getSymbolTableHandler()
@@ -64,10 +65,104 @@ public class SemanticVisitor extends VisitorBase
         return null;
     }
 
+    public void visit(StartNode node)
+    {
+        //sets the main StartNode
+        if (node.getIsMain())
+        {
+            getSymbolTableHandler().openScope();
+            _mainStartNode = node;
+        }
+
+        //visits UsingsNode child to handle imports
+        visit(node.getLeftChild());
+
+        //sets the current input source before processing the ProgramNode child
+        getSymbolTableHandler().setInputSource(node);
+        visit(node.getRightChild());
+
+        // When the main ProgramNode has finished semantic chacking, merge it with all import ProgramNodes
+        if (node.getIsMain())
+        {
+            getSymbolTableHandler().closeScope();
+            gatherImports((ProgramNode)node.getRightChild());
+        }
+    }
+
+    //Adds all children of ProgramNodes contained in _imports to the given ProgramNode
+    private void gatherImports(ProgramNode mainProgramNode)
+    {
+        for (ImportNode i: _imports)
+        {
+            // For each ImportNode get corresponding StartNode, check for validity, and move all children of the
+            // imported ProgramNode to the main ProgramNode
+            StartNode s = i.getImportedNode();
+            if (s != null && s.hasRightChild() && s.getRightChild() instanceof ProgramNode)
+            {
+                ProgramNode importedProgramNode = (ProgramNode) i.getImportedNode().getRightChild();
+                for (Node child: importedProgramNode.getChildren())
+                    mainProgramNode.addChild(child);
+            }
+        }
+    }
+
+    public void visit(UsingsNode node)
+    {
+        visitChildren(node);
+    }
+
+    public void visit(ImportNode node)
+    {
+        // Appends .educ to the given identifier to get the corresponding filename
+        String fileName = String.format("%s.educ", node.getText());
+
+        // Checks that no similar ImportNode has been handled previously handled and that the requested import is not
+        // the main program.
+        if (!_imports.contains(node) && !fileName.equals(_mainStartNode.getInputSource()))
+        {
+            try
+            {
+                // Gets the AST root of the imported program
+                StartNode importedRoot = getImportedStartNode(fileName);
+
+                // Checks that the imported root is a StartNode
+                if (importedRoot != null)
+                {
+                    // Sets the input source of the StartNode root
+                    importedRoot.setInputSource(fileName);
+
+                    // Links the imported StartNode to the ImportNode
+                    node.setImportedNode(importedRoot);
+
+                    // ImportNode added to _imports to prevent identical imports
+                    _imports.add(node);
+
+                    // Visits the imported StartNode to handle nested imports and semantic analysis
+                    visit(importedRoot);
+                }
+                else
+                    getSymbolTableHandler().error(importedRoot, String.format("%s: Could not parse subprogram.", fileName));
+            }
+            catch (Exception e)
+            {
+                getSymbolTableHandler().error(node, String.format("Could not import %s: %s", fileName, e.getMessage()));
+            }
+        }
+    }
+
+    private StartNode getImportedStartNode(String name) throws Exception
+    {
+        // Parse subprogram
+        // The semantic visitor's symbol table handler is used as the error handler
+        ParserResult result = ParserHelper.parse(name, this.getSymbolTableHandler());
+        if (result.getErrorHandler().hasErrors())
+            return null;
+
+        return result.getStartNode();
+    }
+
     public void visit(ProgramNode node)
     {
-        getSymbolTableHandler().openScope();
-
         // Add default methods and fields to symbol table
         getSymbolTableHandler().getCurrent().addDefaultField("robot", Type.RobotType);
 
@@ -85,8 +180,8 @@ public class SemanticVisitor extends VisitorBase
                 hasMainMethod = true;
         }
 
-        // If no main method, log error
-        if (!hasMainMethod)
+        // If no main method and StartNode is main StartNode, log error
+        if (!hasMainMethod && ((StartNode)node.getParent()).getIsMain())
             _symbolTableHandler.error(node, "Program has no method called 'main' with no return type and parameters.");
 
         // Visit children in correct order
@@ -105,8 +200,6 @@ public class SemanticVisitor extends VisitorBase
         // We can also visit method declarations at this point
         for (MethodDeclarationNode methodDecl : node.getMethodDeclarations())
             visit(methodDecl);
-
-        getSymbolTableHandler().closeScope();
     }
 
     public void visit(NaryNode node)
@@ -131,7 +224,9 @@ public class SemanticVisitor extends VisitorBase
 
     public void visit(RepeatWhileNode node)
     {
+        _iterativeNodes.push(node);
         visitChildren(node);
+        _iterativeNodes.pop();
     }
 
     public void visit(IfNode node)
@@ -163,7 +258,7 @@ public class SemanticVisitor extends VisitorBase
         // Visit block
         visit(node.getBlockNode());
 
-        node.setMaxDeclaredVariables(getSymbolTableHandler().getCurrent().getDeclaredVariableCounter());
+        node.setMaxDeclaredVariables(getSymbolTableHandler().getCurrent().getMaxDeclaredVariableCounter());
 
         getSymbolTableHandler().closeScope();
     }
@@ -181,6 +276,7 @@ public class SemanticVisitor extends VisitorBase
 
     public void visit(ForEachNode node)
     {
+        _iterativeNodes.push(node);
         _symbolTableHandler.openScope();
 
         _symbolTableHandler.enterSymbol(node);
@@ -197,6 +293,7 @@ public class SemanticVisitor extends VisitorBase
             getSymbolTableHandler().error(node, String.format("Expression to iterate in for-each statement must be a collection of %s.", node.getType()));
 
         _symbolTableHandler.closeScope();
+        _iterativeNodes.pop();
     }
 
     public void visit(BlockNode node)
@@ -223,22 +320,7 @@ public class SemanticVisitor extends VisitorBase
     {
         visitChildren(node);
 
-        Symbol methodReference;
-
-        // If node references a struct, there is a special case
-        if (node.getReference() instanceof StructReferencingNode)
-        {
-            StructReferencingNode structReference = (StructReferencingNode) node.getReference();
-
-            // Visit object name to gets it type
-            visit(structReference.getObjectName());
-
-            // Retrieve symbol from object's type's symbol table
-            // In a struct, the right child is the name of the method
-            methodReference = structReference.getObjectName().getType().getSymbolTable().retrieveMethodSymbol((IReference) structReference.getFieldName(), node.getActualTypes());
-        }
-        else
-            methodReference = getSymbolTableHandler().getCurrent().retrieveMethodSymbol(node.getReference(), node.getActualTypes());
+        Symbol methodReference = getSymbolTableHandler().getCurrent().retrieveMethodSymbol(node.getReference(), node.getActualTypes());
 
         // Check if method was found
         if (methodReference == null)
@@ -257,7 +339,19 @@ public class SemanticVisitor extends VisitorBase
         visitChildren(node);
 
         // Check if left side types matches right side type
-        if (!node.getReference().isType(node.getChild().getType()))
+        // Reference types can be assigned to null
+        if (node.getReference().isType(Type.RobotType))
+            getSymbolTableHandler().error(node, "Cannot assign the special %s type to anything.");
+        else if (node.getChild() instanceof NullLiteralNode)
+        {
+            // If we assign something to null, we set the type of the null literal to the type of the assigned node
+            // This is necessary in cases such as x = y = null, where x and y are the same type
+            if (!node.getReference().getType().isReferenceType())
+                getSymbolTableHandler().error(node, "Cannot assign %s, which is not a reference type, to null.", node.getReference());
+            else
+                node.getChild().setType(node.getReference().getType());
+        }
+        else if (!node.getReference().isType(node.getChild().getType()))
             getSymbolTableHandler().error(node, "Cannot assign %s, which is of type %s, to an expression of type %s.", node.getReference(), node.getReference().getType(), node.getChild().getType());
 
         // Set the type of the assignment to have the same type as its right side
@@ -326,6 +420,11 @@ public class SemanticVisitor extends VisitorBase
 
         // Use type of left side as symbol table
         SymbolTable table = reference.getLeftChild().getType().getSymbolTable();
+        if (table == null)
+        {
+            getSymbolTableHandler().error(reference, "Type %s does not have a symbol table.", reference.getLeftChild().getType());
+            return;
+        }
 
         // Fields and methods have different approaches for retrieval
         if (reference.getRightChild() instanceof IdentifierReferencingNode)
@@ -333,17 +432,22 @@ public class SemanticVisitor extends VisitorBase
             Symbol symbol = table.retrieveSymbol(reference.getRightChild());
 
             if (symbol == null)
-                getSymbolTableHandler().error(reference, "Struct of type %s does not contain field %s.", reference.getLeftChild().getType(), reference.getRightChild());
+                getSymbolTableHandler().error(reference, "Type %s does not contain field %s.", reference.getLeftChild().getType(), reference.getRightChild());
             else
                 reference.setType(symbol.getSourceNode().getType());
         }
         else if (reference.getRightChild() instanceof MethodInvocationNode)
         {
+            // We need to visit arguments to evaluate their actual type
             MethodInvocationNode methodInv = (MethodInvocationNode) reference.getRightChild();
+            for (Node argument : methodInv.getActualArguments())
+                visit(argument);
+
+            // Retrieve symbol from this struct type
             Symbol symbol = table.retrieveMethodSymbol(methodInv.getReference(), methodInv.getActualTypes());
 
             if (symbol == null)
-                getSymbolTableHandler().error(reference, "Struct of type %s does not contain method %s.", reference.getLeftChild().getType(), methodInv.getReference());
+                getSymbolTableHandler().error(reference, "Type %s does not contain method %s.", reference.getLeftChild().getType(), methodInv.getReference());
             else
             {
                 MethodDeclarationNode referencingDeclaration = (MethodDeclarationNode) symbol.getSourceNode();
@@ -361,7 +465,7 @@ public class SemanticVisitor extends VisitorBase
             getSymbolTableHandler().enterSymbol(node);
 
         // Add default values if no assignment
-        // Only the values that are considered primitive will have a default value
+
         if (node.getChild() == null)
         {
             switch (node.getType().getKind())
@@ -378,6 +482,9 @@ public class SemanticVisitor extends VisitorBase
                 case Type.STRING:
                     node.setAssignment(new StringLiteralNode(""));
                     break;
+                default:
+                    if (node.getType().isReferenceType())
+                        node.setAssignment(new NullLiteralNode());
             }
         }
 
@@ -435,7 +542,7 @@ public class SemanticVisitor extends VisitorBase
 
         if (leftType.equals(Type.NumberType) && rightType.equals(Type.NumberType))
             node.setType(Type.NumberType);
-        else if (leftType.equals(Type.StringType) || rightType.equals(Type.StringType))
+        else if ((leftType.equals(Type.StringType) || rightType.equals(Type.StringType)) && node.getOperator().getKind() == ArithmeticOperator.ADDITION)
             node.setType(Type.StringType);
         else if (leftType.equals(Type.CoordinatesType) && rightType.equals(Type.CoordinatesType))
             node.setType(Type.CoordinatesType);
@@ -473,13 +580,25 @@ public class SemanticVisitor extends VisitorBase
     {
         visitChildren(node);
 
+        // Get the types of the children for conveniences
         Type leftType  = node.getLeftChild().getType();
         Type rightType = node.getRightChild().getType();
 
-        // Only same type comparisons allowed
-        // Unless either side is string, in which case any non-string will be cast to string
-        if (!leftType.equals(rightType))
-            getSymbolTableHandler().error(node, String.format("Logical operator %s can not be used for types %s and %s.", node.getOperator(), leftType, rightType));
+        // Check whether either of the children are null literals
+        boolean isLeftNull  = node.getLeftChild() instanceof NullLiteralNode;
+        boolean isRightNull = node.getRightChild() instanceof NullLiteralNode;
+
+        // Check for null comparisons
+        // In all other cases, check if the types of the sides are equal
+        if (isLeftNull || isRightNull)
+        {
+            if (isLeftNull && isRightNull)
+                getSymbolTableHandler().error(node, "Cannot compare two null literals.");
+            else if ((isLeftNull && !node.getRightChild().getType().isReferenceType()) || (isRightNull && !node.getLeftChild().getType().isReferenceType()))
+                getSymbolTableHandler().error(node, "Cannot compare non-references types to the null literal.");
+        }
+        else if (!leftType.equals(rightType))
+            getSymbolTableHandler().error(node, String.format("Logical operator %s cannot be used for types %s and %s.", node.getOperator(), leftType, rightType));
     }
 
     public void visit(NegateNode node)
@@ -503,12 +622,26 @@ public class SemanticVisitor extends VisitorBase
             getSymbolTableHandler().error(node, String.format("Type %s cannot be cast to type %s.", fromType, toType));
     }
 
+    public void visit(ContinueNode node)
+    {
+        if(_iterativeNodes.isEmpty())
+            getSymbolTableHandler().error(node, "No enclosing loop to continue.");
+        else
+            node.setAffectingLoop(_iterativeNodes.peek());
+    }
+
+    public void visit(BreakNode node)
+    {
+        if(_iterativeNodes.isEmpty())
+            getSymbolTableHandler().error(node, "No enclosing loop to break.");
+        else
+            node.setAffectingLoop(_iterativeNodes.peek());
+    }
+
     private boolean isExplicitCastAllowed(Type fromType, Type toType)
     {
-        if (toType.equals(Type.StringType))
-            return true;
+        return toType.equals(Type.StringType);
 
-        return false;
     }
 
     public List<EventDefinitionNode> getEventDefinitions()

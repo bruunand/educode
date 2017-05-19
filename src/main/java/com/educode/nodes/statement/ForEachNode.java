@@ -1,6 +1,6 @@
 package com.educode.nodes.statement;
 
-import com.educode.IReferencing;
+import com.educode.nodes.IReferencing;
 import com.educode.nodes.base.BinaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.referencing.IReference;

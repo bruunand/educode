@@ -28,7 +28,7 @@ public class CustomJavaCompiler
 		return classpath.substring(0, classpath.lastIndexOf(System.getProperty("path.separator")));
 	} 
 	
-    public Class<?> compile(String scriptsLocation, String scriptName) throws Exception
+    public Class<?> compile(String programsLocation, String programName) throws Exception
     {
     	JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
     	if (javaCompiler == null)
@@ -36,11 +36,11 @@ public class CustomJavaCompiler
     	
         StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null, null);
 
-        fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Arrays.asList(new File(scriptsLocation)));
+        fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Arrays.asList(new File(programsLocation)));
 
-        File[] javaFiles = new File[] { new File(scriptsLocation + scriptName + ".java")};
+        File[] javaFiles = new File[] { new File(programsLocation + programName + ".java")};
         if (!javaFiles[0].exists())
-        	throw new FileNotFoundException("Script file " + javaFiles[0] + " not found!");
+        	throw new FileNotFoundException("Program file " + javaFiles[0] + " not found!");
         
         List<String> options = new ArrayList<>();
         options.add("-classpath");
@@ -49,15 +49,15 @@ public class CustomJavaCompiler
         CompilationTask compilationTask = javaCompiler.getTask(null, null, null, options, null, fileManager.getJavaFileObjects(javaFiles));
         if (!compilationTask.call())
 		{
-			throw new Exception("Could not compile script!"); // TODO custom exception
+			throw new Exception("Could not compile program!"); // TODO custom exception
 		}
 
-		return loadClass(scriptName, scriptsLocation);
+		return loadClass(programName, programsLocation);
     }
 
-    public static Class loadClass(String scriptName, String location) throws Exception
+    public static Class loadClass(String programName, String location) throws Exception
 	{
 		CustomClassLoader loader = new CustomClassLoader(CustomClassLoader.class.getClassLoader());
-		return loader.loadClassFromFile(scriptName, new File(location + scriptName + ".class"));
+		return loader.loadClassFromFile(programName, new File(location + programName + ".class"));
 	}
 }

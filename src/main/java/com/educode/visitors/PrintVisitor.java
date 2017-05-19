@@ -5,10 +5,7 @@ import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.ArithmeticExpression;
 import com.educode.nodes.expression.logic.*;
-import com.educode.nodes.literal.BoolLiteralNode;
-import com.educode.nodes.literal.CoordinatesLiteralNode;
-import com.educode.nodes.literal.NumberLiteralNode;
-import com.educode.nodes.literal.StringLiteralNode;
+import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
@@ -29,6 +26,8 @@ import com.educode.nodes.ungrouped.*;
  */
 public class PrintVisitor extends VisitorBase
 {
+    private boolean _hasVisitedStartNode = false;
+
     @Override
     public Object defaultVisit(Node node)
     {
@@ -37,13 +36,38 @@ public class PrintVisitor extends VisitorBase
         return null;
     }
 
+    public Object visit(StartNode node)
+    {
+        if (node.hasLeftChild())
+            return String.format("[StartNode [%s][%s]]", visit(node.getLeftChild()), visit(node.getRightChild()));
+        else
+            return String.format("[§tartNode [%s]", visit(node.getRightChild()));
+    }
+
+    public Object visit(ImportNode node)
+    {
+        if (node.getImportedNode() != null)
+            return String.format("ImportNode %s", visit(node.getImportedNode()));
+        else
+            return "ImportNode";
+    }
+
+    public Object visit(UsingsNode node)
+    {
+        StringBuilder content = new StringBuilder();
+        for (Node child : node.getChildren())
+            content.append(String.format("[%s]", visit(child)));
+
+        return String.format("UsingsNode %s", content.toString());
+    }
+
     public Object visit(ProgramNode node)
     {
-        String content = "";
+        StringBuilder content = new StringBuilder();
         for (Node child : node.getChildren())
-            content += "[" + visit(child) + "]";
+            content.append(String.format("[%s]", visit(child)));
 
-        return String.format("[ProgramNode [%s]%s]", visit(node.getReference()), content);
+        return String.format("ProgramNode [%s]%s", visit(node.getReference()), content.toString());
     }
 
     public Object visit(EventDefinitionNode node)
@@ -158,6 +182,11 @@ public class PrintVisitor extends VisitorBase
     public Object visit(StringLiteralNode node)
     {
         return "StringLit";
+    }
+
+    public Object visit(NullLiteralNode node)
+    {
+        return "null";
     }
 
     public Object visit(BoolLiteralNode node)

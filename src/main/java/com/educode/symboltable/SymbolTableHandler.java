@@ -1,9 +1,12 @@
 package com.educode.symboltable;
 
-import com.educode.IReferencing;
+import com.educode.errorhandling.ErrorHandler;
+import com.educode.errorhandling.ErrorMessage;
+import com.educode.nodes.IReferencing;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.referencing.IReference;
+import com.educode.nodes.ungrouped.StartNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +14,8 @@ import java.util.List;
 /**
  * Created by User on 15-Apr-17.
  */
-public class SymbolTableHandler
+public class SymbolTableHandler extends ErrorHandler
 {
-    private final List<SymbolTableMessage> _messageList = new ArrayList<>();
     private SymbolTable _current;
     private MethodDeclarationNode _currentParentMethod;
 
@@ -35,14 +37,14 @@ public class SymbolTableHandler
     public void openScope()
     {
         _current = new SymbolTable(_current);
+        _current.addDeclaredVariableCounter(_current.getOuter().getDeclaredVariableCounter());
     }
 
     public void closeScope()
     {
         if (_current != null)
         {
-            if (_current.getOuter() != null)
-                _current.getOuter().addDeclaredVariableCounter(_current.getDeclaredVariableCounter());
+            _current.getOuter().setMaxDeclaredVariables(_current.getMaxDeclaredVariableCounter());
             _current = _current.getOuter();
         }
         else
@@ -79,45 +81,14 @@ public class SymbolTableHandler
         Symbol existing = retrieveSymbol(node);
 
         if (existing == null)
-            _current.insert(new Symbol(reference, node));
+            _current.insert(new Symbol(reference, node, getInputSource()));
         else
-            error(node, "Symbol %s previously declared at line %d.", reference, existing.getSourceNode().getLineNumber());
-    }
-
-    public boolean hasErrors()
-    {
-        for (SymbolTableMessage message : _messageList)
         {
-            if (message.getType() == SymbolTableMessage.MessageType.ERROR)
-                return true;
+            if (getInputSource()==existing.getInputSource())
+                error(node, "Symbol %s previously declared at line %d.", reference, existing.getSourceNode().getLineNumber());
+            else
+                error(existing.getInputSource(), node, "Symbol %s previously declared at line %d", reference, existing.getSourceNode().getLineNumber());
         }
 
-        return false;
-    }
-
-    public void printMessages()
-    {
-        for (SymbolTableMessage message : _messageList)
-            System.out.println(message);
-    }
-
-    private void error(String description, Object ... args)
-    {
-        error(null, description, args);
-    }
-
-    public void error(Node relatedNode, String description, Object ... args)
-    {
-        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.ERROR, relatedNode, String.format(description, args)));
-    }
-
-    public void warning(Node relatedNode, String description, Object ... args)
-    {
-        this._messageList.add(new SymbolTableMessage(SymbolTableMessage.MessageType.WARNING, relatedNode, String.format(description, args)));
-    }
-
-    public List<SymbolTableMessage> getMessages()
-    {
-        return this._messageList;
     }
 }
