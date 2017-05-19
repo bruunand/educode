@@ -16,6 +16,6 @@ public class SyntaxErrorMessage extends ErrorMessage
     @Override
     public String toString()
     {
-        return String.format("Syntax %s in file %s: %s", this.getTypeString(), this._fileName, this.getErrorDescription());
+        return String.format("Syntax %s in file %s: %s", this.getTypeString().toLowerCase(), this._fileName, this.getErrorDescription());
     }
 }
