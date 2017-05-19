@@ -5,8 +5,9 @@ import com.educode.nodes.ISingleLineStatement;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.expression.AdditionExpression;
-import com.educode.nodes.expression.MultiplicationExpression;
+import com.educode.nodes.expression.AdditionExpressionNode;
+import com.educode.nodes.expression.MultiplicationExpressionNode;
+import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
@@ -277,7 +278,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
             return "return";
     }
 
-    public Object visit(MultiplicationExpression node)
+    public Object visit(MultiplicationExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
@@ -285,7 +286,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    public Object visit(AdditionExpression node)
+    public Object visit(AdditionExpressionNode node)
     {
         boolean coordinateAddition = node.getLeftChild().isType(Type.CoordinatesType) && node.getRightChild().isType(Type.CoordinatesType);
 
@@ -367,10 +368,15 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object visit(NegateNode node)
     {
-        StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "!(%s)", visit(node.getChild()));
+        return String.format("!(%s)", visit(node.getChild()));
+    }
 
-        return codeBuffer;
+    public Object visit(UnaryMinusNode node)
+    {
+        if (node.getType().equals(Type.CoordinatesType))
+            return String.format("%s.negate()", visit(node.getChild()));
+        else
+            return String.format("-(%s)", visit(node.getChild()));
     }
 
     public Object visit(TypeCastNode node)

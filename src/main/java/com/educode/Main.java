@@ -1,21 +1,14 @@
 package com.educode;
 
-import com.educode.antlr.EduCodeLexer;
-import com.educode.antlr.EduCodeParser;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
-import com.educode.nodes.base.Node;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.parsing.ParserHelper;
 import com.educode.parsing.ParserResult;
-import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
-import com.educode.visitors.optimization.OptimizationVisitor;
+import com.educode.visitors.optimisation.OptimisationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
-import org.antlr.v4.runtime.ANTLRFileStream;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -50,7 +43,7 @@ public class Main
         if (sv.getSymbolTableHandler().hasErrors())
             return;
 
-        startNode.accept(new OptimizationVisitor());
+        startNode.accept(new OptimisationVisitor());
 
         System.out.println(startNode.accept(new PrintVisitor()));
 

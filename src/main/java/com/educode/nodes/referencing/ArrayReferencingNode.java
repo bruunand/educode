@@ -2,7 +2,6 @@ package com.educode.nodes.referencing;
 
 import com.educode.nodes.base.BinaryNode;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.expression.ArithmeticExpression;
 import com.educode.visitors.VisitorBase;
 
 /**

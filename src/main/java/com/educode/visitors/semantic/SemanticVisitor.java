@@ -3,8 +3,9 @@ package com.educode.visitors.semantic;
 import com.educode.helper.InterfaceConverter;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.expression.AdditionExpression;
-import com.educode.nodes.expression.MultiplicationExpression;
+import com.educode.nodes.expression.AdditionExpressionNode;
+import com.educode.nodes.expression.MultiplicationExpressionNode;
+import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.EqualExpressionNode;
 import com.educode.nodes.expression.logic.LogicExpressionNode;
 import com.educode.nodes.expression.logic.NegateNode;
@@ -471,10 +472,10 @@ public class SemanticVisitor extends VisitorBase
             switch (node.getType().getKind())
             {
                 case Type.NUMBER:
-                    node.setAssignment(new NumberLiteralNode(0.0F));
+                    node.setAssignment(new NumberLiteralNode(0.0));
                     break;
                 case Type.COORDINATES:
-                    node.setAssignment(new CoordinatesLiteralNode(new NumberLiteralNode(0.0F), new NumberLiteralNode(0.0F), new NumberLiteralNode(0.0F)));
+                    node.setAssignment(new CoordinatesLiteralNode(new NumberLiteralNode(0.0), new NumberLiteralNode(0.0), new NumberLiteralNode(0.0)));
                     break;
                 case Type.BOOL:
                     node.setAssignment(new BoolLiteralNode(false));
@@ -511,7 +512,7 @@ public class SemanticVisitor extends VisitorBase
             getSymbolTableHandler().error(node, String.format("Can not return an expression of type %s when parent method returns %s.", childType, parentType));
     }
 
-    public void visit(MultiplicationExpression node)
+    public void visit(MultiplicationExpressionNode node)
     {
         visitChildren(node);
 
@@ -533,7 +534,7 @@ public class SemanticVisitor extends VisitorBase
             getSymbolTableHandler().error(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), leftType, rightType));
     }
 
-    public void visit(AdditionExpression node)
+    public void visit(AdditionExpressionNode node)
     {
         visitChildren(node);
 
@@ -558,7 +559,19 @@ public class SemanticVisitor extends VisitorBase
         Type rightType = node.getRightChild().getType();
 
         if (!leftType.equals(Type.BoolType) || !rightType.equals(Type.BoolType))
-            getSymbolTableHandler().error(node, String.format("Both sides of the %s expression must be of type %s, but are of type %s and %s.", node.getOperator(), Type.BoolType, leftType, rightType));
+            getSymbolTableHandler().error(node,"Both sides of the %s expression must be of type %s, but are of type %s and %s.", node.getOperator(), Type.BoolType, leftType, rightType);
+    }
+
+    public void visit(UnaryMinusNode node)
+    {
+        visit(node.getChild());
+
+        Type childType = node.getChild().getType();
+
+        if (!childType.equals(Type.NumberType) && !childType.equals(Type.CoordinatesType))
+            getSymbolTableHandler().error(node, "Child type %s is not supported for the unary minus operation.", childType);
+        else
+            node.setType(childType);
     }
 
     public void visit(RelativeExpressionNode node)

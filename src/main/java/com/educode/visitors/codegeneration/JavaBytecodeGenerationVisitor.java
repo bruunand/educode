@@ -4,8 +4,8 @@ import com.educode.helper.OperatorTranslator;
 import com.educode.helper.Tuple;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.expression.AdditionExpression;
-import com.educode.nodes.expression.MultiplicationExpression;
+import com.educode.nodes.expression.AdditionExpressionNode;
+import com.educode.nodes.expression.MultiplicationExpressionNode;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.BoolLiteralNode;
 import com.educode.nodes.literal.CoordinatesLiteralNode;
@@ -410,7 +410,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
     
-    public Object visit(MultiplicationExpression node)
+    public Object visit(MultiplicationExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
 
@@ -422,7 +422,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
     
-    public Object visit(AdditionExpression node)
+    public Object visit(AdditionExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
 

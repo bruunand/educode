@@ -2,7 +2,6 @@ package com.educode.visitors;
 
 import com.educode.antlr.EduCodeBaseVisitor;
 import com.educode.antlr.EduCodeParser;
-import com.educode.errorhandling.ErrorHandler;
 import com.educode.events.EventTypeBase;
 import com.educode.events.communication.ChatMessageEvent;
 import com.educode.events.communication.EntityMessageReceivedEvent;
@@ -11,9 +10,8 @@ import com.educode.events.entity.EntityDeathEvent;
 import com.educode.events.entity.robot.RobotAttackedEvent;
 import com.educode.events.entity.robot.RobotDeathEvent;
 import com.educode.nodes.base.*;
-import com.educode.nodes.expression.AdditionExpression;
-import com.educode.nodes.expression.ArithmeticExpression;
-import com.educode.nodes.expression.MultiplicationExpression;
+import com.educode.nodes.expression.AdditionExpressionNode;
+import com.educode.nodes.expression.MultiplicationExpressionNode;
 import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.*;
@@ -419,13 +417,13 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
                 case AssignmentOperator.NONE:
                     return new AssignmentNode((IReference) left, right);
                 case AssignmentOperator.ADDITION:
-                    return new AssignmentNode((IReference) left, new AdditionExpression(ArithmeticOperator.Addition, left, right));
+                    return new AssignmentNode((IReference) left, new AdditionExpressionNode(ArithmeticOperator.Addition, left, right));
                 case AssignmentOperator.SUBTRACTION:
-                    return new AssignmentNode((IReference) left, new AdditionExpression(ArithmeticOperator.Subtraction, left, right));
+                    return new AssignmentNode((IReference) left, new AdditionExpressionNode(ArithmeticOperator.Subtraction, left, right));
                 case AssignmentOperator.MULTIPLICATION:
-                    return new AssignmentNode((IReference) left, new MultiplicationExpression(ArithmeticOperator.Multiplication, left, right));
+                    return new AssignmentNode((IReference) left, new MultiplicationExpressionNode(ArithmeticOperator.Multiplication, left, right));
                 case AssignmentOperator.DIVISION:
-                    return new AssignmentNode((IReference) left, new MultiplicationExpression(ArithmeticOperator.Division, left, right));
+                    return new AssignmentNode((IReference) left, new MultiplicationExpressionNode(ArithmeticOperator.Division, left, right));
                 default:
                     System.out.println("Unknown assignment operator at line " + ctx.getStart().getLine());
             }
@@ -519,7 +517,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         if (ctx.getChildCount() == 1)
             return visit(ctx.right);
         else if (ctx.getChildCount() == 3)
-            return new AdditionExpression(getArithmeticOperator(ctx.op.getText()), visit(ctx.left), visit(ctx.right));
+            return new AdditionExpressionNode(getArithmeticOperator(ctx.op.getText()), visit(ctx.left), visit(ctx.right));
 
         System.out.println("AddError at line " + ctx.getStart().getLine());
 
@@ -534,7 +532,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         if (ctx.getChildCount() == 1)
             return visit(ctx.right);
         else if (ctx.getChildCount() == 3)
-            return new MultiplicationExpression(getArithmeticOperator(ctx.op.getText()), visit(ctx.left), visit(ctx.right));
+            return new MultiplicationExpressionNode(getArithmeticOperator(ctx.op.getText()), visit(ctx.left), visit(ctx.right));
 
         System.out.println("MultError at line " + ctx.getStart().getLine());
 
@@ -697,7 +695,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         updateLineNumber(ctx);
 
-        return new NumberLiteralNode(Float.parseFloat(ctx.NUMBER_LITERAL().getText()));
+        return new NumberLiteralNode(Double.parseDouble(ctx.NUMBER_LITERAL().getText()));
     }
 
     @Override

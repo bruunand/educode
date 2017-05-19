@@ -38,6 +38,16 @@ public class Coordinates implements ICoordinates
         return new Coordinates(x, y, z);
     }
 
+    /* Not defined in interface because it should only be accessed with unary minus */
+    public Coordinates negate()
+    {
+        double x = this.getX() * -1;
+        double y = this.getY() * -1;
+        double z = this.getZ() * -1;
+
+        return new Coordinates(x, y, z);
+    }
+
     public BlockPos toBlockPos()
     {
         return new BlockPos(_x, _y, _z);

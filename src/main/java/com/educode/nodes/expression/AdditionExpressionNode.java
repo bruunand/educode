@@ -7,9 +7,9 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by zen on 3/10/17.
  */
-public class MultiplicationExpression extends ArithmeticExpression
+public class AdditionExpressionNode extends ArithmeticExpressionNode
 {
-    public MultiplicationExpression(ArithmeticOperator operator, Node leftChild, Node rightChild)
+    public AdditionExpressionNode(ArithmeticOperator operator, Node leftChild, Node rightChild)
     {
         super(operator, leftChild, rightChild);
     }

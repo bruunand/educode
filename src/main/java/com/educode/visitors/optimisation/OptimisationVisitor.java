@@ -1,9 +1,10 @@
-package com.educode.visitors.optimization;
+package com.educode.visitors.optimisation;
 
 import com.educode.nodes.base.INodeWithChildren;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.expression.ArithmeticExpression;
+import com.educode.nodes.expression.ArithmeticExpressionNode;
+import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.LogicExpressionNode;
 import com.educode.nodes.expression.logic.NegateNode;
 import com.educode.nodes.expression.logic.RelativeExpressionNode;
@@ -27,7 +28,7 @@ import java.util.Hashtable;
 /**
  * Created by zen on 5/3/17.
  */
-public class OptimizationVisitor extends VisitorBase
+public class OptimisationVisitor extends VisitorBase
 {
     private final Dictionary<VariableDeclarationNode, Node> _constantDeclarations = new Hashtable<>();
 
@@ -47,6 +48,16 @@ public class OptimizationVisitor extends VisitorBase
             return null;
         else
             return !((Boolean) result);
+    }
+
+    public Object visit(UnaryMinusNode node)
+    {
+        Object result = visit(node.getChild());
+
+        if (!(result instanceof Double))
+            return null;
+        else
+            return ((Double)result) * -1;
     }
 
     public void visit(RepeatWhileNode node)
@@ -108,13 +119,13 @@ public class OptimizationVisitor extends VisitorBase
         this._constantDeclarations.remove(reference.getDeclaration());
 
         // We need to wait with visiting the children in case the child uses the assigned variable
-        // E.g. num = num - 1 could be optimized falsely.
+        // E.g. num = num - 1 could be optimised falsely.
         visitChildren(node);
     }
 
     public void visit(VariableDeclarationNode node)
     {
-        // Do not optimize variable declarations that are declared globally, because we don't know if they are set in other methods
+        // Do not optimise variable declarations that are declared globally, because we don't know if they are set in other methods
         if (node.hasChild() && !node.isDeclaredGlobally())
         {
             AssignmentNode assignment = (AssignmentNode) node.getChild();
@@ -139,7 +150,7 @@ public class OptimizationVisitor extends VisitorBase
         return ((ILiteral) constantContent).getValue();
     }
 
-    public Float visit(NumberLiteralNode node)
+    public Double visit(NumberLiteralNode node)
     {
         return node.getValue();
     }
@@ -165,10 +176,10 @@ public class OptimizationVisitor extends VisitorBase
         Object rightResult = visit(node.getRightChild());
 
         // Check for number comparison
-        if (leftResult instanceof Float && rightResult instanceof Float)
+        if (leftResult instanceof Double && rightResult instanceof Double)
         {
-            Float left  = (Float) leftResult;
-            Float right = (Float) rightResult;
+            Double left  = (Double) leftResult;
+            Double right = (Double) rightResult;
 
             switch (node.getOperator().getKind())
             {
@@ -227,11 +238,11 @@ public class OptimizationVisitor extends VisitorBase
         Object leftResult  = visit(node.getLeftChild());
         Object rightResult = visit(node.getRightChild());
 
-        if (!(leftResult instanceof Float) || !(rightResult instanceof Float))
+        if (!(leftResult instanceof Double) || !(rightResult instanceof Double))
             return null;
 
-        Float left  = (Float) leftResult;
-        Float right = (Float) rightResult;
+        Double left  = (Double) leftResult;
+        Double right = (Double) rightResult;
         Boolean result;
 
         switch (node.getOperator().getKind())
@@ -259,17 +270,17 @@ public class OptimizationVisitor extends VisitorBase
         return null;
     }
 
-    public Number visit(ArithmeticExpression node)
+    public Number visit(ArithmeticExpressionNode node)
     {
         Object leftResult  = visit(node.getLeftChild());
         Object rightResult = visit(node.getRightChild());
 
-        if (!(leftResult instanceof Float) || !(rightResult instanceof Float))
+        if (!(leftResult instanceof Double) || !(rightResult instanceof Double))
             return null;
 
-        Float left = (Float) leftResult;
-        Float right = (Float) rightResult;
-        Float result;
+        Double left = (Double) leftResult;
+        Double right = (Double) rightResult;
+        Double result;
 
         switch (node.getOperator().getKind())
         {

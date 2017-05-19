@@ -3,7 +3,8 @@ package com.educode.visitors;
 import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.expression.ArithmeticExpression;
+import com.educode.nodes.expression.ArithmeticExpressionNode;
+import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
@@ -169,7 +170,7 @@ public class PrintVisitor extends VisitorBase
         return String.format("Assign [%s][%s]", visit(node.getReference()), visit(node.getChild()));
     }
 
-    public Object visit(ArithmeticExpression node)
+    public Object visit(ArithmeticExpressionNode node)
     {
         return String.format("Arithmetic [%s][Operator %s][%s]", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
     }
@@ -217,6 +218,11 @@ public class PrintVisitor extends VisitorBase
     public Object visit(NegateNode node)
     {
         return String.format("Negate [%s]", visit(node.getChild()));
+    }
+
+    public Object visit(UnaryMinusNode node)
+    {
+        return String.format("UnaryMinus [%s]", visit(node.getChild()));
     }
 
     public Object visit(TypeCastNode node)
