@@ -3,7 +3,7 @@ package com.educode.runtime.types;
 /**
  * Created by zen on 5/2/17.
  */
-public interface IScriptBase
+public interface IProgramBase
 {
     @SpecialJavaTranslation(formattedTranslation = "System.out.println(%s)")
     void debug(String string);

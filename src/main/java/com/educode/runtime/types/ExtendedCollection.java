@@ -32,7 +32,6 @@ public class ExtendedCollection<E> extends ArrayList<E> implements ICollection<E
     @Override
     public void removeItemAt(double index)
     {
-
         remove((int) index);
     }
 

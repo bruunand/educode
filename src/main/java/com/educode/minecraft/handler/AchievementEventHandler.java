@@ -22,7 +22,7 @@ public class AchievementEventHandler
     }
 
     @SubscribeEvent
-    public void onEvent(AchievementEvent.ScriptRunEvent event)
+    public void onEvent(AchievementEvent.ProgramRunEvent event)
     {
         event.player.addStat(CompilerMod.achievementRunFirst);
     }

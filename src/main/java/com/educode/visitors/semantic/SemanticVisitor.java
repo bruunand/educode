@@ -1,8 +1,5 @@
 package com.educode.visitors.semantic;
 
-import com.educode.antlr.EduCodeLexer;
-import com.educode.antlr.EduCodeParser;
-import com.educode.errorhandling.ErrorHandler;
 import com.educode.helper.InterfaceConverter;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
@@ -26,17 +23,13 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.*;
 import com.educode.parsing.ParserHelper;
 import com.educode.parsing.ParserResult;
-import com.educode.runtime.types.IScriptBase;
+import com.educode.runtime.types.IProgramBase;
 import com.educode.symboltable.Symbol;
 import com.educode.symboltable.SymbolTable;
 import com.educode.symboltable.SymbolTableHandler;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.Type;
-import com.educode.visitors.ASTBuilder;
 import com.educode.visitors.VisitorBase;
-import org.antlr.v4.runtime.ANTLRFileStream;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.util.*;
 
@@ -55,7 +48,7 @@ public class SemanticVisitor extends VisitorBase
     public SemanticVisitor()
     {
         // Adds methods like debug to the base symbol table
-        _symbolTableHandler = new SymbolTableHandler(InterfaceConverter.getSymbolTableFromClass(null, IScriptBase.class));
+        _symbolTableHandler = new SymbolTableHandler(InterfaceConverter.getSymbolTableFromClass(null, IProgramBase.class));
     }
 
     public SymbolTableHandler getSymbolTableHandler()
@@ -629,14 +622,16 @@ public class SemanticVisitor extends VisitorBase
             getSymbolTableHandler().error(node, String.format("Type %s cannot be cast to type %s.", fromType, toType));
     }
 
-    public void visit(ContinueNode node){
+    public void visit(ContinueNode node)
+    {
         if(_iterativeNodes.isEmpty())
             getSymbolTableHandler().error(node, "No enclosing loop to continue.");
         else
             node.setAffectingLoop(_iterativeNodes.peek());
     }
 
-    public void visit(BreakNode node){
+    public void visit(BreakNode node)
+    {
         if(_iterativeNodes.isEmpty())
             getSymbolTableHandler().error(node, "No enclosing loop to break.");
         else
@@ -645,10 +640,8 @@ public class SemanticVisitor extends VisitorBase
 
     private boolean isExplicitCastAllowed(Type fromType, Type toType)
     {
-        if (toType.equals(Type.StringType))
-            return true;
+        return toType.equals(Type.StringType);
 
-        return false;
     }
 
     public List<EventDefinitionNode> getEventDefinitions()

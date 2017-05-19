@@ -3,7 +3,7 @@ package com.educode.events;
 import com.educode.events.communication.MessageReceivedEventBase;
 import com.educode.minecraft.CompilerMod;
 import com.educode.nodes.ungrouped.EventDefinitionNode;
-import com.educode.runtime.ScriptBase;
+import com.educode.runtime.ProgramBase;
 import com.educode.runtime.types.MinecraftEntity;
 import net.minecraft.entity.Entity;
 
@@ -16,23 +16,23 @@ public class Broadcaster
 {
     public static void broadcastEvent(Class<?> eventType, Object ... args)
     {
-        // Iterate over running scripts and find subscribers to the channel
+        // Iterate over running programs and find subscribers to the channel
         // Subscribers will have an appropriate event invoked
-        synchronized (CompilerMod.RUNNING_SCRIPTS)
+        synchronized (CompilerMod.RUNNING_PROGRAMS)
         {
-            for (ScriptBase script : CompilerMod.RUNNING_SCRIPTS)
-                EventInvoker.invokeByType(script, eventType, args);
+            for (ProgramBase program : CompilerMod.RUNNING_PROGRAMS)
+                EventInvoker.invokeByType(program, eventType, args);
         }
     }
 
     // There is a special method for communication because they require the subscribe to be subscribed to a specific channel
     public static void broadcastMessage(Entity sender, double channel, Object message)
     {
-        synchronized (CompilerMod.RUNNING_SCRIPTS)
+        synchronized (CompilerMod.RUNNING_PROGRAMS)
         {
-            for (ScriptBase script : CompilerMod.RUNNING_SCRIPTS)
+            for (ProgramBase program : CompilerMod.RUNNING_PROGRAMS)
             {
-                List<EventDefinitionNode> eventDefinitions = script.getEventDefinitions();
+                List<EventDefinitionNode> eventDefinitions = program.getEventDefinitions();
                 if (eventDefinitions == null)
                     continue;
 
@@ -47,7 +47,7 @@ public class Broadcaster
                     if (receivedEvent.getChannel() != channel)
                         continue;
 
-                    EventInvoker.invokeByName(script, eventDef.getName(), new MinecraftEntity(sender), message);
+                    EventInvoker.invokeByName(program, eventDef.getMethodName(), new MinecraftEntity(sender), message);
                 }
             }
         }

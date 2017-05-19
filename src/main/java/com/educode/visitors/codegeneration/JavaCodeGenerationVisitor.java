@@ -79,7 +79,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         append(codeBuffer, "import java.util.*;\nimport com.educode.runtime.*;\nimport com.educode.runtime.types.*;\nimport com.educode.helper.*;\n\n");
 
-        append(codeBuffer, "public class %s extends ScriptBase\n{\n", node.getReference());
+        append(codeBuffer, "public class %s extends ProgramBase\n{\n", node.getReference());
 
         // Visit global variable declarations
         for (VariableDeclarationNode variableDecl : node.getVariableDeclarations())
@@ -138,10 +138,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         // Object instantiation is handled differently for different types
         // This case is only used if collection is initialized with values
-        if (node.getType().isCollection())
-            return String.format("new ExtendedCollection<%s>(%s)", OperatorTranslator.toJava(node.getType().getChildType()), argumentJoiner);
-        else
-            return String.format("new %s(%s)", OperatorTranslator.toJava(node.getType()), argumentJoiner);
+        return String.format("new %s(%s)", OperatorTranslator.toJava(node.getType()), argumentJoiner);
     }
 
     public Object visit(MethodDeclarationNode node)

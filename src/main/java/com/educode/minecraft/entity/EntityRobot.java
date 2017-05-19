@@ -3,7 +3,7 @@ package com.educode.minecraft.entity;
 import com.educode.events.achievements.AchievementEvent;
 import com.educode.events.entity.robot.RobotAttackedEvent;
 import com.educode.minecraft.CompilerMod;
-import com.educode.runtime.ScriptBase;
+import com.educode.runtime.ProgramBase;
 import com.educode.events.EventInvoker;
 import com.educode.events.entity.robot.RobotDeathEvent;
 import com.educode.runtime.types.MinecraftEntity;
@@ -48,7 +48,7 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
 
     private TextFormatting _textFormatting = TextFormatting.RESET;
 
-    private ScriptBase _parent;
+    private ProgramBase _parent;
 
     private long _lastAttackAt = 0;
 
@@ -78,12 +78,12 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         super.setDead();
     }
 
-    public EntityRobot(ScriptBase parent, World worldIn, EntityPlayer owner)
+    public EntityRobot(ProgramBase parent, World worldIn, EntityPlayer owner)
     {
     	this(worldIn);
 
     	this._parent = parent;
-    	this._name = String.format("%s (%s)", parent.getScriptName(), owner.getName());
+    	this._name = String.format("%s (%s)", parent.getProgramName(), owner.getName());
     	CompilerMod.CHILD_ENTITIES.add(this.getUniqueID());
         updateTextFormatting();
     }

@@ -1,17 +1,10 @@
-using Dig
-
 program Test
-    number glob2
     method main()
-        number a = 10
-        a += 2
-        coordinates c
-        c -= (0, 1, 2)
-        debug("Test:" + round(5.23231))
-        debug("Out:" + c.toString())
+        Collection<string> hej = new Collection<string>("hej")
+        number size = hej.getSize()
+        debug("" + size)
     end method
 
-    method hej(number a)
-        a = 10
+    method kald(number test)
     end method
 end program

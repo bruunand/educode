@@ -27,7 +27,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public abstract class ScriptBase implements IRobot
+public abstract class ProgramBase implements IRobot
 {
     // Queues
     private final Queue<TickCommand> _commandQueue = new ConcurrentLinkedQueue<>();
@@ -36,34 +36,34 @@ public abstract class ScriptBase implements IRobot
     // General
     private final Random _rand = new Random();
     private List<EventDefinitionNode> _eventDefinitions;
-    private String _scriptName;
+    private String _programName;
 
     // Minecraft related
     private World _world;
     private EntityRobot _robot;
     private EntityPlayer _player;
 
-    // Used by implemented scripts
-    protected final ScriptBase robot = this;
+    // Used by implemented programs
+    protected final ProgramBase robot = this;
 
     // Threading
     private Thread _mainThread, _eventThread;
 
-    public void init(String scriptName, Thread mainThread, World world, EntityPlayer player, List<EventDefinitionNode> eventDefinitions)
+    public void init(String programName, Thread mainThread, World world, EntityPlayer player, List<EventDefinitionNode> eventDefinitions)
     {
         this._world = world;
         this._player = player;
         this._eventDefinitions = eventDefinitions;
-        this._scriptName = scriptName;
+        this._programName = programName;
 
         // Set threads and create thread for event invoker
         this._mainThread = mainThread;
-        this._mainThread.setName(String.format("ScriptRunner/%s", getScriptName()));
+        this._mainThread.setName(String.format("ProgramRunner/%s", getProgramName()));
 
         if (!eventDefinitions.isEmpty())
         {
             this._eventThread = new EventInvoker(this);
-            this._eventThread.setName(String.format("EventInvoker/%s", getScriptName()));
+            this._eventThread.setName(String.format("EventInvoker/%s", getProgramName()));
             this._eventThread.start();
         }
 
@@ -83,9 +83,9 @@ public abstract class ScriptBase implements IRobot
         return this._mainThread;
     }
 
-    public String getScriptName()
+    public String getProgramName()
     {
-        return this._scriptName;
+        return this._programName;
     }
 
     public BlockingQueue<EventInvocation> getEventQueue()
@@ -499,9 +499,9 @@ public abstract class ScriptBase implements IRobot
     @Override
     public boolean equals(Object obj)
     {
-        if (obj instanceof ScriptBase)
+        if (obj instanceof ProgramBase)
         {
-            ScriptBase other = (ScriptBase) obj;
+            ProgramBase other = (ProgramBase) obj;
 
             return this.getRobot().equals(other.getRobot());
         }

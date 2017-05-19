@@ -29,10 +29,10 @@ public class AchievementEvent extends Event
         }
     }
 
-    public static class ScriptRunEvent extends AchievementEvent
+    public static class ProgramRunEvent extends AchievementEvent
     {
 
-        public ScriptRunEvent(EntityPlayer player) {
+        public ProgramRunEvent(EntityPlayer player) {
             super(player);
         }
     }

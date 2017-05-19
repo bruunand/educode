@@ -21,7 +21,7 @@ public class EventDefinitionNode extends LeafNode implements IReferencing
         this._eventType = eventType;
     }
 
-    public String getName()
+    public String getMethodName()
     {
         if (getReference() instanceof IdentifierReferencingNode)
             return ((IdentifierReferencingNode) getReference()).getText();
