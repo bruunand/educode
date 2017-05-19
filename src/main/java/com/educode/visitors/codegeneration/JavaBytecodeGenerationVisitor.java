@@ -334,7 +334,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     {
         StringBuffer codeBuffer = new StringBuffer();
         int endIfLabel = _labelCounter++;
-        int jumpLabel= _labelCounter++;;
+        int jumpLabel= _labelCounter++;
 
         ArrayList<ConditionNode> conditionNodeList = node.getConditionBlocks();
 
