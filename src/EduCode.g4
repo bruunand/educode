@@ -79,7 +79,7 @@ if_statement
     ;
 
 foreach_statement
-    : 'foreach' type=data_type id=identifier 'in' expr=expression end_of_line+ body=statement_list 'end foreach'
+    : 'foreach' type=data_type id=identifier 'in' expr=logic_expression end_of_line+ body=statement_list 'end foreach'
     ;
 
 variable_declaration
