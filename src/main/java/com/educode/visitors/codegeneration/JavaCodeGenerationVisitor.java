@@ -28,12 +28,10 @@ import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
-import com.typesafe.config.ConfigException;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.StringJoiner;
 
 /**
@@ -409,6 +407,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
                 return String.format(methodDeclaration.getSpecialJavaTranslation().formattedTranslation(), argumentJoiner);
             }
         }
-        return String.format("%s.%s", visit(node.getObjectName()), visit(node.getFieldName()));
+        return String.format("%s.%s", visit(node.getObjectName()), visit(node.getMemberName()));
     }
 }

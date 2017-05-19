@@ -10,9 +10,9 @@ import com.educode.visitors.VisitorBase;
  */
 public class StructReferencingNode extends BinaryNode implements IReference, ISingleLineStatement
 {
-    public StructReferencingNode(Node objectName, Node fieldName)
+    public StructReferencingNode(Node objectName, Node memberName)
     {
-        super(objectName, fieldName);
+        super(objectName, memberName);
     }
 
     public Node getObjectName()
@@ -20,7 +20,7 @@ public class StructReferencingNode extends BinaryNode implements IReference, ISi
         return this.getLeftChild();
     }
 
-    public Node getFieldName()
+    public Node getMemberName()
     {
         return this.getRightChild();
     }
