@@ -1,8 +1,13 @@
 program Test
     method main()
-        Collection<string> hej = new Collection<string>("hej")
-        number size = hej.getSize()
-        debug("" + size)
+        number a = 10
+        a += 2
+        coordinates c
+        c -= (0, 1, 2)
+        debug("Test:" + round(5.23231))
+        debug("Out:" + c.toString())
+        string str = "to er " + 2
+        string str1 = "coord:" + c
     end method
 
     method kald(number test)

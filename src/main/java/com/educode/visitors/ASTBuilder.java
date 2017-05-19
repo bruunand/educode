@@ -227,7 +227,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         updateLineNumber(ctx);
 
         ListNode node = new ListNode();
-        for (EduCodeParser.ExpressionContext e : ctx.exprs)
+        for (EduCodeParser.Logic_expressionContext e : ctx.exprs)
             node.addChild(visit(e));
 
         return node;

@@ -577,13 +577,13 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static class Argument_listContext extends ParserRuleContext {
-		public ExpressionContext expression;
-		public List<ExpressionContext> exprs = new ArrayList<ExpressionContext>();
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
+		public Logic_expressionContext logic_expression;
+		public List<Logic_expressionContext> exprs = new ArrayList<Logic_expressionContext>();
+		public List<Logic_expressionContext> logic_expression() {
+			return getRuleContexts(Logic_expressionContext.class);
 		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
+		public Logic_expressionContext logic_expression(int i) {
+			return getRuleContext(Logic_expressionContext.class,i);
 		}
 		public Argument_listContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -604,8 +604,8 @@ public class EduCodeParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(172);
-			((Argument_listContext)_localctx).expression = expression();
-			((Argument_listContext)_localctx).exprs.add(((Argument_listContext)_localctx).expression);
+			((Argument_listContext)_localctx).logic_expression = logic_expression();
+			((Argument_listContext)_localctx).exprs.add(((Argument_listContext)_localctx).logic_expression);
 			setState(177);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -615,8 +615,8 @@ public class EduCodeParser extends Parser {
 				setState(173);
 				match(T__8);
 				setState(174);
-				((Argument_listContext)_localctx).expression = expression();
-				((Argument_listContext)_localctx).exprs.add(((Argument_listContext)_localctx).expression);
+				((Argument_listContext)_localctx).logic_expression = logic_expression();
+				((Argument_listContext)_localctx).exprs.add(((Argument_listContext)_localctx).logic_expression);
 				}
 				}
 				setState(179);
@@ -3510,7 +3510,7 @@ public class EduCodeParser extends Parser {
 		"\3\2\2\2\u00a5\u00a7\3\2\2\2\u00a6\u00a8\5d\63\2\u00a7\u00a6\3\2\2\2\u00a8"+
 		"\u00a9\3\2\2\2\u00a9\u00a7\3\2\2\2\u00a9\u00aa\3\2\2\2\u00aa\u00ab\3\2"+
 		"\2\2\u00ab\u00ac\5\22\n\2\u00ac\u00ad\7\n\2\2\u00ad\13\3\2\2\2\u00ae\u00b3"+
-		"\5*\26\2\u00af\u00b0\7\13\2\2\u00b0\u00b2\5*\26\2\u00b1\u00af\3\2\2\2"+
+		"\5.\30\2\u00af\u00b0\7\13\2\2\u00b0\u00b2\5.\30\2\u00b1\u00af\3\2\2\2"+
 		"\u00b2\u00b5\3\2\2\2\u00b3\u00b1\3\2\2\2\u00b3\u00b4\3\2\2\2\u00b4\r\3"+
 		"\2\2\2\u00b5\u00b3\3\2\2\2\u00b6\u00bb\5\20\t\2\u00b7\u00b8\7\13\2\2\u00b8"+
 		"\u00ba\5\20\t\2\u00b9\u00b7\3\2\2\2\u00ba\u00bd\3\2\2\2\u00bb\u00b9\3"+
