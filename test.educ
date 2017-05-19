@@ -1,3 +1,5 @@
+using Math
+
 program Test
     method main()
         number a = 10
@@ -8,8 +10,6 @@ program Test
         debug("Out:" + c.toString())
         string str = "to er " + 2
         string str1 = "coord:" + c
-    end method
-
-    method kald(number test)
+        str += str1
     end method
 end program

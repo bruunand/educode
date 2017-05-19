@@ -542,7 +542,7 @@ public class SemanticVisitor extends VisitorBase
 
         if (leftType.equals(Type.NumberType) && rightType.equals(Type.NumberType))
             node.setType(Type.NumberType);
-        else if (leftType.equals(Type.StringType) || rightType.equals(Type.StringType))
+        else if ((leftType.equals(Type.StringType) || rightType.equals(Type.StringType)) && node.getOperator().getKind() == ArithmeticOperator.ADDITION)
             node.setType(Type.StringType);
         else if (leftType.equals(Type.CoordinatesType) && rightType.equals(Type.CoordinatesType))
             node.setType(Type.CoordinatesType);
