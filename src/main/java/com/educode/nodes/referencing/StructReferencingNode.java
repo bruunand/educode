@@ -1,5 +1,6 @@
 package com.educode.nodes.referencing;
 
+import com.educode.nodes.ISingleLineStatement;
 import com.educode.nodes.base.BinaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.visitors.VisitorBase;
@@ -7,11 +8,11 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by User on 14-Apr-17.
  */
-public class StructReferencingNode extends BinaryNode implements IReference
+public class StructReferencingNode extends BinaryNode implements IReference, ISingleLineStatement
 {
-    public StructReferencingNode(Node objectName, Node fieldName)
+    public StructReferencingNode(Node objectName, Node memberName)
     {
-        super(objectName, fieldName);
+        super(objectName, memberName);
     }
 
     public Node getObjectName()
@@ -19,7 +20,7 @@ public class StructReferencingNode extends BinaryNode implements IReference
         return this.getLeftChild();
     }
 
-    public Node getFieldName()
+    public Node getMemberName()
     {
         return this.getRightChild();
     }

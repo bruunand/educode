@@ -30,14 +30,17 @@ public class ExtendedCollection<E> extends ArrayList<E> implements ICollection<E
     }
 
     @Override
-    public void removeItemAt(float index)
+    public void removeItemAt(double index)
     {
         remove((int) index);
     }
 
     @Override
-    public E getItemAt(float index)
+    public E getItemAt(double index)
     {
+        if ((int) index >= size() || index < 0)
+            throw new RuntimeException("Index was out of range.");
+
         return super.get((int) index);
     }
 
@@ -48,14 +51,17 @@ public class ExtendedCollection<E> extends ArrayList<E> implements ICollection<E
     }
 
     @Override
-    public E setItemAt(float index, E item)
+    public E setItemAt(double index, E item)
     {
+        if ((int) index >= size() || index < 0)
+            throw new RuntimeException("Index was out of range.");
+
         super.set((int) index, item);
         return item;
     }
 
     @Override
-    public float getSize()
+    public double getSize()
     {
         return size();
     }

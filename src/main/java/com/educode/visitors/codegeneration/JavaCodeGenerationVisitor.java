@@ -5,8 +5,9 @@ import com.educode.nodes.ISingleLineStatement;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.expression.AdditionExpression;
-import com.educode.nodes.expression.MultiplicationExpression;
+import com.educode.nodes.expression.AdditionExpressionNode;
+import com.educode.nodes.expression.MultiplicationExpressionNode;
+import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
@@ -22,10 +23,7 @@ import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
-import com.educode.nodes.ungrouped.BlockNode;
-import com.educode.nodes.ungrouped.ObjectInstantiationNode;
-import com.educode.nodes.ungrouped.ProgramNode;
-import com.educode.nodes.ungrouped.TypeCastNode;
+import com.educode.nodes.ungrouped.*;
 import com.educode.runtime.types.SpecialJavaTranslation;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
@@ -35,7 +33,6 @@ import com.educode.visitors.VisitorBase;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.StringJoiner;
 
 /**
@@ -70,13 +67,18 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return "NOT IMPLEMENTED:" + node.getClass().getName();
     }
 
+    public void visit(StartNode node)
+    {
+        visit(node.getRightChild());
+    }
+
     public void visit(ProgramNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
 
         append(codeBuffer, "import java.util.*;\nimport com.educode.runtime.*;\nimport com.educode.runtime.types.*;\nimport com.educode.helper.*;\n\n");
 
-        append(codeBuffer, "public class %s extends ScriptBase\n{\n", node.getReference());
+        append(codeBuffer, "public class %s extends ProgramBase\n{\n", node.getReference());
 
         // Visit global variable declarations
         for (VariableDeclarationNode variableDecl : node.getVariableDeclarations())
@@ -135,12 +137,8 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         // Object instantiation is handled differently for different types
         // This case is only used if collection is initialized with values
-        if (node.getType().isCollection())
-            return String.format("new ExtendedCollection<%s>(%s)", OperatorTranslator.toJava(node.getType().getChildType()), argumentJoiner);
-        else
-            return String.format("new %s(%s)", OperatorTranslator.toJava(node.getType()), argumentJoiner);
+        return String.format("new %s(%s)", OperatorTranslator.toJava(node.getType()), argumentJoiner);
     }
-
 
     public Object visit(MethodDeclarationNode node)
     {
@@ -160,7 +158,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
 
     public Object visit(MethodInvocationNode node)
     {
@@ -195,7 +192,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return String.format("%s(%s)", visit(node.getReference()), actualArgumentsJoiner);
     }
 
-
     public Object visit(ParameterNode node)
     {
         //formal parameter node
@@ -204,7 +200,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         return codeBuffer;
     }
-
 
     public Object visit(AssignmentNode node)
     {
@@ -217,7 +212,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
         return String.format("%s = %s",  visit(node.getReference()), visit(node.getChild()));
     }
-
 
     public Object visit(VariableDeclarationNode node)
     {
@@ -254,9 +248,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
             append(codeBuffer, "else\n%s", visit(elseBlock));
 
         return codeBuffer;
-
     }
-
 
     public Object visit(ConditionNode node)
     {
@@ -264,7 +256,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "(%s)\n%s", visit(node.getLeftChild()), visit(node.getRightChild()));
         return codeBuffer;
     }
-
 
     public Object visit(RepeatWhileNode node)
     {
@@ -287,7 +278,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
             return "return";
     }
 
-    public Object visit(MultiplicationExpression node)
+    public Object visit(MultiplicationExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
         append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
@@ -295,7 +286,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
-    public Object visit(AdditionExpression node)
+    public Object visit(AdditionExpressionNode node)
     {
         boolean coordinateAddition = node.getLeftChild().isType(Type.CoordinatesType) && node.getRightChild().isType(Type.CoordinatesType);
 
@@ -307,7 +298,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object visit(NumberLiteralNode node)
     {
-        return String.format("%fF", node.getValue());
+        return String.format("%f", node.getValue());
     }
 
     public Object visit(StringLiteralNode node)
@@ -316,6 +307,11 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     }
 
     public Object visit(BoolLiteralNode node)
+    {
+        return node.getValue();
+    }
+
+    public Object visit(NullLiteralNode node)
     {
         return node.getValue();
     }
@@ -352,14 +348,11 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object visit(EqualExpressionNode node)
     {
-        Node leftChild = node.getLeftChild();
-        Node rightChild = node.getRightChild();
-
         // In case of a string comparison, we need to use equals()
         // In theory we only need to check either the left or right type, because the semantic visitor only allows equal comparison of equal types
-        boolean useEqualSymbols = (leftChild instanceof NumberLiteralNode || rightChild instanceof NumberLiteralNode) || (leftChild instanceof BoolLiteralNode || rightChild instanceof BoolLiteralNode);
+        boolean useEqualSymbol = node.isBoolComparison() || node.isNumberComparison() || node.isNullComparison();
 
-        if (useEqualSymbols)
+        if (useEqualSymbol)
             return String.format("(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
         else
         {
@@ -375,10 +368,15 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object visit(NegateNode node)
     {
-        StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "!(%s)", visit(node.getChild()));
+        return String.format("!(%s)", visit(node.getChild()));
+    }
 
-        return codeBuffer;
+    public Object visit(UnaryMinusNode node)
+    {
+        if (node.getType().equals(Type.CoordinatesType))
+            return String.format("%s.negate()", visit(node.getChild()));
+        else
+            return String.format("-(%s)", visit(node.getChild()));
     }
 
     public Object visit(TypeCastNode node)
@@ -415,6 +413,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
                 return String.format(methodDeclaration.getSpecialJavaTranslation().formattedTranslation(), argumentJoiner);
             }
         }
-        return String.format("%s.%s", visit(node.getObjectName()), visit(node.getFieldName()));
+        return String.format("%s.%s", visit(node.getObjectName()), visit(node.getMemberName()));
     }
 }

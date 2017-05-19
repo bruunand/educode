@@ -1,7 +1,7 @@
 package com.educode.runtime.threads;
 
 import com.educode.runtime.EventInvocation;
-import com.educode.runtime.ScriptBase;
+import com.educode.runtime.ProgramBase;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -10,11 +10,11 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class EventInvoker extends Thread
 {
-    private final ScriptBase _script;
+    private final ProgramBase _program;
 
-    public EventInvoker(ScriptBase script)
+    public EventInvoker(ProgramBase program)
     {
-        this._script = script;
+        this._program = program;
     }
 
     @Override
@@ -24,8 +24,8 @@ public class EventInvoker extends Thread
         {
             while (true)
             {
-                EventInvocation invocation = this._script.getEventQueue().take();
-                invocation.getMethod().invoke(_script, invocation.getArguments());
+                EventInvocation invocation = this._program.getEventQueue().take();
+                invocation.getMethod().invoke(_program, invocation.getArguments());
             }
         }
         catch (IllegalAccessException | InterruptedException | InvocationTargetException e)

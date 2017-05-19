@@ -1,11 +1,10 @@
 package com.educode.minecraft.command;
 
 import com.educode.minecraft.CompilerMod;
-import com.educode.runtime.ScriptBase;
+import com.educode.runtime.ProgramBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -16,13 +15,13 @@ import java.util.List;
 /**
  * Created by zen on 4/28/17.
  */
-public class CommandStopScripts implements ICommand
+public class CommandStopPrograms implements ICommand
 {
     private final List<String> _aliases;
 
-    public CommandStopScripts()
+    public CommandStopPrograms()
     {
-        _aliases = java.util.Arrays.asList("stopscripts");;
+        _aliases = java.util.Arrays.asList("stopprograms");;
     }
 
     @Override
@@ -35,13 +34,13 @@ public class CommandStopScripts implements ICommand
     @Override
     public String getName()
     {
-        return "stopscripts";
+        return "stopprograms";
     }
 
     @Override
     public String getUsage(ICommandSender sender)
     {
-        return "/stopscripts";
+        return "/stopprograms";
     }
 
     @Override
@@ -55,13 +54,13 @@ public class CommandStopScripts implements ICommand
     {
         int stopped = 0;
 
-        synchronized (CompilerMod.RUNNING_SCRIPTS)
+        synchronized (CompilerMod.RUNNING_PROGRAMS)
         {
-            for (ScriptBase script : CompilerMod.RUNNING_SCRIPTS)
+            for (ProgramBase program : CompilerMod.RUNNING_PROGRAMS)
             {
-                if (!script.getRobot().isDead && script.getPlayer().equals(sender.getCommandSenderEntity()))
+                if (!program.getRobot().isDead && program.getPlayer().equals(sender.getCommandSenderEntity()))
                 {
-                    script.getRobot().setDead();
+                    program.getRobot().setDead();
                     stopped++;
                 }
             }

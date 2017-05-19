@@ -1,11 +1,12 @@
-package com.educode.symboltable;
+package com.educode.errorhandling;
 
 import com.educode.nodes.base.Node;
+import com.educode.nodes.ungrouped.StartNode;
 
 /**
  * Created by User on 05-Apr-17.
  */
-public class SymbolTableMessage
+public abstract class ErrorMessage
 {
     public enum MessageType
     {
@@ -13,24 +14,13 @@ public class SymbolTableMessage
         WARNING
     }
 
-    private Node _relatedNode;
     private String _errorDescription;
     private MessageType _type;
 
-    public SymbolTableMessage(MessageType type, Node relatedNode, String errorDescription)
+    protected ErrorMessage(MessageType type, String errorDescription)
     {
         this._type = type;
-        this._relatedNode = relatedNode;
         this._errorDescription = errorDescription;
-    }
-
-    @Override
-    public String toString()
-    {
-        if (this._relatedNode != null)
-            return String.format("%s at line %d: %s", this.getTypeString(), this._relatedNode.getLineNumber(), this._errorDescription);
-        else
-            return String.format("%s: %s", this.getTypeString(), this._errorDescription);
     }
 
     public MessageType getType()
@@ -38,11 +28,10 @@ public class SymbolTableMessage
         return this._type;
     }
 
-    public String getTypeString()
+    protected String getTypeString()
     {
         switch (getType())
         {
-
             case ERROR:
                 return "Error";
             case WARNING:
@@ -50,5 +39,10 @@ public class SymbolTableMessage
             default:
                 return "Unknown";
         }
+    }
+
+    protected String getErrorDescription()
+    {
+        return this._errorDescription;
     }
 }

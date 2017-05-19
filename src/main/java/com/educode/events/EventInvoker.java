@@ -1,10 +1,8 @@
 package com.educode.events;
 
 import com.educode.nodes.ungrouped.EventDefinitionNode;
-import com.educode.runtime.EventInvocation;
-import com.educode.runtime.ScriptBase;
+import com.educode.runtime.ProgramBase;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -13,9 +11,9 @@ import java.util.List;
  */
 public class EventInvoker
 {
-    public static void invokeByType(ScriptBase script, Class<?> eventType, Object ... args)
+    public static void invokeByType(ProgramBase program, Class<?> eventType, Object ... args)
     {
-        List<EventDefinitionNode> eventDefinitions = script.getEventDefinitions();
+        List<EventDefinitionNode> eventDefinitions = program.getEventDefinitions();
         if (eventDefinitions == null)
             return;
 
@@ -24,11 +22,11 @@ public class EventInvoker
             if (eventDef.getEventType().getClass() != eventType)
                 continue;
 
-            EventInvoker.invokeByName(script, eventDef.getName(), args);
+            EventInvoker.invokeByName(program, eventDef.getMethodName(), args);
         }
     }
 
-    public static void invokeByName(ScriptBase script, String methodName, Object ... args)
+    public static void invokeByName(ProgramBase program, String methodName, Object ... args)
     {
         // Gets class of each argument
         Class[] classArray = new Class[args.length];
@@ -38,8 +36,8 @@ public class EventInvoker
         // Find the appropriate event and invoke it
         try
         {
-            Method invokeMethod = script.getClass().getMethod(methodName, classArray);
-            script.queueEvent(invokeMethod, args);
+            Method invokeMethod = program.getClass().getMethod(methodName, classArray);
+            program.queueEvent(invokeMethod, args);
         }
         catch (NoSuchMethodException e)
         {

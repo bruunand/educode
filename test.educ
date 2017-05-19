@@ -1,21 +1,31 @@
+using Math
+
 program Test
-    number simon = 5
+    method test()
+    end method
+
     method main()
-        number foo = 5 + 5 * 10
-        debug("calling main")
-        main("hej")
-    end method
+        bool jd = true and false
+        number a = 10
+        a += 2
+        coordinates c
+        c -= (0, 1, 2)
+        debug("c:" + c)
+        debug("n:" + ----------------------------------------------------------------c)
+        a = --a
+        bool baller = not not not not not not true
+        debug("baller:" + baller)
 
-    method hej()
-        number foer
-        if true then
-            number x
+        if not not not not not true then
+            debug("hej")
         end if
-        bool efter
-        number theis
-    end method
-
-    method main(string a)
-        debug(a)
+        debug("a:" + a)
+        debug("Test:" + round(5.23231))
+        debug("Test:" + abs(-5.23231))
+        debug("Test:" + round(5.23231))
+        debug("Out:" + c.toString())
+        string str = "to er " + 2
+        string str1 = "coord:" + c
+        str += str1
     end method
 end program

@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import com.educode.minecraft.command.CommandEdit;
 import com.educode.minecraft.command.CommandRun;
-import com.educode.minecraft.command.CommandStopScripts;
+import com.educode.minecraft.command.CommandStopPrograms;
 import com.educode.minecraft.entity.EntityRobot;
 import com.educode.minecraft.handler.AchievementEventHandler;
 import com.educode.minecraft.handler.EventHandler;
@@ -36,7 +36,7 @@ public class CompilerMod
     public static final String MODID = "compilermod";
     public static final String VERSION = "1.0";
     
-    public static final String SCRIPTS_LOCATION = System.getProperty("user.home") + File.separator + "Scripts" + File.separator;
+    public static final String PROGRAM_FILES_LOCATION = System.getProperty("user.home") + File.separator + "Programs" + File.separator;
 
     public static final String ROBOT_TEXTURE_LOCATION = "textures/entity/robot.png";
     
@@ -46,10 +46,10 @@ public class CompilerMod
     
     public static final SimpleNetworkWrapper NETWORK_INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
 
-    public static final List<ScriptBase> RUNNING_SCRIPTS = new ArrayList<>();
+    public static final List<ProgramBase> RUNNING_PROGRAMS = new ArrayList<>();
 
     //Achievement stuff
-    public static AchievementPage educodeAchievementPage;
+    public static AchievementPage eduCodeAchievementPage;
     
     //Robot
     public static Achievement achievementRobotChat;
@@ -102,9 +102,9 @@ public class CompilerMod
         Proxy.registerModels();
 
         //Start of achievement chain
-        achievementOpenEditor = new Achievement("script_opened", "openEditor", 0, -4, Items.BOOK, null);//Added
-        achievementSaveFirst = new Achievement("script_saved", "saveFirst", 0, -2, Items.ITEM_FRAME, achievementOpenEditor);//Added
-        achievementRunFirst = new Achievement("script_run", "runFirst", 0, 0, Items.STRING, achievementSaveFirst);//Added
+        achievementOpenEditor = new Achievement("program_opened", "openEditor", 0, -4, Items.BOOK, null);//Added
+        achievementSaveFirst = new Achievement("program_saved", "saveFirst", 0, -2, Items.ITEM_FRAME, achievementOpenEditor);//Added
+        achievementRunFirst = new Achievement("program_run", "runFirst", 0, 0, Items.STRING, achievementSaveFirst);//Added
         
         //Robot achievement chain
         achievementRobotChat = new Achievement("robot_chat", "robotChat", 2, -2, Items.GHAST_TEAR, achievementRunFirst);//Added
@@ -122,9 +122,9 @@ public class CompilerMod
         achievementBuildHouse = new Achievement("build_house", "buildHouse", 0,4, Items.COMMAND_BLOCK_MINECART, achievementBuildCube);
 
         //Other
-        achievementError = new Achievement("script_error", "error", 0,-6, Items.BOOK, achievementSaveFirst).setSpecial();//Added
+        achievementError = new Achievement("program_error", "parserError", 0,-6, Items.BOOK, achievementSaveFirst).setSpecial();//Added
 
-        educodeAchievementPage = new AchievementPage("EduCode",
+        eduCodeAchievementPage = new AchievementPage("EduCode",
                 achievementOpenEditor,
                 achievementSaveFirst,
                 achievementRunFirst,
@@ -140,18 +140,18 @@ public class CompilerMod
                 achievementBuildCube,
                 achievementBuildHouse,
                 achievementError);
-        AchievementPage.registerAchievementPage(educodeAchievementPage);
+        AchievementPage.registerAchievementPage(eduCodeAchievementPage);
     }
     
     @Mod.EventHandler
     public void serverStart(FMLServerStartingEvent event)
     {
-        File scriptsDir = new File(SCRIPTS_LOCATION);
-        if (!scriptsDir.exists())
-            scriptsDir.mkdir();
+        File programsDir = new File(PROGRAM_FILES_LOCATION);
+        if (!programsDir.exists())
+            programsDir.mkdir();
 
         event.registerServerCommand(new CommandRun());
         event.registerServerCommand(new CommandEdit());
-        event.registerServerCommand(new CommandStopScripts());
+        event.registerServerCommand(new CommandStopPrograms());
     }
 }

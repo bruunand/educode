@@ -1,15 +1,13 @@
 package com.educode.minecraft.command;
 
-import com.educode.antlr.EduCodeLexer;
-import com.educode.antlr.EduCodeParser;
 import com.educode.events.achievements.AchievementEvent;
 import com.educode.minecraft.CompilerMod;
-import com.educode.runtime.threads.ScriptRunner;
+import com.educode.parsing.ParserHelper;
+import com.educode.parsing.ParserResult;
+import com.educode.runtime.ProgramBase;
+import com.educode.runtime.threads.ProgramRunner;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
-import com.educode.nodes.base.Node;
-import com.educode.runtime.ScriptBase;
-import com.educode.symboltable.SymbolTableMessage;
-import com.educode.visitors.ASTBuilder;
+import com.educode.errorhandling.ErrorMessage;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 import net.minecraft.command.CommandException;
@@ -21,9 +19,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
-import org.antlr.v4.runtime.ANTLRFileStream;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.util.List;
 
@@ -33,7 +28,7 @@ public class CommandRun implements ICommand
     
     public CommandRun()
     {
-        _aliases = java.util.Arrays.asList("run", "runscript");;
+        _aliases = java.util.Arrays.asList("run", "runprogram");;
     }
     
     @Override
@@ -61,44 +56,39 @@ public class CommandRun implements ICommand
         return _aliases;
     }
 
+    private void printMessagesToChat(ICommandSender sender, List<ErrorMessage> errorMessages)
+    {
+        for (ErrorMessage message : errorMessages)
+            sender.sendMessage(new TextComponentString(message.toString()));
+    }
+
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         if (args.length < 1) return;
-        final String scriptName = args[0];
+        final String programName = args[0];
 
         try
         {
-            //Give first run achievement
-            MinecraftForge.EVENT_BUS.post(new AchievementEvent.ScriptRunEvent((EntityPlayer) sender));
-
-            // Generate parse tree from code
-            ANTLRInputStream stream = new ANTLRFileStream(CompilerMod.SCRIPTS_LOCATION + scriptName + ".educ");
-            EduCodeLexer lexer = new EduCodeLexer(stream);
-            CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-            EduCodeParser parser = new EduCodeParser(tokenStream);
-
-            // Generate AST from parse tree
-            ASTBuilder builder = new ASTBuilder();
-            Node astRoot = builder.visit(parser.program());
+            // Parse source program and print syntax errors
+            ParserResult result = ParserHelper.parse(CompilerMod.PROGRAM_FILES_LOCATION + programName + ".educ");
+            printMessagesToChat(sender, result.getErrorHandler().getMessages());
+            if (result.getErrorHandler().hasErrors())
+                throw new Exception("Could not compile source program due to syntax errors.");
 
             // Perform semantic checks
             SemanticVisitor semanticVisitor = new SemanticVisitor();
-            astRoot.accept(semanticVisitor);
+            result.getStartNode().accept(semanticVisitor);
+            printMessagesToChat(sender, semanticVisitor.getSymbolTableHandler().getMessages());
             if (semanticVisitor.getSymbolTableHandler().hasErrors())
-            {
-                for (SymbolTableMessage message : semanticVisitor.getSymbolTableHandler().getMessages())
-                    sender.sendMessage(new TextComponentString(message.toString()));
-
-                return;
-            }
+                throw new Exception("Could not compile source program due to contextual constraint parserError.");
 
             // Generate Java code
-            JavaCodeGenerationVisitor javaVisitor = new JavaCodeGenerationVisitor(CompilerMod.SCRIPTS_LOCATION + scriptName + ".java");
-            astRoot.accept(javaVisitor);
+            JavaCodeGenerationVisitor javaVisitor = new JavaCodeGenerationVisitor(CompilerMod.PROGRAM_FILES_LOCATION + programName + ".java");
+            result.getStartNode().accept(javaVisitor);
 
             // Compile and main Java
-            Class<?> compiledClass = new CustomJavaCompiler().compile(CompilerMod.SCRIPTS_LOCATION, scriptName);
+            Class<?> compiledClass = new CustomJavaCompiler().compile(CompilerMod.PROGRAM_FILES_LOCATION, programName);
 
             int instances = 1;
             if (args.length > 1)
@@ -107,23 +97,26 @@ public class CommandRun implements ICommand
             // Run designated amount of instances
             for (int i = 0; i < instances; i++)
             {
-                ScriptBase script = (ScriptBase) compiledClass.newInstance();
-                ScriptRunner scriptThread = new ScriptRunner(script);
-                script.init(scriptName, scriptThread, server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions());
+                ProgramBase program = (ProgramBase) compiledClass.newInstance();
+                ProgramRunner programThread = new ProgramRunner(program);
+                program.init(programName, programThread, server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions());
 
-                // Run script in separate thread
-                scriptThread.start();
+                // Run program in separate thread
+                programThread.start();
 
-                // Add to running scripts
-                synchronized (CompilerMod.RUNNING_SCRIPTS)
+                // Add to running programs
+                synchronized (CompilerMod.RUNNING_PROGRAMS)
                 {
-                    CompilerMod.RUNNING_SCRIPTS.add(script);
+                    CompilerMod.RUNNING_PROGRAMS.add(program);
                 }
             }
+
+            //Give first run achievement
+            MinecraftForge.EVENT_BUS.post(new AchievementEvent.ProgramRunEvent((EntityPlayer) sender));
         }
         catch (Exception e)
         {
-            //Give compiler error achievement
+            //Give compiler parserError achievement
             MinecraftForge.EVENT_BUS.post(new AchievementEvent.CompilerErrorEvent((EntityPlayer) sender));
 
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "[Error]" + TextFormatting.RESET + " " + e.getMessage()));

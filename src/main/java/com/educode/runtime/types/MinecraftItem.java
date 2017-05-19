@@ -32,7 +32,7 @@ public class MinecraftItem implements IItem
     }
 
     @Override
-    public int getCount()
+    public double getCount()
     {
         return this.getWrappedItem().getCount();
     }

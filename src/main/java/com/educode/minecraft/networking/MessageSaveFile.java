@@ -3,7 +3,6 @@ package com.educode.minecraft.networking;
 import com.educode.events.achievements.AchievementEvent;
 import com.educode.minecraft.CompilerMod;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
@@ -74,7 +73,7 @@ public class MessageSaveFile implements IMessage
                 //Give editor save achievement
                 MinecraftForge.EVENT_BUS.post(new AchievementEvent.EditorSavedEvent(ctx.getServerHandler().playerEntity));
 
-                FileWriter fw = new FileWriter(new File(CompilerMod.SCRIPTS_LOCATION + message.getFileName() + ".educ"));
+                FileWriter fw = new FileWriter(new File(CompilerMod.PROGRAM_FILES_LOCATION + message.getFileName() + ".educ"));
                 fw.write(message.getContents());
                 fw.close();
 

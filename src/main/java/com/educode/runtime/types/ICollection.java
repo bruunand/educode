@@ -6,9 +6,9 @@ package com.educode.runtime.types;
 public interface ICollection<E>
 {
     // add is not here because it is a part of the list interface
-    void removeItemAt(float index);
-    E getItemAt(float index);
+    void removeItemAt(double index);
+    E getItemAt(double index);
     void addItem(E item);
-    E setItemAt(float index, E item);
-    float getSize();
+    E setItemAt(double index, E item);
+    double getSize();
 }

@@ -4,8 +4,8 @@ import com.educode.helper.OperatorTranslator;
 import com.educode.helper.Tuple;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
-import com.educode.nodes.expression.AdditionExpression;
-import com.educode.nodes.expression.MultiplicationExpression;
+import com.educode.nodes.expression.AdditionExpressionNode;
+import com.educode.nodes.expression.MultiplicationExpressionNode;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.BoolLiteralNode;
 import com.educode.nodes.literal.CoordinatesLiteralNode;
@@ -22,10 +22,7 @@ import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
-import com.educode.nodes.ungrouped.BlockNode;
-import com.educode.nodes.ungrouped.ObjectInstantiationNode;
-import com.educode.nodes.ungrouped.ProgramNode;
-import com.educode.nodes.ungrouped.TypeCastNode;
+import com.educode.nodes.ungrouped.*;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
@@ -121,6 +118,11 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         {
             e.printStackTrace();
         }
+    }
+
+    public void visit(StartNode node)
+    {
+        visit(node.getRightChild());
     }
     
     public void visit(ProgramNode node)
@@ -332,7 +334,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     {
         StringBuffer codeBuffer = new StringBuffer();
         int endIfLabel = _labelCounter++;
-        int jumpLabel= _labelCounter++;;
+        int jumpLabel= _labelCounter++;
 
         ArrayList<ConditionNode> conditionNodeList = node.getConditionBlocks();
 
@@ -345,10 +347,10 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         for (int i = 1; i < conditionNodeList.size(); i++)
         {
             append(codeBuffer, "L%s:\n", jumpLabel);
-            append(codeBuffer, "%s", visit(conditionNodeList.get(0).getLeftChild()));
+            append(codeBuffer, "%s", visit(conditionNodeList.get(i).getLeftChild()));
             subtractStackHeight(1);
             append(codeBuffer, "  ifeq L%s\n", jumpLabel = _labelCounter++);
-            append(codeBuffer, "%s", visit(conditionNodeList.get(0).getRightChild()));
+            append(codeBuffer, "%s", visit(conditionNodeList.get(i).getRightChild()));
             append(codeBuffer, "  goto L%s\n", endIfLabel);
         }
 
@@ -408,7 +410,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
     
-    public Object visit(MultiplicationExpression node)
+    public Object visit(MultiplicationExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
 
@@ -420,7 +422,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
     
-    public Object visit(AdditionExpression node)
+    public Object visit(AdditionExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
 
@@ -748,7 +750,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
             case Type.STRING:
                 prefix = "a";
             default:
-                //TODO: Some error
+                //TODO: Some parserError
                 break;
         }
 

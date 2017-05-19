@@ -16,14 +16,14 @@ import java.util.List;
 /**
  * Created by zen on 4/25/17.
  */
-// Helps with converting interface to type symbol tables that can be understood by the scripts
+// Helps with converting interface to type symbol tables that can be understood by the programs
 public class InterfaceConverter
 {
     private static Type getTypeFromClass(java.lang.reflect.Type sourceType)
     {
         if (sourceType instanceof ParameterizedType)
         {
-            // Return a list type for parameterized types
+            // Return a list type for parameterised types
             ParameterizedType parameterizedType = (ParameterizedType) sourceType;
             return new Type(getTypeFromClass(parameterizedType.getActualTypeArguments()[0]));
         }
@@ -33,7 +33,7 @@ public class InterfaceConverter
 
             if (sourceClass.equals(String.class))
                 return Type.StringType;
-            else if (sourceClass.equals(float.class) || sourceClass.equals(Float.class))
+            else if (sourceClass.equals(double.class) || sourceClass.equals(Double.class))
                 return Type.NumberType;
             else if (sourceClass.equals(MinecraftEntity.class))
                 return Type.EntityType;

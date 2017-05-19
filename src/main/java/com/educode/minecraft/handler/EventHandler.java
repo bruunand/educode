@@ -3,11 +3,11 @@ package com.educode.minecraft.handler;
 import com.educode.events.communication.ChatMessageEvent;
 import com.educode.events.entity.EntityDeathEvent;
 import com.educode.runtime.IExecutable;
+import com.educode.runtime.ProgramBase;
 import com.educode.runtime.TickCommand;
 import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.gui.GuiProgramEditor;
 import com.educode.minecraft.networking.MessageOpenEditor;
-import com.educode.runtime.ScriptBase;
 import com.educode.events.Broadcaster;
 import com.educode.runtime.types.MinecraftEntity;
 import net.minecraft.client.Minecraft;
@@ -52,7 +52,7 @@ public class EventHandler
             {
                 MessageOpenEditor openGuiMessage = (MessageOpenEditor) nextMessage;
                 GuiProgramEditor.resetPosition();
-                GuiProgramEditor.setText(openGuiMessage.getScriptContent());
+                GuiProgramEditor.setText(openGuiMessage.getProgramContent());
                 GuiProgramEditor.setFileName(openGuiMessage.getFileName());
 
                 EntityPlayerSP player = Minecraft.getMinecraft().player;
@@ -84,34 +84,34 @@ public class EventHandler
         while (!_serverExecutableQueue.isEmpty())
             _serverExecutableQueue.poll().execute();
 
-        // Execute commands from all running scripts (one command per script per tick)
-        synchronized (CompilerMod.RUNNING_SCRIPTS)
+        // Execute commands from all running programs (one command per program per tick)
+        synchronized (CompilerMod.RUNNING_PROGRAMS)
         {
-            Iterator<ScriptBase> iterator = CompilerMod.RUNNING_SCRIPTS.iterator();
+            Iterator<ProgramBase> iterator = CompilerMod.RUNNING_PROGRAMS.iterator();
 
             while (iterator.hasNext())
             {
-                ScriptBase script = iterator.next();
+                ProgramBase program = iterator.next();
 
                 // Check if threads are running
-                boolean mainThreadRunning   = script.getMainThread() != null && script.getMainThread().isAlive();
-                boolean scriptThreadRunning = script.getEventThread() != null && script.getEventThread().isAlive();
-                if (!(mainThreadRunning || scriptThreadRunning))
-                    script.getRobot().setDead();
+                boolean mainThreadRunning  = program.getMainThread() != null && program.getMainThread().isAlive();
+                boolean eventThreadRunning = program.getEventThread() != null && program.getEventThread().isAlive();
+                if (!(mainThreadRunning || eventThreadRunning))
+                    program.getRobot().setDead();
 
-                if (script.getRobot().isDead)
+                if (program.getRobot().isDead)
                 {
                     // Stop threads
-                    script.getMainThread().interrupt();
-                    if (script.getEventThread() != null)
-                        script.getEventThread().interrupt();
+                    program.getMainThread().interrupt();
+                    if (program.getEventThread() != null)
+                        program.getEventThread().interrupt();
 
                     iterator.remove();
                     continue;
                 }
 
                 // Poll command
-                TickCommand command = script.pollCommand();
+                TickCommand command = program.pollCommand();
                 if (command != null)
                     command.setResult(command.getExecutable().execute());
             }

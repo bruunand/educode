@@ -1,0 +1,18 @@
+using Dig
+
+program Math
+    method test()
+    end method
+
+    methosd round(number num) returns number
+        return num - (num modulo 1)
+    end method
+
+    method abs(number num) returns number
+        if num less than 0 then
+            return -1 * num
+        else
+            return num
+        end if
+    end method
+end program

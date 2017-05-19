@@ -8,11 +8,11 @@ import net.minecraft.util.math.BlockPos;
  */
 public class Coordinates implements ICoordinates
 {
-    private float _x;
-    private float _y;
-    private float _z;
+    private double _x;
+    private double _y;
+    private double _z;
 
-    public Coordinates(float x, float y, float z)
+    public Coordinates(double x, double y, double z)
     {
         this._x = x;
         this._y = y;
@@ -31,9 +31,19 @@ public class Coordinates implements ICoordinates
     {
         int multiplier = subtract ? -1 : 1;
 
-        float x = this.getX() + other.getX() * multiplier;
-        float y = this.getY() + other.getY() * multiplier;
-        float z = this.getZ() + other.getZ() * multiplier;
+        double x = this.getX() + other.getX() * multiplier;
+        double y = this.getY() + other.getY() * multiplier;
+        double z = this.getZ() + other.getZ() * multiplier;
+
+        return new Coordinates(x, y, z);
+    }
+
+    /* Not defined in interface because it should only be accessed with unary minus */
+    public Coordinates negate()
+    {
+        double x = this.getX() * -1;
+        double y = this.getY() * -1;
+        double z = this.getZ() * -1;
 
         return new Coordinates(x, y, z);
     }
@@ -44,44 +54,44 @@ public class Coordinates implements ICoordinates
     }
 
     @Override
-    public float getX()
+    public double getX()
     {
         return this._x;
     }
 
     @Override
-    public float getY()
+    public double getY()
     {
         return this._y;
     }
 
     @Override
-    public float getZ()
+    public double getZ()
     {
         return this._z;
     }
 
     @Override
-    public void setX(float value)
+    public void setX(double value)
     {
         this._x = value;
     }
 
     @Override
-    public void setY(float value)
+    public void setY(double value)
     {
         this._y = value;
     }
 
     @Override
-    public void setZ(float value)
+    public void setZ(double value)
     {
         this._z = value;
     }
 
     public String toString()
     {
-        return String.format("X: %f, Y: %f, Z: %f", getX(), getY(), getZ());
+        return String.format("X: %.2f, Y: %.2f, Z: %.2f", getX(), getY(), getZ());
     }
 
     @Override

@@ -10,17 +10,17 @@ public interface IRobot extends IEntity
 {
     // General
     void say(String text) throws InterruptedException;
-    void explode(float strength) throws InterruptedException;
-    void setWorldTime(float time) throws InterruptedException;
+    void explode(double strength) throws InterruptedException;
+    void setWorldTime(double time) throws InterruptedException;
     MinecraftEntity getOwner();
     List<MinecraftEntity> getNearbyEntities() throws InterruptedException;
-    float getDistanceTo(MinecraftEntity entity);
+    double getDistanceTo(MinecraftEntity entity);
     boolean placeBlock(Coordinates coordinates) throws InterruptedException;
     void stop() throws InterruptedException;
 
     // Communication
-    void broadcast(float channel, String message);
-    void broadcast(float channel, MinecraftEntity entity);
+    void broadcast(double channel, String message);
+    void broadcast(double channel, MinecraftEntity entity);
 
     // Combat
     boolean attack(MinecraftEntity entity) throws InterruptedException;
@@ -36,8 +36,8 @@ public interface IRobot extends IEntity
     // Items
     ExtendedCollection<MinecraftItem> getInventory();
     void dropItems() throws InterruptedException;
-    float dropItem(String name, float quantity) throws InterruptedException;
+    double dropItem(String name, double quantity) throws InterruptedException;
     MinecraftItem getHeldItem();
     void setHeldItem(MinecraftItem item) throws InterruptedException;
-    MinecraftItem getItemFromSlot(float index);
+    MinecraftItem getItemFromSlot(double index);
 }

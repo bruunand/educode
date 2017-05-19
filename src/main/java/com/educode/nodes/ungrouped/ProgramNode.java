@@ -1,6 +1,6 @@
 package com.educode.nodes.ungrouped;
 
-import com.educode.IReferencing;
+import com.educode.nodes.IReferencing;
 import com.educode.nodes.IVisitable;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;

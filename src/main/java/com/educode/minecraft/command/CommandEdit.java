@@ -1,7 +1,6 @@
 package com.educode.minecraft.command;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.Utility;
 import com.educode.minecraft.networking.MessageOpenEditor;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -24,13 +22,13 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class CommandEdit implements ICommand
 {
-	private final static String scriptTemplate = "program %s\n  method main()\n  end method\nend program";
+	private final static String programTemplate = "program %s\n  method main()\n  end method\nend program";
 
     private final List<String> _aliases;
     
     public CommandEdit()
     {
-        _aliases = Arrays.asList("edit", "editscript");
+        _aliases = Arrays.asList("edit", "editprogram");
     }
     
 	@Override
@@ -65,18 +63,18 @@ public class CommandEdit implements ICommand
 		if (args.length < 1)
 			return;
 
-        final String scriptName = args[0];
+        final String programName = args[0];
 		try
 		{
-            File scriptFile = new File(CompilerMod.SCRIPTS_LOCATION + scriptName + ".educ");
+            File programFile = new File(CompilerMod.PROGRAM_FILES_LOCATION + programName + ".educ");
 
             //Give editor opened achievement
 			MinecraftForge.EVENT_BUS.post(new AchievementEvent.EditorOpenedEvent((EntityPlayer) sender));
 
-            if (scriptFile.exists())
-				CompilerMod.NETWORK_INSTANCE.sendTo(new MessageOpenEditor(scriptName, new String(Utility.readBytesFromFile(scriptFile))), (EntityPlayerMP) sender);
+            if (programFile.exists())
+				CompilerMod.NETWORK_INSTANCE.sendTo(new MessageOpenEditor(programName, new String(Utility.readBytesFromFile(programFile))), (EntityPlayerMP) sender);
             else
-            	CompilerMod.NETWORK_INSTANCE.sendTo(new MessageOpenEditor(scriptName, String.format(scriptTemplate, scriptName)), (EntityPlayerMP) sender);
+            	CompilerMod.NETWORK_INSTANCE.sendTo(new MessageOpenEditor(programName, String.format(programTemplate, programName)), (EntityPlayerMP) sender);
 		}
         catch (Exception e)
 		{

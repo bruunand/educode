@@ -21,7 +21,7 @@ public abstract class VisitorBase
     {
         if (node == null)
         {
-            System.out.println("Attempted to invokeByName a null object!");
+            System.out.println("Attempted to visit a null object!");
             new Exception().printStackTrace(); // Print stack trace for debugging purposes
             return null;
         }
@@ -29,7 +29,7 @@ public abstract class VisitorBase
         // Get best method for this object
         Method method = getMethodFor(node);
 
-        // Attempt to invokeByName the method
+        // Attempt to invoke the method
         try
         {
             return method.invoke(this, node);

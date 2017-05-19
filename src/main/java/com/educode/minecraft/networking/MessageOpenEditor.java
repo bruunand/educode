@@ -11,33 +11,33 @@ public class MessageOpenEditor implements IMessage
 {
 	public static final int PACKET_ID = 1;
 
-	private String _scriptContent, _fileName;
+	private String _programContent, _fileName;
 	
 	public MessageOpenEditor() {}
 	
-	public MessageOpenEditor(String fileName, String scriptContent)
+	public MessageOpenEditor(String fileName, String programContent)
 	{
 		this._fileName = fileName;
-		this._scriptContent = scriptContent;
+		this._programContent = programContent;
 	}
 	
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
 		ByteBufUtils.writeUTF8String(buf, this._fileName);
-	    ByteBufUtils.writeUTF8String(buf, this._scriptContent);
+	    ByteBufUtils.writeUTF8String(buf, this._programContent);
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
 	    this._fileName = ByteBufUtils.readUTF8String(buf);
-		this._scriptContent = ByteBufUtils.readUTF8String(buf);
+		this._programContent = ByteBufUtils.readUTF8String(buf);
 	}
 
-	public String getScriptContent()
+	public String getProgramContent()
 	{
-		return this._scriptContent;
+		return this._programContent;
 	}
 
     public String getFileName()
