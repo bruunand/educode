@@ -71,24 +71,27 @@ public class CommandRun implements ICommand
         try
         {
             // Parse source program and print syntax errors
-            ParserResult result = ParserHelper.parse(CompilerMod.PROGRAM_FILES_LOCATION + programName + ".educ");
+            ParserResult result = ParserHelper.parse( programName + ".educ");
             printMessagesToChat(sender, result.getErrorHandler().getMessages());
             if (result.getErrorHandler().hasErrors())
                 throw new Exception("Could not compile source program due to syntax errors.");
 
             // Perform semantic checks
             SemanticVisitor semanticVisitor = new SemanticVisitor();
+            semanticVisitor.getSymbolTableHandler().setInputSource(result.getStartNode());
+            result.getStartNode().setInputSource(programName + ".educ");
+            result.getStartNode().setIsMain(true);
             result.getStartNode().accept(semanticVisitor);
             printMessagesToChat(sender, semanticVisitor.getSymbolTableHandler().getMessages());
             if (semanticVisitor.getSymbolTableHandler().hasErrors())
                 throw new Exception("Could not compile source program due to contextual constraint errors.");
 
             // Generate Java code
-            JavaCodeGenerationVisitor javaVisitor = new JavaCodeGenerationVisitor(CompilerMod.PROGRAM_FILES_LOCATION + programName + ".java");
+            JavaCodeGenerationVisitor javaVisitor = new JavaCodeGenerationVisitor();
             result.getStartNode().accept(javaVisitor);
 
             // Compile and main Java
-            Class<?> compiledClass = new CustomJavaCompiler().compile(CompilerMod.PROGRAM_FILES_LOCATION, programName);
+            Class<?> compiledClass = new CustomJavaCompiler().compile(programName);
 
             int instances = 1;
             if (args.length > 1)

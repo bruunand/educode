@@ -3,6 +3,7 @@ package com.educode.parsing;
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
 import com.educode.errorhandling.ErrorHandler;
+import com.educode.minecraft.CompilerMod;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.visitors.ASTBuilder;
@@ -25,7 +26,7 @@ public class ParserHelper
     public static ParserResult parse(String fileName, ErrorHandler existingErrorHandler) throws IOException
     {
         ParserErrorListener errorListener = new ParserErrorListener(fileName, existingErrorHandler);
-        ANTLRInputStream stream = new ANTLRFileStream(fileName);
+        ANTLRInputStream stream = new ANTLRFileStream(CompilerMod.EDUCODE_PROGRAMS_LOCATION + fileName);
 
         // Create lexer from input file stream
         EduCodeLexer lexer = new EduCodeLexer(stream);

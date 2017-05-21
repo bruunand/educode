@@ -4,7 +4,7 @@ program Math
     method test()
     end method
 
-    methosd round(number num) returns number
+    method round(number num) returns number
         return num - (num modulo 1)
     end method
 

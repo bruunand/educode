@@ -81,6 +81,7 @@ public class OptimisationVisitor extends VisitorBase
         for (ConditionNode condition : node.getConditionBlocks())
         {
             Object visitResult = visit(condition.getLeftChild());
+            visit(condition.getRightChild());
             if (!(visitResult instanceof Boolean))
                 continue; // If visitResult is not a boolean, it may still evaluate to a boolean but we don't know its value as compile time
 
@@ -98,6 +99,7 @@ public class OptimisationVisitor extends VisitorBase
         if (node.getConditionBlocks().size() == 0)
         {
             BlockNode elseBlock = node.getElseBlock();
+            visit(elseBlock);
 
             if (elseBlock != null)
                 ((INodeWithChildren) node.getParent()).replaceChildReference(node, node.getElseBlock()); // No conditions are reachable but there is an else statement, so replace if node with block of else

@@ -36,7 +36,7 @@ public class CompilerMod
     public static final String MODID = "compilermod";
     public static final String VERSION = "1.0";
     
-    public static final String PROGRAM_FILES_LOCATION = System.getProperty("user.home") + File.separator + "Programs" + File.separator;
+    public static final String EDUCODE_PROGRAMS_LOCATION = System.getProperty("user.home") + File.separator + "EduCode Programs" + File.separator;
 
     public static final String ROBOT_TEXTURE_LOCATION = "textures/entity/robot.png";
     
@@ -146,10 +146,6 @@ public class CompilerMod
     @Mod.EventHandler
     public void serverStart(FMLServerStartingEvent event)
     {
-        File programsDir = new File(PROGRAM_FILES_LOCATION);
-        if (!programsDir.exists())
-            programsDir.mkdir();
-
         event.registerServerCommand(new CommandRun());
         event.registerServerCommand(new CommandEdit());
         event.registerServerCommand(new CommandStopPrograms());

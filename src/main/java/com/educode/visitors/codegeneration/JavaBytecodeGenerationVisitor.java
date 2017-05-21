@@ -2,6 +2,7 @@ package com.educode.visitors.codegeneration;
 
 import com.educode.helper.OperatorTranslator;
 import com.educode.helper.Tuple;
+import com.educode.minecraft.CompilerMod;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpressionNode;
@@ -87,38 +88,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return "NOT IMPLEMENTED:" + node.getClass().getName();
     }
 
-    private void generateProgramExecuter(String className)
-    {
-        StringBuffer codeBuffer = new StringBuffer();
-
-        append(codeBuffer, ".class public Program\n" +
-                ".super java/lang/Object\n\n" +
-                ".method public <init>()V\n" +
-                "  aload_0\n" +
-                "  invokespecial java/lang/Object/<init>()V\n" +
-                "  return\n" +
-                ".end method\n\n");
-        append(codeBuffer, ".method public static main([Ljava/lang/String;)V\n" +
-                "  .limit stack 2\n" +
-                "  .limit locals 1\n" +
-                "  new " + className + "\n" +
-                "  dup\n" +
-                "  invokespecial " + className + "/<init>()V\n" +
-                "  invokevirtual "+ className + "/main()V\n" +
-                "  return\n" +
-                ".end method");
-
-        try
-        {
-            FileWriter fw = new FileWriter("Program.j");
-            fw.append(codeBuffer);
-            fw.close();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
 
     public void visit(StartNode node)
     {
@@ -128,8 +97,6 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
     public void visit(ProgramNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
-
-        generateProgramExecuter(node.getReference().toString());
 
         append(codeBuffer, ".class public %s\n", node.getReference());
         append(codeBuffer, ".super java/lang/Object\n\n");
@@ -146,7 +113,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         // Write codeBuffer to file
         try
         {
-            FileWriter fw = new FileWriter(node.getReference()+ ".j");
+            FileWriter fw = new FileWriter(CompilerMod.EDUCODE_PROGRAMS_LOCATION + node.getReference()+ ".j");
             fw.append(codeBuffer);
             fw.close();
         }

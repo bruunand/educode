@@ -1,5 +1,6 @@
 package com.educode;
 
+import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.parsing.ParserHelper;
@@ -21,7 +22,13 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-        ParserResult result = ParserHelper.parse("test.educ");
+        // Create EduCode programs folder
+        File programsDir = new File(CompilerMod.EDUCODE_PROGRAMS_LOCATION);
+        if (!programsDir.exists())
+            programsDir.mkdir();
+
+        // Parse test file
+        ParserResult result = ParserHelper.parse("Test.educ");
         if (result.getErrorHandler().hasErrors())
         {
             result.getErrorHandler().printMessages();
@@ -32,10 +39,8 @@ public class Main
         StartNode startNode = result.getStartNode();
         SemanticVisitor sv = new SemanticVisitor();
         sv.getSymbolTableHandler().setInputSource(startNode);
-        startNode.setInputSource("test.educ");
+        startNode.setInputSource("Test.educ");
         startNode.setIsMain(true);
-
-        // Perform semantic analysis
         startNode.accept(sv);
 
         sv.getSymbolTableHandler().printMessages();
@@ -50,20 +55,20 @@ public class Main
         JavaBytecodeGenerationVisitor byteCodeVisitor = new JavaBytecodeGenerationVisitor();
         startNode.accept(byteCodeVisitor);
 
-        JavaCodeGenerationVisitor javaCodeVisitor = new JavaCodeGenerationVisitor("Test.java");
+        JavaCodeGenerationVisitor javaCodeVisitor = new JavaCodeGenerationVisitor();
         startNode.accept(javaCodeVisitor);
 
         // Test code generation
         System.out.println("Compiling Java code...");
         CustomJavaCompiler compiler = new CustomJavaCompiler();
-        invokeMainInClass(compiler.compile(new File("").getAbsolutePath() + File.separator, "Test"));
+        invokeMainInClass(compiler.compile("Test"));
         System.out.println();
 
         // Test bytecode generation
         System.out.println("Compiling bytecode using Jasmin...");
         jasmin.Main jasminMain = new jasmin.Main();
-        jasminMain.assemble("Test.j");
-        invokeMainInClass(CustomJavaCompiler.loadClass("Test", new File("").getAbsolutePath() + File.separator));
+        jasminMain.assemble(CompilerMod.EDUCODE_PROGRAMS_LOCATION + "Test.j");
+        invokeMainInClass(CustomJavaCompiler.loadClass("Test"));
     }
 
     private static void invokeMainInClass(Class classToRun) throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException

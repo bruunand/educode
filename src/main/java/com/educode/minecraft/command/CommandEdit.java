@@ -66,7 +66,7 @@ public class CommandEdit implements ICommand
         final String programName = args[0];
 		try
 		{
-            File programFile = new File(CompilerMod.PROGRAM_FILES_LOCATION + programName + ".educ");
+            File programFile = new File(CompilerMod.EDUCODE_PROGRAMS_LOCATION + programName + ".educ");
 
             //Give editor opened achievement
 			MinecraftForge.EVENT_BUS.post(new AchievementEvent.EditorOpenedEvent((EntityPlayer) sender));

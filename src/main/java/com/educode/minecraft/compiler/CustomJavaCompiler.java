@@ -1,11 +1,14 @@
 package com.educode.minecraft.compiler;
 
+import com.educode.minecraft.CompilerMod;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
@@ -28,7 +31,7 @@ public class CustomJavaCompiler
 		return classpath.substring(0, classpath.lastIndexOf(System.getProperty("path.separator")));
 	} 
 	
-    public Class<?> compile(String programsLocation, String programName) throws Exception
+    public Class<?> compile(String programName) throws Exception
     {
     	JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
     	if (javaCompiler == null)
@@ -36,9 +39,9 @@ public class CustomJavaCompiler
     	
         StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null, null);
 
-        fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Arrays.asList(new File(programsLocation)));
+        fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Collections.singletonList(new File(CompilerMod.EDUCODE_PROGRAMS_LOCATION)));
 
-        File[] javaFiles = new File[] { new File(programsLocation + programName + ".java")};
+        File[] javaFiles = new File[] { new File(CompilerMod.EDUCODE_PROGRAMS_LOCATION + programName + ".java")};
         if (!javaFiles[0].exists())
         	throw new FileNotFoundException("Program file " + javaFiles[0] + " not found!");
         
@@ -52,12 +55,12 @@ public class CustomJavaCompiler
 			throw new Exception("Could not compile program!"); // TODO custom exception
 		}
 
-		return loadClass(programName, programsLocation);
+		return loadClass(programName);
     }
 
-    public static Class loadClass(String programName, String location) throws Exception
+    public static Class loadClass(String programName) throws Exception
 	{
 		CustomClassLoader loader = new CustomClassLoader(CustomClassLoader.class.getClassLoader());
-		return loader.loadClassFromFile(programName, new File(location + programName + ".class"));
+		return loader.loadClassFromFile(programName, new File(CompilerMod.EDUCODE_PROGRAMS_LOCATION + programName + ".class"));
 	}
 }

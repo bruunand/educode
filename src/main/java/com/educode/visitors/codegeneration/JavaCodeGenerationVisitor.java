@@ -1,6 +1,7 @@
 package com.educode.visitors.codegeneration;
 
 import com.educode.helper.OperatorTranslator;
+import com.educode.minecraft.CompilerMod;
 import com.educode.nodes.ISingleLineStatement;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
@@ -40,14 +41,6 @@ import java.util.StringJoiner;
  */
 public class JavaCodeGenerationVisitor extends VisitorBase
 {
-    private String _destinationFile;
-
-    public JavaCodeGenerationVisitor(String destinationFile)
-    {
-        super();
-        this._destinationFile = destinationFile;
-    }
-
     private void append(StringBuffer buffer, String format, Object... args)
     {
         try
@@ -77,7 +70,6 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         StringBuffer codeBuffer = new StringBuffer();
 
         append(codeBuffer, "import java.util.*;\nimport com.educode.runtime.*;\nimport com.educode.runtime.types.*;\nimport com.educode.helper.*;\n\n");
-
         append(codeBuffer, "public class %s extends ProgramBase\n{\n", node.getReference());
 
         // Visit global variable declarations
@@ -94,7 +86,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         // Write codeBuffer to file
         try
         {
-            FileWriter fw = new FileWriter(this._destinationFile);
+            FileWriter fw = new FileWriter(CompilerMod.EDUCODE_PROGRAMS_LOCATION + node.getReference() + ".java");
             fw.append(codeBuffer);
             fw.close();
         }

@@ -1,6 +1,0 @@
-program Test
-    method main()
-        number foo = ((42 + 10) * 5) / 2
-        
-    end method
-end program

@@ -73,7 +73,7 @@ public class MessageSaveFile implements IMessage
                 //Give editor save achievement
                 MinecraftForge.EVENT_BUS.post(new AchievementEvent.EditorSavedEvent(ctx.getServerHandler().playerEntity));
 
-                FileWriter fw = new FileWriter(new File(CompilerMod.PROGRAM_FILES_LOCATION + message.getFileName() + ".educ"));
+                FileWriter fw = new FileWriter(new File(CompilerMod.EDUCODE_PROGRAMS_LOCATION + message.getFileName() + ".educ"));
                 fw.write(message.getContents());
                 fw.close();
 

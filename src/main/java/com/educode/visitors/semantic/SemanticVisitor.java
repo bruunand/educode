@@ -142,11 +142,11 @@ public class SemanticVisitor extends VisitorBase
                     visit(importedRoot);
                 }
                 else
-                    getSymbolTableHandler().parserError(importedRoot, String.format("%s: Could not parse subprogram.", fileName));
+                    getSymbolTableHandler().parserError(importedRoot, String.format("Could not parse subprogram %s.", fileName));
             }
             catch (Exception e)
             {
-                getSymbolTableHandler().parserError(node, String.format("Could not import %s: %s", fileName, e.getMessage()));
+                getSymbolTableHandler().parserError(node, String.format("Could not import %s.", fileName));
             }
         }
     }
