@@ -7,7 +7,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by zen on 3/23/17.
  */
-public class AndExpressionNode extends LogicExpressionNode
+public class AndExpressionNode extends LogicalExpressionNode
 {
     public AndExpressionNode(Node leftExpr, Node rightExpr)
     {

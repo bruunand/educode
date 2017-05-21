@@ -7,7 +7,7 @@ import com.educode.nodes.expression.AdditionExpressionNode;
 import com.educode.nodes.expression.MultiplicationExpressionNode;
 import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.EqualExpressionNode;
-import com.educode.nodes.expression.logic.LogicExpressionNode;
+import com.educode.nodes.expression.logic.LogicalExpressionNode;
 import com.educode.nodes.expression.logic.NegateNode;
 import com.educode.nodes.expression.logic.RelativeExpressionNode;
 import com.educode.nodes.literal.*;
@@ -551,7 +551,7 @@ public class SemanticVisitor extends VisitorBase
             getSymbolTableHandler().parserError(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), leftType, rightType));
     }
 
-    public void visit(LogicExpressionNode node)
+    public void visit(LogicalExpressionNode node)
     {
         visitChildren(node);
 

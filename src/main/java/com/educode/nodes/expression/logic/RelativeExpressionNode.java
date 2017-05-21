@@ -7,7 +7,7 @@ import com.educode.visitors.VisitorBase;
 /**
  * Created by zen on 3/23/17.
  */
-public class RelativeExpressionNode extends LogicExpressionNode
+public class RelativeExpressionNode extends LogicalExpressionNode
 {
     public RelativeExpressionNode(LogicalOperator operator, Node leftExpr, Node rightExpr)
     {

@@ -200,7 +200,6 @@ public abstract class ProgramBase implements IRobot
         return new Coordinates(_robot.getPosition());
     }
 
-    //TODO: should maybe be in interface as well?, Andreas
     @Override
     public boolean placeBlock(Coordinates coordinates) throws InterruptedException
     {

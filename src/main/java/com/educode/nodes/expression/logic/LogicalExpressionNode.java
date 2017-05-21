@@ -8,11 +8,11 @@ import com.educode.types.Type;
 /**
  * Created by zen on 3/10/17.
  */
-public abstract class LogicExpressionNode extends ExpressionNode
+public abstract class LogicalExpressionNode extends ExpressionNode
 {
     private LogicalOperator _operator;
 
-    public LogicExpressionNode(LogicalOperator operator, Node leftExpr, Node rightExpr)
+    public LogicalExpressionNode(LogicalOperator operator, Node leftExpr, Node rightExpr)
     {
         super(leftExpr, rightExpr);
         this._operator = operator;

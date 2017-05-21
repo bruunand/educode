@@ -5,7 +5,7 @@ import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.ArithmeticExpressionNode;
 import com.educode.nodes.expression.UnaryMinusNode;
-import com.educode.nodes.expression.logic.LogicExpressionNode;
+import com.educode.nodes.expression.logic.LogicalExpressionNode;
 import com.educode.nodes.expression.logic.NegateNode;
 import com.educode.nodes.expression.logic.RelativeExpressionNode;
 import com.educode.nodes.literal.BoolLiteralNode;
@@ -170,7 +170,7 @@ public class OptimisationVisitor extends VisitorBase
         return null;
     }
 
-    private Boolean evaluateLogic(LogicExpressionNode node)
+    private Boolean evaluateLogic(LogicalExpressionNode node)
     {
         Object leftResult  = visit(node.getLeftChild());
         Object rightResult = visit(node.getRightChild());
@@ -222,7 +222,7 @@ public class OptimisationVisitor extends VisitorBase
     // This example differs a bit structurally from number constant folding.
     // This is because of short circuiting, i.e. if we know that one side evaluates to true and
     // that the operator used is OR, we will always return true.
-    public Boolean visit(LogicExpressionNode node)
+    public Boolean visit(LogicalExpressionNode node)
     {
         Object evaluation = evaluateLogic(node);
 

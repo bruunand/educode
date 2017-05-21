@@ -8,7 +8,7 @@ import com.educode.types.Type;
 /**
  * Created by zen on 3/10/17.
  */
-public abstract class ArithmeticExpressionNode extends BinaryNode
+public abstract class ArithmeticExpressionNode extends ExpressionNode
 {
     private Type _type = Type.Error;
     private ArithmeticOperator _operator;

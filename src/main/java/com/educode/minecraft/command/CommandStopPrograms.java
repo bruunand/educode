@@ -66,7 +66,7 @@ public class CommandStopPrograms implements ICommand
             }
         }
 
-        sender.sendMessage(new TextComponentString(TextFormatting.GREEN + "[Success]" + TextFormatting.RESET + " " + String.format("Stopped %d scripts.", stopped)));
+        sender.sendMessage(new TextComponentString(TextFormatting.GREEN + "[Success]" + TextFormatting.RESET + " " + String.format("Stopped %d programs.", stopped)));
     }
 
     @Override

@@ -210,7 +210,7 @@ public class PrintVisitor extends VisitorBase
         return String.format("ArrayReferencing [%s][%s]", visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
-    public Object visit(LogicExpressionNode node)
+    public Object visit(LogicalExpressionNode node)
     {
         return String.format("%s [%s][%s]", node.getOperator(), visit(node.getLeftChild()), visit(node.getRightChild()));
     }

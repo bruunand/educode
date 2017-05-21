@@ -6,12 +6,11 @@ import com.educode.nodes.literal.NullLiteralNode;
 import com.educode.nodes.literal.NumberLiteralNode;
 import com.educode.types.LogicalOperator;
 import com.educode.visitors.VisitorBase;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * Created by zen on 3/23/17.
  */
-public class EqualExpressionNode extends LogicExpressionNode
+public class EqualExpressionNode extends LogicalExpressionNode
 {
     public EqualExpressionNode(LogicalOperator operator, Node leftExpr, Node rightExpr)
     {
