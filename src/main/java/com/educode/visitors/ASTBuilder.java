@@ -436,6 +436,24 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     }
 
     @Override
+    public Node visitLeft_hand_side(EduCodeParser.Left_hand_sideContext ctx)
+    {
+        updateLineNumber(ctx);
+
+        if (ctx.field != null)
+            return new StructReferencingNode(visit(ctx.acc), visit(ctx.field_access()));
+        else if (ctx.element != null)
+            return new ArrayReferencingNode(visit(ctx.acc), visit(ctx.element_access()));
+        else if (ctx.id != null)
+            return visit(ctx.id);
+        else
+            System.out.println("LHS-Error at line " + ctx.getStart().getLine());
+        return null;
+
+    }
+
+
+    @Override
     public Node visitLogic_expression(EduCodeParser.Logic_expressionContext ctx)
     {
         updateLineNumber(ctx);
