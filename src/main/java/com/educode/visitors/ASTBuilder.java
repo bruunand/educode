@@ -161,7 +161,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         updateLineNumber(ctx);
 
-        return new StartNode(ctx.ulist!=null ? visit(ctx.ulist) : new UsingsNode(), visit(ctx.pr));
+        return new StartNode(ctx.ulist != null ? visit(ctx.ulist) : new UsingsNode(), visit(ctx.pr));
     }
 
     @Override

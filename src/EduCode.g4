@@ -1,7 +1,7 @@
 grammar EduCode;
 
 start
-    : (ulist=usings)? end_of_line+ pr=program
+    : (ulist=usings)? end_of_line* pr=program
     ;
 
 usings
