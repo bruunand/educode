@@ -67,7 +67,7 @@ continue_statement
     ;
 
 return_statement
-    : 'return' (expr=expression)?
+    : 'return' (expr=logic_expression)?
     ;
 
 repeat_statement
@@ -96,7 +96,13 @@ expression
     ;
 
 assignment_expression
-    : lhs=factor op=('='|'+='|'-='|'*='|'/=') rhs=expression
+    : lhs=left_hand_side op=('='|'+='|'-='|'*='|'/=') rhs=expression
+    ;
+
+left_hand_side
+    : id=identifier
+    | acc=access element=element_access
+    | acc=access field=field_access
     ;
 
 logic_expression

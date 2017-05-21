@@ -143,6 +143,12 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignment_expression(EduCodeParser.Assignment_expressionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#left_hand_side}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLeft_hand_side(EduCodeParser.Left_hand_sideContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#logic_expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
