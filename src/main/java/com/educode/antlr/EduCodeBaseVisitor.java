@@ -171,6 +171,13 @@ public class EduCodeBaseVisitor<T> extends AbstractParseTreeVisitor<T> implement
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitLeft_hand_side(EduCodeParser.Left_hand_sideContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitLogic_expression(EduCodeParser.Logic_expressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

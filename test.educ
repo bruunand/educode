@@ -13,6 +13,7 @@ program Test
         debug("c:" + c)
         debug("n:" + ----------------------------------------------------------------c)
         a = --a
+
         bool baller = not not not not not not true
         debug("baller:" + baller)
 
