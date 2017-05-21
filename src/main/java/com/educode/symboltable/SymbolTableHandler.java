@@ -79,7 +79,7 @@ public class SymbolTableHandler extends ErrorHandler
             _current.insert(new Symbol(reference, node, getInputSource()));
         else
         {
-            if (getInputSource()==existing.getInputSource())
+            if (getInputSource() == existing.getInputSource())
                 parserError(node, "Symbol %s previously declared at line %d.", reference, existing.getSourceNode().getLineNumber());
             else
                 parserError(existing.getInputSource(), node, "Symbol %s previously declared at line %d", reference, existing.getSourceNode().getLineNumber());

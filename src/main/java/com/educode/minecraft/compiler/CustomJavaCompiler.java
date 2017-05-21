@@ -55,12 +55,12 @@ public class CustomJavaCompiler
 			throw new Exception("Could not compile program!"); // TODO custom exception
 		}
 
-		return loadClass(programName);
+		return loadClass(programName, CompilerMod.EDUCODE_PROGRAMS_LOCATION);
     }
 
-    public static Class loadClass(String programName) throws Exception
+    public static Class loadClass(String programName, String location) throws Exception
 	{
 		CustomClassLoader loader = new CustomClassLoader(CustomClassLoader.class.getClassLoader());
-		return loader.loadClassFromFile(programName, new File(CompilerMod.EDUCODE_PROGRAMS_LOCATION + programName + ".class"));
+		return loader.loadClassFromFile(programName, new File(location + programName + ".class"));
 	}
 }

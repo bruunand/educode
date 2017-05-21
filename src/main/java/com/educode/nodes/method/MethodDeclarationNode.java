@@ -103,7 +103,7 @@ public class MethodDeclarationNode extends BinaryNode implements IReferencing
             // Amount of parameters match, now check if each parameter matches in same order
             for (int i = 0; i < ownParameters.size(); i++)
             {
-                if (!ownParameters.get(i).equals(otherParameters.get(i)))
+                if (!ownParameters.get(i).getType().equals(otherParameters.get(i).getType()))
                     return false;
             }
 

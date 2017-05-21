@@ -68,7 +68,7 @@ public class Main
         System.out.println("Compiling bytecode using Jasmin...");
         jasmin.Main jasminMain = new jasmin.Main();
         jasminMain.assemble(CompilerMod.EDUCODE_PROGRAMS_LOCATION + "Test.j");
-        invokeMainInClass(CustomJavaCompiler.loadClass("Test"));
+        invokeMainInClass(CustomJavaCompiler.loadClass("Test", "")); // For some reason, Jasmin likes to place the class file in the working dir
     }
 
     private static void invokeMainInClass(Class classToRun) throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException
