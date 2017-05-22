@@ -50,7 +50,7 @@ public class PrintVisitor extends VisitorBase
         if (node.getImportedNode() != null)
             return String.format("ImportNode %s", node.getText());
         else
-            return "ImportNode N/A";
+            return String.format("ImportNode !:%s", node.getText());
     }
 
     public Object visit(UsingsNode node)
