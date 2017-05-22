@@ -23,7 +23,6 @@ import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.*;
 import com.educode.parsing.ParserHelper;
-import com.educode.parsing.ParserResult;
 import com.educode.runtime.types.IProgramBase;
 import com.educode.symboltable.Symbol;
 import com.educode.symboltable.SymbolTable;
@@ -154,12 +153,7 @@ public class SemanticVisitor extends VisitorBase
     private StartNode getImportedStartNode(String name) throws Exception
     {
         // Parse subprogram
-        // The semantic visitor's symbol table handler is used as the parserError handler
-        ParserResult result = ParserHelper.parse(name, this.getSymbolTableHandler());
-        if (result.getErrorHandler().hasErrors())
-            return null;
-
-        return result.getStartNode();
+        return ParserHelper.parse(name);
     }
 
     public void visit(ProgramNode node)

@@ -2,7 +2,6 @@ package com.educode.parsing;
 
 import com.educode.antlr.EduCodeLexer;
 import com.educode.antlr.EduCodeParser;
-import com.educode.errorhandling.ErrorHandler;
 import com.educode.minecraft.CompilerMod;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.ungrouped.StartNode;
@@ -18,33 +17,42 @@ import java.io.IOException;
  */
 public class ParserHelper
 {
-    public static ParserResult parse(String fileName) throws IOException
+    public static StartNode parse(String fileName) throws ParserException
     {
-        return parse(fileName, null);
-    }
-
-    public static ParserResult parse(String fileName, ErrorHandler existingErrorHandler) throws IOException
-    {
-        ParserErrorListener errorListener = new ParserErrorListener(fileName, existingErrorHandler);
-        ANTLRInputStream stream = new ANTLRFileStream(CompilerMod.EDUCODE_PROGRAMS_LOCATION + fileName);
+        ANTLRInputStream stream;
+        try
+        {
+            stream = new ANTLRFileStream(CompilerMod.EDUCODE_PROGRAMS_LOCATION + fileName);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            throw new ParserException("Could not find program " + fileName);
+        }
 
         // Create lexer from input file stream
         EduCodeLexer lexer = new EduCodeLexer(stream);
-        lexer.removeErrorListeners();
-        lexer.addErrorListener(errorListener);
 
         // Create token stream from lexer to be used by parser
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
 
         // Create parser
         EduCodeParser parser = new EduCodeParser(tokenStream);
-        parser.removeErrorListeners();
-        parser.addErrorListener(errorListener);
+        parser.setErrorHandler(ParserErrorHandler.INSTANCE);
 
         // Use ASTBuilder to visit the parser's start
-        ASTBuilder astBuilder = new ASTBuilder();
-        Node rootNode = astBuilder.visit(parser.start());
+        try
+        {
+            ASTBuilder astBuilder = new ASTBuilder();
+            Node rootNode = astBuilder.visit(parser.start());
 
-        return new ParserResult((StartNode) rootNode, errorListener.getErrorHandler());
+            if (rootNode instanceof StartNode)
+                return (StartNode) rootNode;
+            throw new Exception("Root node was not an instance of StartNode.");
+        }
+        catch (Exception e)
+        {
+            throw new ParserException(e);
+        }
     }
 }
