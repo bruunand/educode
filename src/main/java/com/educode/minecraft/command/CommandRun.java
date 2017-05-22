@@ -1,13 +1,13 @@
 package com.educode.minecraft.command;
 
+import com.educode.errorhandling.ErrorMessage;
 import com.educode.events.achievements.AchievementEvent;
 import com.educode.minecraft.CompilerMod;
+import com.educode.minecraft.compiler.CustomJavaCompiler;
+import com.educode.nodes.ungrouped.StartNode;
 import com.educode.parsing.ParserHelper;
-import com.educode.parsing.ParserResult;
 import com.educode.runtime.ProgramBase;
 import com.educode.runtime.threads.ProgramRunner;
-import com.educode.minecraft.compiler.CustomJavaCompiler;
-import com.educode.errorhandling.ErrorMessage;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 import net.minecraft.command.CommandException;
@@ -70,25 +70,22 @@ public class CommandRun implements ICommand
 
         try
         {
-            // Parse source program and print syntax errors
-            ParserResult result = ParserHelper.parse( programName + ".educ");
-            printMessagesToChat(sender, result.getErrorHandler().getMessages());
-            if (result.getErrorHandler().hasErrors())
-                throw new Exception("Could not compile source program due to syntax errors.");
-
+            // Parse source program
+            StartNode startNode =  ParserHelper.parse( programName + ".educ");
+            
             // Perform semantic checks
             SemanticVisitor semanticVisitor = new SemanticVisitor();
-            semanticVisitor.getSymbolTableHandler().setInputSource(result.getStartNode());
-            result.getStartNode().setInputSource(programName + ".educ");
-            result.getStartNode().setIsMain(true);
-            result.getStartNode().accept(semanticVisitor);
+            semanticVisitor.getSymbolTableHandler().setInputSource(startNode);
+            startNode.setInputSource(programName + ".educ");
+            startNode.setIsMain(true);
+            startNode.accept(semanticVisitor);
             printMessagesToChat(sender, semanticVisitor.getSymbolTableHandler().getMessages());
             if (semanticVisitor.getSymbolTableHandler().hasErrors())
                 throw new Exception("Could not compile source program due to contextual constraint errors.");
 
             // Generate Java code
             JavaCodeGenerationVisitor javaVisitor = new JavaCodeGenerationVisitor();
-            result.getStartNode().accept(javaVisitor);
+            startNode.accept(javaVisitor);
 
             // Compile and main Java
             Class<?> compiledClass = new CustomJavaCompiler().compile(programName);

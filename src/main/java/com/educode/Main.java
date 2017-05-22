@@ -4,7 +4,7 @@ import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.parsing.ParserHelper;
-import com.educode.parsing.ParserResult;
+import com.educode.parsing.ParserException;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
@@ -28,33 +28,41 @@ public class Main
             programsDir.mkdir();
 
         // Parse test file
-        ParserResult result = ParserHelper.parse("Test.educ");
-        if (result.getErrorHandler().hasErrors())
+        StartNode startNode;
+        try
         {
-            result.getErrorHandler().printMessages();
+            startNode = ParserHelper.parse("Test.educ");
+        }
+        catch (ParserException e)
+        {
+            System.out.println("Parsing error: " + e.getMessage());
             return;
         }
 
-        // No syntax errors - setup semantic visitor
-        StartNode startNode = result.getStartNode();
+        // Setup semantic visitor
         SemanticVisitor sv = new SemanticVisitor();
         sv.getSymbolTableHandler().setInputSource(startNode);
         startNode.setInputSource("Test.educ");
         startNode.setIsMain(true);
         startNode.accept(sv);
 
+        // Print any errors and warnings
         sv.getSymbolTableHandler().printMessages();
 
         if (sv.getSymbolTableHandler().hasErrors())
             return;
 
+        // Perform optimisations
         startNode.accept(new OptimisationVisitor());
 
+        // Pretty print
         System.out.println(startNode.accept(new PrintVisitor()));
 
+        // Generate bytecode
         JavaBytecodeGenerationVisitor byteCodeVisitor = new JavaBytecodeGenerationVisitor();
         startNode.accept(byteCodeVisitor);
 
+        // Generate Java
         JavaCodeGenerationVisitor javaCodeVisitor = new JavaCodeGenerationVisitor();
         startNode.accept(javaCodeVisitor);
 
