@@ -48,9 +48,9 @@ public class PrintVisitor extends VisitorBase
     public Object visit(ImportNode node)
     {
         if (node.getImportedNode() != null)
-            return String.format("ImportNode %s", visit(node.getImportedNode()));
+            return String.format("ImportNode %s", node.getText());
         else
-            return "ImportNode";
+            return "ImportNode N/A";
     }
 
     public Object visit(UsingsNode node)
