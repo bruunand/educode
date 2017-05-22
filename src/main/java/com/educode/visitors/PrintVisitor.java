@@ -13,10 +13,7 @@ import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.ArrayReferencingNode;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.referencing.StructReferencingNode;
-import com.educode.nodes.statement.AssignmentNode;
-import com.educode.nodes.statement.ForEachNode;
-import com.educode.nodes.statement.ReturnNode;
-import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.statement.*;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
@@ -48,6 +45,16 @@ public class PrintVisitor extends VisitorBase
             return String.format("ImportNode %s", node.getText());
         else
             return String.format("ImportNode !:%s", node.getText());
+    }
+
+    public Object visit(BreakNode node)
+    {
+        return "BreakNode";
+    }
+
+    public Object visit(ContinueNode node)
+    {
+        return "ContinueNode";
     }
 
     public Object visit(UsingsNode node)
@@ -106,7 +113,7 @@ public class PrintVisitor extends VisitorBase
 
     public Object visit(ParameterNode node)
     {
-        return String.format("Parameter [%s %s]",  visit(node.getReference()), node.getType());
+        return String.format("Parameter [%s][%s]",  visit(node.getReference()), node.getType());
     }
 
     public Object visit(MethodDeclarationNode node)
@@ -209,7 +216,7 @@ public class PrintVisitor extends VisitorBase
 
     public Object visit(LogicalExpressionNode node)
     {
-        return String.format("%s [%s][%s]", node.getOperator(), visit(node.getLeftChild()), visit(node.getRightChild()));
+        return String.format("%s [%s][%s]", node.getOperator().toString().replace(" ", ""), visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
     public Object visit(NegateNode node)

@@ -58,24 +58,6 @@ public class MinecraftEntity implements IEntity
     }
 
     @Override
-    public double getX()
-    {
-        return (float) getWrappedEntity().posX;
-    }
-
-    @Override
-    public double getY()
-    {
-        return (float) getWrappedEntity().posY;
-    }
-
-    @Override
-    public double getZ()
-    {
-        return (float) getWrappedEntity().posZ;
-    }
-
-    @Override
     public boolean equals(Object obj)
     {
         if (obj instanceof MinecraftEntity)

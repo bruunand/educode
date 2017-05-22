@@ -28,7 +28,7 @@ public class LogicalOperator
             case EQUALS:
                 return "EQUALS";
             case NOT_EQUALS:
-                return "NOT_EQUALS";
+                return "NOT EQUALS";
             case LESS_THAN:
                 return "LESS THAN";
             case LESS_THAN_OR_EQUALS:

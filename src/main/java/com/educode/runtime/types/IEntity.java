@@ -9,7 +9,4 @@ public interface IEntity extends IBase
     double getHealth();
     boolean isRobot();
     boolean isPlayer();
-    double getX();
-    double getY();
-    double getZ();
 }

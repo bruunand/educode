@@ -21,7 +21,7 @@ public class TickCommand
         // Wait for execution
         while (!_executed)
         {
-            wait(5000);
+            wait();
 
             // If nothing has happened after 5 seconds, time out the action
             if (!_executed)

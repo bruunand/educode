@@ -17,10 +17,7 @@ import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.ArrayReferencingNode;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.referencing.StructReferencingNode;
-import com.educode.nodes.statement.AssignmentNode;
-import com.educode.nodes.statement.ForEachNode;
-import com.educode.nodes.statement.ReturnNode;
-import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.statement.*;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
@@ -268,6 +265,16 @@ public class JavaCodeGenerationVisitor extends VisitorBase
             return String.format("return %s", visit(node.getChild()));
         else
             return "return";
+    }
+
+    public Object visit(BreakNode node)
+    {
+        return "break";
+    }
+
+    public Object visit(ContinueNode node)
+    {
+        return "continue";
     }
 
     public Object visit(MultiplicationExpressionNode node)

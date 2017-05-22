@@ -176,22 +176,19 @@ public abstract class ProgramBase implements IRobot
         executeOnTick(() -> _robot.dropItems());
     }
 
-    @Override
-    public double getX()
+    private double getX()
     {
-        return (double) _robot.posX;
+        return this._robot.posX;
     }
 
-    @Override
-    public double getY()
+    private double getY()
     {
-        return (double) _robot.posY;
+        return this._robot.posY;
     }
 
-    @Override
-    public double getZ()
+    private double getZ()
     {
-        return (double) _robot.posZ;
+        return this._robot.posZ;
     }
 
     @Override

@@ -24,6 +24,7 @@ public class ProgramRunner extends Thread
 		{
 			// Program interrupted - this will happen if the program is waiting and forcefully stopped
             System.out.println("Program interrupted.");
+            e.printStackTrace();
 		}
 		catch (Exception e)
 		{

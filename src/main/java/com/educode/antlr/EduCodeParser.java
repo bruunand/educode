@@ -1,4 +1,4 @@
-// Generated from C:/Users/User/Desktop/EduCode-P4/src\EduCode.g4 by ANTLR 4.6
+// Generated from /home/zen/Git/EduCode-P4/src/EduCode.g4 by ANTLR 4.6
 package com.educode.antlr;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -138,14 +138,14 @@ public class EduCodeParser extends Parser {
 		public ProgramContext program() {
 			return getRuleContext(ProgramContext.class,0);
 		}
+		public UsingsContext usings() {
+			return getRuleContext(UsingsContext.class,0);
+		}
 		public List<End_of_lineContext> end_of_line() {
 			return getRuleContexts(End_of_lineContext.class);
 		}
 		public End_of_lineContext end_of_line(int i) {
 			return getRuleContext(End_of_lineContext.class,i);
-		}
-		public UsingsContext usings() {
-			return getRuleContext(UsingsContext.class,0);
 		}
 		public StartContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -165,29 +165,36 @@ public class EduCodeParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(103);
+			setState(109);
 			_errHandler.sync(this);
-			_la = _input.LA(1);
-			if (_la==T__0) {
+			switch (_input.LA(1)) {
+			case T__0:
 				{
 				setState(102);
 				((StartContext)_localctx).ulist = usings();
 				}
-			}
-
-			setState(108);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			while (_la==NEWLINE) {
+				break;
+			case T__1:
+			case NEWLINE:
 				{
-				{
-				setState(105);
-				end_of_line();
-				}
-				}
-				setState(110);
+				setState(106);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
+				while (_la==NEWLINE) {
+					{
+					{
+					setState(103);
+					end_of_line();
+					}
+					}
+					setState(108);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				}
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 			setState(111);
 			((StartContext)_localctx).pr = program();
@@ -235,7 +242,6 @@ public class EduCodeParser extends Parser {
 		enterRule(_localctx, 2, RULE_usings);
 		int _la;
 		try {
-			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(113);
@@ -245,24 +251,18 @@ public class EduCodeParser extends Parser {
 			((UsingsContext)_localctx).id.add(((UsingsContext)_localctx).identifier);
 			setState(116); 
 			_errHandler.sync(this);
-			_alt = 1;
+			_la = _input.LA(1);
 			do {
-				switch (_alt) {
-				case 1:
-					{
-					{
-					setState(115);
-					end_of_line();
-					}
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
+				{
+				{
+				setState(115);
+				end_of_line();
+				}
 				}
 				setState(118); 
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
-			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+				_la = _input.LA(1);
+			} while ( _la==NEWLINE );
 			setState(129);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -276,24 +276,18 @@ public class EduCodeParser extends Parser {
 				((UsingsContext)_localctx).id.add(((UsingsContext)_localctx).identifier);
 				setState(123); 
 				_errHandler.sync(this);
-				_alt = 1;
+				_la = _input.LA(1);
 				do {
-					switch (_alt) {
-					case 1:
-						{
-						{
-						setState(122);
-						end_of_line();
-						}
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
+					{
+					{
+					setState(122);
+					end_of_line();
+					}
 					}
 					setState(125); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
-				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+					_la = _input.LA(1);
+				} while ( _la==NEWLINE );
 				}
 				}
 				setState(131);
@@ -3554,7 +3548,7 @@ public class EduCodeParser extends Parser {
 		"\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t\35\4\36\t\36\4\37\t\37\4 \t \4!"+
 		"\t!\4\"\t\"\4#\t#\4$\t$\4%\t%\4&\t&\4\'\t\'\4(\t(\4)\t)\4*\t*\4+\t+\4"+
 		",\t,\4-\t-\4.\t.\4/\t/\4\60\t\60\4\61\t\61\4\62\t\62\4\63\t\63\4\64\t"+
-		"\64\3\2\5\2j\n\2\3\2\7\2m\n\2\f\2\16\2p\13\2\3\2\3\2\3\3\3\3\3\3\6\3w"+
+		"\64\3\2\3\2\7\2k\n\2\f\2\16\2n\13\2\5\2p\n\2\3\2\3\2\3\3\3\3\3\3\6\3w"+
 		"\n\3\r\3\16\3x\3\3\3\3\3\3\6\3~\n\3\r\3\16\3\177\7\3\u0082\n\3\f\3\16"+
 		"\3\u0085\13\3\3\4\3\4\3\4\6\4\u008a\n\4\r\4\16\4\u008b\3\4\3\4\3\4\5\4"+
 		"\u0091\n\4\3\4\6\4\u0094\n\4\r\4\16\4\u0095\7\4\u0098\n\4\f\4\16\4\u009b"+
@@ -3587,7 +3581,7 @@ public class EduCodeParser extends Parser {
 		"\61\3\62\3\62\3\63\3\63\3\64\3\64\3\64\2\b\62\64\66<>B\65\2\4\6\b\n\f"+
 		"\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@BDFHJLNPRTVXZ\\^"+
 		"`bdf\2\t\3\2\31\35\3\2 !\3\2\"%\3\2&\'\3\2(*\4\2\'\'++\3\2\64\65\u020f"+
-		"\2i\3\2\2\2\4s\3\2\2\2\6\u0086\3\2\2\2\b\u009e\3\2\2\2\n\u00a3\3\2\2\2"+
+		"\2o\3\2\2\2\4s\3\2\2\2\6\u0086\3\2\2\2\b\u009e\3\2\2\2\n\u00a3\3\2\2\2"+
 		"\f\u00b6\3\2\2\2\16\u00be\3\2\2\2\20\u00c6\3\2\2\2\22\u00d1\3\2\2\2\24"+
 		"\u00dc\3\2\2\2\26\u00e2\3\2\2\2\30\u00e6\3\2\2\2\32\u00e8\3\2\2\2\34\u00ea"+
 		"\3\2\2\2\36\u00ec\3\2\2\2 \u00f0\3\2\2\2\"\u00fa\3\2\2\2$\u011e\3\2\2"+
@@ -3598,8 +3592,8 @@ public class EduCodeParser extends Parser {
 		"\u01af\3\2\2\2L\u01b1\3\2\2\2N\u01b5\3\2\2\2P\u01bc\3\2\2\2R\u01c1\3\2"+
 		"\2\2T\u01d2\3\2\2\2V\u01df\3\2\2\2X\u01e6\3\2\2\2Z\u01e8\3\2\2\2\\\u01ea"+
 		"\3\2\2\2^\u01f2\3\2\2\2`\u01f4\3\2\2\2b\u01f6\3\2\2\2d\u01f8\3\2\2\2f"+
-		"\u01fa\3\2\2\2hj\5\4\3\2ih\3\2\2\2ij\3\2\2\2jn\3\2\2\2km\5f\64\2lk\3\2"+
-		"\2\2mp\3\2\2\2nl\3\2\2\2no\3\2\2\2oq\3\2\2\2pn\3\2\2\2qr\5\6\4\2r\3\3"+
+		"\u01fa\3\2\2\2hp\5\4\3\2ik\5f\64\2ji\3\2\2\2kn\3\2\2\2lj\3\2\2\2lm\3\2"+
+		"\2\2mp\3\2\2\2nl\3\2\2\2oh\3\2\2\2ol\3\2\2\2pq\3\2\2\2qr\5\6\4\2r\3\3"+
 		"\2\2\2st\7\3\2\2tv\5d\63\2uw\5f\64\2vu\3\2\2\2wx\3\2\2\2xv\3\2\2\2xy\3"+
 		"\2\2\2y\u0083\3\2\2\2z{\7\3\2\2{}\5d\63\2|~\5f\64\2}|\3\2\2\2~\177\3\2"+
 		"\2\2\177}\3\2\2\2\177\u0080\3\2\2\2\u0080\u0082\3\2\2\2\u0081z\3\2\2\2"+
@@ -3725,7 +3719,7 @@ public class EduCodeParser extends Parser {
 		"\2\2\u01ef\u01f0\5\60\31\2\u01f0\u01f1\7G\2\2\u01f1]\3\2\2\2\u01f2\u01f3"+
 		"\7@\2\2\u01f3_\3\2\2\2\u01f4\u01f5\7C\2\2\u01f5a\3\2\2\2\u01f6\u01f7\7"+
 		"D\2\2\u01f7c\3\2\2\2\u01f8\u01f9\7E\2\2\u01f9e\3\2\2\2\u01fa\u01fb\7?"+
-		"\2\2\u01fbg\3\2\2\2\60inx\177\u0083\u008b\u0090\u0095\u0099\u00a7\u00ac"+
+		"\2\2\u01fbg\3\2\2\2\60lox\177\u0083\u008b\u0090\u0095\u0099\u00a7\u00ac"+
 		"\u00b1\u00bb\u00c3\u00cd\u00d1\u00dc\u00e2\u00e6\u00ee\u00f5\u0100\u0109"+
 		"\u010f\u0116\u011a\u0126\u0131\u0137\u013b\u0148\u0154\u015f\u016a\u0172"+
 		"\u017e\u0189\u0192\u019d\u019f\u01af\u01b8\u01c5\u01d2\u01df\u01e6";
