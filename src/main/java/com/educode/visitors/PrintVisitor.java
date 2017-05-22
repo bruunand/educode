@@ -39,10 +39,7 @@ public class PrintVisitor extends VisitorBase
 
     public Object visit(StartNode node)
     {
-        if (node.hasLeftChild())
-            return String.format("[StartNode [%s][%s]]", visit(node.getLeftChild()), visit(node.getRightChild()));
-        else
-            return String.format("[§tartNode [%s]", visit(node.getRightChild()));
+        return String.format("[StartNode [%s][%s]]", visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
     public Object visit(ImportNode node)
