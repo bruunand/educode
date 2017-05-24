@@ -4,7 +4,6 @@ import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.parsing.ParserHelper;
-import com.educode.parsing.ParserException;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
@@ -33,7 +32,7 @@ public class Main
         {
             startNode = ParserHelper.parse("Test.educ");
         }
-        catch (ParserException e)
+        catch (Exception e)
         {
             System.out.println("Parsing error: " + e.getMessage());
             return;
@@ -48,7 +47,6 @@ public class Main
 
         // Print any errors and warnings
         sv.getSymbolTableHandler().printMessages();
-
         if (sv.getSymbolTableHandler().hasErrors())
             return;
 

@@ -25,9 +25,9 @@ public class EduCodeParser extends Parser {
 		T__38=39, T__39=40, T__40=41, T__41=42, T__42=43, T__43=44, T__44=45, 
 		T__45=46, T__46=47, T__47=48, T__48=49, T__49=50, T__50=51, T__51=52, 
 		T__52=53, T__53=54, T__54=55, T__55=56, T__56=57, T__57=58, T__58=59, 
-		T__59=60, NEWLINE=61, NUMBER_LITERAL=62, STRING_LITERAL=63, UNTERMINATED_STRING_LITERAL=64, 
-		BOOL_LITERAL=65, NULL_LITERAL=66, IDENTIFIER=67, LPAREN=68, RPAREN=69, 
-		WHITESPACE=70, LINECOMMENT=71;
+		T__59=60, NUMBER_LITERAL=61, STRING_LITERAL=62, UNTERMINATED_STRING_LITERAL=63, 
+		BOOL_LITERAL=64, NULL_LITERAL=65, IDENTIFIER=66, NEWLINE=67, LPAREN=68, 
+		RPAREN=69, WHITESPACE=70, LINECOMMENT=71;
 	public static final int
 		RULE_start = 0, RULE_usings = 1, RULE_program = 2, RULE_event_definition = 3, 
 		RULE_method_declaration = 4, RULE_argument_list = 5, RULE_parameter_list = 6, 
@@ -71,7 +71,7 @@ public class EduCodeParser extends Parser {
 		"'robotDeath'", "'robotAttacked'", "'entityDeath'", "'chatMessage'", "'stringMessageReceived'", 
 		"'entityMessageReceived'", "'number'", "'bool'", "'coordinates'", "'string'", 
 		"'Collection'", "'<'", "'>'", "'Entity'", "'Item'", null, null, null, 
-		null, null, "'null'", null, "'('", "')'"
+		null, "'null'", null, null, "'('", "')'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
@@ -79,9 +79,9 @@ public class EduCodeParser extends Parser {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, "NEWLINE", "NUMBER_LITERAL", "STRING_LITERAL", "UNTERMINATED_STRING_LITERAL", 
-		"BOOL_LITERAL", "NULL_LITERAL", "IDENTIFIER", "LPAREN", "RPAREN", "WHITESPACE", 
-		"LINECOMMENT"
+		null, "NUMBER_LITERAL", "STRING_LITERAL", "UNTERMINATED_STRING_LITERAL", 
+		"BOOL_LITERAL", "NULL_LITERAL", "IDENTIFIER", "NEWLINE", "LPAREN", "RPAREN", 
+		"WHITESPACE", "LINECOMMENT"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -3714,11 +3714,11 @@ public class EduCodeParser extends Parser {
 		"W\3\2\2\2\u01e1\u01e7\5`\61\2\u01e2\u01e7\5Z.\2\u01e3\u01e7\5^\60\2\u01e4"+
 		"\u01e7\5\\/\2\u01e5\u01e7\5b\62\2\u01e6\u01e1\3\2\2\2\u01e6\u01e2\3\2"+
 		"\2\2\u01e6\u01e3\3\2\2\2\u01e6\u01e4\3\2\2\2\u01e6\u01e5\3\2\2\2\u01e7"+
-		"Y\3\2\2\2\u01e8\u01e9\7A\2\2\u01e9[\3\2\2\2\u01ea\u01eb\7F\2\2\u01eb\u01ec"+
+		"Y\3\2\2\2\u01e8\u01e9\7@\2\2\u01e9[\3\2\2\2\u01ea\u01eb\7F\2\2\u01eb\u01ec"+
 		"\5\60\31\2\u01ec\u01ed\7\13\2\2\u01ed\u01ee\5\60\31\2\u01ee\u01ef\7\13"+
 		"\2\2\u01ef\u01f0\5\60\31\2\u01f0\u01f1\7G\2\2\u01f1]\3\2\2\2\u01f2\u01f3"+
-		"\7@\2\2\u01f3_\3\2\2\2\u01f4\u01f5\7C\2\2\u01f5a\3\2\2\2\u01f6\u01f7\7"+
-		"D\2\2\u01f7c\3\2\2\2\u01f8\u01f9\7E\2\2\u01f9e\3\2\2\2\u01fa\u01fb\7?"+
+		"\7?\2\2\u01f3_\3\2\2\2\u01f4\u01f5\7B\2\2\u01f5a\3\2\2\2\u01f6\u01f7\7"+
+		"C\2\2\u01f7c\3\2\2\2\u01f8\u01f9\7D\2\2\u01f9e\3\2\2\2\u01fa\u01fb\7E"+
 		"\2\2\u01fbg\3\2\2\2\60lox\177\u0083\u008b\u0090\u0095\u0099\u00a7\u00ac"+
 		"\u00b1\u00bb\u00c3\u00cd\u00d1\u00dc\u00e2\u00e6\u00ee\u00f5\u0100\u0109"+
 		"\u010f\u0116\u011a\u0126\u0131\u0137\u013b\u0148\u0154\u015f\u016a\u0172"+

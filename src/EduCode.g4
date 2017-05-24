@@ -246,14 +246,6 @@ end_of_line
     : NEWLINE
     ;
 
-
-/* TEMP */
-
-
-NEWLINE
-    : NewLine
-    ;
-
 /* Fragments */
 fragment LowerChar: [a-z]
                   ;
@@ -291,12 +283,15 @@ NULL_LITERAL
     : 'null'
     ;
 
-
 IDENTIFIER
     : (LowerChar | UpperChar | USym) (LowerChar | UpperChar | Digit | USym)*
     ;
 
 /* Token specification */
+NEWLINE
+    : NewLine
+    ;
+    
 LPAREN
     : '('
     ;

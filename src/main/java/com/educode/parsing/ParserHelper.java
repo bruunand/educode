@@ -17,18 +17,9 @@ import java.io.IOException;
  */
 public class ParserHelper
 {
-    public static StartNode parse(String fileName) throws ParserException
+    public static StartNode parse(String fileName) throws Exception
     {
-        ANTLRInputStream stream;
-        try
-        {
-            stream = new ANTLRFileStream(CompilerMod.EDUCODE_PROGRAMS_LOCATION + fileName);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            throw new ParserException("Could not find program " + fileName);
-        }
+        ANTLRInputStream stream = new ANTLRFileStream(CompilerMod.EDUCODE_PROGRAMS_LOCATION + fileName);
 
         // Create lexer from input file stream
         EduCodeLexer lexer = new EduCodeLexer(stream);
@@ -38,21 +29,13 @@ public class ParserHelper
 
         // Create parser
         EduCodeParser parser = new EduCodeParser(tokenStream);
-        parser.setErrorHandler(ParserErrorHandler.INSTANCE);
 
         // Use ASTBuilder to visit the parser's start
-        try
-        {
-            ASTBuilder astBuilder = new ASTBuilder();
-            Node rootNode = astBuilder.visit(parser.start());
+        ASTBuilder astBuilder = new ASTBuilder();
+        Node rootNode = astBuilder.visit(parser.start());
 
-            if (rootNode instanceof StartNode)
-                return (StartNode) rootNode;
-            throw new Exception("Root node was not an instance of StartNode.");
-        }
-        catch (Exception e)
-        {
-            throw new ParserException(e);
-        }
+        if (rootNode instanceof StartNode)
+            return (StartNode) rootNode;
+        throw new Exception("Root node was not an instance of StartNode.");
     }
 }
