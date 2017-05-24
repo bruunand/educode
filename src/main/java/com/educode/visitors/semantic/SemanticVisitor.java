@@ -28,6 +28,7 @@ import com.educode.symboltable.Symbol;
 import com.educode.symboltable.SymbolTable;
 import com.educode.symboltable.SymbolTableHandler;
 import com.educode.types.ArithmeticOperator;
+import com.educode.types.AssignmentOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
@@ -481,6 +482,14 @@ public class SemanticVisitor extends VisitorBase
                     if (node.getType().isReferenceType())
                         node.setAssignment(new NullLiteralNode());
             }
+        }
+        else if (node.isDeclaredGlobally())
+        {
+            AssignmentNode assignment = (AssignmentNode) node.getChild();
+            visit(assignment);
+
+            if (!(assignment.getChild() instanceof ILiteral))
+                getSymbolTableHandler().parserError(node, "Global variables must be initiated to literals.");
         }
 
         visitChildren(node);
