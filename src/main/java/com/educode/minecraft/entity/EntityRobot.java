@@ -55,7 +55,6 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand)
     {
-        this.sendMessageTo(player, "REEEEEEEEEEE!");
         return super.processInteract(player, hand);
     }
 

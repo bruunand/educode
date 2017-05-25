@@ -10,6 +10,7 @@ public class ServerProxy
 {
     public void preInit()
     {
+        CompilerMod.createDirectory();
         CompilerMod.NETWORK_INSTANCE.registerMessage(MessageSaveFile.MessageHandler.class, MessageSaveFile.class, MessageSaveFile.PACKET_ID, Side.SERVER);
         CompilerMod.NETWORK_INSTANCE.registerMessage(MessageOpenEditor.MessageHandler.class, MessageOpenEditor.class, MessageOpenEditor.PACKET_ID, Side.CLIENT);
     }

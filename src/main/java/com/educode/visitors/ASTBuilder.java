@@ -386,6 +386,8 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitDeclarator(EduCodeParser.DeclaratorContext ctx)
     {
+        updateLineNumber(ctx);
+
         if (ctx.expr != null)
             return new AssignmentNode((IReference) visit(ctx.id), visit(ctx.expr));
         else
@@ -494,6 +496,8 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     @Override
     public Node visitEquality_expression(EduCodeParser.Equality_expressionContext ctx)
     {
+        updateLineNumber(ctx);
+
         if (ctx.getChildCount() == 1)
             return visit(ctx.right);
         else if (ctx.getChildCount() == 3)

@@ -21,10 +21,7 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-        // Create EduCode programs folder
-        File programsDir = new File(CompilerMod.EDUCODE_PROGRAMS_LOCATION);
-        if (!programsDir.exists())
-            programsDir.mkdir();
+        CompilerMod.createDirectory();
 
         // Parse test file
         StartNode startNode;

@@ -21,6 +21,7 @@ import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.visitors.VisitorBase;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -99,10 +100,12 @@ public class OptimisationVisitor extends VisitorBase
         if (node.getConditionBlocks().size() == 0)
         {
             BlockNode elseBlock = node.getElseBlock();
-            visit(elseBlock);
 
             if (elseBlock != null)
+            {
+                visit(elseBlock);
                 ((INodeWithChildren) node.getParent()).replaceChildReference(node, node.getElseBlock()); // No conditions are reachable but there is an else statement, so replace if node with block of else
+            }
             else
                 ((NaryNode) node.getParent()).replaceChildReference(node, null); // No conditions are reachable and there is no else statement, so if-node can be deleted
         }
@@ -122,7 +125,14 @@ public class OptimisationVisitor extends VisitorBase
 
         // We need to wait with visiting the children in case the child uses the assigned variable
         // E.g. num = num - 1 could be optimised falsely.
-        visitChildren(node);
+        if (!node.hasChild() || node.getChild() instanceof ILiteral)
+            return;
+
+        Object result = visit(node.getChild());
+        if (result instanceof Double)
+            node.replaceChildReference(node.getChild(), new NumberLiteralNode((double) result));
+        else if (result instanceof Boolean)
+            node.replaceChildReference(node.getChild(), new BoolLiteralNode((boolean) result));
     }
 
     public void visit(VariableDeclarationNode node)
@@ -131,7 +141,7 @@ public class OptimisationVisitor extends VisitorBase
         if (node.hasChild() && !node.isDeclaredGlobally())
         {
             AssignmentNode assignment = (AssignmentNode) node.getChild();
-            visit(assignment.getChild());
+            visit(assignment);
 
             this._constantDeclarations.put(node, assignment.getChild());
         }

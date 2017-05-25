@@ -150,4 +150,9 @@ public class CompilerMod
         event.registerServerCommand(new CommandEdit());
         event.registerServerCommand(new CommandStopPrograms());
     }
+
+    public static void createDirectory()
+    {
+
+    }
 }
