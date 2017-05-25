@@ -118,6 +118,12 @@ public abstract class ProgramBase implements IRobot
         return ret;
     }
 
+    @Override
+    public String getName()
+    {
+        return getRobot().getName();
+    }
+
     public double random(double min, double max)
     {
         return (max - min) * _rand.nextFloat() + min;

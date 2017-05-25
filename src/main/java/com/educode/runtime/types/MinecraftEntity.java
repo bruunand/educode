@@ -27,7 +27,7 @@ public class MinecraftEntity implements IEntity
     @Override
     public String toString()
     {
-        return getWrappedEntity().getName();
+        return getName();
     }
 
     @Override
@@ -46,6 +46,12 @@ public class MinecraftEntity implements IEntity
     public boolean isPlayer()
     {
         return getWrappedEntity() instanceof EntityPlayer;
+    }
+
+    @Override
+    public String getName()
+    {
+        return getWrappedEntity().getName();
     }
 
     @Override
