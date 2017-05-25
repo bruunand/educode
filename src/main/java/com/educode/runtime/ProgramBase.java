@@ -218,8 +218,6 @@ public abstract class ProgramBase implements IRobot
             }
             else
                 return false;
-
-            return false;
         });
 
         if (result)
