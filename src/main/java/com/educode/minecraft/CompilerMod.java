@@ -122,7 +122,7 @@ public class CompilerMod
         achievementBuildHouse = new Achievement("build_house", "buildHouse", 0,4, Items.COMMAND_BLOCK_MINECART, achievementBuildCube);
 
         //Other
-        achievementError = new Achievement("program_error", "parserError", 0,-6, Items.BOOK, achievementSaveFirst).setSpecial();//Added
+        achievementError = new Achievement("program_error", "error", 0,-6, Items.BOOK, achievementSaveFirst).setSpecial();//Added
 
         eduCodeAchievementPage = new AchievementPage("EduCode",
                 achievementOpenEditor,

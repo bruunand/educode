@@ -12,6 +12,10 @@ import com.educode.events.Broadcaster;
 import com.educode.runtime.types.MinecraftEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -112,8 +116,20 @@ public class EventHandler
 
                 // Poll command
                 TickCommand command = program.pollCommand();
-                if (command != null)
+                if (command == null)
+                    return;
+
+                // Execute and notify on run time error
+                try
+                {
                     command.setResult(command.getExecutable().execute());
+                }
+                catch (Exception e)
+                {
+                    program.getOwner().getWrappedEntity().sendMessage(new TextComponentString(TextFormatting.RED + "[Runtime Error]" + TextFormatting.RESET + " " + e.toString()));
+                    program.getRobot().setDead();
+                    EntityVillager d;
+                }
             }
         }
     }

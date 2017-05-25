@@ -133,9 +133,12 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         if (isDead)
             return;
 
-        ItemStack entityItem = getInventory().addItem(itemEntity.getEntityItem());
-
-        this.onItemPickup(itemEntity, entityItem.getCount());
+        ItemStack localStack = itemEntity.getEntityItem();
+        ItemStack retStack = getInventory().addItem(itemEntity.getEntityItem());
+        if (retStack.isEmpty())
+            itemEntity.setDead();
+        else
+            localStack.setCount(retStack.getCount());
     }
 
     @Override
