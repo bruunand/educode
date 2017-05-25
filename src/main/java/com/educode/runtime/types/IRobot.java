@@ -9,6 +9,7 @@ import java.util.List;
 public interface IRobot extends IEntity
 {
     // General
+    String getProgramName();
     void say(String text) throws InterruptedException;
     void explode(double strength) throws InterruptedException;
     void setWorldTime(double time) throws InterruptedException;

@@ -340,7 +340,14 @@ public class JavaCodeGenerationVisitor extends VisitorBase
     public Object visit(RelativeExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
+
+        Type leftType  = node.getLeftChild().getType();
+        Type rightType = node.getRightChild().getType();
+
+        if (leftType.equals(Type.StringType) && rightType.equals(Type.StringType))
+            append(codeBuffer, "(%s.compareTo(%s) %s 0)", visit(node.getLeftChild()), visit(node.getRightChild()), OperatorTranslator.toJava(node.getOperator()));
+        else
+            append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
 
         return codeBuffer;
     }
