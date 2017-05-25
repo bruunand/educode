@@ -211,7 +211,10 @@ public abstract class ProgramBase implements IRobot
                 ItemBlock itemBlock = (ItemBlock) heldStack.getItem();
                 Block block = Block.getBlockFromItem(heldStack.getItem());
 
-                itemBlock.placeBlockAt(heldStack, _player, _world, coordinates.toBlockPos(), EnumFacing.DOWN, 0F, 0F, 0F, block.getDefaultState());
+                boolean subResult = itemBlock.placeBlockAt(heldStack, _player, _world, coordinates.toBlockPos(), EnumFacing.DOWN, 0F, 0F, 0F, block.getDefaultState());
+                if (subResult)
+                    heldStack.shrink(1);
+                return subResult;
             }
             else
                 return false;
