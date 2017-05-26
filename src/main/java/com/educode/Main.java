@@ -10,7 +10,6 @@ import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
 import com.educode.visitors.optimisation.OptimisationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -44,8 +43,8 @@ public class Main
 
         // Print any errors and warnings
         sv.getSymbolTableHandler().printMessages();
-        if (sv.getSymbolTableHandler().hasErrors())
-            return;
+        /*if (sv.getSymbolTableHandler().hasErrors())
+            return;*/
 
         // Perform optimisations
         startNode.accept(new OptimisationVisitor());

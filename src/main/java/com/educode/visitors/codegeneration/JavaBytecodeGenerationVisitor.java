@@ -7,6 +7,7 @@ import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpressionNode;
 import com.educode.nodes.expression.MultiplicationExpressionNode;
+import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.BoolLiteralNode;
 import com.educode.nodes.literal.CoordinatesLiteralNode;
@@ -85,9 +86,8 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
 
     public Object defaultVisit(Node node)
     {
-        return "NOT IMPLEMENTED:" + node.getClass().getName();
+        return "[NOIMPL:" + node.getClass().getName() + "]";
     }
-
 
     public void visit(StartNode node)
     {
@@ -133,20 +133,21 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         {
             append(codeBuffer, "%s",visitPop(child));
             if (child instanceof MethodInvocationNode)
-                if ((temp = ((MethodInvocationNode) child).getType()).getKind() != Type.VOID && temp.getKind() != Type.ERROR)
+            {
+                if ((temp = child.getType()).getKind() != Type.VOID && temp.getKind() != Type.ERROR)
                 {
                     if (temp.getKind() == Type.NUMBER)
                     {
                         subtractStackHeight(2);
                         append(codeBuffer, "  pop2\n");
                     }
-
                     else
                     {
                         subtractStackHeight(1);
                         append(codeBuffer, "  pop\n");
                     }
                 }
+            }
         }
 
         while (startSize != _declarationOffsetTable.size())
@@ -644,6 +645,16 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
+    public Object visit(UnaryMinusNode node)
+    {
+        StringBuffer codeBuffer = new StringBuffer();
+
+        append(codeBuffer, "%s", visit(node.getChild()));
+        append(codeBuffer, "  dneg\n");
+
+        return codeBuffer;
+    }
+
     public Object visit(TypeCastNode node)
     {
         return null;
@@ -717,7 +728,7 @@ public class JavaBytecodeGenerationVisitor extends VisitorBase
             case Type.STRING:
                 prefix = "a";
             default:
-                //TODO: Some semanticError
+                //TODO: Error?
                 break;
         }
 

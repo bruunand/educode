@@ -181,10 +181,29 @@ public class OptimisationVisitor extends VisitorBase
         return null;
     }
 
+    private void replaceChildWithLiteral(Node parent, Node child, Object result)
+    {
+        if (child instanceof ILiteral || !(parent instanceof INodeWithChildren))
+            return;
+
+        Node replacement;
+        if (result instanceof Double)
+            replacement = new NumberLiteralNode((double) result);
+        else if (result instanceof Boolean)
+            replacement = new BoolLiteralNode((boolean) result);
+        else
+            return;
+
+        // Perform replacement
+        ((INodeWithChildren) parent).replaceChildReference(child, replacement);
+    }
+
     private Boolean evaluateLogic(LogicalExpressionNode node)
     {
         Object leftResult  = visit(node.getLeftChild());
+        replaceChildWithLiteral(node, node.getLeftChild(), leftResult);
         Object rightResult = visit(node.getRightChild());
+        replaceChildWithLiteral(node, node.getRightChild(), rightResult);
 
         // Check for number comparison
         if (leftResult instanceof Double && rightResult instanceof Double)
@@ -247,7 +266,9 @@ public class OptimisationVisitor extends VisitorBase
     public Boolean visit(RelativeExpressionNode node)
     {
         Object leftResult  = visit(node.getLeftChild());
+        replaceChildWithLiteral(node, node.getLeftChild(), leftResult);
         Object rightResult = visit(node.getRightChild());
+        replaceChildWithLiteral(node, node.getRightChild(), rightResult);
 
         if (!(leftResult instanceof Double) || !(rightResult instanceof Double))
             return null;

@@ -560,7 +560,7 @@ public class SemanticVisitor extends VisitorBase
     {
         visitChildren(node);
 
-        Type leftType  =  node.getLeftChild().getType();
+        Type leftType  = node.getLeftChild().getType();
         Type rightType = node.getRightChild().getType();
 
         if (!leftType.equals(Type.BoolType) || !rightType.equals(Type.BoolType))
