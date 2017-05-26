@@ -36,7 +36,6 @@ statement_list
     : (statements+=statement end_of_line+)*
     ;
 
-
 statement
     : call_statement
     | assignment_expression

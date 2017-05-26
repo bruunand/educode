@@ -128,7 +128,6 @@ public class EventHandler
                 {
                     program.getOwner().getWrappedEntity().sendMessage(new TextComponentString(TextFormatting.RED + "[Runtime Error]" + TextFormatting.RESET + " " + e.toString()));
                     program.getRobot().setDead();
-                    EntityVillager d;
                 }
             }
         }
