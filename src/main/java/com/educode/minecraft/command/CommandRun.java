@@ -125,7 +125,7 @@ public class CommandRun implements ICommand
         }
         catch (Exception e)
         {
-            //Give compiler parserError achievement
+            //Give compiler semanticError achievement
             MinecraftForge.EVENT_BUS.post(new AchievementEvent.CompilerErrorEvent((EntityPlayer) sender));
 
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "[Error]" + TextFormatting.RESET + " " + e.getMessage()));

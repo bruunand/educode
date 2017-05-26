@@ -41,17 +41,17 @@ public class ErrorHandler
             System.out.println(message);
     }
 
-    public void parserError(String description, Object ... args)
+    public void semanticError(String description, Object ... args)
     {
-        parserError(null, description, args);
+        semanticError(null, description, args);
     }
 
-    public void parserError(Node relatedNode, String description, Object ... args)
+    public void semanticError(Node relatedNode, String description, Object ... args)
     {
         this._messageList.add(new SemanticErrorMessage(ErrorMessage.MessageType.ERROR, relatedNode, String.format(description, args), getInputSource()));
     }
 
-    public void parserError(StartNode conflictSource, Node relatedNode, String description, Object ... args)
+    public void semanticError(StartNode conflictSource, Node relatedNode, String description, Object ... args)
     {
         this._messageList.add(new SemanticErrorMessage(ErrorMessage.MessageType.ERROR, relatedNode, String.format(description, args), getInputSource(), conflictSource));
     }
@@ -59,11 +59,6 @@ public class ErrorHandler
     public void parserWarning(Node relatedNode, String description, Object ... args)
     {
         this._messageList.add(new SemanticErrorMessage(ErrorMessage.MessageType.WARNING, relatedNode, String.format(description, args), getInputSource()));
-    }
-
-    public void syntaxError(String fileName, String description, Object ... args)
-    {
-        this._messageList.add(new SyntaxErrorMessage(ErrorMessage.MessageType.ERROR, String.format(description, args), fileName));
     }
 
     public List<ErrorMessage> getMessages()

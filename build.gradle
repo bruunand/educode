@@ -13,7 +13,7 @@ apply plugin: 'antlr'
 
 version = "1.0"
 group = "com.educode.minecraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "modid"
+archivesBaseName = "educode"
 
 sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
 compileJava {

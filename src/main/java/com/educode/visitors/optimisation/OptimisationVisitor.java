@@ -21,7 +21,6 @@ import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.visitors.VisitorBase;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
