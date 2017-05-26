@@ -488,8 +488,11 @@ public class SemanticVisitor extends VisitorBase
             AssignmentNode assignment = (AssignmentNode) node.getChild();
             visit(assignment);
 
-            if (!(assignment.getChild() instanceof ILiteral))
-                getSymbolTableHandler().parserError(node, "Global variables must be initiated to literals.");
+            boolean isLiteral = assignment.getChild() instanceof ILiteral;
+            boolean isUnaryMinusLiteral = assignment.getChild() instanceof UnaryMinusNode && ((UnaryMinusNode) assignment.getChild()).getChild() instanceof ILiteral;
+
+            if (!(isLiteral || isUnaryMinusLiteral))
+                getSymbolTableHandler().parserError(node, "Global variables must be initiated to literals or unary minus of a literal.");
         }
 
         visitChildren(node);

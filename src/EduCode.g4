@@ -263,7 +263,7 @@ fragment USym     : '_'
 
 /* Literals */
 NUMBER_LITERAL
-    : ('-')? Digit+('.' Digit*)?
+    : Digit+('.' Digit*)?
     ;
 
 STRING_LITERAL
@@ -300,8 +300,9 @@ RPAREN
     ;
 
 /* Hidden stuff */
+
 WHITESPACE
-    : [ \t\r\f]+ -> channel(HIDDEN)
+    : (' ' | '\t' | '\r')+ -> channel(HIDDEN)
     ;
 
 LINECOMMENT

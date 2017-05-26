@@ -10,6 +10,7 @@ import com.educode.runtime.types.MinecraftEntity;
 
 import net.minecraft.client.gui.GuiScreenBook;
 import net.minecraft.client.gui.inventory.GuiEditSign;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
@@ -41,7 +42,7 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
 import javax.annotation.Nullable;
 
-// Skin credit: http://www.minecraftskins.net/warmachine
+// Skin credit: http://www.minecraftskins.net/redstoner
 public class EntityRobot extends EntityCreature implements IWorldNameable, IEntityAdditionalSpawnData
 {
     private final InventoryBasic _inventory;
@@ -78,8 +79,6 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     @Override
     public void setDead()
     {
-        GuiEditSign d;
-        GuiScreenBook g;
         super.setDead();
     }
 
