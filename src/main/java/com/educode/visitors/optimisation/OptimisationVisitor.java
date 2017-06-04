@@ -4,6 +4,7 @@ import com.educode.nodes.base.INodeWithChildren;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.ArithmeticExpressionNode;
+import com.educode.nodes.expression.RangeNode;
 import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.LogicalExpressionNode;
 import com.educode.nodes.expression.logic.NegateNode;
@@ -300,6 +301,12 @@ public class OptimisationVisitor extends VisitorBase
             ((INodeWithChildren) node.getParent()).replaceChildReference(node, new BoolLiteralNode(result));
 
         return null;
+    }
+
+    public void visit(RangeNode node)
+    {
+        replaceChildWithLiteral(node, node.getLeftChild(), visit(node.getLeftChild()));
+        replaceChildWithLiteral(node, node.getRightChild(), visit(node.getRightChild()));
     }
 
     public Number visit(ArithmeticExpressionNode node)

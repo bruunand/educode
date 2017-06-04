@@ -12,6 +12,7 @@ import com.educode.events.entity.robot.RobotDeathEvent;
 import com.educode.nodes.base.*;
 import com.educode.nodes.expression.AdditionExpressionNode;
 import com.educode.nodes.expression.MultiplicationExpressionNode;
+import com.educode.nodes.expression.RangeNode;
 import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.*;
@@ -694,6 +695,14 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         updateLineNumber(ctx);
 
         return visit(ctx.getChild(0));
+    }
+
+    @Override
+    public Node visitRange_literal(EduCodeParser.Range_literalContext ctx)
+    {
+        updateLineNumber(ctx);
+
+        return new RangeNode(visit(ctx.left), visit(ctx.right));
     }
 
     @Override

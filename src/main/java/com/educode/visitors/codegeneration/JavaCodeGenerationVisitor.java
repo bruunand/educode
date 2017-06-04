@@ -8,6 +8,7 @@ import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpressionNode;
 import com.educode.nodes.expression.MultiplicationExpressionNode;
+import com.educode.nodes.expression.RangeNode;
 import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.*;
@@ -335,6 +336,11 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
 
         return codeBuffer;
+    }
+
+    public Object visit(RangeNode node)
+    {
+        return String.format("range(%s, %s)", visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
     public Object visit(RelativeExpressionNode node)
