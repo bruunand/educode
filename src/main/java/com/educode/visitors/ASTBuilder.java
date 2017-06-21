@@ -761,9 +761,7 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
         String identifier = ctx.IDENTIFIER().getText();
         if (JavaKeywords.contains(identifier.toLowerCase()))
             identifier = "_" + identifier;
-
-        int ﹍dd;
-
+        
         return new IdentifierReferencingNode(identifier);
     }
 
