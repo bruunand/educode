@@ -173,7 +173,10 @@ public class SemanticVisitor extends VisitorBase
 
             // Check if signature of method matches main method
             if (method.getReference().toString().equals("main") && method.getType().equals(Type.VoidType) && !method.hasParameterList())
+            {
                 hasMainMethod = true;
+                method.setIsMainMethod(true);
+            }
         }
 
         // If no main method and StartNode is main StartNode, log semanticError
