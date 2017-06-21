@@ -9,7 +9,9 @@ import com.educode.events.communication.StringMessageReceivedEvent;
 import com.educode.events.entity.EntityDeathEvent;
 import com.educode.events.entity.robot.RobotAttackedEvent;
 import com.educode.events.entity.robot.RobotDeathEvent;
-import com.educode.nodes.base.*;
+import com.educode.nodes.base.ListNode;
+import com.educode.nodes.base.NaryNode;
+import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpressionNode;
 import com.educode.nodes.expression.MultiplicationExpressionNode;
 import com.educode.nodes.expression.RangeNode;
@@ -28,16 +30,22 @@ import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.*;
-import com.educode.types.*;
+import com.educode.types.ArithmeticOperator;
+import com.educode.types.AssignmentOperator;
+import com.educode.types.LogicalOperator;
+import com.educode.types.Type;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Thomas Buhl on 10/05/2017.
  */
 public class ASTBuilder extends EduCodeBaseVisitor<Node>
 {
+    private final List<String> JavaKeywords = Arrays.asList("abstract", "continue", "for", "new", "switch", "assert", "default", "goto", "package", "synchronized", "boolean", "do", "if", "private", "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while");
     private static int _currentLineNumber = 0;
 
     private static void updateLineNumber(ParserRuleContext fromCtx)
@@ -750,7 +758,11 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         updateLineNumber(ctx);
 
-        return new IdentifierReferencingNode(ctx.IDENTIFIER().getText());
+        String identifier = ctx.IDENTIFIER().getText();
+        if (JavaKeywords.contains(identifier.toLowerCase()))
+            identifier = "_" + identifier;
+        
+        return new IdentifierReferencingNode(identifier);
     }
 
     @Override
