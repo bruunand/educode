@@ -297,7 +297,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object visit(NumberLiteralNode node)
     {
-        return String.format("%f", node.getValue());
+        return node.getValue().toString();
     }
 
     public Object visit(StringLiteralNode node)
