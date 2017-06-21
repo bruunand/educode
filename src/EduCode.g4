@@ -215,6 +215,11 @@ literal
     | number_literal
     | coordinate_literal
     | null_literal
+    | range_literal
+    ;
+
+range_literal
+    : 'range' left=logic_expression 'to' right=logic_expression
     ;
 
 string_literal
