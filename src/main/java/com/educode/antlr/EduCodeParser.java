@@ -68,7 +68,7 @@ public class EduCodeParser extends Parser {
 		"'<'", "'>='", "'<='", "'+'", "'-'", "'/'", "'*'", "'modulo'", "'not'", 
 		"'.'", "'['", "']'", "'new'", "'robotDeath'", "'robotAttacked'", "'entityDeath'", 
 		"'chatMessage'", "'stringMessageReceived'", "'entityMessageReceived'", 
-		"'number'", "'bool'", "'coordinates'", "'string'", "'Collection'", "'Entity'", 
+		"'number'", "'bool'", "'coordinates'", "'string'", "'List'", "'Entity'", 
 		"'Item'", null, null, null, null, "'null'", null, null, "'('", "')'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
