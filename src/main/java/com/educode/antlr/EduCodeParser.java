@@ -1,4 +1,4 @@
-// Generated from /home/zen/Git/EduCode-P4/src/EduCode.g4 by ANTLR 4.6
+// Generated from C:/EduCode/EduCode-P4/src\EduCode.g4 by ANTLR 4.6
 package com.educode.antlr;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -24,10 +24,9 @@ public class EduCodeParser extends Parser {
 		T__31=32, T__32=33, T__33=34, T__34=35, T__35=36, T__36=37, T__37=38, 
 		T__38=39, T__39=40, T__40=41, T__41=42, T__42=43, T__43=44, T__44=45, 
 		T__45=46, T__46=47, T__47=48, T__48=49, T__49=50, T__50=51, T__51=52, 
-		T__52=53, T__53=54, T__54=55, T__55=56, T__56=57, T__57=58, T__58=59, 
-		T__59=60, NUMBER_LITERAL=61, STRING_LITERAL=62, UNTERMINATED_STRING_LITERAL=63, 
-		BOOL_LITERAL=64, NULL_LITERAL=65, IDENTIFIER=66, NEWLINE=67, LPAREN=68, 
-		RPAREN=69, WHITESPACE=70, LINECOMMENT=71;
+		T__52=53, T__53=54, T__54=55, T__55=56, T__56=57, T__57=58, NUMBER_LITERAL=59, 
+		STRING_LITERAL=60, UNTERMINATED_STRING_LITERAL=61, BOOL_LITERAL=62, NULL_LITERAL=63, 
+		IDENTIFIER=64, NEWLINE=65, LPAREN=66, RPAREN=67, WHITESPACE=68, LINECOMMENT=69;
 	public static final int
 		RULE_start = 0, RULE_usings = 1, RULE_program = 2, RULE_event_definition = 3, 
 		RULE_method_declaration = 4, RULE_argument_list = 5, RULE_parameter_list = 6, 
@@ -65,23 +64,21 @@ public class EduCodeParser extends Parser {
 		"'method'", "'returns'", "'end method'", "','", "'break'", "'continue'", 
 		"'return'", "'repeat while'", "'end repeat'", "'if'", "'then'", "'else if'", 
 		"'else'", "'end if'", "'foreach'", "'in'", "'end foreach'", "'='", "'+='", 
-		"'-='", "'*='", "'/='", "'or'", "'and'", "'equals'", "'not equals'", "'greater than'", 
-		"'less than'", "'greater than or equals'", "'less than or equals'", "'+'", 
-		"'-'", "'/'", "'*'", "'modulo'", "'not'", "'.'", "'['", "']'", "'new'", 
-		"'robotDeath'", "'robotAttacked'", "'entityDeath'", "'chatMessage'", "'stringMessageReceived'", 
-		"'entityMessageReceived'", "'number'", "'bool'", "'coordinates'", "'string'", 
-		"'Collection'", "'<'", "'>'", "'Entity'", "'Item'", null, null, null, 
-		null, "'null'", null, null, "'('", "')'"
+		"'-='", "'*='", "'/='", "'or'", "'and'", "'equals'", "'not equals'", "'>'", 
+		"'<'", "'>='", "'<='", "'+'", "'-'", "'/'", "'*'", "'modulo'", "'not'", 
+		"'.'", "'['", "']'", "'new'", "'robotDeath'", "'robotAttacked'", "'entityDeath'", 
+		"'chatMessage'", "'stringMessageReceived'", "'entityMessageReceived'", 
+		"'number'", "'bool'", "'coordinates'", "'string'", "'Collection'", "'Entity'", 
+		"'Item'", null, null, null, null, "'null'", null, null, "'('", "')'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, "NUMBER_LITERAL", "STRING_LITERAL", "UNTERMINATED_STRING_LITERAL", 
-		"BOOL_LITERAL", "NULL_LITERAL", "IDENTIFIER", "NEWLINE", "LPAREN", "RPAREN", 
-		"WHITESPACE", "LINECOMMENT"
+		null, null, null, null, null, null, null, null, null, null, null, "NUMBER_LITERAL", 
+		"STRING_LITERAL", "UNTERMINATED_STRING_LITERAL", "BOOL_LITERAL", "NULL_LITERAL", 
+		"IDENTIFIER", "NEWLINE", "LPAREN", "RPAREN", "WHITESPACE", "LINECOMMENT"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -381,7 +378,7 @@ public class EduCodeParser extends Parser {
 			setState(151);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__3) | (1L << T__5) | (1L << T__51) | (1L << T__52) | (1L << T__53) | (1L << T__54) | (1L << T__55) | (1L << T__58) | (1L << T__59))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__3) | (1L << T__5) | (1L << T__51) | (1L << T__52) | (1L << T__53) | (1L << T__54) | (1L << T__55) | (1L << T__56) | (1L << T__57))) != 0)) {
 				{
 				{
 				setState(142);
@@ -406,8 +403,8 @@ public class EduCodeParser extends Parser {
 				case T__53:
 				case T__54:
 				case T__55:
-				case T__58:
-				case T__59:
+				case T__56:
+				case T__57:
 					{
 					setState(141);
 					((ProgramContext)_localctx).variable_declaration = variable_declaration();
@@ -551,7 +548,7 @@ public class EduCodeParser extends Parser {
 			setState(165);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__51) | (1L << T__52) | (1L << T__53) | (1L << T__54) | (1L << T__55) | (1L << T__58) | (1L << T__59))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__51) | (1L << T__52) | (1L << T__53) | (1L << T__54) | (1L << T__55) | (1L << T__56) | (1L << T__57))) != 0)) {
 				{
 				setState(164);
 				((Method_declarationContext)_localctx).params = parameter_list();
@@ -802,7 +799,7 @@ public class EduCodeParser extends Parser {
 			setState(207);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (((((_la - 10)) & ~0x3f) == 0 && ((1L << (_la - 10)) & ((1L << (T__9 - 10)) | (1L << (T__10 - 10)) | (1L << (T__11 - 10)) | (1L << (T__12 - 10)) | (1L << (T__14 - 10)) | (1L << (T__19 - 10)) | (1L << (T__51 - 10)) | (1L << (T__52 - 10)) | (1L << (T__53 - 10)) | (1L << (T__54 - 10)) | (1L << (T__55 - 10)) | (1L << (T__58 - 10)) | (1L << (T__59 - 10)) | (1L << (IDENTIFIER - 10)) | (1L << (LPAREN - 10)))) != 0)) {
+			while (((((_la - 10)) & ~0x3f) == 0 && ((1L << (_la - 10)) & ((1L << (T__9 - 10)) | (1L << (T__10 - 10)) | (1L << (T__11 - 10)) | (1L << (T__12 - 10)) | (1L << (T__14 - 10)) | (1L << (T__19 - 10)) | (1L << (T__51 - 10)) | (1L << (T__52 - 10)) | (1L << (T__53 - 10)) | (1L << (T__54 - 10)) | (1L << (T__55 - 10)) | (1L << (T__56 - 10)) | (1L << (T__57 - 10)) | (1L << (IDENTIFIER - 10)) | (1L << (LPAREN - 10)))) != 0)) {
 				{
 				{
 				setState(199);
@@ -3095,25 +3092,25 @@ public class EduCodeParser extends Parser {
 				setState(470);
 				match(T__55);
 				setState(471);
-				match(T__56);
+				match(T__32);
 				setState(472);
 				((Data_typeContext)_localctx).childType = data_type();
 				setState(473);
-				match(T__57);
+				match(T__31);
 				}
 				break;
-			case T__58:
+			case T__56:
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(475);
-				match(T__58);
+				match(T__56);
 				}
 				break;
-			case T__59:
+			case T__57:
 				enterOuterAlt(_localctx, 7);
 				{
 				setState(476);
-				match(T__59);
+				match(T__57);
 				}
 				break;
 			default:
@@ -3541,7 +3538,7 @@ public class EduCodeParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3I\u01fd\4\2\t\2\4"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3G\u01fd\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -3608,8 +3605,8 @@ public class EduCodeParser extends Parser {
 		"\u0097\3\2\2\2\u0099\u009a\3\2\2\2\u009a\u009c\3\2\2\2\u009b\u0099\3\2"+
 		"\2\2\u009c\u009d\7\5\2\2\u009d\7\3\2\2\2\u009e\u009f\7\6\2\2\u009f\u00a0"+
 		"\5T+\2\u00a0\u00a1\7\7\2\2\u00a1\u00a2\5d\63\2\u00a2\t\3\2\2\2\u00a3\u00a4"+
-		"\7\b\2\2\u00a4\u00a5\5d\63\2\u00a5\u00a7\7F\2\2\u00a6\u00a8\5\16\b\2\u00a7"+
-		"\u00a6\3\2\2\2\u00a7\u00a8\3\2\2\2\u00a8\u00a9\3\2\2\2\u00a9\u00ac\7G"+
+		"\7\b\2\2\u00a4\u00a5\5d\63\2\u00a5\u00a7\7D\2\2\u00a6\u00a8\5\16\b\2\u00a7"+
+		"\u00a6\3\2\2\2\u00a7\u00a8\3\2\2\2\u00a8\u00a9\3\2\2\2\u00a9\u00ac\7E"+
 		"\2\2\u00aa\u00ab\7\t\2\2\u00ab\u00ad\5V,\2\u00ac\u00aa\3\2\2\2\u00ac\u00ad"+
 		"\3\2\2\2\u00ad\u00af\3\2\2\2\u00ae\u00b0\5f\64\2\u00af\u00ae\3\2\2\2\u00b0"+
 		"\u00b1\3\2\2\2\u00b1\u00af\3\2\2\2\u00b1\u00b2\3\2\2\2\u00b2\u00b3\3\2"+
@@ -3695,30 +3692,30 @@ public class EduCodeParser extends Parser {
 		"\u01a8G\3\2\2\2\u01a9\u01aa\7,\2\2\u01aa\u01ab\5N(\2\u01abI\3\2\2\2\u01ac"+
 		"\u01b0\5L\'\2\u01ad\u01b0\5d\63\2\u01ae\u01b0\5N(\2\u01af\u01ac\3\2\2"+
 		"\2\u01af\u01ad\3\2\2\2\u01af\u01ae\3\2\2\2\u01b0K\3\2\2\2\u01b1\u01b2"+
-		"\7F\2\2\u01b2\u01b3\5\60\31\2\u01b3\u01b4\7G\2\2\u01b4M\3\2\2\2\u01b5"+
-		"\u01b6\5d\63\2\u01b6\u01b8\7F\2\2\u01b7\u01b9\5\f\7\2\u01b8\u01b7\3\2"+
-		"\2\2\u01b8\u01b9\3\2\2\2\u01b9\u01ba\3\2\2\2\u01ba\u01bb\7G\2\2\u01bb"+
-		"O\3\2\2\2\u01bc\u01bd\7F\2\2\u01bd\u01be\5V,\2\u01be\u01bf\7G\2\2\u01bf"+
+		"\7D\2\2\u01b2\u01b3\5\60\31\2\u01b3\u01b4\7E\2\2\u01b4M\3\2\2\2\u01b5"+
+		"\u01b6\5d\63\2\u01b6\u01b8\7D\2\2\u01b7\u01b9\5\f\7\2\u01b8\u01b7\3\2"+
+		"\2\2\u01b8\u01b9\3\2\2\2\u01b9\u01ba\3\2\2\2\u01ba\u01bb\7E\2\2\u01bb"+
+		"O\3\2\2\2\u01bc\u01bd\7D\2\2\u01bd\u01be\5V,\2\u01be\u01bf\7E\2\2\u01bf"+
 		"\u01c0\5@!\2\u01c0Q\3\2\2\2\u01c1\u01c2\7/\2\2\u01c2\u01c3\5V,\2\u01c3"+
-		"\u01c5\7F\2\2\u01c4\u01c6\5\f\7\2\u01c5\u01c4\3\2\2\2\u01c5\u01c6\3\2"+
-		"\2\2\u01c6\u01c7\3\2\2\2\u01c7\u01c8\7G\2\2\u01c8S\3\2\2\2\u01c9\u01d3"+
+		"\u01c5\7D\2\2\u01c4\u01c6\5\f\7\2\u01c5\u01c4\3\2\2\2\u01c5\u01c6\3\2"+
+		"\2\2\u01c6\u01c7\3\2\2\2\u01c7\u01c8\7E\2\2\u01c8S\3\2\2\2\u01c9\u01d3"+
 		"\7\60\2\2\u01ca\u01d3\7\61\2\2\u01cb\u01d3\7\62\2\2\u01cc\u01d3\7\63\2"+
-		"\2\u01cd\u01ce\t\b\2\2\u01ce\u01cf\7F\2\2\u01cf\u01d0\5^\60\2\u01d0\u01d1"+
-		"\7G\2\2\u01d1\u01d3\3\2\2\2\u01d2\u01c9\3\2\2\2\u01d2\u01ca\3\2\2\2\u01d2"+
+		"\2\u01cd\u01ce\t\b\2\2\u01ce\u01cf\7D\2\2\u01cf\u01d0\5^\60\2\u01d0\u01d1"+
+		"\7E\2\2\u01d1\u01d3\3\2\2\2\u01d2\u01c9\3\2\2\2\u01d2\u01ca\3\2\2\2\u01d2"+
 		"\u01cb\3\2\2\2\u01d2\u01cc\3\2\2\2\u01d2\u01cd\3\2\2\2\u01d3U\3\2\2\2"+
 		"\u01d4\u01e0\7\66\2\2\u01d5\u01e0\7\67\2\2\u01d6\u01e0\78\2\2\u01d7\u01e0"+
-		"\79\2\2\u01d8\u01d9\7:\2\2\u01d9\u01da\7;\2\2\u01da\u01db\5V,\2\u01db"+
-		"\u01dc\7<\2\2\u01dc\u01e0\3\2\2\2\u01dd\u01e0\7=\2\2\u01de\u01e0\7>\2"+
+		"\79\2\2\u01d8\u01d9\7:\2\2\u01d9\u01da\7#\2\2\u01da\u01db\5V,\2\u01db"+
+		"\u01dc\7\"\2\2\u01dc\u01e0\3\2\2\2\u01dd\u01e0\7;\2\2\u01de\u01e0\7<\2"+
 		"\2\u01df\u01d4\3\2\2\2\u01df\u01d5\3\2\2\2\u01df\u01d6\3\2\2\2\u01df\u01d7"+
 		"\3\2\2\2\u01df\u01d8\3\2\2\2\u01df\u01dd\3\2\2\2\u01df\u01de\3\2\2\2\u01e0"+
 		"W\3\2\2\2\u01e1\u01e7\5`\61\2\u01e2\u01e7\5Z.\2\u01e3\u01e7\5^\60\2\u01e4"+
 		"\u01e7\5\\/\2\u01e5\u01e7\5b\62\2\u01e6\u01e1\3\2\2\2\u01e6\u01e2\3\2"+
 		"\2\2\u01e6\u01e3\3\2\2\2\u01e6\u01e4\3\2\2\2\u01e6\u01e5\3\2\2\2\u01e7"+
-		"Y\3\2\2\2\u01e8\u01e9\7@\2\2\u01e9[\3\2\2\2\u01ea\u01eb\7F\2\2\u01eb\u01ec"+
+		"Y\3\2\2\2\u01e8\u01e9\7>\2\2\u01e9[\3\2\2\2\u01ea\u01eb\7D\2\2\u01eb\u01ec"+
 		"\5\60\31\2\u01ec\u01ed\7\13\2\2\u01ed\u01ee\5\60\31\2\u01ee\u01ef\7\13"+
-		"\2\2\u01ef\u01f0\5\60\31\2\u01f0\u01f1\7G\2\2\u01f1]\3\2\2\2\u01f2\u01f3"+
-		"\7?\2\2\u01f3_\3\2\2\2\u01f4\u01f5\7B\2\2\u01f5a\3\2\2\2\u01f6\u01f7\7"+
-		"C\2\2\u01f7c\3\2\2\2\u01f8\u01f9\7D\2\2\u01f9e\3\2\2\2\u01fa\u01fb\7E"+
+		"\2\2\u01ef\u01f0\5\60\31\2\u01f0\u01f1\7E\2\2\u01f1]\3\2\2\2\u01f2\u01f3"+
+		"\7=\2\2\u01f3_\3\2\2\2\u01f4\u01f5\7@\2\2\u01f5a\3\2\2\2\u01f6\u01f7\7"+
+		"A\2\2\u01f7c\3\2\2\2\u01f8\u01f9\7B\2\2\u01f9e\3\2\2\2\u01fa\u01fb\7C"+
 		"\2\2\u01fbg\3\2\2\2\60lox\177\u0083\u008b\u0090\u0095\u0099\u00a7\u00ac"+
 		"\u00b1\u00bb\u00c3\u00cd\u00d1\u00dc\u00e2\u00e6\u00ee\u00f5\u0100\u0109"+
 		"\u010f\u0116\u011a\u0126\u0131\u0137\u013b\u0148\u0154\u015f\u016a\u0172"+

@@ -124,7 +124,7 @@ equality_expression
     ;
 
 relative_expression
-    : left=arithmetic_expression op=('greater than'|'less than'|'greater than or equals'|'less than or equals') right=arithmetic_expression
+    : left=arithmetic_expression op=('>'|'<'|'>='|'<=') right=arithmetic_expression
     | right=arithmetic_expression
     ;
 
