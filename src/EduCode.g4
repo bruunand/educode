@@ -204,7 +204,7 @@ data_type
     | 'bool'
     | 'coordinates'
     | 'string'
-    | 'Collection' '<' childType=data_type '>'
+    | 'List' '<' childType=data_type '>'
     | 'Entity'
     | 'Item'
     ;
