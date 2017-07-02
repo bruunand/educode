@@ -69,3 +69,5 @@ Test.class
 
 *.log
 .metadata/
+
+*.zip

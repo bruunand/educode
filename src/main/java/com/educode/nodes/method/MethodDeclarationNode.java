@@ -28,6 +28,8 @@ public class MethodDeclarationNode extends BinaryNode implements IReferencing
 
     public int getMaxDeclaredVariables() { return _maxDeclaredVariables; }
 
+    private boolean _isMainMethod;
+
     public MethodDeclarationNode(Node leftChild, Node rightChild, IReference reference, Type returnType)
     {
         super(leftChild, rightChild);
@@ -60,6 +62,16 @@ public class MethodDeclarationNode extends BinaryNode implements IReferencing
     public boolean hasParameterList()
     {
         return this.hasLeftChild();
+    }
+
+    public void setIsMainMethod(boolean isMain)
+    {
+        this._isMainMethod = isMain;
+    }
+
+    public boolean getIsMainMethod()
+    {
+        return this._isMainMethod;
     }
 
     public BlockNode getBlockNode()

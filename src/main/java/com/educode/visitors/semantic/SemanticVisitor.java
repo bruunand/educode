@@ -5,6 +5,7 @@ import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpressionNode;
 import com.educode.nodes.expression.MultiplicationExpressionNode;
+import com.educode.nodes.expression.RangeNode;
 import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.EqualExpressionNode;
 import com.educode.nodes.expression.logic.LogicalExpressionNode;
@@ -172,7 +173,10 @@ public class SemanticVisitor extends VisitorBase
 
             // Check if signature of method matches main method
             if (method.getReference().toString().equals("main") && method.getType().equals(Type.VoidType) && !method.hasParameterList())
+            {
                 hasMainMethod = true;
+                method.setIsMainMethod(true);
+            }
         }
 
         // If no main method and StartNode is main StartNode, log semanticError
@@ -565,6 +569,17 @@ public class SemanticVisitor extends VisitorBase
 
         if (!leftType.equals(Type.BoolType) || !rightType.equals(Type.BoolType))
             getSymbolTableHandler().semanticError(node,"Both sides of the %s expression must be of type %s, but are of type %s and %s.", node.getOperator(), Type.BoolType, leftType, rightType);
+    }
+
+    public void visit(RangeNode node)
+    {
+        visitChildren(node);
+
+        Type leftType  = node.getLeftChild().getType();
+        Type rightType = node.getRightChild().getType();
+
+        if (!leftType.equals(Type.NumberType) || !rightType.equals(Type.NumberType))
+            getSymbolTableHandler().semanticError(node,"Both sides of range must be of type %s, but are of type %s and %s.", Type.NumberType, leftType, rightType);
     }
 
     public void visit(UnaryMinusNode node)
