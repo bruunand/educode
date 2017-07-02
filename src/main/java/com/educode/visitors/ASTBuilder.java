@@ -66,13 +66,13 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
                 return LogicalOperator.Equals;
             case "not equals":
                 return LogicalOperator.NotEquals;
-            case "less than":
+            case "<":
                 return LogicalOperator.LessThan;
-            case "less than or equals":
+            case "<=":
                 return LogicalOperator.LessThanOrEquals;
-            case "greater than":
+            case ">":
                 return LogicalOperator.GreaterThan;
-            case "greater than or equals":
+            case ">=":
                 return LogicalOperator.GreaterThanOrEquals;
             default:
                 return LogicalOperator.Error;

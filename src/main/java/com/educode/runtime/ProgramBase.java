@@ -27,7 +27,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public abstract class ProgramBase implements IRobot
+public class ProgramBase implements IRobot
 {
     // Queues
     private final Queue<TickCommand> _commandQueue = new ConcurrentLinkedQueue<>();
@@ -486,8 +486,6 @@ public abstract class ProgramBase implements IRobot
             mineBlock(position.toBlockPos());
         }
     }
-    
-    public abstract void main() throws InterruptedException;
 
     public EntityRobot getRobot()
     {

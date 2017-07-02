@@ -4,7 +4,7 @@ import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.parsing.ParserHelper;
-import com.educode.visitors.InterpretationVisitor;
+import com.educode.visitors.interpreter.InterpretationVisitor;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
