@@ -8,6 +8,7 @@ import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpressionNode;
 import com.educode.nodes.expression.MultiplicationExpressionNode;
+import com.educode.nodes.expression.RangeNode;
 import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.*;
@@ -297,7 +298,7 @@ public class JavaCodeGenerationVisitor extends VisitorBase
 
     public Object visit(NumberLiteralNode node)
     {
-        return String.format("%f", node.getValue());
+        return node.getValue().toString();
     }
 
     public Object visit(StringLiteralNode node)
@@ -337,10 +338,22 @@ public class JavaCodeGenerationVisitor extends VisitorBase
         return codeBuffer;
     }
 
+    public Object visit(RangeNode node)
+    {
+        return String.format("range(%s, %s)", visit(node.getLeftChild()), visit(node.getRightChild()));
+    }
+
     public Object visit(RelativeExpressionNode node)
     {
         StringBuffer codeBuffer = new StringBuffer();
-        append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
+
+        Type leftType  = node.getLeftChild().getType();
+        Type rightType = node.getRightChild().getType();
+
+        if (leftType.equals(Type.StringType) && rightType.equals(Type.StringType))
+            append(codeBuffer, "(%s.compareTo(%s) %s 0)", visit(node.getLeftChild()), visit(node.getRightChild()), OperatorTranslator.toJava(node.getOperator()));
+        else
+            append(codeBuffer, "(%s %s %s)", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));
 
         return codeBuffer;
     }

@@ -281,15 +281,22 @@ public class GuiProgramEditor extends GuiScreen
         }
         return new Tuple<>(0, null);
     }
+
     private static Tuple<Integer, String[]> testWord(String word, Set<String[]> keywordSet, String[] partialKeywords) {
         for (String[] keywords : keywordSet)
         {
-            for (String keyword : keywords) {
-                if (word.equals(keyword)) {
+            for (String keyword : keywords)
+            {
+                if (word.equals(keyword))
+                {
                     return new Tuple<>(1, keywords);
-                } else {
-                    for (String partialKeyword : partialKeywords) {
-                        if (word.equals(partialKeyword)) {
+                }
+                else
+                {
+                    for (String partialKeyword : partialKeywords)
+                    {
+                        if (word.equals(partialKeyword))
+                        {
                             return new Tuple<>(2, null);
                         }
                     }
@@ -309,6 +316,7 @@ public class GuiProgramEditor extends GuiScreen
         final String[] tfKeywords = new String[] {"true", "false"};
         final String[] eventKeywords = new String[] {"on event", "call"};
         final String[] referenceKeywords = new String[] {"null", "new", "using"};
+        final String[] loopKeywords = new String[] {"continue", "break"};
         final String[] events = new String[] {"robotDeath", "robotAttacked", "chatMessage", "entityDeath", "stringMessageReceived", "entityMessageReceived"};
 
         //Assign colors for above keywords
@@ -319,6 +327,7 @@ public class GuiProgramEditor extends GuiScreen
         keyWordMap.put(TextFormatting.GREEN, tfKeywords);
         keyWordMap.put(TextFormatting.BLUE, eventKeywords);
         keyWordMap.put(TextFormatting.DARK_PURPLE, referenceKeywords);
+        keyWordMap.put(TextFormatting.DARK_GREEN, loopKeywords);
         keyWordMap.put(TextFormatting.DARK_AQUA, events);
 
         //Remove \r from _text as they are unnecessary
@@ -427,14 +436,24 @@ public class GuiProgramEditor extends GuiScreen
 
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
+        // Check if escape key pressed
         if (keyCode == KEY_ESCAPE) // Close the GUI
+        {
             this.mc.displayGuiScreen(null); // Displaying null hides the GUI screen
-        else if (isKeyDown(KEY_LCONTROL))
+        }
+
+        // Test if left control is down
+        if (isKeyDown(KEY_LCONTROL))
         {
             if (keyCode == KEY_S) // Save file
+            {
                 CompilerMod.NETWORK_INSTANCE.sendToServer(new MessageSaveFile(_fileName, _text));
+                return;
+            }
         }
-        else if (keyCode == KEY_RETURN) // Newline
+
+        // Handle based on key
+        if (keyCode == KEY_RETURN) // Newline
         {
             int indexOfFirstChar = StringUtils.indexOfAnyBut(_lines[_lineNumber - 1], ' ');
 
@@ -497,7 +516,7 @@ public class GuiProgramEditor extends GuiScreen
         else if (ChatAllowedCharacters.isAllowedCharacter(typedChar))
             insert(String.valueOf(typedChar));
         else
-            System.out.println("Key code:" + keyCode);
+            System.out.println("Key char:" + typedChar);
     }
 
     public static void resetPosition()

@@ -43,7 +43,7 @@ public class SymbolTableHandler extends ErrorHandler
             _current = _current.getOuter();
         }
         else
-            parserError("Attempted to close scope outside of a scope.");
+            semanticError("Attempted to close scope outside of a scope.");
     }
 
     public SymbolTable getCurrent()
@@ -60,14 +60,14 @@ public class SymbolTableHandler extends ErrorHandler
     {
         if (_current == null)
         {
-            parserError("Attempted to enter symbol outside of a scope.");
+            semanticError("Attempted to enter symbol outside of a scope.");
             return;
         }
 
         // Check if node is referencing
         if (!(node instanceof IReferencing))
         {
-            parserError(node, "Class %s is not a referencing instance.", node.getClass().getName());
+            semanticError(node, "Class %s is not a referencing instance.", node.getClass().getName());
             return;
         }
 
@@ -80,9 +80,9 @@ public class SymbolTableHandler extends ErrorHandler
         else
         {
             if (getInputSource() == existing.getInputSource())
-                parserError(node, "Symbol %s previously declared at line %d.", reference, existing.getSourceNode().getLineNumber());
+                semanticError(node, "Symbol %s previously declared at line %d.", reference, existing.getSourceNode().getLineNumber());
             else
-                parserError(existing.getInputSource(), node, "Symbol %s previously declared at line %d", reference, existing.getSourceNode().getLineNumber());
+                semanticError(existing.getInputSource(), node, "Symbol %s previously declared at line %d", reference, existing.getSourceNode().getLineNumber());
         }
 
     }

@@ -108,8 +108,8 @@ public class CompilerMod
         
         //Robot achievement chain
         achievementRobotChat = new Achievement("robot_chat", "robotChat", 2, -2, Items.GHAST_TEAR, achievementRunFirst);//Added
-        achievementRobotExplode = new Achievement("robot_attack", "robotAttackOther", 2,-1, Items.TNT_MINECART, achievementRunFirst).setSpecial();
-        achievementRobotAttackOther = new Achievement("robot_explode", "robotExplode", 2,0, Items.DIAMOND_SWORD, achievementRunFirst);//Added
+        achievementRobotExplode = new Achievement("robot_explode", "robotExplode", 2,-1, Items.TNT_MINECART, achievementRunFirst).setSpecial();
+        achievementRobotAttackOther = new Achievement("robot_attack", "robotAttackOther", 2,0, Items.DIAMOND_SWORD, achievementRunFirst);//Added
         achievementBroadcastMessage = new Achievement("robot_broadcast", "broadcastMessage", 2, 1, Items.WRITABLE_BOOK, achievementRunFirst);
         achievementCoordination = new Achievement("robot_broadcast_received", "coordination", 2, 2, Items.WRITTEN_BOOK, achievementBroadcastMessage);
 
@@ -122,7 +122,7 @@ public class CompilerMod
         achievementBuildHouse = new Achievement("build_house", "buildHouse", 0,4, Items.COMMAND_BLOCK_MINECART, achievementBuildCube);
 
         //Other
-        achievementError = new Achievement("program_error", "parserError", 0,-6, Items.BOOK, achievementSaveFirst).setSpecial();//Added
+        achievementError = new Achievement("program_error", "error", 0,-6, Items.BOOK, achievementSaveFirst).setSpecial();//Added
 
         eduCodeAchievementPage = new AchievementPage("EduCode",
                 achievementOpenEditor,
@@ -149,5 +149,10 @@ public class CompilerMod
         event.registerServerCommand(new CommandRun());
         event.registerServerCommand(new CommandEdit());
         event.registerServerCommand(new CommandStopPrograms());
+    }
+
+    public static void createDirectory()
+    {
+
     }
 }

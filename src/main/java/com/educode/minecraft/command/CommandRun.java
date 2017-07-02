@@ -9,6 +9,7 @@ import com.educode.parsing.ParserHelper;
 import com.educode.runtime.ProgramBase;
 import com.educode.runtime.threads.ProgramRunner;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
+import com.educode.visitors.optimisation.OptimisationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
@@ -59,7 +60,12 @@ public class CommandRun implements ICommand
     private void printMessagesToChat(ICommandSender sender, List<ErrorMessage> errorMessages)
     {
         for (ErrorMessage message : errorMessages)
-            sender.sendMessage(new TextComponentString(message.toString()));
+        {
+            if (message.getType() == ErrorMessage.MessageType.ERROR)
+                sender.sendMessage(new TextComponentString(TextFormatting.RED + "[Error]" + TextFormatting.RESET + " " + message.toString()));
+            else if (message.getType() == ErrorMessage.MessageType.WARNING)
+                sender.sendMessage(new TextComponentString(TextFormatting.YELLOW + "[Warning]" + TextFormatting.RESET + " " + message.toString()));
+        }
     }
 
     @Override
@@ -82,6 +88,9 @@ public class CommandRun implements ICommand
             printMessagesToChat(sender, semanticVisitor.getSymbolTableHandler().getMessages());
             if (semanticVisitor.getSymbolTableHandler().hasErrors())
                 throw new Exception("Could not compile source program due to contextual constraint errors.");
+
+            // Optimise code
+            startNode.accept(new OptimisationVisitor());
 
             // Generate Java code
             JavaCodeGenerationVisitor javaVisitor = new JavaCodeGenerationVisitor();
@@ -116,7 +125,7 @@ public class CommandRun implements ICommand
         }
         catch (Exception e)
         {
-            //Give compiler parserError achievement
+            // Give compiler error achievement
             MinecraftForge.EVENT_BUS.post(new AchievementEvent.CompilerErrorEvent((EntityPlayer) sender));
 
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "[Error]" + TextFormatting.RESET + " " + e.getMessage()));

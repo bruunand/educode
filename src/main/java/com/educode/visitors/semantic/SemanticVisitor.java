@@ -5,6 +5,7 @@ import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpressionNode;
 import com.educode.nodes.expression.MultiplicationExpressionNode;
+import com.educode.nodes.expression.RangeNode;
 import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.EqualExpressionNode;
 import com.educode.nodes.expression.logic.LogicalExpressionNode;
@@ -141,11 +142,11 @@ public class SemanticVisitor extends VisitorBase
                     visit(importedRoot);
                 }
                 else
-                    getSymbolTableHandler().parserError(importedRoot, String.format("Could not parse subprogram %s.", fileName));
+                    getSymbolTableHandler().semanticError(importedRoot, String.format("Could not parse subprogram %s.", fileName));
             }
             catch (Exception e)
             {
-                getSymbolTableHandler().parserError(node, String.format("Could not import %s.", fileName));
+                getSymbolTableHandler().semanticError(node, String.format("Could not import %s.", fileName));
             }
         }
     }
@@ -172,12 +173,15 @@ public class SemanticVisitor extends VisitorBase
 
             // Check if signature of method matches main method
             if (method.getReference().toString().equals("main") && method.getType().equals(Type.VoidType) && !method.hasParameterList())
+            {
                 hasMainMethod = true;
+                method.setIsMainMethod(true);
+            }
         }
 
-        // If no main method and StartNode is main StartNode, log parserError
+        // If no main method and StartNode is main StartNode, log semanticError
         if (!hasMainMethod && ((StartNode)node.getParent()).getIsMain())
-            _symbolTableHandler.parserError(node, "Program has no method called 'main' with no return type and parameters.");
+            _symbolTableHandler.semanticError(node, "Program has no method called 'main' with no return type and parameters.");
 
         // Visit children in correct order
         // Variable declarations must be visited before method declarations
@@ -211,7 +215,7 @@ public class SemanticVisitor extends VisitorBase
 
         // Check if condition type is boolean
         if (!conditionType.equals(Type.BoolType))
-            _symbolTableHandler.parserError(node, String.format("Condition must be of type %s, but is of type %s.", Type.BoolType, conditionType));
+            _symbolTableHandler.semanticError(node, String.format("Condition must be of type %s, but is of type %s.", Type.BoolType, conditionType));
 
         // Visit block
         visit(node.getRightChild());
@@ -235,7 +239,7 @@ public class SemanticVisitor extends VisitorBase
         Symbol methodSymbol = getSymbolTableHandler().getCurrent().retrieveMethodSymbol(node.getReference(), node.getEventType().getRequiredParameters());
 
         if (methodSymbol == null)
-            getSymbolTableHandler().parserError(node, String.format("No method %s found matching the required parameters for event %s.", node.getReference(), node.getEventType().getName()));
+            getSymbolTableHandler().semanticError(node, String.format("No method %s found matching the required parameters for event %s.", node.getReference(), node.getEventType().getName()));
         else
             _eventDefinitions.add(node);
     }
@@ -283,9 +287,9 @@ public class SemanticVisitor extends VisitorBase
         Type expressionType = node.getLeftChild().getType();
 
         if (!expressionType.isCollection())
-            getSymbolTableHandler().parserError(node, String.format("Expression of type %s is not applicable in a for-each statement.", expressionType));
+            getSymbolTableHandler().semanticError(node, String.format("Expression of type %s is not applicable in a for-each statement.", expressionType));
         else if (!node.getReference().getType().equals(expressionType.getChildType()))
-            getSymbolTableHandler().parserError(node, String.format("Expression to iterate in for-each statement must be a collection of %s.", node.getType()));
+            getSymbolTableHandler().semanticError(node, String.format("Expression to iterate in for-each statement must be a collection of %s.", node.getType()));
 
         _symbolTableHandler.closeScope();
         _iterativeNodes.pop();
@@ -308,7 +312,7 @@ public class SemanticVisitor extends VisitorBase
         visit(node.getZ());
 
         if (!node.getX().isType(Type.NumberType) || !node.getY().isType(Type.NumberType) || !node.getZ().isType(Type.NumberType))
-            getSymbolTableHandler().parserError(node, "Coordinate values must evaluate to a number.");
+            getSymbolTableHandler().semanticError(node, "Coordinate values must evaluate to a number.");
     }
 
     public void visit(MethodInvocationNode node)
@@ -319,7 +323,7 @@ public class SemanticVisitor extends VisitorBase
 
         // Check if method was found
         if (methodReference == null)
-            getSymbolTableHandler().parserError(node, "No method %s found with matching parameters.", node.getReference());
+            getSymbolTableHandler().semanticError(node, "No method %s found with matching parameters.", node.getReference());
         else
         {
             MethodDeclarationNode referencingDeclaration = (MethodDeclarationNode) methodReference.getSourceNode();
@@ -336,18 +340,18 @@ public class SemanticVisitor extends VisitorBase
         // Check if left side types matches right side type
         // Reference types can be assigned to null
         if (node.getReference().isType(Type.RobotType))
-            getSymbolTableHandler().parserError(node, "Cannot assign the special %s type to anything.");
+            getSymbolTableHandler().semanticError(node, "Cannot assign the special %s type to anything.");
         else if (node.getChild() instanceof NullLiteralNode)
         {
             // If we assign something to null, we set the type of the null literal to the type of the assigned node
             // This is necessary in cases such as x = y = null, where x and y are the same type
             if (!node.getReference().getType().isReferenceType())
-                getSymbolTableHandler().parserError(node, "Cannot assign %s, which is not a reference type, to null.", node.getReference());
+                getSymbolTableHandler().semanticError(node, "Cannot assign %s, which is not a reference type, to null.", node.getReference());
             else
                 node.getChild().setType(node.getReference().getType());
         }
         else if (!node.getReference().isType(node.getChild().getType()))
-            getSymbolTableHandler().parserError(node, "Cannot assign %s, which is of type %s, to an expression of type %s.", node.getReference(), node.getReference().getType(), node.getChild().getType());
+            getSymbolTableHandler().semanticError(node, "Cannot assign %s, which is of type %s, to an expression of type %s.", node.getReference(), node.getReference().getType(), node.getChild().getType());
 
         // Set the type of the assignment to have the same type as its right side
         // We need to do this because assignments can be used as expressions and not just single statements
@@ -359,7 +363,7 @@ public class SemanticVisitor extends VisitorBase
         Symbol referencingSymbol = getSymbolTableHandler().retrieveSymbol(reference);
 
         if (referencingSymbol == null)
-            getSymbolTableHandler().parserError(reference, "Identifier %s is not declared.", reference);
+            getSymbolTableHandler().semanticError(reference, "Identifier %s is not declared.", reference);
         else
         {
             // Symbol was found - now set the type of the reference to the type of the symbol we just found
@@ -380,7 +384,7 @@ public class SemanticVisitor extends VisitorBase
         // Left side must be a collection
         Type leftSideType = reference.getLeftChild().getType();
         if (!leftSideType.isCollection())
-            getSymbolTableHandler().parserError(reference, "Left side of array reference must be a collection.");
+            getSymbolTableHandler().semanticError(reference, "Left side of array reference must be a collection.");
         else
             reference.setType(leftSideType.getChildType());
     }
@@ -392,7 +396,7 @@ public class SemanticVisitor extends VisitorBase
 
         // Only allow instantiation of collections
         if (!node.getType().isCollection())
-            getSymbolTableHandler().parserError(node, String.format("Cannot instantiate object of type %s.", node.getType()));
+            getSymbolTableHandler().semanticError(node, String.format("Cannot instantiate object of type %s.", node.getType()));
         else if (node.getType().isCollection())
         {
             Type collectionChildType = node.getType().getChildType();
@@ -403,7 +407,7 @@ public class SemanticVisitor extends VisitorBase
                 Type actualType = actual.getType();
 
                 if (!actualType.equals(collectionChildType))
-                    getSymbolTableHandler().parserError(node, String.format("Arguments in the instantiation of %s must be of type %s, but the argument was of type %s.", node.getType(), collectionChildType, actualType));
+                    getSymbolTableHandler().semanticError(node, String.format("Arguments in the instantiation of %s must be of type %s, but the argument was of type %s.", node.getType(), collectionChildType, actualType));
             }
         }
     }
@@ -417,7 +421,7 @@ public class SemanticVisitor extends VisitorBase
         SymbolTable table = reference.getLeftChild().getType().getSymbolTable();
         if (table == null)
         {
-            getSymbolTableHandler().parserError(reference, "Type %s does not have a symbol table.", reference.getLeftChild().getType());
+            getSymbolTableHandler().semanticError(reference, "Type %s does not have a symbol table.", reference.getLeftChild().getType());
             return;
         }
 
@@ -427,7 +431,7 @@ public class SemanticVisitor extends VisitorBase
             Symbol symbol = table.retrieveSymbol(reference.getRightChild());
 
             if (symbol == null)
-                getSymbolTableHandler().parserError(reference, "Type %s does not contain field %s.", reference.getLeftChild().getType(), reference.getRightChild());
+                getSymbolTableHandler().semanticError(reference, "Type %s does not contain field %s.", reference.getLeftChild().getType(), reference.getRightChild());
             else
                 reference.setType(symbol.getSourceNode().getType());
         }
@@ -442,7 +446,7 @@ public class SemanticVisitor extends VisitorBase
             Symbol symbol = table.retrieveMethodSymbol(methodInv.getReference(), methodInv.getActualTypes());
 
             if (symbol == null)
-                getSymbolTableHandler().parserError(reference, "Type %s does not contain method %s.", reference.getLeftChild().getType(), methodInv.getReference());
+                getSymbolTableHandler().semanticError(reference, "Type %s does not contain method %s.", reference.getLeftChild().getType(), methodInv.getReference());
             else
             {
                 MethodDeclarationNode referencingDeclaration = (MethodDeclarationNode) symbol.getSourceNode();
@@ -455,7 +459,7 @@ public class SemanticVisitor extends VisitorBase
     public void visit(VariableDeclarationNode node)
     {
         if (!(node.getReference() instanceof IdentifierReferencingNode))
-            getSymbolTableHandler().parserError(node, "A variable declaration cannot reference a struct or an array.");
+            getSymbolTableHandler().semanticError(node, "A variable declaration cannot reference a struct or an array.");
         else
             getSymbolTableHandler().enterSymbol(node);
 
@@ -482,6 +486,17 @@ public class SemanticVisitor extends VisitorBase
                         node.setAssignment(new NullLiteralNode());
             }
         }
+        else if (node.isDeclaredGlobally())
+        {
+            AssignmentNode assignment = (AssignmentNode) node.getChild();
+            visit(assignment);
+
+            boolean isLiteral = assignment.getChild() instanceof ILiteral;
+            boolean isUnaryMinusLiteral = assignment.getChild() instanceof UnaryMinusNode && ((UnaryMinusNode) assignment.getChild()).getChild() instanceof ILiteral;
+
+            if (!(isLiteral || isUnaryMinusLiteral))
+                getSymbolTableHandler().semanticError(node, "Global variables must be initiated to literals or unary minus of a literal.");
+        }
 
         visitChildren(node);
 
@@ -503,7 +518,7 @@ public class SemanticVisitor extends VisitorBase
 
         // Return type and parent method type should be equal
         if (!parentType.equals(childType))
-            getSymbolTableHandler().parserError(node, String.format("Can not return an expression of type %s when parent method returns %s.", childType, parentType));
+            getSymbolTableHandler().semanticError(node, String.format("Can not return an expression of type %s when parent method returns %s.", childType, parentType));
     }
 
     public void visit(MultiplicationExpressionNode node)
@@ -521,11 +536,11 @@ public class SemanticVisitor extends VisitorBase
             if (node.getOperator().equals(ArithmeticOperator.Division) && node.getRightChild() instanceof NumberLiteralNode)
             {
                 if (((NumberLiteralNode) node.getRightChild()).getValue() == 0)
-                    getSymbolTableHandler().parserError(node, "Division by 0 is not allowed.");
+                    getSymbolTableHandler().semanticError(node, "Division by 0 is not allowed.");
             }
         }
         else
-            getSymbolTableHandler().parserError(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), leftType, rightType));
+            getSymbolTableHandler().semanticError(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), leftType, rightType));
     }
 
     public void visit(AdditionExpressionNode node)
@@ -542,18 +557,29 @@ public class SemanticVisitor extends VisitorBase
         else if (leftType.equals(Type.CoordinatesType) && rightType.equals(Type.CoordinatesType))
             node.setType(Type.CoordinatesType);
         else
-            getSymbolTableHandler().parserError(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), leftType, rightType));
+            getSymbolTableHandler().semanticError(node, String.format("%s operator cannot be used on %s and %s.", node.getOperator(), leftType, rightType));
     }
 
     public void visit(LogicalExpressionNode node)
     {
         visitChildren(node);
 
-        Type leftType  =  node.getLeftChild().getType();
+        Type leftType  = node.getLeftChild().getType();
         Type rightType = node.getRightChild().getType();
 
         if (!leftType.equals(Type.BoolType) || !rightType.equals(Type.BoolType))
-            getSymbolTableHandler().parserError(node,"Both sides of the %s expression must be of type %s, but are of type %s and %s.", node.getOperator(), Type.BoolType, leftType, rightType);
+            getSymbolTableHandler().semanticError(node,"Both sides of the %s expression must be of type %s, but are of type %s and %s.", node.getOperator(), Type.BoolType, leftType, rightType);
+    }
+
+    public void visit(RangeNode node)
+    {
+        visitChildren(node);
+
+        Type leftType  = node.getLeftChild().getType();
+        Type rightType = node.getRightChild().getType();
+
+        if (!leftType.equals(Type.NumberType) || !rightType.equals(Type.NumberType))
+            getSymbolTableHandler().semanticError(node,"Both sides of range must be of type %s, but are of type %s and %s.", Type.NumberType, leftType, rightType);
     }
 
     public void visit(UnaryMinusNode node)
@@ -563,7 +589,7 @@ public class SemanticVisitor extends VisitorBase
         Type childType = node.getChild().getType();
 
         if (!childType.equals(Type.NumberType) && !childType.equals(Type.CoordinatesType))
-            getSymbolTableHandler().parserError(node, "Child type %s is not supported for the unary minus operation.", childType);
+            getSymbolTableHandler().semanticError(node, "Child type %s is not supported for the unary minus operation.", childType);
         else
             node.setType(childType);
     }
@@ -580,7 +606,7 @@ public class SemanticVisitor extends VisitorBase
 
         // Only number and string comparisons are allowed
         if (!isNumberComparison && !isStringComparison)
-            getSymbolTableHandler().parserError(node, String.format("Logical operator %s can not be used for types %s and %s.", node.getOperator(), leftType, rightType));
+            getSymbolTableHandler().semanticError(node, String.format("Logical operator %s can not be used for types %s and %s.", node.getOperator(), leftType, rightType));
     }
 
     public void visit(EqualExpressionNode node)
@@ -600,12 +626,12 @@ public class SemanticVisitor extends VisitorBase
         if (isLeftNull || isRightNull)
         {
             if (isLeftNull && isRightNull)
-                getSymbolTableHandler().parserError(node, "Cannot compare two null literals.");
+                getSymbolTableHandler().semanticError(node, "Cannot compare two null literals.");
             else if ((isLeftNull && !node.getRightChild().getType().isReferenceType()) || (isRightNull && !node.getLeftChild().getType().isReferenceType()))
-                getSymbolTableHandler().parserError(node, "Cannot compare non-references types to the null literal.");
+                getSymbolTableHandler().semanticError(node, "Cannot compare non-references types to the null literal.");
         }
         else if (!leftType.equals(rightType))
-            getSymbolTableHandler().parserError(node, String.format("Logical operator %s cannot be used for types %s and %s.", node.getOperator(), leftType, rightType));
+            getSymbolTableHandler().semanticError(node, String.format("Logical operator %s cannot be used for types %s and %s.", node.getOperator(), leftType, rightType));
     }
 
     public void visit(NegateNode node)
@@ -613,7 +639,7 @@ public class SemanticVisitor extends VisitorBase
         visitChildren(node);
 
         if(!node.getChild().getType().equals(Type.BoolType))
-            getSymbolTableHandler().parserError(node, "Negated expression was not of boolean type.");
+            getSymbolTableHandler().semanticError(node, "Negated expression was not of boolean type.");
     }
 
     public void visit(TypeCastNode node)
@@ -626,13 +652,13 @@ public class SemanticVisitor extends VisitorBase
         if (fromType.equals(toType))
             _symbolTableHandler.parserWarning(node, String.format("Redundant cast from %s to %s", fromType, toType));
         else if (!isExplicitCastAllowed(fromType, toType))
-            getSymbolTableHandler().parserError(node, String.format("Type %s cannot be cast to type %s.", fromType, toType));
+            getSymbolTableHandler().semanticError(node, String.format("Type %s cannot be cast to type %s.", fromType, toType));
     }
 
     public void visit(ContinueNode node)
     {
         if(_iterativeNodes.isEmpty())
-            getSymbolTableHandler().parserError(node, "No enclosing loop to continue.");
+            getSymbolTableHandler().semanticError(node, "No enclosing loop to continue.");
         else
             node.setAffectingLoop(_iterativeNodes.peek());
     }
@@ -640,7 +666,7 @@ public class SemanticVisitor extends VisitorBase
     public void visit(BreakNode node)
     {
         if(_iterativeNodes.isEmpty())
-            getSymbolTableHandler().parserError(node, "No enclosing loop to break.");
+            getSymbolTableHandler().semanticError(node, "No enclosing loop to break.");
         else
             node.setAffectingLoop(_iterativeNodes.peek());
     }

@@ -1,4 +1,4 @@
-// Generated from /home/zen/Git/EduCode-P4/src/EduCode.g4 by ANTLR 4.6
+// Generated from C:/Users/User/Desktop/EduCode-P4/src\EduCode.g4 by ANTLR 4.6
 package com.educode.antlr;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -274,6 +274,12 @@ public interface EduCodeVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitLiteral(EduCodeParser.LiteralContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EduCodeParser#range_literal}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRange_literal(EduCodeParser.Range_literalContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link EduCodeParser#string_literal}.
 	 * @param ctx the parse tree

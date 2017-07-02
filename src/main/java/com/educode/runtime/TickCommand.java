@@ -22,10 +22,6 @@ public class TickCommand
         while (!_executed)
         {
             wait();
-
-            // If nothing has happened after 5 seconds, time out the action
-            if (!_executed)
-                throw new RuntimeException("Robot command timed out. Ensure that the program is being executed in a Minecraft environment.");
         }
 
         return _result;

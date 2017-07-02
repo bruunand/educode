@@ -4,6 +4,7 @@ import com.educode.helper.OperatorTranslator;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.ArithmeticExpressionNode;
+import com.educode.nodes.expression.RangeNode;
 import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.*;
@@ -114,6 +115,12 @@ public class PrintVisitor extends VisitorBase
     public Object visit(ParameterNode node)
     {
         return String.format("Parameter [%s][%s]",  visit(node.getReference()), node.getType());
+    }
+
+
+    public Object visit(RangeNode node)
+    {
+        return String.format("Range [%s][%s]", visit(node.getLeftChild()), visit(node.getRightChild()));
     }
 
     public Object visit(MethodDeclarationNode node)

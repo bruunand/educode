@@ -13,7 +13,7 @@ apply plugin: 'antlr'
 
 version = "1.0"
 group = "com.educode.minecraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "modid"
+archivesBaseName = "educode"
 
 sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
 compileJava {
@@ -40,6 +40,8 @@ dependencies {
     //compile "some.group:artifact:version"
     antlr  group: "org.antlr", name: "antlr4", version: "4.6"
     compile group: "org.antlr", name: "antlr4-runtime", version: "4.6"
+
+    compile files('jasmin.jar')
 
     // real examples
     //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env

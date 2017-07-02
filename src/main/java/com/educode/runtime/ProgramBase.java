@@ -27,7 +27,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public abstract class ProgramBase implements IRobot
+public class ProgramBase implements IRobot
 {
     // Queues
     private final Queue<TickCommand> _commandQueue = new ConcurrentLinkedQueue<>();
@@ -116,6 +116,12 @@ public abstract class ProgramBase implements IRobot
             ret.addItem(c);
 
         return ret;
+    }
+
+    @Override
+    public String getName()
+    {
+        return getRobot().getName();
     }
 
     public double random(double min, double max)
@@ -211,12 +217,13 @@ public abstract class ProgramBase implements IRobot
                 ItemBlock itemBlock = (ItemBlock) heldStack.getItem();
                 Block block = Block.getBlockFromItem(heldStack.getItem());
 
-                itemBlock.placeBlockAt(heldStack, _player, _world, coordinates.toBlockPos(), EnumFacing.DOWN, 0F, 0F, 0F, block.getDefaultState());
+                boolean subResult = itemBlock.placeBlockAt(heldStack, _player, _world, coordinates.toBlockPos(), EnumFacing.DOWN, 0F, 0F, 0F, block.getDefaultState());
+                if (subResult)
+                    heldStack.shrink(1);
+                return subResult;
             }
             else
                 return false;
-
-            return false;
         });
 
         if (result)
@@ -479,8 +486,6 @@ public abstract class ProgramBase implements IRobot
             mineBlock(position.toBlockPos());
         }
     }
-    
-    public abstract void main() throws InterruptedException;
 
     public EntityRobot getRobot()
     {

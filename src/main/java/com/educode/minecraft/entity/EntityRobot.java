@@ -8,6 +8,9 @@ import com.educode.events.EventInvoker;
 import com.educode.events.entity.robot.RobotDeathEvent;
 import com.educode.runtime.types.MinecraftEntity;
 
+import net.minecraft.client.gui.GuiScreenBook;
+import net.minecraft.client.gui.inventory.GuiEditSign;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
@@ -16,6 +19,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.ItemSign;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigateGround;
@@ -38,6 +42,7 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
 import javax.annotation.Nullable;
 
+// Skin credit: http://www.minecraftskins.net/redstoner
 public class EntityRobot extends EntityCreature implements IWorldNameable, IEntityAdditionalSpawnData
 {
     private final InventoryBasic _inventory;
@@ -55,7 +60,6 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand)
     {
-        this.sendMessageTo(player, "REEEEEEEEEEE!");
         return super.processInteract(player, hand);
     }
 
@@ -134,9 +138,12 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
         if (isDead)
             return;
 
-        ItemStack entityItem = getInventory().addItem(itemEntity.getEntityItem());
-
-        this.onItemPickup(itemEntity, entityItem.getCount());
+        ItemStack localStack = itemEntity.getEntityItem();
+        ItemStack retStack = getInventory().addItem(itemEntity.getEntityItem());
+        if (retStack.isEmpty())
+            itemEntity.setDead();
+        else
+            localStack.setCount(retStack.getCount());
     }
 
     @Override

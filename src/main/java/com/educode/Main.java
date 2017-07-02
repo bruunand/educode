@@ -4,14 +4,13 @@ import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.parsing.ParserHelper;
-import com.educode.parsing.ParserException;
+import com.educode.visitors.interpreter.InterpretationVisitor;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
 import com.educode.visitors.optimisation.OptimisationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -22,10 +21,7 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-        // Create EduCode programs folder
-        File programsDir = new File(CompilerMod.EDUCODE_PROGRAMS_LOCATION);
-        if (!programsDir.exists())
-            programsDir.mkdir();
+        CompilerMod.createDirectory();
 
         // Parse test file
         StartNode startNode;
@@ -33,7 +29,7 @@ public class Main
         {
             startNode = ParserHelper.parse("Test.educ");
         }
-        catch (ParserException e)
+        catch (Exception e)
         {
             System.out.println("Parsing error: " + e.getMessage());
             return;
@@ -48,15 +44,17 @@ public class Main
 
         // Print any errors and warnings
         sv.getSymbolTableHandler().printMessages();
-
-        if (sv.getSymbolTableHandler().hasErrors())
-            return;
+        /*if (sv.getSymbolTableHandler().hasErrors())
+            return;*/
 
         // Perform optimisations
         startNode.accept(new OptimisationVisitor());
 
         // Pretty print
         System.out.println(startNode.accept(new PrintVisitor()));
+
+        // Interpret
+        startNode.accept(new InterpretationVisitor());
 
         // Generate bytecode
         JavaBytecodeGenerationVisitor byteCodeVisitor = new JavaBytecodeGenerationVisitor();

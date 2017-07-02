@@ -9,15 +9,15 @@ usings
     ;
 
 program
-    : 'program' id=identifier end_of_line+ ((el+=event_definition|ml+=method_declaration|vl+=variable_declaration) end_of_line+)* 'end program'
+    : 'program' id=identifier end_of_line+ ((el+=event_definition|ml+=method_declaration|vl+=variable_declaration) end_of_line+)* 'end' 'program'
     ;
 
 event_definition
-    : 'on event' event=event_type 'call' id=identifier
+    : 'on' 'event' event=event_type 'call' id=identifier
     ;
 
 method_declaration
-    : 'method' id=identifier LPAREN (params=parameter_list)? RPAREN ('returns' type=data_type)? end_of_line+ body=statement_list 'end method'
+    : 'method' id=identifier LPAREN (params=parameter_list)? RPAREN ('returns' type=data_type)? end_of_line+ body=statement_list 'end' 'method'
     ;
 
 argument_list
@@ -35,7 +35,6 @@ parameter
 statement_list
     : (statements+=statement end_of_line+)*
     ;
-
 
 statement
     : call_statement
@@ -71,15 +70,15 @@ return_statement
     ;
 
 repeat_statement
-    : 'repeat while' predicate=logic_expression end_of_line+ body=statement_list 'end repeat'
+    : 'repeat' 'while' predicate=logic_expression end_of_line+ body=statement_list 'end' 'repeat'
     ;
 
 if_statement
-    : 'if' predicates+=logic_expression 'then' end_of_line+ bodies+=statement_list ('else if' predicates+=logic_expression 'then' end_of_line+ bodies+=statement_list)* ('else' end_of_line+ elseBody=statement_list)? 'end if'
+    : 'if' predicates+=logic_expression 'then' end_of_line+ bodies+=statement_list ('else' 'if' predicates+=logic_expression 'then' end_of_line+ bodies+=statement_list)* ('else' end_of_line+ elseBody=statement_list)? 'end' 'if'
     ;
 
 foreach_statement
-    : 'foreach' type=data_type id=identifier 'in' expr=logic_expression end_of_line+ body=statement_list 'end foreach'
+    : 'foreach' type=data_type id=identifier 'in' expr=logic_expression end_of_line+ body=statement_list 'end' 'foreach'
     ;
 
 variable_declaration
@@ -125,7 +124,7 @@ equality_expression
     ;
 
 relative_expression
-    : left=arithmetic_expression op=('greater than'|'less than'|'greater than or equals'|'less than or equals') right=arithmetic_expression
+    : left=arithmetic_expression op=('>'|'<'|'>='|'<=') right=arithmetic_expression
     | right=arithmetic_expression
     ;
 
@@ -205,7 +204,7 @@ data_type
     | 'bool'
     | 'coordinates'
     | 'string'
-    | 'Collection' '<' childType=data_type '>'
+    | 'List' '<' childType=data_type '>'
     | 'Entity'
     | 'Item'
     ;
@@ -216,6 +215,11 @@ literal
     | number_literal
     | coordinate_literal
     | null_literal
+    | range_literal
+    ;
+
+range_literal
+    : 'range' left=logic_expression 'to' right=logic_expression
     ;
 
 string_literal
@@ -246,14 +250,6 @@ end_of_line
     : NEWLINE
     ;
 
-
-/* TEMP */
-
-
-NEWLINE
-    : NewLine
-    ;
-
 /* Fragments */
 fragment LowerChar: [a-z]
                   ;
@@ -272,7 +268,7 @@ fragment USym     : '_'
 
 /* Literals */
 NUMBER_LITERAL
-    : ('-')? Digit+('.' Digit*)?
+    : Digit+('.' Digit*)?
     ;
 
 STRING_LITERAL
@@ -291,12 +287,15 @@ NULL_LITERAL
     : 'null'
     ;
 
-
 IDENTIFIER
     : (LowerChar | UpperChar | USym) (LowerChar | UpperChar | Digit | USym)*
     ;
 
 /* Token specification */
+NEWLINE
+    : NewLine
+    ;
+    
 LPAREN
     : '('
     ;
@@ -306,8 +305,9 @@ RPAREN
     ;
 
 /* Hidden stuff */
+
 WHITESPACE
-    : [ \t\r\f]+ -> channel(HIDDEN)
+    : (' ' | '\t' | '\r')+ -> channel(HIDDEN)
     ;
 
 LINECOMMENT
