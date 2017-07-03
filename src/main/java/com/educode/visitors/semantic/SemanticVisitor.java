@@ -286,7 +286,7 @@ public class SemanticVisitor extends VisitorBase
         // Get type of left child (expression)
         Type expressionType = node.getLeftChild().getType();
 
-        if (!expressionType.isCollection())
+        if (!expressionType.isList())
             getSymbolTableHandler().semanticError(node, String.format("Expression of type %s is not applicable in a for-each statement.", expressionType));
         else if (!node.getReference().getType().equals(expressionType.getChildType()))
             getSymbolTableHandler().semanticError(node, String.format("Expression to iterate in for-each statement must be a collection of %s.", node.getType()));
@@ -383,7 +383,7 @@ public class SemanticVisitor extends VisitorBase
 
         // Left side must be a collection
         Type leftSideType = reference.getLeftChild().getType();
-        if (!leftSideType.isCollection())
+        if (!leftSideType.isList())
             getSymbolTableHandler().semanticError(reference, "Left side of array reference must be a collection.");
         else
             reference.setType(leftSideType.getChildType());
@@ -395,9 +395,9 @@ public class SemanticVisitor extends VisitorBase
         visitChildren(node);
 
         // Only allow instantiation of collections
-        if (!node.getType().isCollection())
+        if (!node.getType().isList())
             getSymbolTableHandler().semanticError(node, String.format("Cannot instantiate object of type %s.", node.getType()));
-        else if (node.getType().isCollection())
+        else if (node.getType().isList())
         {
             Type collectionChildType = node.getType().getChildType();
 

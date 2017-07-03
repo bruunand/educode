@@ -12,9 +12,9 @@ public class Type
     private Type _childType = null;
     private final byte _kind;
 
-    public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5, ENTITY = 6, COLLECTION = 7, ROBOT = 8, ITEM = 9;
+    public static final byte VOID = 0, BOOL = 1, NUMBER = 2, COORDINATES = 3, STRING = 4, ERROR = 5, ENTITY = 6, LIST = 7, ROBOT = 8, ITEM = 9;
 
-    private static SymbolTable _emptySymbolTable, _baseSymbolTable, _collectionSymbolTable, _entitySymbolTable, _robotSymbolTable, _coordinatesSymbolTable, _itemSymbolTable, _stringSymbolTable;
+    private static SymbolTable _emptySymbolTable, _baseSymbolTable, _listSymbolTable, _entitySymbolTable, _robotSymbolTable, _coordinatesSymbolTable, _itemSymbolTable, _stringSymbolTable;
 
     static
     {
@@ -35,7 +35,7 @@ public class Type
         // Construct symbol tables from interfaces
         _baseSymbolTable        = InterfaceConverter.getSymbolTableFromClass(_emptySymbolTable, IBase.class);
         _coordinatesSymbolTable = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, ICoordinates.class);
-        _collectionSymbolTable  = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, ICollection.class);
+        _listSymbolTable        = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, IList.class);
         _entitySymbolTable      = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, IEntity.class);
         _itemSymbolTable        = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, IItem.class);
         _stringSymbolTable      = InterfaceConverter.getSymbolTableFromClass(_baseSymbolTable, IString.class);
@@ -50,7 +50,7 @@ public class Type
     // Constructor for creation of new collection types
     public Type(Type child)
     {
-        this(COLLECTION);
+        this(LIST);
         this._childType = child;
     }
 
@@ -85,7 +85,7 @@ public class Type
 
     public boolean isReferenceType()
     {
-        return this._kind == COLLECTION || this._kind == ENTITY || this._kind == ROBOT || this._kind == ITEM;
+        return this._kind == LIST || this._kind == ENTITY || this._kind == ROBOT || this._kind == ITEM;
     }
 
     // Special types are ones that cannot be instantiated or assigned to
@@ -109,12 +109,12 @@ public class Type
             return _itemSymbolTable;
         else if (this.equals(Type.StringType))
             return _stringSymbolTable;
-        else if (this.isCollection())
+        else if (this.isList())
         {
             // _doesReturn a temporary symbol table derived from collectionSymbolTable
             // This method has methods that are specific to the child type of the collection
 
-            SymbolTable tempTable = new SymbolTable(_collectionSymbolTable);
+            SymbolTable tempTable = new SymbolTable(_listSymbolTable);
             tempTable.addDefaultMethod("addItem", Type.VoidType, this.getChildType());
 
             return tempTable;
@@ -123,9 +123,9 @@ public class Type
         return _emptySymbolTable;
     }
 
-    public boolean isCollection()
+    public boolean isList()
     {
-        return this._kind == COLLECTION;
+        return this._kind == LIST;
     }
 
     @Override
@@ -147,8 +147,8 @@ public class Type
                 return "ERROR";
             case Type.ENTITY:
                 return "ENTITY";
-            case Type.COLLECTION:
-                return "COLLECTION<" + this.getChildType() + ">";
+            case Type.LIST:
+                return "LIST<" + this.getChildType() + ">";
             case Type.ROBOT:
                 return "ROBOT";
             case Type.ITEM:

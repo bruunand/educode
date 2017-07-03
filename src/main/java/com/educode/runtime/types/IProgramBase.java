@@ -15,5 +15,5 @@ public interface IProgramBase
 
     void wait(double time);
 
-    ExtendedCollection<Double> range(double start, double end);
+    ExtendedList<Double> range(double start, double end);
 }

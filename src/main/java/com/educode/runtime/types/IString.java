@@ -11,5 +11,5 @@ public interface IString
     String toLowerCase();
 
     @SpecialJavaTranslation(formattedTranslation = "StringHelper.splitString(%s)")
-    ExtendedCollection<String> split(String string);
+    ExtendedList<String> split(String string);
 }

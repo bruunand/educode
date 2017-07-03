@@ -1,6 +1,5 @@
 package com.educode.runtime.types;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public interface IRobot extends IEntity
     void mineBlock(Coordinates position) throws InterruptedException;
 
     // Items
-    ExtendedCollection<MinecraftItem> getInventory();
+    ExtendedList<MinecraftItem> getInventory();
     void dropItems() throws InterruptedException;
     double dropItem(String name, double quantity) throws InterruptedException;
     MinecraftItem getHeldItem();

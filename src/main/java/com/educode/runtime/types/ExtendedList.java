@@ -6,13 +6,13 @@ import java.util.StringJoiner;
 /**
  * Created by User on 18-Apr-17.
  */
-public class ExtendedCollection<E> extends ArrayList<E> implements ICollection<E>
+public class ExtendedList<E> extends ArrayList<E> implements IList<E>
 {
-    public ExtendedCollection()
+    public ExtendedList()
     {
     }
 
-    public ExtendedCollection(E ... args)
+    public ExtendedList(E ... args)
     {
         for (E item : args)
             add(item);
@@ -69,9 +69,9 @@ public class ExtendedCollection<E> extends ArrayList<E> implements ICollection<E
     @Override
     public boolean equals(Object o)
     {
-        if (o instanceof ExtendedCollection)
+        if (o instanceof ExtendedList)
         {
-            ExtendedCollection collection = (ExtendedCollection) o;
+            ExtendedList collection = (ExtendedList) o;
 
             // If size is not the same, they are not equal
             if (this.getSize() != collection.getSize())

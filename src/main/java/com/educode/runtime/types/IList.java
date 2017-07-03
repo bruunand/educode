@@ -3,7 +3,7 @@ package com.educode.runtime.types;
 /**
  * Created by User on 18-Apr-17.
  */
-public interface ICollection<E>
+public interface IList<E>
 {
     // add is not here because it is a part of the list interface
     void removeItemAt(double index);

@@ -4,10 +4,10 @@ import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.parsing.ParserHelper;
-import com.educode.visitors.interpreter.InterpretationVisitor;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
+import com.educode.visitors.interpreter.InterpretationVisitor;
 import com.educode.visitors.optimisation.OptimisationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 
@@ -55,6 +55,7 @@ public class Main
 
         // Interpret
         startNode.accept(new InterpretationVisitor());
+        System.out.println("Done interpreting");
 
         // Generate bytecode
         JavaBytecodeGenerationVisitor byteCodeVisitor = new JavaBytecodeGenerationVisitor();

@@ -1,8 +1,7 @@
 package com.educode.helper;
 
-import com.educode.runtime.types.ExtendedCollection;
+import com.educode.runtime.types.ExtendedList;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -10,9 +9,9 @@ import java.util.Collections;
  */
 public class StringHelper
 {
-    public static ExtendedCollection<String> splitString(String toSplit, String splitter)
+    public static ExtendedList<String> splitString(String toSplit, String splitter)
     {
-        ExtendedCollection<String> returnList = new ExtendedCollection<>();
+        ExtendedList<String> returnList = new ExtendedList<>();
         Collections.addAll(returnList, toSplit.split(splitter));
 
         return returnList;

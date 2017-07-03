@@ -24,8 +24,8 @@ public class OperatorTranslator
                 return "Coordinates";
             case Type.VOID:
                 return "void";
-            case Type.COLLECTION:
-                return String.format("ExtendedCollection<%s>", toJava(type.getChildType()));
+            case Type.LIST:
+                return String.format("ExtendedList<%s>", toJava(type.getChildType()));
             case Type.ENTITY:
                 return "MinecraftEntity";
             case Type.ITEM:

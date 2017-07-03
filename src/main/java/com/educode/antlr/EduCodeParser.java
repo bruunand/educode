@@ -67,7 +67,7 @@ public class EduCodeParser extends Parser {
 		"'>='", "'<='", "'+'", "'-'", "'/'", "'*'", "'modulo'", "'not'", "'.'", 
 		"'['", "']'", "'new'", "'robotDeath'", "'robotAttacked'", "'entityDeath'", 
 		"'chatMessage'", "'stringMessageReceived'", "'entityMessageReceived'", 
-		"'number'", "'bool'", "'coordinates'", "'string'", "'Collection'", "'Entity'", 
+		"'number'", "'bool'", "'coordinates'", "'string'", "'List'", "'Entity'", 
 		"'Item'", "'range'", "'to'", null, null, null, null, "'null'", null, null, 
 		"'('", "')'"
 	};

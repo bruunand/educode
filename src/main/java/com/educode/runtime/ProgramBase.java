@@ -27,7 +27,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class ProgramBase implements IRobot
+public abstract class ProgramBase implements IRobot
 {
     // Queues
     private final Queue<TickCommand> _commandQueue = new ConcurrentLinkedQueue<>();
@@ -48,6 +48,8 @@ public class ProgramBase implements IRobot
 
     // Threading
     private Thread _mainThread, _eventThread;
+
+    public abstract void main() throws InterruptedException;
 
     public void init(String programName, Thread mainThread, World world, EntityPlayer player, List<EventDefinitionNode> eventDefinitions)
     {
@@ -108,9 +110,9 @@ public class ProgramBase implements IRobot
         return this._player;
     }
 
-    public ExtendedCollection<Double> range(double min, double max)
+    public ExtendedList<Double> range(double min, double max)
     {
-        ExtendedCollection<Double> ret = new ExtendedCollection<>();
+        ExtendedList<Double> ret = new ExtendedList<>();
 
         for (double c = min; c <= max; c++)
             ret.addItem(c);
@@ -286,9 +288,9 @@ public class ProgramBase implements IRobot
     }
 
     @Override
-    public ExtendedCollection<MinecraftItem> getInventory()
+    public ExtendedList<MinecraftItem> getInventory()
     {
-        ExtendedCollection<MinecraftItem> collection = new ExtendedCollection<>();
+        ExtendedList<MinecraftItem> collection = new ExtendedList<>();
 
         // Add non-air blocks
         for (int i = 0; i < this._robot.getInventory().getSizeInventory(); i++)
@@ -352,11 +354,11 @@ public class ProgramBase implements IRobot
 
 
     @Override
-    public ExtendedCollection<MinecraftEntity> getNearbyEntities() throws InterruptedException
+    public ExtendedList<MinecraftEntity> getNearbyEntities() throws InterruptedException
     {
-        return (ExtendedCollection<MinecraftEntity>) executeOnTick(() ->
+        return (ExtendedList<MinecraftEntity>) executeOnTick(() ->
         {
-            ExtendedCollection<MinecraftEntity> returnList = new ExtendedCollection<>();
+            ExtendedList<MinecraftEntity> returnList = new ExtendedList<>();
             for (Entity entity : this._world.getEntitiesWithinAABB(EntityLivingBase.class, this._robot.getEntityBoundingBox().expand(45, 5, 45)))
             {
                 if (entity.equals(this._robot))
