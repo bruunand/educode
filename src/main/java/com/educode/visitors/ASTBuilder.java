@@ -365,7 +365,8 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
 
     @Override
     public Node visitForeach_statement(EduCodeParser.Foreach_statementContext ctx)
-    {        return new ForEachNode((IReference) visit(ctx.id), getType(ctx.type), visit(ctx.expr), visit(ctx.body));
+    {
+        return new ForEachNode((IReference) visit(ctx.id), getType(ctx.type), visit(ctx.expr), visit(ctx.body));
     }
 
     @Override

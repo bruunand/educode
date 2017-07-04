@@ -56,6 +56,7 @@ public class Main
         // Interpret
         startNode.accept(new InterpretationVisitor());
         System.out.println("Done interpreting");
+        System.exit(0);
 
         // Generate bytecode
         JavaBytecodeGenerationVisitor byteCodeVisitor = new JavaBytecodeGenerationVisitor();

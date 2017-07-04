@@ -13,6 +13,7 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.statement.AssignmentNode;
+import com.educode.nodes.statement.ForEachNode;
 import com.educode.nodes.statement.ReturnNode;
 import com.educode.nodes.statement.VariableDeclarationNode;
 import com.educode.nodes.statement.conditional.ConditionNode;
@@ -21,6 +22,8 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.StartNode;
+import com.educode.runtime.ProgramBase;
+import com.educode.runtime.ProgramImpl;
 import com.educode.runtime.types.Coordinates;
 import com.educode.runtime.types.ExtendedList;
 import com.educode.types.ArithmeticOperator;
@@ -28,8 +31,7 @@ import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by User on 20-Jun-17.
@@ -37,6 +39,9 @@ import java.util.List;
 public class InterpretationVisitor extends VisitorBase
 {
     private HashMap<String, Object> _localVariables = new HashMap<>();
+    private HashMap<String, Object> _globalVariables = new HashMap<>();
+
+    private ProgramBase _program = new ProgramImpl();
 
     public void visit(StartNode node)
     {
@@ -59,7 +64,14 @@ public class InterpretationVisitor extends VisitorBase
 
     public Object visit(IdentifierReferencingNode node)
     {
-        return this._localVariables.get(node.getText());
+        String variableName = node.getText();
+
+        if (this._localVariables.containsKey(variableName))
+            return this._localVariables.get(variableName);
+        else if (this._globalVariables.containsKey(variableName))
+            return this._globalVariables.get(variableName);
+
+        return null; // Should not happen in accordance with semantic visitor
     }
 
     public Object visit(IfNode node)
@@ -94,7 +106,17 @@ public class InterpretationVisitor extends VisitorBase
             return null;
         }
 
-        return visit(blockNode);
+        // Create new map of variables for method invocation
+        HashMap oldLocalVariables = this._localVariables;
+        this._localVariables = new HashMap<>();
+
+        // Invoke the method by visiting its block
+        Object visitResult = visit(blockNode);
+
+        // Restore old local variables
+        this._localVariables = oldLocalVariables;
+
+        return visitResult;
     }
 
     public Object visit(RangeNode node)
@@ -128,7 +150,8 @@ public class InterpretationVisitor extends VisitorBase
     public Object visit(ReturnNode node)
     {
         if (node.hasChild())
-            return node.getChild();
+            return visit(node.getChild());
+
         return null;
     }
 
@@ -149,6 +172,25 @@ public class InterpretationVisitor extends VisitorBase
             return ((Coordinates) visit(node.getLeftChild())).add((Coordinates) visit(node.getRightChild()), node.getOperator().equals(ArithmeticOperator.Subtraction));
         else if (node.isType(Type.NumberType))
             return ((double) visit(node.getLeftChild())) + ((double) visit(node.getRightChild()));
+
+        return null;
+    }
+
+    public Object visit(ForEachNode node)
+    {
+        String localVariableName = ((IdentifierReferencingNode) node.getReference()).getText();
+
+        ExtendedList<Object> list = (ExtendedList<Object>) visit(node.getLeftChild());
+        for (Object object : list)
+        {
+            this._localVariables.put(localVariableName, object);
+
+            Object returnObject = visit(node.getRightChild());
+            if (returnObject instanceof ReturnElement)
+                return returnObject;
+        }
+        
+        this._localVariables.remove(localVariableName);
 
         return null;
     }
