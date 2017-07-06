@@ -3,11 +3,11 @@ package com.educode.visitors.interpreter;
 /**
  * Created by User on 03-Jul-17.
  */
-class ReturnElement
+class ReturnFlag extends JumpFlag
 {
     private final Object _contained;
 
-    public ReturnElement(Object contained)
+    public ReturnFlag(Object contained)
     {
         this._contained = contained;
     }

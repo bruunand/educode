@@ -2,6 +2,7 @@ package com.educode.visitors.interpreter;
 
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpressionNode;
+import com.educode.nodes.expression.MultiplicationExpressionNode;
 import com.educode.nodes.expression.RangeNode;
 import com.educode.nodes.expression.logic.EqualExpressionNode;
 import com.educode.nodes.expression.logic.RelativeExpressionNode;
@@ -11,11 +12,9 @@ import com.educode.nodes.literal.NumberLiteralNode;
 import com.educode.nodes.literal.StringLiteralNode;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
+import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
-import com.educode.nodes.statement.AssignmentNode;
-import com.educode.nodes.statement.ForEachNode;
-import com.educode.nodes.statement.ReturnNode;
-import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.statement.*;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
@@ -31,7 +30,8 @@ import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by User on 20-Jun-17.
@@ -43,6 +43,9 @@ public class InterpretationVisitor extends VisitorBase
 
     private ProgramBase _program = new ProgramImpl();
 
+    // Flags
+    private boolean _continue = false, _break = false;
+
     public void visit(StartNode node)
     {
         visit(node.getRightChild());
@@ -50,7 +53,7 @@ public class InterpretationVisitor extends VisitorBase
 
     public void visit(ProgramNode node)
     {
-        // Register global variables
+        // Register global variables, todo
 
         // Get main method
         for (MethodDeclarationNode methodDeclaration : node.getMethodDeclarations())
@@ -62,6 +65,27 @@ public class InterpretationVisitor extends VisitorBase
         }
     }
 
+    public Object visit(MultiplicationExpressionNode node)
+    {
+        Object left  = visit(node.getLeftChild());
+        Object right = visit(node.getRightChild());
+
+        if (node.isType(Type.NumberType))
+        {
+            switch (node.getOperator().getKind())
+            {
+                case ArithmeticOperator.MULTIPLICATION:
+                    return (double) left * (double) right;
+                case ArithmeticOperator.DIVISION:
+                    return (double) left / (double) right;
+                case ArithmeticOperator.MODULO:
+                    return (double) left % (double) right;
+            }
+        }
+
+        return null;
+    }
+
     public Object visit(IdentifierReferencingNode node)
     {
         String variableName = node.getText();
@@ -70,6 +94,8 @@ public class InterpretationVisitor extends VisitorBase
             return this._localVariables.get(variableName);
         else if (this._globalVariables.containsKey(variableName))
             return this._globalVariables.get(variableName);
+
+        System.out.println("Could not find " + variableName);
 
         return null; // Should not happen in accordance with semantic visitor
     }
@@ -95,9 +121,20 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
+    public void visit(ContinueNode node)
+    {
+        this._continue = true;
+    }
+
+    public void visit(BreakNode node)
+    {
+        this._break = true;
+    }
+
     public Object visit(MethodInvocationNode node)
     {
-        BlockNode blockNode = node.getReferencingDeclaration().getBlockNode();
+        MethodDeclarationNode methodDeclaration = node.getReferencingDeclaration();
+        BlockNode blockNode = methodDeclaration.getBlockNode();
         if (blockNode == null)
         {
             if (node.getReference().toString().equals("debug"))
@@ -107,14 +144,36 @@ public class InterpretationVisitor extends VisitorBase
         }
 
         // Create new map of variables for method invocation
+        HashMap<String, Object> newLocalVariables = new HashMap<>();
+
+        // Put actual arguments onto HashMap
+        if (methodDeclaration.hasParameterList())
+        {
+            List<Node> formalArguments = methodDeclaration.getParameterList().getChildren();
+            List<Node> actualArguments = node.getActualArguments();
+
+            // Evaluate actual arguments left to right
+            for (int i = 0; i < formalArguments.size(); i++)
+            {
+                String argumentName = ((IdentifierReferencingNode)((ParameterNode) formalArguments.get(i)).getReference()).getText();
+                Object res = visit(actualArguments.get(i));
+                newLocalVariables.put(argumentName, res);
+            }
+        }
+
+        // Save old local variables while executing block
         HashMap oldLocalVariables = this._localVariables;
-        this._localVariables = new HashMap<>();
+        this._localVariables = newLocalVariables;
 
         // Invoke the method by visiting its block
         Object visitResult = visit(blockNode);
 
         // Restore old local variables
         this._localVariables = oldLocalVariables;
+
+        // If visit result is a return element, return its value
+        if (visitResult instanceof ReturnFlag)
+            return ((ReturnFlag) visitResult).getContained();
 
         return visitResult;
     }
@@ -137,10 +196,15 @@ public class InterpretationVisitor extends VisitorBase
         for (Node subNode : node.getChildren())
         {
             if (subNode instanceof ReturnNode)
-                return new ReturnElement(visit(subNode));
+                return new ReturnFlag(visit(subNode));
+            else if (subNode instanceof BreakNode || subNode instanceof ContinueNode)
+            {
+                visit(subNode);
+                return new JumpFlag();
+            }
 
             Object result = visit(subNode);
-            if (result instanceof ReturnElement)
+            if (result instanceof JumpFlag)
                 return result;
         }
 
@@ -166,12 +230,23 @@ public class InterpretationVisitor extends VisitorBase
 
     public Object visit(AdditionExpressionNode node)
     {
+        Object left  = visit(node.getLeftChild());
+        Object right = visit(node.getRightChild());
+
         if (node.isType(Type.StringType))
-            return visit(node.getLeftChild()).toString() + visit(node.getRightChild()).toString();
+            return left.toString() + right.toString();
         else if (node.isType(Type.CoordinatesType))
-            return ((Coordinates) visit(node.getLeftChild())).add((Coordinates) visit(node.getRightChild()), node.getOperator().equals(ArithmeticOperator.Subtraction));
+            return ((Coordinates) left).add((Coordinates) right, node.getOperator().equals(ArithmeticOperator.Subtraction));
         else if (node.isType(Type.NumberType))
-            return ((double) visit(node.getLeftChild())) + ((double) visit(node.getRightChild()));
+        {
+            switch (node.getOperator().getKind())
+            {
+                case ArithmeticOperator.ADDITION:
+                    return (double) left + (double) right;
+                case ArithmeticOperator.SUBTRACTION:
+                    return (double) left - (double) right;
+            }
+        }
 
         return null;
     }
@@ -183,13 +258,30 @@ public class InterpretationVisitor extends VisitorBase
         ExtendedList<Object> list = (ExtendedList<Object>) visit(node.getLeftChild());
         for (Object object : list)
         {
+            // Put object into local variable
             this._localVariables.put(localVariableName, object);
 
+            // Visit block for this foreach node
             Object returnObject = visit(node.getRightChild());
-            if (returnObject instanceof ReturnElement)
+            if (returnObject instanceof ReturnFlag)
+            {
                 return returnObject;
+            }
+
+            // Consume flags
+            if (this._continue)
+            {
+                this._continue = false;
+                continue;
+            }
+            else if (this._break)
+            {
+                this._break = false;
+                break;
+            }
         }
-        
+
+        // Remove local variable since it is not needed anymore
         this._localVariables.remove(localVariableName);
 
         return null;
@@ -228,7 +320,7 @@ public class InterpretationVisitor extends VisitorBase
         return value;
     }
 
-    public ReturnElement visit(RepeatWhileNode node)
+    public ReturnFlag visit(RepeatWhileNode node)
     {
         ConditionNode conditionNode = (ConditionNode) node.getChild();
 
@@ -240,8 +332,20 @@ public class InterpretationVisitor extends VisitorBase
 
             // Visit block
             Object result = visit(conditionNode.getRightChild());
-            if (result != null && result instanceof ReturnElement)
-                return (ReturnElement) result;
+            if (result != null && result instanceof ReturnFlag)
+                return (ReturnFlag) result;
+
+            // Consume flags
+            if (this._continue)
+            {
+                this._continue = false;
+                continue;
+            }
+            else if (this._break)
+            {
+                this._break = false;
+                break;
+            }
         }
 
         return null;
