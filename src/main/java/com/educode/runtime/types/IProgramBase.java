@@ -5,15 +5,11 @@ package com.educode.runtime.types;
  */
 public interface IProgramBase
 {
-    @SpecialJavaTranslation(formattedTranslation = "System.out.println(%s)")
     void debug(String string);
 
-    double random(double a, double b);
+    double random(Double a, Double b);
 
-    @SpecialJavaTranslation(formattedTranslation =  "java.lang.Math.abs(%s)")
-    double abs(double input);
+    void wait(Double time) throws InterruptedException;
 
-    void wait(double time);
-
-    ExtendedList<Double> range(double start, double end);
+    Double time();
 }

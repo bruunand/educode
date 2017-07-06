@@ -27,7 +27,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public abstract class ProgramBase implements IRobot
+public abstract class ProgramBase implements IRobot, IProgramBase
 {
     // Queues
     private final Queue<TickCommand> _commandQueue = new ConcurrentLinkedQueue<>();
@@ -120,13 +120,23 @@ public abstract class ProgramBase implements IRobot
         return ret;
     }
 
+    public Double time()
+    {
+        return (double) System.currentTimeMillis();
+    }
+
+    public void debug(String string)
+    {
+        System.out.println(string);
+    }
+
     @Override
     public String getName()
     {
         return getRobot().getName();
     }
 
-    public double random(double min, double max)
+    public double random(Double min, Double max)
     {
         return (max - min) * _rand.nextFloat() + min;
     }
@@ -143,15 +153,15 @@ public abstract class ProgramBase implements IRobot
         return false;
     }
 
-    public void wait(double time) throws InterruptedException
+    public void wait(Double time) throws InterruptedException
     {
-        Thread.sleep((long) time);
+        Thread.sleep(time.longValue());
     }
 
     @Override
-    public void setWorldTime(double time) throws InterruptedException
+    public void setWorldTime(Double time) throws InterruptedException
     {
-        executeOnTick(() -> _world.setWorldTime((long) time % 24000));
+        executeOnTick(() -> _world.setWorldTime(time.longValue() % 24000));
     }
 
     public void say(String message) throws InterruptedException
@@ -229,7 +239,7 @@ public abstract class ProgramBase implements IRobot
         });
 
         if (result)
-            wait(500.0F);
+            wait(500.0);
 
         return result;
     }
@@ -259,7 +269,7 @@ public abstract class ProgramBase implements IRobot
             return false;
 
         executeOnTick(() -> _robot.attackEntity(entity.getWrappedEntity()));
-        wait(500F);
+        wait(500);
 
         return true;
     }
@@ -348,7 +358,7 @@ public abstract class ProgramBase implements IRobot
             return _robot.getNavigator().setPath(_robot.getNavigator().getPathToPos(pos), 0.5D);
         });
 
-        wait(500F);
+        wait(500);
         return result;
     }
 
@@ -478,7 +488,7 @@ public abstract class ProgramBase implements IRobot
         });
 
         if (blockDestroyed)
-            wait(500F);
+            wait(500);
     }
 
     public void mineBlock(Coordinates position) throws InterruptedException

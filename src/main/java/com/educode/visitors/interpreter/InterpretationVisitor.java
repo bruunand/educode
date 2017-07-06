@@ -32,6 +32,9 @@ import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,6 +50,33 @@ public class InterpretationVisitor extends VisitorBase
 
     // Flags
     private boolean _continue = false, _break = false;
+
+    private Object callNative(String methodName, Object instance, List<Node> argumentNodes)
+    {
+        // Evaluate arguments
+        List<Object> argumentObjects = new ArrayList<>(argumentNodes.size());
+        for (Node argumentNode : argumentNodes)
+            argumentObjects.add(visit(argumentNode));
+
+        // Get class array
+        Class[] classArray = new Class[argumentObjects.size()];
+        for (int i = 0; i < argumentObjects.size(); i++)
+            classArray[i] = argumentObjects.get(i).getClass();
+
+        // Invoke method
+        // Find the appropriate event and invoke it
+        try
+        {
+            Method invokeMethod = instance.getClass().getMethod(methodName, classArray);
+            return invokeMethod.invoke(instance, argumentObjects.toArray());
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error at invocation of native method " + methodName);
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public void visit(StartNode node)
     {
@@ -65,27 +95,6 @@ public class InterpretationVisitor extends VisitorBase
 
             visit(methodDeclaration.getBlockNode());
         }
-    }
-
-    public Object visit(MultiplicationExpressionNode node)
-    {
-        Object left  = visit(node.getLeftChild());
-        Object right = visit(node.getRightChild());
-
-        if (node.isType(Type.NumberType))
-        {
-            switch (node.getOperator().getKind())
-            {
-                case ArithmeticOperator.MULTIPLICATION:
-                    return (double) left * (double) right;
-                case ArithmeticOperator.DIVISION:
-                    return (double) left / (double) right;
-                case ArithmeticOperator.MODULO:
-                    return (double) left % (double) right;
-            }
-        }
-
-        return null;
     }
 
     public Object visit(IdentifierReferencingNode node)
@@ -136,13 +145,13 @@ public class InterpretationVisitor extends VisitorBase
     public Object visit(MethodInvocationNode node)
     {
         MethodDeclarationNode methodDeclaration = node.getReferencingDeclaration();
+        // Handle native method call
         BlockNode blockNode = methodDeclaration.getBlockNode();
         if (blockNode == null)
         {
-            if (node.getReference().toString().equals("debug"))
-                System.out.println("Interpreted: " + visit(node.getActualArguments().get(0)));
+            String methodName = ((IdentifierReferencingNode) methodDeclaration.getReference()).getText();
 
-            return null;
+            return callNative(methodName, _program, node.getActualArguments());
         }
 
         // Create new map of variables for method invocation
@@ -232,6 +241,7 @@ public class InterpretationVisitor extends VisitorBase
 
         return null;
     }
+
     public Object visit(ReturnNode node)
     {
         if (node.hasChild())
@@ -240,13 +250,21 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
-    // not correct
+    // todo: verify correctness
     public Object visit(EqualExpressionNode node)
     {
         Object left  = visit(node.getLeftChild());
         Object right = visit(node.getRightChild());
 
-        return left.equals(right);
+        switch (node.getOperator().getKind())
+        {
+            case LogicalOperator.EQUALS:
+                return left.equals(right);
+            case LogicalOperator.NOT_EQUALS:
+                return !left.equals(right);
+        }
+
+        return false;
     }
 
     public Object visit(AdditionExpressionNode node)
@@ -272,6 +290,27 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
+    public Object visit(MultiplicationExpressionNode node)
+    {
+        Object left  = visit(node.getLeftChild());
+        Object right = visit(node.getRightChild());
+
+        if (node.isType(Type.NumberType))
+        {
+            switch (node.getOperator().getKind())
+            {
+                case ArithmeticOperator.MULTIPLICATION:
+                    return (double) left * (double) right;
+                case ArithmeticOperator.DIVISION:
+                    return (double) left / (double) right;
+                case ArithmeticOperator.MODULO:
+                    return (double) left % (double) right;
+            }
+        }
+
+        return null;
+    }
+
     public Object visit(ForEachNode node)
     {
         String localVariableName = ((IdentifierReferencingNode) node.getReference()).getText();
@@ -291,10 +330,7 @@ public class InterpretationVisitor extends VisitorBase
 
             // Consume flags
             if (this._continue)
-            {
                 this._continue = false;
-                continue;
-            }
             else if (this._break)
             {
                 this._break = false;
@@ -358,10 +394,7 @@ public class InterpretationVisitor extends VisitorBase
 
             // Consume flags
             if (this._continue)
-            {
                 this._continue = false;
-                continue;
-            }
             else if (this._break)
             {
                 this._break = false;

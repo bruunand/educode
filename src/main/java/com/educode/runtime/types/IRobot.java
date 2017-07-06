@@ -11,7 +11,7 @@ public interface IRobot extends IEntity
     String getProgramName();
     void say(String text) throws InterruptedException;
     void explode(double strength) throws InterruptedException;
-    void setWorldTime(double time) throws InterruptedException;
+    void setWorldTime(Double time) throws InterruptedException;
     MinecraftEntity getOwner();
     List<MinecraftEntity> getNearbyEntities() throws InterruptedException;
     double getDistanceTo(MinecraftEntity entity);
