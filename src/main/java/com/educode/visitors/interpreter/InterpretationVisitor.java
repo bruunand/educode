@@ -4,7 +4,9 @@ import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpressionNode;
 import com.educode.nodes.expression.MultiplicationExpressionNode;
 import com.educode.nodes.expression.RangeNode;
+import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.EqualExpressionNode;
+import com.educode.nodes.expression.logic.NegateNode;
 import com.educode.nodes.expression.logic.RelativeExpressionNode;
 import com.educode.nodes.literal.BoolLiteralNode;
 import com.educode.nodes.literal.CoordinatesLiteralNode;
@@ -211,6 +213,25 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
+    public Object visit(NegateNode node)
+    {
+        return !((boolean) visit(node.getChild()));
+    }
+
+    public Object visit(UnaryMinusNode node)
+    {
+        Object childResult = visit(node.getChild());
+
+        if (childResult instanceof Double)
+            return ((Double) childResult) * -1;
+        else if (childResult instanceof Coordinates)
+        {
+            Coordinates coordinates = (Coordinates) childResult;
+            return new Coordinates(coordinates.getX() * -1, coordinates.getY() * -1, coordinates.getZ() * -1);
+        }
+
+        return null;
+    }
     public Object visit(ReturnNode node)
     {
         if (node.hasChild())

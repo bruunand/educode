@@ -47,8 +47,8 @@ public class Main
         /*if (sv.getSymbolTableHandler().hasErrors())
             return;*/
 
-        // Perform optimisations
-        startNode.accept(new OptimisationVisitor());
+        // Perform optimisations - Disabled, optimises some constant variables falsely
+        // startNode.accept(new OptimisationVisitor());
 
         // Pretty print
         System.out.println(startNode.accept(new PrintVisitor()));
