@@ -16,6 +16,7 @@ import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
+import com.educode.nodes.referencing.StructReferencingNode;
 import com.educode.nodes.statement.*;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
@@ -32,6 +33,7 @@ import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -85,7 +87,12 @@ public class InterpretationVisitor extends VisitorBase
 
     public void visit(ProgramNode node)
     {
-        // Register global variables, todo
+        // Register global variables
+        for (VariableDeclarationNode variableDeclaration : node.getVariableDeclarations())
+            visit(variableDeclaration);
+
+        // Register robot (which is just a reference to the program)
+        this._globalVariables.put("robot", _program);
 
         // Get main method
         for (MethodDeclarationNode methodDeclaration : node.getMethodDeclarations())
@@ -267,6 +274,7 @@ public class InterpretationVisitor extends VisitorBase
         return false;
     }
 
+
     public Object visit(AdditionExpressionNode node)
     {
         Object left  = visit(node.getLeftChild());
@@ -344,10 +352,42 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
+    public Object visit(StructReferencingNode node)
+    {
+        Object leftInstance = visit(node.getLeftChild());
+        if (node.getRightChild() instanceof MethodInvocationNode)
+        {
+            String methodName = ((IdentifierReferencingNode) ((MethodInvocationNode) node.getRightChild()).getReferencingDeclaration().getReference()).getText();
+
+            return callNative(methodName, leftInstance, ((MethodInvocationNode) node.getRightChild()).getActualArguments());
+        }
+        else if (node.getRightChild() instanceof IdentifierReferencingNode)
+        {
+            String fieldName = ((IdentifierReferencingNode) node.getRightChild()).getText();
+
+            try
+            {
+                Field field = leftInstance.getClass().getField(fieldName);
+                return field.get(leftInstance);
+            }
+            catch (Exception e)
+            {
+                System.out.println("Could not retrieve contents of field " + fieldName);
+            }
+        }
+
+        return null;
+    }
     public Object visit(VariableDeclarationNode node)
     {
         if (node.getReference() instanceof IdentifierReferencingNode)
-            this._localVariables.put(((IdentifierReferencingNode) node.getReference()).getText(), null);
+        {
+            String variableName = ((IdentifierReferencingNode) node.getReference()).getText();
+            if (node.isDeclaredGlobally())
+                this._globalVariables.put(variableName, null);
+            else
+                this._localVariables.put(variableName, null);
+        }
 
         if (node.hasChild())
             return visit(node.getChild());
@@ -357,9 +397,14 @@ public class InterpretationVisitor extends VisitorBase
 
     public Object visit(AssignmentNode node)
     {
+        // todo fix assignments to fields
+        // todo fix assignments to arrays
         Object expression = visit(node.getChild());
         if (node.getReference() instanceof IdentifierReferencingNode)
+        {
+            // todo fix global assignments
             this._localVariables.put(((IdentifierReferencingNode) node.getReference()).getText(), expression);
+        }
 
         return expression;
     }
