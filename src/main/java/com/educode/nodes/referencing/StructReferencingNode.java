@@ -3,6 +3,7 @@ package com.educode.nodes.referencing;
 import com.educode.nodes.ISingleLineStatement;
 import com.educode.nodes.base.BinaryNode;
 import com.educode.nodes.base.Node;
+import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.visitors.VisitorBase;
 
 /**
@@ -23,6 +24,16 @@ public class StructReferencingNode extends BinaryNode implements IReference, ISi
     public Node getMemberName()
     {
         return this.getRightChild();
+    }
+
+    public boolean isMethodInvocation()
+    {
+        return this.getRightChild() instanceof MethodInvocationNode;
+    }
+
+    public boolean isFieldReference()
+    {
+        return this.getRightChild() instanceof IdentifierReferencingNode;
     }
 
     @Override

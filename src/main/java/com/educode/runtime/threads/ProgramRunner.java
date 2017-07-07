@@ -1,16 +1,20 @@
 package com.educode.runtime.threads;
 
 import com.educode.minecraft.handler.EventHandler;
+import com.educode.nodes.ungrouped.StartNode;
 import com.educode.runtime.ProgramBase;
+import com.educode.visitors.interpreter.InterpretationVisitor;
 
 /* This class ensures that any exceptions will be caught and that the entity is removed in the end */
 public class ProgramRunner extends Thread
 {
 	private final ProgramBase _program;
-	
-	public ProgramRunner(ProgramBase program)
+	private final StartNode _startNode;
+
+	public ProgramRunner(ProgramBase program, StartNode startNode)
 	{
 		this._program = program;
+		this._startNode = startNode;
 	}
 	
 	public void run()
@@ -18,7 +22,7 @@ public class ProgramRunner extends Thread
 		try
 		{
 			_program.say("Program compiled successfully!");
-			_program.main();
+			new InterpretationVisitor(this._program).visit(this._startNode);
 		}
 		catch (InterruptedException e)
 		{

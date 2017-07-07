@@ -5,9 +5,7 @@ import com.educode.nodes.expression.AdditionExpressionNode;
 import com.educode.nodes.expression.MultiplicationExpressionNode;
 import com.educode.nodes.expression.RangeNode;
 import com.educode.nodes.expression.UnaryMinusNode;
-import com.educode.nodes.expression.logic.EqualExpressionNode;
-import com.educode.nodes.expression.logic.NegateNode;
-import com.educode.nodes.expression.logic.RelativeExpressionNode;
+import com.educode.nodes.expression.logic.*;
 import com.educode.nodes.literal.BoolLiteralNode;
 import com.educode.nodes.literal.CoordinatesLiteralNode;
 import com.educode.nodes.literal.NumberLiteralNode;
@@ -15,6 +13,7 @@ import com.educode.nodes.literal.StringLiteralNode;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
+import com.educode.nodes.referencing.ArrayReferencingNode;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.referencing.StructReferencingNode;
 import com.educode.nodes.statement.*;
@@ -25,7 +24,6 @@ import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.runtime.ProgramBase;
-import com.educode.runtime.ProgramImpl;
 import com.educode.runtime.types.Coordinates;
 import com.educode.runtime.types.ExtendedList;
 import com.educode.types.ArithmeticOperator;
@@ -33,9 +31,6 @@ import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,12 +41,17 @@ import java.util.List;
 public class InterpretationVisitor extends VisitorBase
 {
     private HashMap<String, Object> _localVariables = new HashMap<>();
-    private HashMap<String, Object> _globalVariables = new HashMap<>();
+    private final HashMap<String, Object> _globalVariables = new HashMap<>();
 
-    private ProgramBase _program = new ProgramImpl();
+    private final ProgramBase _program;
 
     // Flags
     private boolean _continue = false, _break = false;
+
+    public InterpretationVisitor(ProgramBase program)
+    {
+        this._program = program;
+    }
 
     private Object callNative(String methodName, Object instance, List<Node> argumentNodes)
     {
@@ -69,8 +69,8 @@ public class InterpretationVisitor extends VisitorBase
         // Find the appropriate event and invoke it
         try
         {
-            Method invokeMethod = instance.getClass().getMethod(methodName, classArray);
-            return invokeMethod.invoke(instance, argumentObjects.toArray());
+            System.out.println("Invoking " + methodName);
+            return instance.getClass().getMethod(methodName, classArray).invoke(instance, argumentObjects.toArray());
         }
         catch (Exception e)
         {
@@ -94,7 +94,7 @@ public class InterpretationVisitor extends VisitorBase
         // Register robot (which is just a reference to the program)
         this._globalVariables.put("robot", _program);
 
-        // Get main method
+        // Get and run main method's block
         for (MethodDeclarationNode methodDeclaration : node.getMethodDeclarations())
         {
             if (!methodDeclaration.getIsMainMethod())
@@ -116,6 +116,16 @@ public class InterpretationVisitor extends VisitorBase
         System.out.println("Could not find " + variableName);
 
         return null; // Should not happen in accordance with semantic visitor
+    }
+
+    public Object visit(OrExpressionNode node)
+    {
+        return ((boolean) visit(node.getLeftChild())) || ((boolean) visit(node.getRightChild()));
+    }
+
+    public Object visit(AndExpressionNode node)
+    {
+        return ((boolean) visit(node.getLeftChild())) && ((boolean) visit(node.getRightChild()));
     }
 
     public Object visit(IfNode node)
@@ -180,7 +190,7 @@ public class InterpretationVisitor extends VisitorBase
         }
 
         // Save old local variables while executing block
-        HashMap oldLocalVariables = this._localVariables;
+        HashMap<String, Object> oldLocalVariables = this._localVariables;
         this._localVariables = newLocalVariables;
 
         // Invoke the method by visiting its block
@@ -224,6 +234,8 @@ public class InterpretationVisitor extends VisitorBase
             Object result = visit(subNode);
             if (result instanceof JumpFlag)
                 return result;
+
+            // todo implement event check here
         }
 
         return null;
@@ -323,7 +335,7 @@ public class InterpretationVisitor extends VisitorBase
     {
         String localVariableName = ((IdentifierReferencingNode) node.getReference()).getText();
 
-        ExtendedList<Object> list = (ExtendedList<Object>) visit(node.getLeftChild());
+        ExtendedList list = (ExtendedList) visit(node.getLeftChild());
         for (Object object : list)
         {
             // Put object into local variable
@@ -352,23 +364,27 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
+    public Object visit(ArrayReferencingNode node)
+    {
+        return ((ExtendedList) visit(node.getLeftChild())).getItemAt((double) visit(node.getRightChild()));
+    }
+
     public Object visit(StructReferencingNode node)
     {
         Object leftInstance = visit(node.getLeftChild());
-        if (node.getRightChild() instanceof MethodInvocationNode)
+        if (node.isMethodInvocation())
         {
             String methodName = ((IdentifierReferencingNode) ((MethodInvocationNode) node.getRightChild()).getReferencingDeclaration().getReference()).getText();
 
             return callNative(methodName, leftInstance, ((MethodInvocationNode) node.getRightChild()).getActualArguments());
         }
-        else if (node.getRightChild() instanceof IdentifierReferencingNode)
+        else if (node.isFieldReference())
         {
             String fieldName = ((IdentifierReferencingNode) node.getRightChild()).getText();
 
             try
             {
-                Field field = leftInstance.getClass().getField(fieldName);
-                return field.get(leftInstance);
+                return leftInstance.getClass().getField(fieldName).get(leftInstance);
             }
             catch (Exception e)
             {
@@ -378,6 +394,7 @@ public class InterpretationVisitor extends VisitorBase
 
         return null;
     }
+
     public Object visit(VariableDeclarationNode node)
     {
         if (node.getReference() instanceof IdentifierReferencingNode)
@@ -397,13 +414,35 @@ public class InterpretationVisitor extends VisitorBase
 
     public Object visit(AssignmentNode node)
     {
-        // todo fix assignments to fields
-        // todo fix assignments to arrays
         Object expression = visit(node.getChild());
         if (node.getReference() instanceof IdentifierReferencingNode)
         {
-            // todo fix global assignments
-            this._localVariables.put(((IdentifierReferencingNode) node.getReference()).getText(), expression);
+            String variableName = ((IdentifierReferencingNode) node.getReference()).getText();
+
+            if (this._localVariables.containsKey(variableName))
+                this._localVariables.put(variableName, expression);
+            else if (this._globalVariables.containsKey(variableName))
+                this._globalVariables.put(variableName, expression);
+        }
+        else if (node.getReference() instanceof StructReferencingNode)
+        {
+            Object leftInstance = visit(((StructReferencingNode) node.getReference()).getObjectName());
+            String fieldName = ((IdentifierReferencingNode) visit(((StructReferencingNode) node.getReference()).getMemberName())).getText();
+
+            try
+            {
+                leftInstance.getClass().getField(fieldName).set(leftInstance, expression);
+            }
+            catch (Exception e)
+            {
+                System.out.println("Unable to set contents of field " + fieldName);
+                e.printStackTrace();
+            }
+        }
+        else if (node.getReference() instanceof ArrayReferencingNode)
+        {
+            ExtendedList arrayObject = (ExtendedList) visit(((ArrayReferencingNode) node.getReference()).getLeftChild());
+            arrayObject.set((int) visit(((ArrayReferencingNode) node.getReference()).getRightChild()), expression);
         }
 
         return expression;

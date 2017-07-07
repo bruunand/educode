@@ -269,7 +269,7 @@ public abstract class ProgramBase implements IRobot, IProgramBase
             return false;
 
         executeOnTick(() -> _robot.attackEntity(entity.getWrappedEntity()));
-        wait(500);
+        wait(500.0);
 
         return true;
     }
@@ -351,14 +351,15 @@ public abstract class ProgramBase implements IRobot, IProgramBase
     {
         boolean result = (boolean) executeOnTick(() ->
         {
+            System.out.println("clear path");
             _robot.getNavigator().clearPathEntity();
+            System.out.println("get path");
             Path path = _robot.getNavigator().getPathToPos(pos);
-            if (path == null)
-                return false;
-            return _robot.getNavigator().setPath(_robot.getNavigator().getPathToPos(pos), 0.5D);
+            System.out.println("walk path");
+            return path != null && _robot.getNavigator().setPath(path, 0.5D);
         });
 
-        wait(500);
+        wait(500.0);
         return result;
     }
 
@@ -488,7 +489,7 @@ public abstract class ProgramBase implements IRobot, IProgramBase
         });
 
         if (blockDestroyed)
-            wait(500);
+            wait(500.0);
     }
 
     public void mineBlock(Coordinates position) throws InterruptedException

@@ -4,11 +4,11 @@ import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.parsing.ParserHelper;
+import com.educode.runtime.ProgramImpl;
 import com.educode.visitors.PrintVisitor;
 import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
 import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
 import com.educode.visitors.interpreter.InterpretationVisitor;
-import com.educode.visitors.optimisation.OptimisationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 
 import java.lang.reflect.InvocationTargetException;
@@ -54,7 +54,7 @@ public class Main
         System.out.println(startNode.accept(new PrintVisitor()));
 
         // Interpret
-        startNode.accept(new InterpretationVisitor());
+        startNode.accept(new InterpretationVisitor(new ProgramImpl()));
         System.out.println("Done interpreting");
         System.exit(0);
 

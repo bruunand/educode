@@ -3,13 +3,11 @@ package com.educode.minecraft.command;
 import com.educode.errorhandling.ErrorMessage;
 import com.educode.events.achievements.AchievementEvent;
 import com.educode.minecraft.CompilerMod;
-import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.parsing.ParserHelper;
 import com.educode.runtime.ProgramBase;
+import com.educode.runtime.ProgramImpl;
 import com.educode.runtime.threads.ProgramRunner;
-import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
-import com.educode.visitors.optimisation.OptimisationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
@@ -89,7 +87,7 @@ public class CommandRun implements ICommand
             if (semanticVisitor.getSymbolTableHandler().hasErrors())
                 throw new Exception("Could not compile source program due to contextual constraint errors.");
 
-            // Optimise code
+            /* Optimise code
             startNode.accept(new OptimisationVisitor());
 
             // Generate Java code
@@ -97,7 +95,7 @@ public class CommandRun implements ICommand
             startNode.accept(javaVisitor);
 
             // Compile and main Java
-            Class<?> compiledClass = new CustomJavaCompiler().compile(programName);
+            Class<?> compiledClass = new CustomJavaCompiler().compile(programName);*/
 
             int instances = 1;
             if (args.length > 1)
@@ -106,8 +104,9 @@ public class CommandRun implements ICommand
             // Run designated amount of instances
             for (int i = 0; i < instances; i++)
             {
-                ProgramBase program = (ProgramBase) compiledClass.newInstance();
-                ProgramRunner programThread = new ProgramRunner(program);
+                //ProgramBase program = (ProgramBase) compiledClass.newInstance();
+                ProgramBase program = new ProgramImpl();
+                ProgramRunner programThread = new ProgramRunner(program, startNode);
                 program.init(programName, programThread, server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions());
 
                 // Run program in separate thread
