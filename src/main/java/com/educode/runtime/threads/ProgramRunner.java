@@ -21,7 +21,7 @@ public class ProgramRunner extends Thread
 	{
 		try
 		{
-			_program.say("Program compiled successfully!");
+			this._program.say("Program compiled successfully!");
 			new InterpretationVisitor(this._program).visit(this._startNode);
 		}
 		catch (InterruptedException e)

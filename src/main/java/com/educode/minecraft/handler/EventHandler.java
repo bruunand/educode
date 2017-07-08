@@ -1,19 +1,17 @@
 package com.educode.minecraft.handler;
 
+import com.educode.events.Broadcaster;
 import com.educode.events.communication.ChatMessageEvent;
 import com.educode.events.entity.EntityDeathEvent;
-import com.educode.runtime.IExecutable;
-import com.educode.runtime.ProgramBase;
-import com.educode.runtime.TickCommand;
 import com.educode.minecraft.CompilerMod;
 import com.educode.minecraft.gui.GuiProgramEditor;
 import com.educode.minecraft.networking.MessageOpenEditor;
-import com.educode.events.Broadcaster;
+import com.educode.runtime.IExecutable;
+import com.educode.runtime.ProgramBase;
+import com.educode.runtime.TickCommand;
 import com.educode.runtime.types.MinecraftEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.ServerChatEvent;
@@ -93,14 +91,15 @@ public class EventHandler
         {
             Iterator<ProgramBase> iterator = CompilerMod.RUNNING_PROGRAMS.iterator();
 
+            int count = 0;
             while (iterator.hasNext())
             {
+                count++;
                 ProgramBase program = iterator.next();
 
                 // Check if threads are running
                 boolean mainThreadRunning  = program.getMainThread() != null && program.getMainThread().isAlive();
-                boolean eventThreadRunning = program.getEventThread() != null && program.getEventThread().isAlive();
-                if (!(mainThreadRunning || eventThreadRunning))
+                if (!mainThreadRunning)
                     program.getRobot().setDead();
 
                 if (program.getRobot().isDead)
@@ -117,7 +116,7 @@ public class EventHandler
                 // Poll command
                 TickCommand command = program.pollCommand();
                 if (command == null)
-                    return;
+                    continue;
 
                 // Execute and notify on run time error
                 try

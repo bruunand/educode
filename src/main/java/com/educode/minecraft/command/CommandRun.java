@@ -75,6 +75,8 @@ public class CommandRun implements ICommand
 
         try
         {
+            long parsingStart = System.currentTimeMillis();
+
             // Parse source program
             StartNode startNode =  ParserHelper.parse( programName + ".educ");
             
@@ -88,15 +90,8 @@ public class CommandRun implements ICommand
             if (semanticVisitor.getSymbolTableHandler().hasErrors())
                 throw new Exception("Could not compile source program due to contextual constraint errors.");
 
-            /* Optimise code
-            startNode.accept(new OptimisationVisitor());
-
-            // Generate Java code
-            JavaCodeGenerationVisitor javaVisitor = new JavaCodeGenerationVisitor();
-            startNode.accept(javaVisitor);
-
-            // Compile and main Java
-            Class<?> compiledClass = new CustomJavaCompiler().compile(programName);*/
+            // Debug parsing time
+            System.out.println("Parsing/analysis time: " + (System.currentTimeMillis() - parsingStart));
 
             int instances = 1;
             if (args.length > 1)
@@ -110,14 +105,14 @@ public class CommandRun implements ICommand
                 ProgramRunner programThread = new ProgramRunner(program, startNode);
                 program.init(programName, programThread, server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions(), ((ProgramNode) startNode.getRightChild()).getMethodDeclarations());
 
-                // Run program in separate thread
-                programThread.start();
-
                 // Add to running programs
                 synchronized (CompilerMod.RUNNING_PROGRAMS)
                 {
                     CompilerMod.RUNNING_PROGRAMS.add(program);
                 }
+
+                // Run program in separate thread
+                programThread.start();
             }
 
             //Give first run achievement

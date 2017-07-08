@@ -58,6 +58,7 @@ public abstract class ProgramBase implements IRobot, IProgramBase
 
     public abstract void main() throws InterruptedException;
 
+    private static int gbl = 0;
     public void init(String programName, Thread mainThread, World world, EntityPlayer player, List<EventDefinitionNode> eventDefinitions, List<MethodDeclarationNode> methodDeclarations)
     {
         this._world = world;
@@ -68,7 +69,7 @@ public abstract class ProgramBase implements IRobot, IProgramBase
 
         // Set threads and create thread for event invoker
         this._mainThread = mainThread;
-        this._mainThread.setName(String.format("ProgramRunner/%s", getProgramName()));
+        this._mainThread.setName(String.format("ProgramRunner/%s/%s", getProgramName(), gbl++));
 
         // Spawn robot
         this._robot = new EntityRobot(this, _world, player);
@@ -171,6 +172,7 @@ public abstract class ProgramBase implements IRobot, IProgramBase
 
     public void wait(Double time) throws InterruptedException
     {
+        System.out.println("Wait requested..");
         waitInternal(time.longValue());
     }
 
