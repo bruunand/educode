@@ -1,5 +1,6 @@
 package com.educode.visitors.interpreter;
 
+import com.educode.events.EventInvocationRequest;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpressionNode;
 import com.educode.nodes.expression.MultiplicationExpressionNode;
@@ -51,6 +52,7 @@ public class InterpretationVisitor extends VisitorBase
     public InterpretationVisitor(ProgramBase program)
     {
         this._program = program;
+        this._program.setInterpreter(this);
     }
 
     private Object callNative(String methodName, Object instance, List<Node> argumentNodes)
@@ -80,6 +82,46 @@ public class InterpretationVisitor extends VisitorBase
         }
     }
 
+    public Object invokeEvent(EventInvocationRequest event)
+    {
+        return callLocal(event.getMethodDeclaration(), event.getArguments());
+    }
+
+    private Object callLocal(MethodDeclarationNode declaration, List<Object> arguments)
+    {
+        // Create new map of variables for method invocation
+        HashMap<String, Object> newLocalVariables = new HashMap<>();
+
+        // Put actual arguments onto HashMap
+        if (declaration.hasParameterList())
+        {
+            List<Node> formalArguments = declaration.getParameterList().getChildren();
+
+            // Evaluate actual arguments left to right
+            for (int i = 0; i < formalArguments.size(); i++)
+            {
+                String argumentName = ((IdentifierReferencingNode)((ParameterNode) formalArguments.get(i)).getReference()).getText();
+                newLocalVariables.put(argumentName, arguments.get(i));
+            }
+        }
+
+        // Save old local variables while executing block
+        HashMap<String, Object> oldLocalVariables = this._localVariables;
+        this._localVariables = newLocalVariables;
+
+        // Invoke the method by visiting its block
+        Object visitResult = visit(declaration.getBlockNode());
+
+        // Restore old local variables
+        this._localVariables = oldLocalVariables;
+
+        // If visit result is a return element, return its value
+        if (visitResult instanceof ReturnFlag)
+            return ((ReturnFlag) visitResult).getContained();
+
+        return visitResult;
+    }
+
     public void visit(StartNode node)
     {
         visit(node.getRightChild());
@@ -101,6 +143,22 @@ public class InterpretationVisitor extends VisitorBase
                 continue;
 
             visit(methodDeclaration.getBlockNode());
+        }
+
+        // Listen for events
+        if (!_program.getEventDefinitions().isEmpty())
+        {
+            while (true)
+            {
+                try
+                {
+                    invokeEvent(this._program.getInterpretedEventQueue().take());
+                }
+                catch (InterruptedException e)
+                {
+                    break;
+                }
+            }
         }
     }
 
@@ -189,21 +247,13 @@ public class InterpretationVisitor extends VisitorBase
             }
         }
 
-        // Save old local variables while executing block
-        HashMap<String, Object> oldLocalVariables = this._localVariables;
-        this._localVariables = newLocalVariables;
+        // Create argument list
+        List<Node> argumentNodes = node.getActualArguments();
+        List<Object> argumentValues = new ArrayList<>(argumentNodes.size());
+        for (Node argumentNode : argumentNodes)
+            argumentValues.add(visit(argumentNode));
 
-        // Invoke the method by visiting its block
-        Object visitResult = visit(blockNode);
-
-        // Restore old local variables
-        this._localVariables = oldLocalVariables;
-
-        // If visit result is a return element, return its value
-        if (visitResult instanceof ReturnFlag)
-            return ((ReturnFlag) visitResult).getContained();
-
-        return visitResult;
+        return callLocal(methodDeclaration, argumentValues);
     }
 
     public Object visit(RangeNode node)
@@ -235,7 +285,9 @@ public class InterpretationVisitor extends VisitorBase
             if (result instanceof JumpFlag)
                 return result;
 
-            // todo implement event check here
+            // Check if there are any events waiting
+            if (!this._program.getInterpretedEventQueue().isEmpty())
+                invokeEvent(this._program.getInterpretedEventQueue().poll());
         }
 
         return null;

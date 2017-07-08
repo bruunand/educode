@@ -47,7 +47,7 @@ public class Broadcaster
                     if (receivedEvent.getChannel() != channel)
                         continue;
 
-                    EventInvoker.invokeByName(program, eventDef.getMethodName(), new MinecraftEntity(sender), message);
+                    EventInvoker.invokeByName(program, eventDef.getMethodName(), eventDef.getEventType(), new MinecraftEntity(sender), message);
                 }
             }
         }

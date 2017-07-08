@@ -3,6 +3,7 @@ package com.educode.minecraft.command;
 import com.educode.errorhandling.ErrorMessage;
 import com.educode.events.achievements.AchievementEvent;
 import com.educode.minecraft.CompilerMod;
+import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.parsing.ParserHelper;
 import com.educode.runtime.ProgramBase;
@@ -107,7 +108,7 @@ public class CommandRun implements ICommand
                 //ProgramBase program = (ProgramBase) compiledClass.newInstance();
                 ProgramBase program = new ProgramImpl();
                 ProgramRunner programThread = new ProgramRunner(program, startNode);
-                program.init(programName, programThread, server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions());
+                program.init(programName, programThread, server.getEntityWorld(), (EntityPlayer) sender, semanticVisitor.getEventDefinitions(), ((ProgramNode) startNode.getRightChild()).getMethodDeclarations());
 
                 // Run program in separate thread
                 programThread.start();

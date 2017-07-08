@@ -1,10 +1,12 @@
 package com.educode.runtime;
 
 import com.educode.events.Broadcaster;
+import com.educode.events.EventInvocationRequest;
 import com.educode.minecraft.entity.EntityRobot;
+import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.ungrouped.EventDefinitionNode;
-import com.educode.runtime.threads.EventInvoker;
 import com.educode.runtime.types.*;
+import com.educode.visitors.interpreter.InterpretationVisitor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,6 +20,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import scala.actors.threadpool.Arrays;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -26,17 +29,21 @@ import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
 
 public abstract class ProgramBase implements IRobot, IProgramBase
 {
     // Queues
     private final Queue<TickCommand> _commandQueue = new ConcurrentLinkedQueue<>();
     private final BlockingQueue<EventInvocation> _eventQueue = new ArrayBlockingQueue<>(128); // Has a maximum capacity of 128 event invocations
+    private final BlockingQueue<EventInvocationRequest> _interpretedEventQueue = new ArrayBlockingQueue<>(128); // Has a maximum capacity of 128 event invocations
 
     // General
     private final Random _rand = new Random();
     private List<EventDefinitionNode> _eventDefinitions;
+    private List<MethodDeclarationNode> _methodDeclarations;
     private String _programName;
+    private InterpretationVisitor _interpreter;
 
     // Minecraft related
     private World _world;
@@ -51,28 +58,27 @@ public abstract class ProgramBase implements IRobot, IProgramBase
 
     public abstract void main() throws InterruptedException;
 
-    public void init(String programName, Thread mainThread, World world, EntityPlayer player, List<EventDefinitionNode> eventDefinitions)
+    public void init(String programName, Thread mainThread, World world, EntityPlayer player, List<EventDefinitionNode> eventDefinitions, List<MethodDeclarationNode> methodDeclarations)
     {
         this._world = world;
         this._player = player;
         this._eventDefinitions = eventDefinitions;
+        this._methodDeclarations = methodDeclarations;
         this._programName = programName;
 
         // Set threads and create thread for event invoker
         this._mainThread = mainThread;
         this._mainThread.setName(String.format("ProgramRunner/%s", getProgramName()));
 
-        if (!eventDefinitions.isEmpty())
-        {
-            this._eventThread = new EventInvoker(this);
-            this._eventThread.setName(String.format("EventInvoker/%s", getProgramName()));
-            this._eventThread.start();
-        }
-
         // Spawn robot
         this._robot = new EntityRobot(this, _world, player);
         this._robot.setSpawnPosition(player);
         this._world.spawnEntity(_robot);
+    }
+
+    public void setInterpreter(InterpretationVisitor interpreter)
+    {
+        this._interpreter = interpreter;
     }
 
     public Thread getEventThread()
@@ -95,6 +101,11 @@ public abstract class ProgramBase implements IRobot, IProgramBase
         return this._eventQueue;
     }
 
+    public BlockingQueue<EventInvocationRequest> getInterpretedEventQueue()
+    {
+        return this._interpretedEventQueue;
+    }
+
     public TickCommand pollCommand()
     {
         return _commandQueue.poll();
@@ -103,6 +114,11 @@ public abstract class ProgramBase implements IRobot, IProgramBase
     public List<EventDefinitionNode> getEventDefinitions()
     {
         return this._eventDefinitions;
+    }
+
+    public List<MethodDeclarationNode> getMethodDeclarations()
+    {
+        return this._methodDeclarations;
     }
 
     public EntityPlayer getPlayer()
@@ -155,7 +171,26 @@ public abstract class ProgramBase implements IRobot, IProgramBase
 
     public void wait(Double time) throws InterruptedException
     {
-        Thread.sleep(time.longValue());
+        waitInternal(time.longValue());
+    }
+
+    private void waitInternal(long time) throws InterruptedException
+    {
+        long sleepStarted = System.currentTimeMillis();
+        System.out.println("Sleeping for " + time);
+
+        // Use the opportunity to wait for events
+        EventInvocationRequest eventRequest = this._interpretedEventQueue.poll(time, TimeUnit.MILLISECONDS);
+        if (eventRequest != null)
+        {
+            // Invoke event request
+            this._interpreter.invokeEvent(eventRequest);
+
+            // Calculate remaining sleep time
+            long remainingSleepTime =  (sleepStarted + time) - System.currentTimeMillis();
+            if (remainingSleepTime > 0)
+                waitInternal(remainingSleepTime);
+        }
     }
 
     @Override
@@ -527,5 +562,10 @@ public abstract class ProgramBase implements IRobot, IProgramBase
         }
 
         return false;
+    }
+
+    public boolean queueEvent(MethodDeclarationNode methodDeclaration, Object[] args)
+    {
+        return getInterpretedEventQueue().offer(new EventInvocationRequest(methodDeclaration, Arrays.asList(args)));
     }
 }

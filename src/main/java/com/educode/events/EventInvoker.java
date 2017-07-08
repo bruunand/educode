@@ -1,5 +1,7 @@
 package com.educode.events;
 
+import com.educode.nodes.method.MethodDeclarationNode;
+import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.ungrouped.EventDefinitionNode;
 import com.educode.runtime.ProgramBase;
 
@@ -22,7 +24,20 @@ public class EventInvoker
             if (eventDef.getEventType().getClass() != eventType)
                 continue;
 
-            EventInvoker.invokeByName(program, eventDef.getMethodName(), args);
+            invokeByName(program, eventDef.getMethodName(), eventDef.getEventType(), args);
+            //invokeByName(program, eventDef.getMethodName(), args);
+        }
+    }
+
+    static void invokeByName(ProgramBase program, String methodName, EventTypeBase eventType, Object ... args)
+    {
+        for (MethodDeclarationNode methodDeclaration : program.getMethodDeclarations())
+        {
+            String currentMethodName = ((IdentifierReferencingNode) methodDeclaration.getReference()).getText();
+            if (!currentMethodName.equals(methodName) || !eventType.matchesWithDeclaration(methodDeclaration))
+                continue;
+
+            program.queueEvent(methodDeclaration, args);
         }
     }
 
