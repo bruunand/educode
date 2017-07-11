@@ -181,6 +181,11 @@ public class PrintVisitor extends VisitorBase
         return String.format("Assign [%s][%s]", visit(node.getReference()), visit(node.getChild()));
     }
 
+    public Object visit(CompoundAssignmentNode node)
+    {
+        return String.format("CompoundAssign [%s][%s][%s]", visit(node.getReference()), node.getOperator(), visit(node.getChild()));
+    }
+
     public Object visit(ArithmeticExpressionNode node)
     {
         return String.format("Arithmetic [%s][Operator %s][%s]", visit(node.getLeftChild()), OperatorTranslator.toJava(node.getOperator()), visit(node.getRightChild()));

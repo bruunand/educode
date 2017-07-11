@@ -300,7 +300,7 @@ public class InterpretationVisitor extends VisitorBase
         if (node.hasChild())
             return visit(node.getChild());
 
-        return null;
+        return new JumpFlag();
     }
 
     // todo: verify correctness
@@ -489,10 +489,7 @@ public class InterpretationVisitor extends VisitorBase
 
     public Object visit(StringLiteralNode node)
     {
-        String value = node.getValue();
-        if (value != null && value.length() >= 2)
-            return value.substring(1, value.length() - 1);
-        return value;
+        return node.getValue();
     }
 
     public ReturnFlag visit(RepeatWhileNode node)

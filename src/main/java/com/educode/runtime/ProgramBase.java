@@ -217,10 +217,11 @@ public abstract class ProgramBase implements IRobot, IProgramBase
         });
     }
 
-    public void explode(double strength) throws InterruptedException
+    @Override
+    public void explode(Double strength) throws InterruptedException
     {
         boolean mobGriefingEnabled = this._world.getGameRules().getBoolean("mobGriefing");
-        executeOnTick(() -> _world.createExplosion(this._robot, getX(), getY(), getZ(), (float) strength, mobGriefingEnabled));
+        executeOnTick(() -> _world.createExplosion(this._robot, getX(), getY(), getZ(), strength.floatValue(), mobGriefingEnabled));
     }
 
     public void dropItems() throws InterruptedException
@@ -279,13 +280,13 @@ public abstract class ProgramBase implements IRobot, IProgramBase
     }
 
     @Override
-    public void broadcast(double channel, String message)
+    public void broadcast(Double channel, String message)
     {
         Broadcaster.broadcastMessage(this._robot, channel, message);
     }
 
     @Override
-    public void broadcast(double channel, MinecraftEntity entity)
+    public void broadcast(Double channel, MinecraftEntity entity)
     {
         Broadcaster.broadcastMessage(this._robot, channel, entity);
     }
@@ -326,9 +327,9 @@ public abstract class ProgramBase implements IRobot, IProgramBase
     }
 
     @Override
-    public double dropItem(String name, final double quantity) throws InterruptedException
+    public Double dropItem(String name, final Double quantity) throws InterruptedException
     {
-        return (double) executeOnTick(() -> _robot.dropInventoryItem(name, quantity));
+        return (Double) executeOnTick(() -> _robot.dropInventoryItem(name, quantity));
     }
 
     @Override
@@ -361,18 +362,18 @@ public abstract class ProgramBase implements IRobot, IProgramBase
     }
 
     @Override
-    public MinecraftItem getItemFromSlot(double index)
+    public MinecraftItem getItemFromSlot(Double index)
     {
-        int intIndex = (int) index;
+        int intIndex = index.intValue();
         if (intIndex >= this._robot.getInventory().getSizeInventory())
             return new MinecraftItem();
         return new MinecraftItem(this._robot.getInventory().getStackInSlot(intIndex));
     }
 
     @Override
-    public double getDistanceTo(MinecraftEntity entity)
+    public Double getDistanceTo(MinecraftEntity entity)
     {
-    	return _robot.getDistanceToEntity(entity.getWrappedEntity());
+    	return (double) _robot.getDistanceToEntity(entity.getWrappedEntity());
     }
 
     @Override

@@ -333,6 +333,19 @@ public class SemanticVisitor extends VisitorBase
         }
     }
 
+    public void visit(CompoundAssignmentNode node)
+    {
+        // Visit reference and children
+        node.getReference();
+        visitChildren(node);
+
+        // Get types
+        Type leftType  = node.getReference().getType();
+        Type rightType = node.getChild().getType();
+
+
+
+    }
     public void visit(AssignmentNode node)
     {
         visit(node.getReference());

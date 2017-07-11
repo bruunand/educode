@@ -722,7 +722,11 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
     {
         updateLineNumber(ctx);
 
-        return new StringLiteralNode(ctx.STRING_LITERAL().getText());
+        String value = ctx.STRING_LITERAL().getText();
+        if (value != null && value.length() >= 2)
+            value = value.substring(1, value.length() - 1);
+
+        return new StringLiteralNode(value);
     }
 
     @Override
