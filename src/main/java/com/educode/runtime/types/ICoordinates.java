@@ -12,4 +12,6 @@ public interface ICoordinates extends IBase
     void setX(double value);
     void setY(double value);
     void setZ(double value);
+
+    double distanceTo(Coordinates coords);
 }

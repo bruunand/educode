@@ -169,16 +169,19 @@ public abstract class ProgramBase implements IRobot, IProgramBase
         return false;
     }
 
+    public void waitForTick() throws InterruptedException
+    {
+        executeOnTick(() -> null);
+    }
+
     public void wait(Double time) throws InterruptedException
     {
-        System.out.println("Wait requested..");
         waitInternal(time.longValue());
     }
 
     private void waitInternal(long time) throws InterruptedException
     {
         long sleepStarted = System.currentTimeMillis();
-        System.out.println("Sleeping for " + time);
 
         // Use the opportunity to wait for events
         EventInvocationRequest eventRequest = this._interpretedEventQueue.poll(time, TimeUnit.MILLISECONDS);
@@ -218,11 +221,6 @@ public abstract class ProgramBase implements IRobot, IProgramBase
     {
         boolean mobGriefingEnabled = this._world.getGameRules().getBoolean("mobGriefing");
         executeOnTick(() -> _world.createExplosion(this._robot, getX(), getY(), getZ(), (float) strength, mobGriefingEnabled));
-    }
-
-    public void removeEntity() throws InterruptedException
-    {
-        executeOnTick(() -> _world.removeEntity(_robot));
     }
 
     public void dropItems() throws InterruptedException

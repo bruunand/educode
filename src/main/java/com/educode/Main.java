@@ -44,11 +44,6 @@ public class Main
 
         // Print any errors and warnings
         sv.getSymbolTableHandler().printMessages();
-        /*if (sv.getSymbolTableHandler().hasErrors())
-            return;*/
-
-        // Perform optimisations - Disabled, optimises some constant variables falsely
-        // startNode.accept(new OptimisationVisitor());
 
         // Pretty print
         System.out.println(startNode.accept(new PrintVisitor()));

@@ -1,6 +1,5 @@
 package com.educode.runtime.types;
 
-import com.educode.runtime.types.ICoordinates;
 import net.minecraft.util.math.BlockPos;
 
 /**
@@ -87,6 +86,12 @@ public class Coordinates implements ICoordinates
     public void setZ(double value)
     {
         this._z = value;
+    }
+
+    @Override
+    public double distanceTo(Coordinates other)
+    {
+        return Math.abs(Math.sqrt(Math.pow(this.getX() - other.getX(), 2) + Math.pow(this.getY() - other.getY(), 2) + Math.pow(this.getZ() - other.getZ(), 2)));
     }
 
     public String toString()

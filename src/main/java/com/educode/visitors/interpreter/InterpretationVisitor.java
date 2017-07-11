@@ -146,7 +146,7 @@ public class InterpretationVisitor extends VisitorBase
         }
 
         // Listen for events
-        if (!_program.getEventDefinitions().isEmpty())
+        if (_program.getEventDefinitions() != null && !_program.getEventDefinitions().isEmpty())
         {
             while (true)
             {
@@ -227,24 +227,6 @@ public class InterpretationVisitor extends VisitorBase
             String methodName = ((IdentifierReferencingNode) methodDeclaration.getReference()).getText();
 
             return callNative(methodName, _program, node.getActualArguments());
-        }
-
-        // Create new map of variables for method invocation
-        HashMap<String, Object> newLocalVariables = new HashMap<>();
-
-        // Put actual arguments onto HashMap
-        if (methodDeclaration.hasParameterList())
-        {
-            List<Node> formalArguments = methodDeclaration.getParameterList().getChildren();
-            List<Node> actualArguments = node.getActualArguments();
-
-            // Evaluate actual arguments left to right
-            for (int i = 0; i < formalArguments.size(); i++)
-            {
-                String argumentName = ((IdentifierReferencingNode)((ParameterNode) formalArguments.get(i)).getReference()).getText();
-                Object res = visit(actualArguments.get(i));
-                newLocalVariables.put(argumentName, res);
-            }
         }
 
         // Create argument list

@@ -11,5 +11,7 @@ public interface IProgramBase
 
     void wait(Double time) throws InterruptedException;
 
+    void waitForTick() throws InterruptedException;
+
     Double time();
 }
