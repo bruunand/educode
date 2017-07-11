@@ -14,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.Path;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -386,17 +385,11 @@ public abstract class ProgramBase implements IRobot, IProgramBase
 
     private boolean navigateToBlock(BlockPos pos) throws InterruptedException
     {
-        boolean result = (boolean) executeOnTick(() ->
-        {
-            System.out.println("clear path");
-            _robot.getNavigator().clearPathEntity();
-            System.out.println("get path");
-            Path path = _robot.getNavigator().getPathToPos(pos);
-            System.out.println("walk path");
-            return path != null && _robot.getNavigator().setPath(path, 0.5D);
-        });
+        boolean result = (boolean) executeOnTick(() -> this._robot.getNavigator().tryMoveToXYZ(pos.getX(), pos.getY(), pos.getZ(), 0.5D));
 
-        wait(500.0);
+        if (result)
+            wait(500.0);
+
         return result;
     }
 

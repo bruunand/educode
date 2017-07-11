@@ -194,6 +194,7 @@ object_instantiation
 event_type
     : type='robotDeath'
     | type='robotAttacked'
+    | type='robotPickedUpItem'
     | type='entityDeath'
     | type='chatMessage'
     | type=('stringMessageReceived'|'entityMessageReceived') LPAREN param=number_literal RPAREN

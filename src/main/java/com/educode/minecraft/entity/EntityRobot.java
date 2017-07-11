@@ -1,16 +1,15 @@
 package com.educode.minecraft.entity;
 
+import com.educode.events.EventInvoker;
 import com.educode.events.achievements.AchievementEvent;
 import com.educode.events.entity.robot.RobotAttackedEvent;
+import com.educode.events.entity.robot.RobotDeathEvent;
+import com.educode.events.entity.robot.RobotPickedUpItemEvent;
 import com.educode.minecraft.CompilerMod;
 import com.educode.runtime.ProgramBase;
-import com.educode.events.EventInvoker;
-import com.educode.events.entity.robot.RobotDeathEvent;
 import com.educode.runtime.types.MinecraftEntity;
-
-import net.minecraft.client.gui.GuiScreenBook;
-import net.minecraft.client.gui.inventory.GuiEditSign;
-import net.minecraft.client.renderer.entity.RenderPlayer;
+import com.educode.runtime.types.MinecraftItem;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
@@ -19,7 +18,6 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.item.ItemSign;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigateGround;
@@ -34,12 +32,10 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
-
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-import io.netty.buffer.ByteBuf;
 import javax.annotation.Nullable;
 
 // Skin credit: http://www.minecraftskins.net/redstoner
@@ -144,6 +140,9 @@ public class EntityRobot extends EntityCreature implements IWorldNameable, IEnti
             itemEntity.setDead();
         else
             localStack.setCount(retStack.getCount());
+
+        // Invoke on item pickup event
+        EventInvoker.invokeByType(this._parent, RobotPickedUpItemEvent.class, new MinecraftItem(localStack));
     }
 
     @Override

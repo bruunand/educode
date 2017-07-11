@@ -9,6 +9,7 @@ import com.educode.events.communication.StringMessageReceivedEvent;
 import com.educode.events.entity.EntityDeathEvent;
 import com.educode.events.entity.robot.RobotAttackedEvent;
 import com.educode.events.entity.robot.RobotDeathEvent;
+import com.educode.events.entity.robot.RobotPickedUpItemEvent;
 import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.NaryNode;
 import com.educode.nodes.base.Node;
@@ -125,6 +126,8 @@ public class ASTBuilder extends EduCodeBaseVisitor<Node>
                 return new RobotDeathEvent();
             case "robotAttacked":
                 return new RobotAttackedEvent();
+            case "robotPickedUpItem":
+                return new RobotPickedUpItemEvent();
             case "entityDeath":
                 return new EntityDeathEvent();
             case "chatMessage":
