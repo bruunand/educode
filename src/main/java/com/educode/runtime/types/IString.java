@@ -5,11 +5,12 @@ package com.educode.runtime.types;
  */
 public interface IString
 {
+    @NativeMethodsHelperAnnotation(useHelper = true)
     boolean contains(String string);
 
     String toUpperCase();
     String toLowerCase();
 
-    @SpecialJavaTranslation(formattedTranslation = "StringHelper.splitString(%s)")
+    @NativeMethodsHelperAnnotation(useHelper =  true)
     ExtendedList<String> split(String string);
 }

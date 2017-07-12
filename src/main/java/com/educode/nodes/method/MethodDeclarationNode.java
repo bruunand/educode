@@ -18,6 +18,8 @@ import java.util.List;
  */
 public class MethodDeclarationNode extends BinaryNode implements IReferencing
 {
+    private boolean _useHelper = false;
+
     private SpecialJavaTranslation _specialJavaTranslation;
 
     private IReference _reference;
@@ -162,5 +164,15 @@ public class MethodDeclarationNode extends BinaryNode implements IReferencing
     public boolean hasSpecialJavaTranslation()
     {
         return this._specialJavaTranslation != null;
+    }
+
+    public void setUseHelper(boolean useHelper)
+    {
+        this._useHelper = useHelper;
+    }
+
+    public boolean getUseHelper()
+    {
+        return this._useHelper;
     }
 }

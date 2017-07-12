@@ -84,9 +84,15 @@ public class InterfaceConverter
             // Insert symbol into symbol table
             Symbol inserted = newTable.addDefaultMethod(method.getName(), returnType, parameterTypes);
 
+            // Check if method is annotated with native helper
+            Annotation annotation = method.getAnnotation(NativeMethodsHelperAnnotation.class);
+            if (annotation != null)
+                ((MethodDeclarationNode) inserted.getSourceNode()).setUseHelper(((NativeMethodsHelperAnnotation) annotation).useHelper());
+
             // Check if method is annotated with special translation
             // If it is, pass it to the method declaration that was inserted into the symbol table
-            Annotation annotation = method.getAnnotation(SpecialJavaTranslation.class);
+            // todo remove
+            annotation = method.getAnnotation(SpecialJavaTranslation.class);
             if (annotation != null)
                 ((MethodDeclarationNode) inserted.getSourceNode()).setSpecialJavaTranslation((SpecialJavaTranslation) annotation);
         }

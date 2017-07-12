@@ -24,6 +24,7 @@ import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.StartNode;
+import com.educode.runtime.NativeMethodsHelper;
 import com.educode.runtime.ProgramBase;
 import com.educode.runtime.types.Coordinates;
 import com.educode.runtime.types.ExtendedList;
@@ -41,6 +42,7 @@ import java.util.List;
  */
 public class InterpretationVisitor extends VisitorBase
 {
+    private final NativeMethodsHelper _helper = new NativeMethodsHelper();
     private HashMap<String, Object> _localVariables = new HashMap<>();
     private final HashMap<String, Object> _globalVariables = new HashMap<>();
 
@@ -55,10 +57,14 @@ public class InterpretationVisitor extends VisitorBase
         this._program.setInterpreter(this);
     }
 
-    private Object callNative(String methodName, Object instance, List<Node> argumentNodes)
+    private Object callNative(MethodInvocationNode methodInvocation, Object instance, List<Node> argumentNodes)
     {
+        String methodName = ((IdentifierReferencingNode) methodInvocation.getReference()).getText();
+
         // Evaluate arguments
         List<Object> argumentObjects = new ArrayList<>(argumentNodes.size());
+        if (methodInvocation.getReferencingDeclaration().getUseHelper())
+            argumentObjects.add(instance);
         for (Node argumentNode : argumentNodes)
             argumentObjects.add(visit(argumentNode));
 
@@ -71,13 +77,12 @@ public class InterpretationVisitor extends VisitorBase
         // Find the appropriate event and invoke it
         try
         {
-            System.out.println("Invoking " + methodName);
-            return instance.getClass().getMethod(methodName, classArray).invoke(instance, argumentObjects.toArray());
+            Object useInstance = methodInvocation.getReferencingDeclaration().getUseHelper() ? _helper : instance;
+            return useInstance.getClass().getMethod(methodName, classArray).invoke(useInstance, argumentObjects.toArray());
         }
         catch (Exception e)
         {
             System.out.println("Error at invocation of native method " + methodName);
-            e.printStackTrace();
             return null;
         }
     }
@@ -223,11 +228,7 @@ public class InterpretationVisitor extends VisitorBase
         // Handle native method call
         BlockNode blockNode = methodDeclaration.getBlockNode();
         if (blockNode == null)
-        {
-            String methodName = ((IdentifierReferencingNode) methodDeclaration.getReference()).getText();
-
-            return callNative(methodName, _program, node.getActualArguments());
-        }
+            return callNative(node, _program, node.getActualArguments());
 
         // Create argument list
         List<Node> argumentNodes = node.getActualArguments();
@@ -408,9 +409,8 @@ public class InterpretationVisitor extends VisitorBase
         Object leftInstance = visit(node.getLeftChild());
         if (node.isMethodInvocation())
         {
-            String methodName = ((IdentifierReferencingNode) ((MethodInvocationNode) node.getRightChild()).getReferencingDeclaration().getReference()).getText();
-
-            return callNative(methodName, leftInstance, ((MethodInvocationNode) node.getRightChild()).getActualArguments());
+            MethodInvocationNode invocation = (MethodInvocationNode) node.getRightChild();
+            return callNative(invocation, leftInstance, invocation.getActualArguments());
         }
         else if (node.isFieldReference())
         {
