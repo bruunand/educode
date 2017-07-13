@@ -6,7 +6,7 @@ import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.ungrouped.BlockNode;
-import com.educode.runtime.types.SpecialJavaTranslation;
+import com.educode.runtime.annotations.SpecialJavaTranslation;
 import com.educode.types.Type;
 import com.educode.visitors.VisitorBase;
 

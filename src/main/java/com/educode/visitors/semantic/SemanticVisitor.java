@@ -329,7 +329,6 @@ public class SemanticVisitor extends VisitorBase
             MethodDeclarationNode referencingDeclaration = (MethodDeclarationNode) methodReference.getSourceNode();
             node.setType(referencingDeclaration.getType());
             node.setReferencingDeclaration(referencingDeclaration);
-            System.out.println("Set declaration of " + node);
         }
     }
 
@@ -466,7 +465,6 @@ public class SemanticVisitor extends VisitorBase
                 MethodDeclarationNode referencingDeclaration = (MethodDeclarationNode) symbol.getSourceNode();
                 reference.setType(referencingDeclaration.getType());
                 methodInv.setReferencingDeclaration(referencingDeclaration);
-                System.out.println("Set declaration of " + methodInv);
             }
         }
     }

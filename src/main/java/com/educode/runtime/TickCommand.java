@@ -16,13 +16,10 @@ public class TickCommand
         return _executable;
     }
 
-    synchronized Object getResult() throws InterruptedException
+    public synchronized Object getResult() throws InterruptedException
     {
-        // Wait for execution
         while (!_executed)
-        {
             wait();
-        }
 
         return _result;
     }

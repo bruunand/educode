@@ -1,4 +1,4 @@
-package com.educode.runtime.types;
+package com.educode.runtime.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface NativeMethodsHelperAnnotation
+public @interface UseNativeMethodsHelper
 {
-    boolean useHelper();
 }

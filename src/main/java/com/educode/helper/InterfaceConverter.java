@@ -1,6 +1,8 @@
 package com.educode.helper;
 
 import com.educode.nodes.method.MethodDeclarationNode;
+import com.educode.runtime.annotations.SpecialJavaTranslation;
+import com.educode.runtime.annotations.UseNativeMethodsHelper;
 import com.educode.runtime.types.*;
 import com.educode.symboltable.Symbol;
 import com.educode.symboltable.SymbolTable;
@@ -85,9 +87,9 @@ public class InterfaceConverter
             Symbol inserted = newTable.addDefaultMethod(method.getName(), returnType, parameterTypes);
 
             // Check if method is annotated with native helper
-            Annotation annotation = method.getAnnotation(NativeMethodsHelperAnnotation.class);
+            Annotation annotation = method.getAnnotation(UseNativeMethodsHelper.class);
             if (annotation != null)
-                ((MethodDeclarationNode) inserted.getSourceNode()).setUseHelper(((NativeMethodsHelperAnnotation) annotation).useHelper());
+                ((MethodDeclarationNode) inserted.getSourceNode()).setUseHelper(true);
 
             // Check if method is annotated with special translation
             // If it is, pass it to the method declaration that was inserted into the symbol table

@@ -1,16 +1,18 @@
 package com.educode.runtime.types;
 
+import com.educode.runtime.annotations.UseNativeMethodsHelper;
+
 /**
  * Created by zen on 5/2/17.
  */
 public interface IString
 {
-    @NativeMethodsHelperAnnotation(useHelper = true)
+    @UseNativeMethodsHelper
     boolean contains(String string);
 
     String toUpperCase();
     String toLowerCase();
 
-    @NativeMethodsHelperAnnotation(useHelper =  true)
-    ExtendedList<String> split(String string);
+    @UseNativeMethodsHelper
+    ExtendedList split(String string);
 }

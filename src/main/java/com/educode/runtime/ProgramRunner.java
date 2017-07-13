@@ -1,8 +1,7 @@
-package com.educode.runtime.threads;
+package com.educode.runtime;
 
 import com.educode.minecraft.handler.EventHandler;
 import com.educode.nodes.ungrouped.StartNode;
-import com.educode.runtime.ProgramBase;
 import com.educode.visitors.interpreter.InterpretationVisitor;
 
 /* This class ensures that any exceptions will be caught and that the entity is removed in the end */

@@ -7,7 +7,7 @@ public class AssignmentOperator {
     private final byte _kind;
     public final static byte ERROR = 0, NONE= 1, ADDITION = 2, SUBTRACTION = 3, MULTIPLICATION = 4, DIVISION = 5;
 
-    public AssignmentOperator(byte kind)
+    private AssignmentOperator(byte kind)
     {
         this._kind = kind;
     }
@@ -15,9 +15,7 @@ public class AssignmentOperator {
     @Override
     public boolean equals(Object o)
     {
-        if (o instanceof AssignmentOperator)
-            return ((AssignmentOperator)o)._kind == this._kind;
-        return false;
+        return o instanceof AssignmentOperator && ((AssignmentOperator) o)._kind == this._kind;
     }
 
     @Override

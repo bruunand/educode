@@ -1,4 +1,4 @@
-package com.educode.runtime.types;
+package com.educode.runtime.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

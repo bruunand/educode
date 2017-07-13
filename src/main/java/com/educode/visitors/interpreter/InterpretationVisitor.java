@@ -7,10 +7,7 @@ import com.educode.nodes.expression.MultiplicationExpressionNode;
 import com.educode.nodes.expression.RangeNode;
 import com.educode.nodes.expression.UnaryMinusNode;
 import com.educode.nodes.expression.logic.*;
-import com.educode.nodes.literal.BoolLiteralNode;
-import com.educode.nodes.literal.CoordinatesLiteralNode;
-import com.educode.nodes.literal.NumberLiteralNode;
-import com.educode.nodes.literal.StringLiteralNode;
+import com.educode.nodes.literal.*;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.method.MethodInvocationNode;
 import com.educode.nodes.method.ParameterNode;
@@ -22,6 +19,7 @@ import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
 import com.educode.nodes.ungrouped.BlockNode;
+import com.educode.nodes.ungrouped.ObjectInstantiationNode;
 import com.educode.nodes.ungrouped.ProgramNode;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.runtime.NativeMethodsHelper;
@@ -59,19 +57,31 @@ public class InterpretationVisitor extends VisitorBase
 
     private Object callNative(MethodInvocationNode methodInvocation, Object instance, List<Node> argumentNodes)
     {
+        MethodDeclarationNode methodDeclaration = methodInvocation.getReferencingDeclaration();
         String methodName = ((IdentifierReferencingNode) methodInvocation.getReference()).getText();
 
         // Evaluate arguments
         List<Object> argumentObjects = new ArrayList<>(argumentNodes.size());
-        if (methodInvocation.getReferencingDeclaration().getUseHelper())
+        if (methodDeclaration.getUseHelper())
             argumentObjects.add(instance);
         for (Node argumentNode : argumentNodes)
             argumentObjects.add(visit(argumentNode));
 
         // Get class array
+        List<ParameterNode> formalParameters = methodDeclaration.getParameters();
         Class[] classArray = new Class[argumentObjects.size()];
         for (int i = 0; i < argumentObjects.size(); i++)
-            classArray[i] = argumentObjects.get(i).getClass();
+        {
+            Type currentType = formalParameters.get(i).getType();
+            if (currentType.getIsGeneric())
+                classArray[i] = Object.class;
+            else if (currentType.equals(Type.NumberType))
+                classArray[i] = Double.class;
+            else if (currentType.equals(Type.BoolType))
+                classArray[i] = Boolean.class;
+            else
+                classArray[i] = argumentObjects.get(i).getClass();
+        }
 
         // Invoke method
         // Find the appropriate event and invoke it
@@ -83,6 +93,7 @@ public class InterpretationVisitor extends VisitorBase
         catch (Exception e)
         {
             System.out.println("Error at invocation of native method " + methodName);
+            e.printStackTrace();
             return null;
         }
     }
@@ -125,6 +136,39 @@ public class InterpretationVisitor extends VisitorBase
             return ((ReturnFlag) visitResult).getContained();
 
         return visitResult;
+    }
+
+    public Object visit(ObjectInstantiationNode node)
+    {
+        if (node.getType().isList())
+        {
+            // Evaluate arguments
+            List<Object> arguments = new ArrayList<>();
+            for (Node argument : node.getActualArguments())
+                arguments.add(visit(argument));
+
+            // Create class array
+            Class[] classArray = new Class[arguments.size()];
+            for (int i = 0; i < classArray.length; i++)
+                classArray[i] = Object.class;
+
+            // Instantiate
+            try
+            {
+                return ExtendedList.class.getConstructor(classArray).newInstance(arguments.toArray());
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    public Object visit(NullLiteralNode node)
+    {
+        return null;
     }
 
     public void visit(StartNode node)

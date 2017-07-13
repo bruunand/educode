@@ -8,7 +8,7 @@ import com.educode.nodes.ungrouped.StartNode;
 import com.educode.parsing.ParserHelper;
 import com.educode.runtime.ProgramBase;
 import com.educode.runtime.ProgramImpl;
-import com.educode.runtime.threads.ProgramRunner;
+import com.educode.runtime.ProgramRunner;
 import com.educode.visitors.semantic.SemanticVisitor;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;

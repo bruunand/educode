@@ -1,21 +1,21 @@
 package com.educode.runtime.types;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.StringJoiner;
 
 /**
  * Created by User on 18-Apr-17.
  */
-public class ExtendedList<E> extends ArrayList<E> implements IList<E>
+public class ExtendedList<E> extends ArrayList<Object> implements IList
 {
     public ExtendedList()
     {
     }
 
-    public ExtendedList(E ... args)
+    public ExtendedList(Object ... args)
     {
-        for (E item : args)
-            add(item);
+        this.addAll(Arrays.asList(args));
     }
 
     @Override
@@ -30,33 +30,33 @@ public class ExtendedList<E> extends ArrayList<E> implements IList<E>
     }
 
     @Override
-    public void removeItemAt(double index)
+    public void removeItemAt(Double index)
     {
-        remove((int) index);
+        remove(index.intValue());
     }
 
     @Override
-    public E getItemAt(double index)
+    public Object getItemAt(Double index)
     {
-        if ((int) index >= size() || index < 0)
+        if (index.intValue() >= size() || index < 0)
             throw new RuntimeException("Index was out of range.");
 
-        return super.get((int) index);
+        return super.get(index.intValue());
     }
 
     @Override
-    public void addItem(E item)
+    public void addItem(Object item)
     {
         super.add(item);
     }
 
     @Override
-    public E setItemAt(double index, E item)
+    public Object setItemAt(Double index, Object item)
     {
-        if ((int) index >= size() || index < 0)
+        if (index.intValue() >= size() || index < 0)
             throw new RuntimeException("Index was out of range.");
 
-        super.set((int) index, item);
+        super.set(index.intValue(), item);
         return item;
     }
 

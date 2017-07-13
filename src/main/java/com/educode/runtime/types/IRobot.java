@@ -1,7 +1,5 @@
 package com.educode.runtime.types;
 
-import java.util.List;
-
 /**
  * Created by zen on 4/18/17.
  */
@@ -13,7 +11,7 @@ public interface IRobot extends IEntity
     void explode(Double strength) throws InterruptedException;
     void setWorldTime(Double time) throws InterruptedException;
     MinecraftEntity getOwner();
-    List<MinecraftEntity> getNearbyEntities() throws InterruptedException;
+    ExtendedList<MinecraftEntity> getNearbyEntities() throws InterruptedException;
     Double getDistanceTo(MinecraftEntity entity);
     boolean placeBlock(Coordinates coordinates) throws InterruptedException;
     void stop() throws InterruptedException;

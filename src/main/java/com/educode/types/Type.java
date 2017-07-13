@@ -9,6 +9,7 @@ import com.educode.symboltable.SymbolTable;
  */
 public class Type
 {
+    private boolean _generic;
     private Type _childType = null;
     private final byte _kind;
 
@@ -73,6 +74,14 @@ public class Type
         return false;
     }
 
+    private Type makeGenericInstance(Type existing)
+    {
+        Type returnType = new Type(existing.getKind());
+        returnType._childType = existing.getChildType();
+        returnType._generic = true;
+        return returnType;
+    }
+
     public byte getKind()
     {
         return this._kind;
@@ -115,12 +124,17 @@ public class Type
             // This method has methods that are specific to the child type of the collection
 
             SymbolTable tempTable = new SymbolTable(_listSymbolTable);
-            tempTable.addDefaultMethod("addItem", Type.VoidType, this.getChildType());
+            tempTable.addDefaultMethod("addItem", Type.VoidType, makeGenericInstance(getChildType()));
 
             return tempTable;
         }
 
         return _emptySymbolTable;
+    }
+
+    public boolean getIsGeneric()
+    {
+        return this._generic;
     }
 
     public boolean isList()
