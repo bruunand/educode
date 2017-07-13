@@ -13,9 +13,7 @@ import com.educode.nodes.method.ParameterNode;
 import com.educode.nodes.referencing.ArrayReferencingNode;
 import com.educode.nodes.referencing.IdentifierReferencingNode;
 import com.educode.nodes.referencing.StructReferencingNode;
-import com.educode.nodes.statement.AssignmentNode;
-import com.educode.nodes.statement.ReturnNode;
-import com.educode.nodes.statement.VariableDeclarationNode;
+import com.educode.nodes.statement.*;
 import com.educode.nodes.statement.conditional.ConditionNode;
 import com.educode.nodes.statement.conditional.IfNode;
 import com.educode.nodes.statement.conditional.RepeatWhileNode;
@@ -44,6 +42,9 @@ public abstract class AbstractVisitor
     public abstract Object visit(ConditionNode node);
     public abstract Object visit(RepeatWhileNode node);
     public abstract Object visit(ReturnNode node);
+    public abstract Object visit(ContinueNode node);
+    public abstract Object visit(BreakNode node);
+    public abstract Object visit(ForEachNode node);
 
     // Literals
     public abstract Object visit(NumberLiteralNode node);
@@ -72,26 +73,26 @@ public abstract class AbstractVisitor
 
     public Object visit(Node node)
     {
-        return node.accept(null);
+        return node.accept(this);
     }
 
     protected void visitChildren(UnaryNode node)
     {
         if (node.getChild() != null)
-            node.getChild().accept(null);
+            node.getChild().accept(this);
     }
 
     protected void visitChildren(BinaryNode node)
     {
         if (node.getLeftChild() != null)
-            node.getLeftChild().accept(null);
+            node.getLeftChild().accept(this);
         if (node.getRightChild() != null)
-            node.getRightChild().accept(null);
+            node.getRightChild().accept(this);
     }
 
     protected void visitChildren(NaryNode node)
     {
         for (Node child : node.getChildren())
-            child.accept(null);
+            child.accept(this);
     }
 }

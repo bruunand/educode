@@ -26,7 +26,7 @@ public class ObjectInstantiationNode extends UnaryNode implements ISingleLineSta
     }
 
     @Override
-    public Object accept(VisitorBase visitor)
+    public Object accept(com.educode.visitors.AbstractVisitor visitor)
     {
         return visitor.visit(this);
     }

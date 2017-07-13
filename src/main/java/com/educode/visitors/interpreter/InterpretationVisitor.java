@@ -1,6 +1,7 @@
 package com.educode.visitors.interpreter;
 
 import com.educode.events.EventInvocationRequest;
+import com.educode.nodes.base.ListNode;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.expression.AdditionExpressionNode;
 import com.educode.nodes.expression.MultiplicationExpressionNode;
@@ -29,7 +30,7 @@ import com.educode.runtime.types.ExtendedList;
 import com.educode.types.ArithmeticOperator;
 import com.educode.types.LogicalOperator;
 import com.educode.types.Type;
-import com.educode.visitors.VisitorBase;
+import com.educode.visitors.AbstractVisitor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +39,7 @@ import java.util.List;
 /**
  * Created by User on 20-Jun-17.
  */
-public class InterpretationVisitor extends VisitorBase
+public class InterpretationVisitor extends AbstractVisitor
 {
     private final NativeMethodsHelper _helper = new NativeMethodsHelper();
     private HashMap<String, Object> _localVariables = new HashMap<>();
@@ -138,6 +139,7 @@ public class InterpretationVisitor extends VisitorBase
         return visitResult;
     }
 
+    @Override
     public Object visit(ObjectInstantiationNode node)
     {
         if (node.getType().isList())
@@ -166,17 +168,26 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
+    @Override
+    public Object visit(MethodDeclarationNode node)
+    {
+        return null;
+    }
+
+    @Override
     public Object visit(NullLiteralNode node)
     {
         return null;
     }
 
-    public void visit(StartNode node)
+    @Override
+    public Object visit(StartNode node)
     {
-        visit(node.getRightChild());
+        return visit(node.getRightChild());
     }
 
-    public void visit(ProgramNode node)
+    @Override
+    public Object visit(ProgramNode node)
     {
         // Register global variables
         for (VariableDeclarationNode variableDeclaration : node.getVariableDeclarations())
@@ -209,8 +220,11 @@ public class InterpretationVisitor extends VisitorBase
                 }
             }
         }
+
+        return null;
     }
 
+    @Override
     public Object visit(IdentifierReferencingNode node)
     {
         String variableName = node.getText();
@@ -225,16 +239,19 @@ public class InterpretationVisitor extends VisitorBase
         return null; // Should not happen in accordance with semantic visitor
     }
 
+    @Override
     public Object visit(OrExpressionNode node)
     {
         return ((boolean) visit(node.getLeftChild())) || ((boolean) visit(node.getRightChild()));
     }
 
+    @Override
     public Object visit(AndExpressionNode node)
     {
         return ((boolean) visit(node.getLeftChild())) && ((boolean) visit(node.getRightChild()));
     }
 
+    @Override
     public Object visit(IfNode node)
     {
         List<ConditionNode> conditionNodes = node.getConditionBlocks();
@@ -256,16 +273,27 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
-    public void visit(ContinueNode node)
+    @Override
+    public Object visit(ConditionNode node)
+    {
+        return null;
+    }
+
+    @Override
+    public Object visit(ContinueNode node)
     {
         this._continue = true;
+        return null;
     }
 
-    public void visit(BreakNode node)
+    @Override
+    public Object visit(BreakNode node)
     {
         this._break = true;
+        return null;
     }
 
+    @Override
     public Object visit(MethodInvocationNode node)
     {
         MethodDeclarationNode methodDeclaration = node.getReferencingDeclaration();
@@ -283,6 +311,13 @@ public class InterpretationVisitor extends VisitorBase
         return callLocal(methodDeclaration, argumentValues);
     }
 
+    @Override
+    public Object visit(ParameterNode node)
+    {
+        return null;
+    }
+
+    @Override
     public Object visit(RangeNode node)
     {
         ExtendedList<Double> ret = new ExtendedList<>();
@@ -296,6 +331,7 @@ public class InterpretationVisitor extends VisitorBase
         return ret;
     }
 
+    @Override
     public Object visit(BlockNode node)
     {
         for (Node subNode : node.getChildren())
@@ -320,11 +356,19 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
+    @Override
+    public Object visit(ListNode node)
+    {
+        return null;
+    }
+
+    @Override
     public Object visit(NegateNode node)
     {
         return !((boolean) visit(node.getChild()));
     }
 
+    @Override
     public Object visit(UnaryMinusNode node)
     {
         Object childResult = visit(node.getChild());
@@ -340,6 +384,7 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
+    @Override
     public Object visit(ReturnNode node)
     {
         if (node.hasChild())
@@ -349,6 +394,7 @@ public class InterpretationVisitor extends VisitorBase
     }
 
     // todo: verify correctness
+    @Override
     public Object visit(EqualExpressionNode node)
     {
         Object left  = visit(node.getLeftChild());
@@ -365,7 +411,7 @@ public class InterpretationVisitor extends VisitorBase
         return false;
     }
 
-
+    @Override
     public Object visit(AdditionExpressionNode node)
     {
         Object left  = visit(node.getLeftChild());
@@ -389,6 +435,7 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
+    @Override
     public Object visit(MultiplicationExpressionNode node)
     {
         Object left  = visit(node.getLeftChild());
@@ -410,6 +457,7 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
+    @Override
     public Object visit(ForEachNode node)
     {
         String localVariableName = ((IdentifierReferencingNode) node.getReference()).getText();
@@ -423,9 +471,7 @@ public class InterpretationVisitor extends VisitorBase
             // Visit block for this foreach node
             Object returnObject = visit(node.getRightChild());
             if (returnObject instanceof ReturnFlag)
-            {
                 return returnObject;
-            }
 
             // Consume flags
             if (this._continue)
@@ -443,11 +489,13 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
+    @Override
     public Object visit(ArrayReferencingNode node)
     {
         return ((ExtendedList) visit(node.getLeftChild())).getItemAt((double) visit(node.getRightChild()));
     }
 
+    @Override
     public Object visit(StructReferencingNode node)
     {
         Object leftInstance = visit(node.getLeftChild());
@@ -473,6 +521,7 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
+    @Override
     public Object visit(VariableDeclarationNode node)
     {
         if (node.getReference() instanceof IdentifierReferencingNode)
@@ -490,6 +539,7 @@ public class InterpretationVisitor extends VisitorBase
             return null;
     }
 
+    @Override
     public Object visit(AssignmentNode node)
     {
         Object expression = visit(node.getChild());
@@ -526,16 +576,19 @@ public class InterpretationVisitor extends VisitorBase
         return expression;
     }
 
+    @Override
     public Object visit(NumberLiteralNode node)
     {
         return node.getValue();
     }
 
+    @Override
     public Object visit(StringLiteralNode node)
     {
         return node.getValue();
     }
 
+    @Override
     public ReturnFlag visit(RepeatWhileNode node)
     {
         ConditionNode conditionNode = (ConditionNode) node.getChild();
@@ -564,11 +617,13 @@ public class InterpretationVisitor extends VisitorBase
         return null;
     }
 
+    @Override
     public Object visit(BoolLiteralNode node)
     {
         return node.getValue();
     }
 
+    @Override
     public Object visit(RelativeExpressionNode node)
     {
         double left  = (double) visit(node.getLeftChild());
@@ -589,16 +644,10 @@ public class InterpretationVisitor extends VisitorBase
         return false;
     }
 
+    @Override
     public Object visit(CoordinatesLiteralNode node)
     {
         return new Coordinates((double) visit(node.getX()), (double) visit(node.getY()), (double) visit(node.getZ()));
-    }
-
-    @Override
-    public Object defaultVisit(Node node)
-    {
-        System.out.println("No interpretation implemented: " + node.getClass());
-        return null;
     }
 }
 

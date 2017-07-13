@@ -85,7 +85,7 @@ public class CommandRun implements ICommand
             semanticVisitor.getSymbolTableHandler().setInputSource(startNode);
             startNode.setInputSource(programName + ".educ");
             startNode.setIsMain(true);
-            startNode.accept(semanticVisitor);
+            semanticVisitor.visit(startNode);
             printMessagesToChat(sender, semanticVisitor.getSymbolTableHandler().getMessages());
             if (semanticVisitor.getSymbolTableHandler().hasErrors())
                 throw new Exception("Could not compile source program due to contextual constraint errors.");

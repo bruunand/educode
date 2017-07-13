@@ -1,13 +1,12 @@
 package com.educode.nodes.method;
 
-import com.educode.nodes.IReferencing;
 import com.educode.helper.NodeHelper;
+import com.educode.nodes.IReferencing;
 import com.educode.nodes.ISingleLineStatement;
 import com.educode.nodes.base.Node;
 import com.educode.nodes.base.UnaryNode;
 import com.educode.nodes.referencing.IReference;
 import com.educode.types.Type;
-import com.educode.visitors.VisitorBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +52,7 @@ public class MethodInvocationNode extends UnaryNode implements ISingleLineStatem
     }
 
     @Override
-    public Object accept(VisitorBase visitor)
+    public Object accept(com.educode.visitors.AbstractVisitor visitor)
     {
         return visitor.visit(this);
     }

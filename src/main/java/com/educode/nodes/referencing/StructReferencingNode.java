@@ -37,7 +37,7 @@ public class StructReferencingNode extends BinaryNode implements IReference, ISi
     }
 
     @Override
-    public Object accept(VisitorBase visitor)
+    public Object accept(com.educode.visitors.AbstractVisitor visitor)
     {
         return visitor.visit(this);
     }

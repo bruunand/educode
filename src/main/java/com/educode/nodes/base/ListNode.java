@@ -1,6 +1,6 @@
 package com.educode.nodes.base;
 
-import com.educode.visitors.VisitorBase;
+import com.educode.visitors.AbstractVisitor;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ public class ListNode extends NaryNode implements INodeWithChildren
     }
 
     @Override
-    public Object accept(VisitorBase visitor)
+    public Object accept(AbstractVisitor visitor)
     {
         return visitor.visit(this);
     }

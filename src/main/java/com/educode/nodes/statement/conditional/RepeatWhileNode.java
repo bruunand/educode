@@ -15,7 +15,7 @@ public class RepeatWhileNode extends UnaryNode
     }
 
     @Override
-    public Object accept(VisitorBase visitor)
+    public Object accept(com.educode.visitors.AbstractVisitor visitor)
     {
         return visitor.visit(this);
     }

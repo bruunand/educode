@@ -1,13 +1,9 @@
 package com.educode;
 
 import com.educode.minecraft.CompilerMod;
-import com.educode.minecraft.compiler.CustomJavaCompiler;
 import com.educode.nodes.ungrouped.StartNode;
 import com.educode.parsing.ParserHelper;
 import com.educode.runtime.ProgramImpl;
-import com.educode.visitors.PrintVisitor;
-import com.educode.visitors.codegeneration.JavaBytecodeGenerationVisitor;
-import com.educode.visitors.codegeneration.JavaCodeGenerationVisitor;
 import com.educode.visitors.interpreter.InterpretationVisitor;
 import com.educode.visitors.semantic.SemanticVisitor;
 
@@ -40,38 +36,18 @@ public class Main
         sv.getSymbolTableHandler().setInputSource(startNode);
         startNode.setInputSource("Test.educ");
         startNode.setIsMain(true);
-        startNode.accept(sv);
+        sv.visit(startNode);
 
         // Print any errors and warnings
         sv.getSymbolTableHandler().printMessages();
 
         // Pretty print
-        System.out.println(startNode.accept(new PrintVisitor()));
+        // System.out.println(startNode.accept(new PrintVisitor()));
 
         // Interpret
         startNode.accept(new InterpretationVisitor(new ProgramImpl()));
         System.out.println("Done interpreting");
         System.exit(0);
-
-        // Generate bytecode
-        JavaBytecodeGenerationVisitor byteCodeVisitor = new JavaBytecodeGenerationVisitor();
-        startNode.accept(byteCodeVisitor);
-
-        // Generate Java
-        JavaCodeGenerationVisitor javaCodeVisitor = new JavaCodeGenerationVisitor();
-        startNode.accept(javaCodeVisitor);
-
-        // Test code generation
-        System.out.println("Compiling Java code...");
-        CustomJavaCompiler compiler = new CustomJavaCompiler();
-        invokeMainInClass(compiler.compile("Test"));
-        System.out.println();
-
-        // Test bytecode generation
-        System.out.println("Compiling bytecode using Jasmin...");
-        jasmin.Main jasminMain = new jasmin.Main();
-        jasminMain.assemble(CompilerMod.EDUCODE_PROGRAMS_LOCATION + "Test.j");
-        invokeMainInClass(CustomJavaCompiler.loadClass("Test", "")); // For some reason, Jasmin likes to place the class file in the working dir
     }
 
     private static void invokeMainInClass(Class classToRun) throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException

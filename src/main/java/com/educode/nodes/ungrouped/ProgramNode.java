@@ -8,7 +8,6 @@ import com.educode.nodes.base.Node;
 import com.educode.nodes.method.MethodDeclarationNode;
 import com.educode.nodes.referencing.IReference;
 import com.educode.nodes.statement.VariableDeclarationNode;
-import com.educode.visitors.VisitorBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +72,7 @@ public class ProgramNode extends NaryNode implements IVisitable, IReferencing
     }
 
     @Override
-    public Object accept(VisitorBase visitor)
+    public Object accept(com.educode.visitors.AbstractVisitor visitor)
     {
         return visitor.visit(this);
     }

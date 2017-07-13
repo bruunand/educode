@@ -7,7 +7,6 @@ import com.educode.nodes.base.UnaryNode;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -93,15 +92,15 @@ public abstract class VisitorBase
     protected void visitChildren(UnaryNode node)
     {
         if (node.getChild() != null)
-            node.getChild().accept(this);
+            visit(node.getChild());
     }
 
     protected void visitChildren(BinaryNode node)
     {
         if (node.getLeftChild() != null)
-            node.getLeftChild().accept(this);
+            visit(node.getLeftChild());
         if (node.getRightChild() != null)
-            node.getRightChild().accept(this);
+            visit(node.getRightChild());//
     }
 
     protected void visitChildren(NaryNode node)
@@ -110,7 +109,7 @@ public abstract class VisitorBase
 
         for (int i = 0; i < children.size();)
         {
-            children.get(i).accept(this);
+            visit(children.get(i));
 
             // Delete children that have been marked for deletion (set to null)
             if (children.get(i) == null)

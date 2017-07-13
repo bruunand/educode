@@ -23,7 +23,7 @@ public class BoolLiteralNode extends LeafNode implements ILiteral<Boolean>
     }
 
     @Override
-    public Object accept(VisitorBase visitor)
+    public Object accept(com.educode.visitors.AbstractVisitor visitor)
     {
         return visitor.visit(this);
     }

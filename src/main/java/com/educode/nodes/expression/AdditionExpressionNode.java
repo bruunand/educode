@@ -2,7 +2,7 @@ package com.educode.nodes.expression;
 
 import com.educode.nodes.base.Node;
 import com.educode.types.ArithmeticOperator;
-import com.educode.visitors.VisitorBase;
+import com.educode.visitors.AbstractVisitor;
 
 /**
  * Created by zen on 3/10/17.
@@ -15,7 +15,7 @@ public class AdditionExpressionNode extends ArithmeticExpressionNode
     }
 
     @Override
-    public Object accept(VisitorBase visitor)
+    public Object accept(AbstractVisitor visitor)
     {
         return visitor.visit(this);
     }

@@ -163,7 +163,7 @@ public class SemanticVisitor extends VisitorBase
         getSymbolTableHandler().getCurrent().addDefaultField("robot", Type.RobotType);
 
         // Run return check visitor
-        node.accept(new ReturnCheckVisitor(this.getSymbolTableHandler()));
+        new ReturnCheckVisitor(this.getSymbolTableHandler()).visit(node);
 
         // Enter all method declarations
         boolean hasMainMethod = false;

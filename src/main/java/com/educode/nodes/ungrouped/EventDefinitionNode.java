@@ -40,7 +40,7 @@ public class EventDefinitionNode extends LeafNode implements IReferencing
     }
 
     @Override
-    public Object accept(VisitorBase visitor)
+    public Object accept(com.educode.visitors.AbstractVisitor visitor)
     {
         return visitor.visit(this);
     }
